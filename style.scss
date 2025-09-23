@@ -1,0 +1,373 @@
+//
+// Imports
+//
+
+@import url('https://fonts.googleapis.com/css2?family=Neuton:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+//
+// Variables
+//
+
+$f-fam-title: "Neuton", serif;
+$f-fam-body: "Roboto", san-serif;
+$f-size-base: 16px;
+$f-size-h1: 4.5rem;
+$f-size-h2: 3.25rem;
+$f-size-h3: 2.5rem;
+$f-size-h4: 1.75rem;
+$f-size-bl: 1.25rem;
+$f-size-bm: 1.125rem;
+$f-size-bs: 0.875rem;
+
+$c-text-l: #ffffff;
+$c-text-d: #111111;
+$c-text-link: #4848c8;
+$c-bg-d: #111111;
+$c-bg-l: #111128;
+$c-bg-ll: #ffffffee;
+
+$z-canvas-bg: 0;
+$z-canvas-fg: 10;
+$z-buttons: 20;
+$z-page: 30;
+
+$ani-sh: 500ms;
+$ani-lg: 1000ms;
+
+
+//
+// Mixins
+//
+
+@mixin header-1 {
+  font-size: $f-size-h1;
+  font-weight: normal;
+  letter-spacing: 2px;
+  font-family: $f-fam-title;
+  color: $c-text-l;
+}
+
+@mixin header-2 {
+  font-size: $f-size-h2;
+  font-weight: normal;
+  letter-spacing: 1px;
+  font-family: $f-fam-title;
+  color: $c-text-l;
+}
+
+@mixin header-3 {
+  font-size: $f-size-h3;
+  font-weight: normal;
+  letter-spacing: 3px;
+  font-family: $f-fam-title;
+  color: $c-text-l;
+}
+
+@mixin body-title {
+  margin: 0 0 2rem;
+  font-size: $f-size-h4;
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-family: $f-fam-title;
+  color: $c-text-d;
+}
+
+@mixin body-text {
+  font-size: $f-size-bm;
+  font-weight: normal;
+  font-family: $f-fam-body;
+  color: $c-text-d;
+}
+
+@mixin body-link {
+  @include body-text;
+  font-size: $f-size-bl;
+  padding-bottom: 0.25rem;
+  color: $c-text-link;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 0 currentColor;
+  transition: box-shadow $ani-sh;
+
+  &:hover,
+  &:focus {
+    box-shadow: inset 0 -3px 0 0 currentColor;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $c-text-l;
+    outline-offset: 0.5rem;
+  }
+}
+
+@mixin button-underline {
+  @include button-no-underline;
+  box-shadow: inset 0 0 0 0 currentColor;
+  transition: box-shadow $ani-sh;
+
+  &:hover,
+  &:focus {
+    box-shadow: inset 0 -0.375rem 0 0 currentColor;
+  }
+}
+
+@mixin button-no-underline {
+  &:focus-visible {
+    outline: 2px solid $c-text-l;
+    outline-offset: 0.5rem;
+  }
+}
+
+
+//
+// Reset
+//
+
+body {
+  margin: 0;
+}
+
+button {
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
+}
+
+
+//
+// Animations
+//
+
+@keyframes ani-bob {
+  from { top: -0.5rem; }
+  to   { top:  0.5rem; }
+}
+
+
+//
+// Page
+//
+ 
+html {
+  font-size: $f-size-base;
+}
+
+body {
+  overflow-x: hidden;
+  font-family: $f-fam-title;
+  height: 380vh;
+  background: linear-gradient(
+    $c-bg-d 0,
+    $c-bg-l 75vh,
+    $c-bg-l
+  );
+}
+
+
+//
+// Header
+//
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 45vh;
+  text-align: center;
+
+  &__title {
+    @include header-1;
+  }
+  
+  &__subtitle {
+    @include header-2;
+  }
+}
+
+
+//
+// Main page
+//
+
+.main {
+  position: relative;
+
+  &__link {
+    @include header-3;
+    @include button-underline;
+
+    position: relative;
+    z-index: $z-buttons;
+    padding-bottom: 0.5rem;
+    pointer-events: all;
+
+    &-container {
+      display: flex;
+      margin: 0 auto;
+      width: 32rem;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+  }
+
+  &__more {
+    $color: $c-bg-l;
+    @include header-3;
+    @include button-no-underline;
+
+    color: $color;
+    font-weight: 600;
+    pointer-events: all;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2rem;
+      left: calc(50% - 1rem);
+      padding: 0.5rem;
+      border: solid $color;
+      border-width: 0 3px 3px 0;
+      border-bottom-right-radius: 0.25rem;
+      rotate: 45deg;
+      transition: bottom $ani-lg;
+    }
+
+    &:hover::after {
+      bottom: -3rem;
+    }
+
+    &-container {
+      position: absolute;
+      z-index: $z-buttons;
+      inset: calc(min(550px, 55vh) - 9rem) 0 auto 0;
+      text-align: center;
+      pointer-events: none;
+    }
+  }
+
+  //
+  // Invisible proxy buttons
+  //
+
+  &__topic {
+    position: absolute;
+    z-index: $z-buttons;
+    width: 35rem;
+    height: 10rem;
+    padding-bottom: 0.5rem;
+    border: none;
+    translate: -50% 0;
+    rotate: -28deg;
+    font-size: 60px;
+    font-family: monospace;
+    letter-spacing: 30px;
+    color: transparent;
+    background: none;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: 2px solid $c-text-l;
+    }
+  }
+}
+
+//
+// Pages
+//
+
+.section {
+  display: none;
+  pointer-events: all;
+
+  &--open {
+    display: block;
+  }
+
+  &__container {
+    position: fixed;
+    inset: 0;
+    z-index: $z-page;
+    padding: 2rem;
+    overflow: auto;
+    pointer-events: none;
+  }
+  
+  &__item {
+    display: flex;
+    gap: 1rem;
+    max-width: 80rem;
+    margin: 0 auto 2rem;
+
+    &-image-container,
+    &-text {
+      padding: 1rem;
+      background: #b6fff888;
+      backdrop-filter: blur(10px);
+    }
+
+    &-image {
+      width: 100%;
+      height: 100%;
+      
+      &-container {
+        width: 25%;
+        aspect-ratio: 1 / 1;
+        overflow: hidden;
+      }
+    }
+
+    &-text {
+      display: flex;
+      flex-direction: column;
+      padding: 1.25rem 2rem;
+
+      &-title {
+        @include body-title;
+      }
+
+      &-lede,
+      &-link {
+        @include body-text;
+      }
+
+      &-link {
+        @include body-link;
+
+        &-container {
+          display: flex;
+          gap: 1rem;
+          margin-top: auto;
+        }
+      }
+    }
+  }
+}
+
+
+//
+// Canvases
+//
+
+.canvas {
+  &__sky,
+  &__sea {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    translate: -50% 0;
+  }
+
+  &__sky {
+    z-index: $z-canvas-bg;
+  }
+
+  &__sea {
+    z-index: $z-canvas-fg;
+  }
+}
