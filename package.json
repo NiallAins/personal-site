@@ -1,0 +1,25 @@
+{
+    "name": "personalsite",
+    "main": "main.js",
+    "scripts": {
+        "dev": "webpack && sass ./styles/main.scss > ./dist/style.css",
+        "dev-watch": "onchange \"./scripts/**/*.ts\" \"./styles/**/*.scss\" -- npm run dev"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/NiallAins/personal-site.git"
+    },
+    "license": "ISC",
+    "homepage": "https://github.com/NiallAins/personal-site#readme",
+    "devDependencies": {
+        "onchange": "^7.1.0",
+        "sass": "^1.100.0",
+        "ts-loader": "^9.5.7",
+        "typescript": "^6.0.3",
+        "webpack": "^5.107.2",
+        "webpack-cli": "^7.0.2"
+    },
+    "dependencies": {
+        "node": "^22.22.3"
+    }
+}

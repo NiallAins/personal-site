@@ -1,0 +1,97 @@
+//
+// Text
+//
+
+@mixin header-1 {
+    font-size: $f-size-h1;
+    font-weight: normal;
+    letter-spacing: 2px;
+    font-family: $f-fam-title;
+    color: $c-text-l;
+}
+
+@mixin header-2 {
+    font-size: $f-size-h2;
+    font-weight: normal;
+    letter-spacing: 1px;
+    font-family: $f-fam-title;
+    color: $c-text-l;
+}
+
+@mixin header-3 {
+    font-size: $f-size-h3;
+    font-weight: normal;
+    letter-spacing: 3px;
+    font-family: $f-fam-title;
+    color: $c-text-l;
+}
+
+@mixin body-title {
+    margin: 0 0 2rem;
+    font-size: $f-size-h4;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-family: $f-fam-title;
+    color: $c-text-d;
+}
+
+@mixin body-text {
+    font-size: $f-size-bm;
+    font-weight: normal;
+    font-family: $f-fam-body;
+    color: $c-text-d;
+}
+
+
+//
+// Buttons and links
+//
+
+@mixin button-no-underline {
+    &:focus-visible {
+        outline: 2px solid $c-text-l;
+        outline-offset: 0.5rem;
+    }
+}
+
+@mixin button-underline {
+    @include button-no-underline;
+    box-shadow: inset 0 0 0 0 currentColor;
+    transition: box-shadow $ani-sh;
+
+    &:hover,
+    &:focus {
+        box-shadow: inset 0 -0.375rem 0 0 currentColor;
+    }
+}
+
+@mixin body-link {
+    @include body-text;
+    font-size: $f-size-bl;
+    padding-bottom: 0.25rem;
+    color: $c-text-link;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 0 currentColor;
+    transition: box-shadow $ani-sh;
+
+    &:hover,
+    &:focus {
+        box-shadow: inset 0 -3px 0 0 currentColor;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $c-text-l;
+        outline-offset: 0.5rem;
+    }
+}
+
+
+//
+// Animations
+//
+
+@keyframes ani-bob {
+    from { top: -0.5rem; }
+    to   { top:  0.5rem; }
+}
