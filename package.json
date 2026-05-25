@@ -2,8 +2,10 @@
     "name": "personalsite",
     "main": "main.js",
     "scripts": {
-        "dev": "webpack && sass ./styles/main.scss > ./dist/style.css",
-        "dev-watch": "onchange \"./scripts/**/*.ts\" \"./styles/**/*.scss\" -- npm run dev"
+        "dev": "npm run build && concurrently \"npm run build-watch\" \"npm run serve\"",
+        "serve": "http-server ./dist",
+        "build": "webpack && sass ./styles/main.scss > ./dist/style.css",
+        "build-watch": "onchange \"./scripts/**/*.ts\" \"./styles/**/*.scss\" -- npm run dev"
     },
     "repository": {
         "type": "git",
@@ -12,14 +14,13 @@
     "license": "ISC",
     "homepage": "https://github.com/NiallAins/personal-site#readme",
     "devDependencies": {
+        "concurrently": "^9.2.1",
+        "http-server": "^14.1.1",
         "onchange": "^7.1.0",
         "sass": "^1.100.0",
         "ts-loader": "^9.5.7",
         "typescript": "^6.0.3",
         "webpack": "^5.107.2",
         "webpack-cli": "^7.0.2"
-    },
-    "dependencies": {
-        "node": "^22.22.3"
     }
 }

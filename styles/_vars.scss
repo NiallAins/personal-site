@@ -1,39 +1,41 @@
 @import url('https://fonts.googleapis.com/css2?family=Neuton:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
-$f-fam-title: "Neuton", serif;
 $f-fam-title-src: url(https://fonts.gstatic.com/s/neuton/v24/UMBTrPtMoH62xUZCz4g6.woff2);
-$f-fam-body: "Roboto", san-serif;
+$f-fam-title: "Neuton", serif;
+$f-fam-body:  "Roboto", san-serif;
 $f-size-base: 16px;
-$f-size-h1: 4.5rem;
-$f-size-h2: 3.25rem;
-$f-size-h3: 2.5rem;
-$f-size-h4: 1.75rem;
-$f-size-bl: 1.25rem;
-$f-size-bm: 1.125rem;
-$f-size-bs: 0.875rem;
+$f-size-h1:   4.5rem;
+$f-size-h2:   3.25rem;
+$f-size-h3:   2.5rem;
+$f-size-h4:   1.75rem;
+$f-size-bl:   1.25rem;
+$f-size-bm:   1.125rem;
+$f-size-bs:   0.875rem;
 
-$c-text-l: #ffffff;
-$c-text-d: #111111;
+$c-text-l:      #ffffff;
+$c-text-d:      #111111;
 $c-text-shadow: #11111188;
-$c-text-link: #4848c8;
-$c-bg-d: #111111;
-$c-bg-l: #111128;
-$c-bg-ll: #ffffffee;
+$c-text-link:   #4848c8;
+$c-bg-d:        #111111;
+$c-bg-l:        #111128;
+$c-bg-ll:       #ffffffee;
 
-$z-canvas-bg: 0;
+$z-canvas-bg:  0;
 $z-canvas-fg: 10;
-$z-buttons: 20;
-$z-page: 30;
+$z-buttons:   20;
+$z-page:      30;
 
 $ani-sh: 500ms;
 $ani-lg: 1000ms;
 
 html {
-    --c-text-l: #{ $c-text-l };
-    --c-text-d: #{ $c-text-d };
-    --c-text-shadow: { $c-text-shadow };
-    --c-text-link: #{ $c-text-link };
-    --c-bg-d: #{ $c-bg-d };
-    --c-bg-l: #{ $c-bg-l };
-    --c-bg-ll: #{ $c-bg-ll };
+    --f-fam-title:      #{ $f-fam-title };
+    --f-fam-title-src:  #{ $f-fam-title-src };
+    --c-text-l:         #{ $c-text-l };
+    --c-text-d:         #{ $c-text-d };
+    --c-text-shadow:    #{ $c-text-shadow };
+    --c-text-link:      #{ $c-text-link };
+    --c-bg-d:           #{ $c-bg-d };
+    --c-bg-l:           #{ $c-bg-l };
+    --c-bg-ll:          #{ $c-bg-ll };
 }

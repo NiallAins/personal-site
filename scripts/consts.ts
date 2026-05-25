@@ -1,6 +1,7 @@
 import { tTerrainDetail } from "./types";
 import { getCssVar, getEls } from "./util";
 
+
 //
 // Page dimensions
 //
@@ -38,7 +39,7 @@ export const
     ],
     LABEL_LETTER_WIDTH = 74,
     LABEL_LETTER_HEIGHT = 48,
-    LABEL_LETTER_SHADOW =4;
+    LABEL_LETTER_SHADOW = 4;
 
     
 //

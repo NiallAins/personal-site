@@ -36,20 +36,18 @@ export class Splash {
     }
 
     public step(dT: number) {
-        Splash.splashes.forEach(c => {
-            this.period += dT * 0.25;
+        this.period += dT * 0.25;
 
-            if (!this.fading) {
-                this.age += dT * 150;
-                if (this.age > 1000) {
-                    this.fading = true;
-                }
-            } else {
-                this.age /= 1 + (0.05 * dT);
-                if (this.age < 5) {
-                    Splash.splashes.splice(Splash.splashes.indexOf(this), 1);
-                }
+        if (!this.fading) {
+            this.age += dT * 150;
+            if (this.age > 1000) {
+                this.fading = true;
             }
-        });
+        } else {
+            this.age /= 1 + (0.05 * dT);
+            if (this.age < 5) {
+                Splash.splashes.splice(Splash.splashes.indexOf(this), 1);
+            }
+        }
     }
 }

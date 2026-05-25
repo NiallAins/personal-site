@@ -1,8 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Neuton:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 html {
+  --f-fam-title: Neuton, serif;
+  --f-fam-title-src: url(https://fonts.gstatic.com/s/neuton/v24/UMBTrPtMoH62xUZCz4g6.woff2);
   --c-text-l: #ffffff;
   --c-text-d: #111111;
-  --c-text-shadow: { $c-text-shadow };
+  --c-text-shadow: rgba(17, 17, 17, 0.5333333333);
   --c-text-link: #4848c8;
   --c-bg-d: #111111;
   --c-bg-l: #111128;
