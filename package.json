@@ -3,9 +3,11 @@
     "main": "main.js",
     "scripts": {
         "dev": "npm run build && concurrently \"npm run build-watch\" \"npm run serve\"",
-        "serve": "http-server ./dist",
-        "build": "webpack && sass ./styles/main.scss > ./dist/style.css",
-        "build-watch": "onchange \"./scripts/**/*.ts\" \"./styles/**/*.scss\" -- npm run dev"
+        "serve": "http-server ./dist -o -c-1",
+        "build": "npm run build-script && npm run build-style",
+        "build-style": "sass ./styles/main.scss > ./dist/style.css",
+        "build-script": "webpack",
+        "build-watch": "concurrently \"onchange \\\"./scripts/**/*.ts\\\" -- npm run build-script\" \"onchange \\\"./styles/**/*.scss\\\" -- npm run build-style\""
     },
     "repository": {
         "type": "git",

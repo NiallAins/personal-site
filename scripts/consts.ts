@@ -20,8 +20,9 @@ export const
 export const
     FONT_TITLE: string = getCssVar('f-fam-title'),
     FONT_TITLE_SRC: string = getCssVar('f-fam-title-src'),
-    COLOR_TEXT_L: string = getCssVar('c-text-l'),
-    COLOR_TEXT_SHADOW: string = getCssVar('c-text-shadow');
+    COLOR_TEXT_D: string = getCssVar('c-text-l'),
+    COLOR_TEXT_SHADOW: string = getCssVar('c-text-shadow'),
+    ANI_SHORT: number = parseInt(getCssVar('ani-sh'));
 
 
 //
@@ -29,7 +30,7 @@ export const
 //
 
 export const
-    EL_SECTION_LABELS = getEls<HTMLButtonElement>('.main__topic'),
+    EL_SECTION_LABELS = getEls<HTMLButtonElement>('.main__topic-button'),
     SECTION_LABELS: string[] = [
         'Visuals',
         ' Apps',
@@ -58,4 +59,5 @@ export const
     ],
     SPLASH_MAX_DIST = 90000,
     SPLASH_FADE_DIST = SPLASH_MAX_DIST / 6,
-    SPLASH_FADE_TIME = 0.0002;
+    SPLASH_FADE_TIME = 0.0002,
+    TARGET_FPS: number = 33.33;

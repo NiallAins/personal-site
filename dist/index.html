@@ -5,6 +5,7 @@
         Niall | Design & Dev
     </title>
 
+    <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
     <link rel="stylesheet" href="./style.css" />
 
 </head>
@@ -15,14 +16,40 @@
         class="canvas__sky"
     ></canvas>
 
-    <header class="header">
-        <h1 class="header__title">
-            Niall Ainsworth
-        </h1>
-        <span class="header__subtitle">
-            Design / Development
-        </span>
-    </header>
+    <div class="splash">
+        <header class="header">
+            <h1 class="header__title">
+                Niall Ainsworth
+            </h1>
+            <span class="header__subtitle">
+                Design / Development
+            </span>
+        </header>
+
+        <nav class="nav">
+            <div class="nav__links">
+                <button class="nav__links-button">
+                    Experience
+                </button>
+                <button class="nav__links-button">
+                    Contact
+                </button>
+            </div>
+            <div class="nav__more">
+                <button
+                    class="nav__more-button"
+                    onclick="
+                        window.scrollTo({
+                            top: (window.innerHeight * 0.75),
+                            behavior: 'smooth'
+                        })
+                    "
+                >
+                    Dive into Projects
+                </button>
+            </div>
+        </nav>
+    </div>
 
     <canvas
         id="CAN_SEA"
@@ -30,42 +57,28 @@
     ></canvas>
 
     <main class="main">
-        <div class="main__link-container">
-            <button class="main__link">
-                Experience
-            </button>
-            <button class="main__link">
-                Contact
-            </button>
-        </div>
-        <div class="main__more-container">
-            <button
-                class="main__more"
-                onclick="
-                    window.scrollTo({
-                        top: (window.innerHeight * 0.75),
-                        behavior: 'smooth'
-                    })
-                "
-            >
-                Dive into Projects
-            </button>
-        </div>
-
-        <div class="main__topic-container">
-            <button class="main__topic">
+        <div class="main__topic">
+            <button class="main__topic-button">
                 Visuals
             </button>
-            <button class="main__topic">
+        </div>
+        <div class="main__topic">
+            <button class="main__topic-button">
                 Apps
             </button>
-            <button class="main__topic">
+        </div>
+        <div class="main__topic">
+            <button class="main__topic-button">
                 Sites
             </button>
-            <button class="main__topic">
+        </div>
+        <div class="main__topic">
+            <button class="main__topic-button">
                 Games
             </button>
-            <button class="main__topic">
+        </div>
+        <div class="main__topic">
+            <button class="main__topic-button">
                 Tools
             </button>
         </div>

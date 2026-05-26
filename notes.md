@@ -31,3 +31,8 @@ Tools
   Text formatting sandbox
   Date picker
   SCSS compiler
+
+
+Music
+
+Visualisations

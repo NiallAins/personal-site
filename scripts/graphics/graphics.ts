@@ -14,8 +14,9 @@ import {
     EL_SECTION_LABELS,
     TERRAIN_SEA,
     TERRAIN,
+    ANI_SHORT,
 } from "../consts";
-import { requestFrameScaled } from "../util";
+import { msToFrames, requestFrameScaled } from "../util";
 import { LabelLetter } from "./LabelLetter";
 
 
@@ -37,15 +38,25 @@ const
     ),
     LABELS = EL_SECTION_LABELS
         .map((el, i) => LabelLetter.generateFromLabelEl(el, i))
-        .flat();
+        .flat(),
+    ANI_SHORT_PER_FRAME = 1 / msToFrames(ANI_SHORT);
 
 //
-// Variable properties
+// State
 //
 
 let
-    asd: number = 0,
+    sectionOpen: boolean = false,
+    transFade: number = 0,
     paused: boolean = false;
+
+export function togglePause() {
+    paused = !paused;
+}
+
+export function toggleSectionOpen() {
+    sectionOpen = !sectionOpen;
+}
 
 
 //
@@ -53,9 +64,9 @@ let
 //
 
 export function init() {
-    CAN_SKY.CTX.font = `4px '${ FONT_TITLE }'`;
     CAN_SEA.CAN.onmousemove = e => Splash.createSplash(e.clientX, e.clientY);
     renderSky(CAN_SKY.CTX);
+    LABELS.forEach(l => l.draw());
     animate();
 }
 
@@ -66,15 +77,22 @@ export function init() {
 
 function animate(t = 0, dT = 1) {
     if (!paused) {
-        renderSea(CAN_SEA.CTX, t, dT);
+        renderTerrain(CAN_SEA.CTX, t, dT);
+        t = (t + (0.00075 * dT)) % 1;
     }
-    t = (t + (0.00075 * dT)) % 1;
-    asd += 0;
+    if (sectionOpen && transFade < 1) {
+        if (transFade === 0) {
+            CAN_SEA.CAN.classList.add('canvas__sea--lower');
+        }
+        transFade += ANI_SHORT_PER_FRAME * dT;
+    } else if (!sectionOpen && transFade > 0) {
+        if (transFade === 1) {
+            CAN_SEA.CAN.classList.remove('canvas__sea--lower');
+        }
+        transFade -= ANI_SHORT_PER_FRAME * dT;
+    }
+    transFade = Math.max(0, Math.min(1, transFade));
     requestFrameScaled(animate.bind(null, t));
-}
-
-export function togglePause() {
-    paused = !paused;
 }
 
 
@@ -140,16 +158,20 @@ function ptToScreen(x: number, y: number): [number, number] {
 
 function getLandZ(can: HTMLCanvasElement, x: number, y: number): number {
     y += window.scrollY;
-    if (y < can.width || y > can.height * 3.6) {
+    if (
+        x > can.width ||
+        y < can.height ||
+        y > can.height * 3.6
+    ) {
         return -5;
     }
     const
         PHASE_X = can.width / 28,
-        PHASE_Y = can.height * 0.5,
-        PHASE_Z = 3,
+        PHASE_Y = can.height * 0.55,
+        PHASE_Z = -3,
         PERIOD_X = can.width / 6,
         PERIOD_Y = can.height / 6,
-        AMP = 0;
+        AMP = 5;
     return (
         PHASE_Z +
         (
@@ -194,52 +216,53 @@ function renderSky(c: CanvasRenderingContext2D) {
     }
 }
 
-function renderSea(c: CanvasRenderingContext2D, t: number, dT: number) {
+function renderTerrain(c: CanvasRenderingContext2D, t: number, dT: number) {
     c.clearRect(0, 0, c.canvas.width, c.canvas.height);
 
     // Draw isometic
     c.save();
-    c.translate(asd, window.scrollY * -1);
-    let offsetRow = false;
-    EL_SECTION_LABELS.forEach(el => el.style.pointerEvents = 'none');
-    LABELS.forEach(l => l.hover && l.hover < 1 ? l.hover += 0.2 * dT : null)
-    for (
-        let y = Math.max(c.canvas.height * 0.75, window.scrollY - (ISO_SCALE * 6));
-        y < c.canvas.height + window.scrollY + (ISO_SCALE * 10);
-        y += ISO_SCALE
-    ) {
-        const ROW = Math.floor(y / ISO_SCALE) - 80;
-        if (ROW >= 0 && ROW < 150 && ROW % 30 === 0) {
-            const
-                SY = y - window.scrollY,
-                DY = SY < 500 ? Math.pow((1 - ((SY - 200) / 300)) * 10.5, 2) : 0,
-                Y = y + DY - (ISO_SCALE * 10),
-                I = ROW / 30;
-            if (DY < 180) {
-                EL_SECTION_LABELS[I].style.pointerEvents = 'all';
-                EL_SECTION_LABELS[I].style.top = (Y - 462) + 'px';
+        c.translate(0, window.scrollY * -1);
+        let offsetRow = false;
+        EL_SECTION_LABELS.forEach(el => el.style.pointerEvents = 'none');
+        LABELS.forEach(l => l.hover && l.hover < 1 ? l.hover += 0.2 * dT : null);
+        const MAX_Y = (c.canvas.height * (transFade === 1 ? 0.4 : 1)) + window.scrollY + (ISO_SCALE * 10);
+        for (
+            let y = Math.max(c.canvas.height * 0.75, window.scrollY - (ISO_SCALE * 6));
+            y < MAX_Y;
+            y += ISO_SCALE
+        ) {
+            const ROW = Math.floor(y / ISO_SCALE) - 80;
+            if (ROW >= 0 && ROW < 150 && ROW % 30 === 0) {
+                const
+                    SY = y - window.scrollY,
+                    DY = SY < 500 ? Math.pow((1 - ((SY - 200) / 300)) * 10.5, 2) : 0,
+                    Y = y + DY - (ISO_SCALE * 10),
+                    I = ROW / 30;
+                if (DY < 180) {
+                    EL_SECTION_LABELS[I].style.pointerEvents = 'all';
+                    EL_SECTION_LABELS[I].style.top = (Y - 945) + 'px';
+                }
+            }
+
+            offsetRow = !offsetRow;
+            for (let x = 0; x < c.canvas.width + (ISO_SCALE * 4); x += ISO_SCALE * 4) {
+                const
+                    ISO_PT = ptFromScreen(
+                        x + (offsetRow ? ISO_SCALE * 2 : 0),
+                        y
+                    ),
+                    SCR_PT = ptToScreen(ISO_PT[0], ISO_PT[1]);
+
+                renderTerrainIso(
+                    c,
+                    t,
+                    ISO_PT[0], ISO_PT[1],
+                    SCR_PT[0], SCR_PT[1]
+                );
             }
         }
-
-        offsetRow = !offsetRow;
-        for (let x = -asd; x < c.canvas.width + (ISO_SCALE * 4) - asd; x += ISO_SCALE * 4) {
-            const
-                ISO_PT = ptFromScreen(
-                    x + (offsetRow ? ISO_SCALE * 2 : 0),
-                    y
-                ),
-                SCR_PT = ptToScreen(ISO_PT[0], ISO_PT[1]);
-
-            renderTerrainIso(
-                c,
-                t,
-                ISO_PT[0], ISO_PT[1],
-                SCR_PT[0], SCR_PT[1]
-            );
-        }
-    }
-
-    Splash.splashes.forEach(s => s.step(dT));
+        
+        Splash.splashes.forEach(s => s.step(dT));
     c.restore();
 }
 
@@ -258,6 +281,7 @@ function renderTerrainIso(
         MIN_Z = -3,
         FADE_Z = sy < 450 ? Math.pow((1 - ((sy - 170) / 280)) * 1.9, 2) : 0;
 
+    // Render land
     if (LAND_Z > MIN_Z) {
         renderIso(
             c,
@@ -266,6 +290,8 @@ function renderTerrainIso(
             getTerrainColor(LAND_Z, false)
         );
     }
+
+    // Render sea
     if (
         SEA_Z >= LAND_Z &&
         sy > 0 &&
@@ -324,11 +350,16 @@ function renderIso(
 
         if (letter) {
             c.scale(1 / -ISO_SCALE, 1 / ISO_SCALE);
+            c.globalAlpha = Math.max(0, 1 - transFade);
+            
+            // Shdaow
             c.drawImage(
                 letter.CAN_BG,
                 2.25 * -ISO_SCALE,
                 -3.5 * ISO_SCALE
             );
+
+            // Letter
             c.drawImage(
                 letter.CAN_FG,
                 -2 * ISO_SCALE,

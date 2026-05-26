@@ -95,3 +95,13 @@
     from { top: -0.5rem; }
     to   { top:  0.5rem; }
 }
+
+
+//
+// Debug
+//
+
+@mixin frame($color: red) {
+    outline: 2px solid $color;
+    outline-offset: -4px;
+}
