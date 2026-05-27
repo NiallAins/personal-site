@@ -1,4 +1,4 @@
-import { PAGE_DATA } from "./pageData";
+import { PAGE_DATA } from "./data-page";
 import { togglePause as toggleGraphicsPause } from "./graphics/graphics";
 
 export function createPages() {
@@ -16,28 +16,9 @@ export function createPages() {
                                     alt='screenshot from the project "${ proj.title }"'
                                 />
                             </div>
-                            <div class="section__item-text">
-                                <h3 class="section__item-text-title">
-                                    ${ proj.title }
-                                </h3>
-                                <p class="section__item-text-lede">
-                                    ${ proj.desc }
-                                </p>
-                                <div class="section__item-text-link-container">
-                                <a
-                                    href="${ proj.demo }"
-                                    class="section__item-text-link"
-                                >
-                                    Open
-                                </a>
-                                <a
-                                    href="${ proj.code }"
-                                    class="section__item-text-link"
-                                >
-                                    Source code
-                                </a>
-                                </div>
-                            </div>
+                            <h3 class="section__item-text-title">
+                                ${ proj.title }
+                            </h3>
                         </div>
                     `, '') }
                 </section>

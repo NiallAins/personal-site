@@ -1,5 +1,12 @@
 import { tTerrainDetail } from "./types";
-import { getCssVar, getEls } from "./util";
+import { getEls } from "./util";
+
+
+//
+// Styles
+//
+
+export * from "./consts-css";
 
 
 //
@@ -9,20 +16,7 @@ import { getCssVar, getEls } from "./util";
 export const
     PAGE_WIDTH_MAX: number = 2000,
     PAGE_HEIGHT_MAX: number = 1250,
-    PAGE_WIDTH: number = Math.min(window.innerWidth, PAGE_WIDTH_MAX),
-    PAGE_HEIGHT: number = Math.min(window.innerHeight, PAGE_HEIGHT_MAX);
-
-
-//
-// Styles
-//
-
-export const
-    FONT_TITLE: string = getCssVar('f-fam-title'),
-    FONT_TITLE_SRC: string = getCssVar('f-fam-title-src'),
-    COLOR_TEXT_D: string = getCssVar('c-text-l'),
-    COLOR_TEXT_SHADOW: string = getCssVar('c-text-shadow'),
-    ANI_SHORT: number = parseInt(getCssVar('ani-sh'));
+    WINDOW_RESIZE_DEBOUNCE: number = 200;
 
 
 //
@@ -31,18 +25,11 @@ export const
 
 export const
     EL_SECTION_LABELS = getEls<HTMLButtonElement>('.main__topic-button'),
-    SECTION_LABELS: string[] = [
-        'Visuals',
-        ' Apps',
-        'Sites',
-        'Games',
-        'Tools'
-    ],
-    LABEL_LETTER_WIDTH = 74,
-    LABEL_LETTER_HEIGHT = 48,
-    LABEL_LETTER_SHADOW = 4;
+    LABEL_LETTER_WIDTH: number = 74,
+    LABEL_LETTER_HEIGHT: number = 48,
+    LABEL_LETTER_SHADOW: number = 4;
 
-    
+
 //
 // Graphics
 //
@@ -57,7 +44,7 @@ export const
         [0.3, [ 62,  82,  35]],
         [1.0, [106,  80,  15]]
     ],
-    SPLASH_MAX_DIST = 90000,
-    SPLASH_FADE_DIST = SPLASH_MAX_DIST / 6,
-    SPLASH_FADE_TIME = 0.0002,
+    SPLASH_MAX_DIST: number = 90000,
+    SPLASH_FADE_DIST: number = SPLASH_MAX_DIST / 6,
+    SPLASH_FADE_TIME: number = 0.0002,
     TARGET_FPS: number = 33.33;

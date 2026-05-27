@@ -1,14 +1,30 @@
 import { loadFont } from './util';
-import { init as initGraphics } from './graphics/graphics';
+import { init as initGraphics, setCanvasSize } from './graphics/graphics';
 import { createPages } from './pages';
-import { FONT_TITLE, FONT_TITLE_SRC } from './consts';
+import { FONT_FAM_TITLE, FONT_FAM_TITLE_SRC, PAGE_HEIGHT_MAX, PAGE_WIDTH_MAX, WINDOW_RESIZE_DEBOUNCE } from './consts';
+
+let resizeDebounce: number = 0;
+function onResize() {
+    window.clearTimeout(resizeDebounce);
+    resizeDebounce = window.setTimeout(
+        () => setCanvasSize(
+            Math.min(PAGE_WIDTH_MAX, window.innerWidth),
+            Math.min(PAGE_HEIGHT_MAX, window.innerHeight)
+        ),
+        WINDOW_RESIZE_DEBOUNCE
+    );
+}
 
 async function init() {
+    window.onresize = onResize;
+
     createPages();
     await loadFont(
-        FONT_TITLE,
-        FONT_TITLE_SRC,
+        FONT_FAM_TITLE,
+        FONT_FAM_TITLE_SRC,
     );
+    
+    onResize();
     initGraphics();
 }
 

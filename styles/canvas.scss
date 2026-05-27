@@ -1,0 +1,26 @@
+@use 'vars' as *;
+@use 'mixins' as *;
+
+.canvas {
+    &__sky,
+    &__sea {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        translate: -50% 0;
+    }
+
+    &__sky {
+        z-index: $z-canvas-bg;
+    }
+
+    &__sea {
+        z-index: $z-canvas-fg;
+        transition:
+            top $ani-sh;
+
+        &.#{ $cl-can-sea-lower } {
+            top: 60%;
+        }
+    }
+}

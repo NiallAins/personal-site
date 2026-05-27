@@ -1,3 +1,4 @@
-@import 'vars';
-@import 'mixins';
-@import 'layout';
+@use 'base';
+@use 'canvas';
+@use 'header';
+@use 'body';

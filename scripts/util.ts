@@ -17,10 +17,6 @@ export function msToFrames(ms: number) {
     return (ms / 1000) * TARGET_FPS;
 }
 
-export function getCssVar(varName: string): string {
-    return getComputedStyle(document.body).getPropertyValue('--' + varName);
-}
-
 export function getEl<tEl>(query: string): tEl {
     return document.querySelectorAll(query) as tEl;
 }
@@ -32,7 +28,5 @@ export function getEls<tEl>(query: string): tEl[] {
 export async function loadFont(name: string, src: string) {
     const F = await new FontFace(name, src).load();
     document.fonts.add(F);
-    
-        console.log('loaded');
     return;
 }

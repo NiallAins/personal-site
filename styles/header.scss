@@ -1,0 +1,79 @@
+@use 'vars' as *;
+@use 'mixins' as *;
+
+.header {
+    padding-top: 14vh;
+    height: 86vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__title {
+        display: contents;
+
+        &-primary {
+            @include header-1;
+        }
+        
+        &-secondary {
+            @include header-2;
+        }
+    }
+
+    &__nav {
+        display: contents;
+
+        &-links {
+            display: flex;
+            margin: 14vh auto;
+            width: 32rem;
+            justify-content: space-between;
+            pointer-events: none;
+
+            &-button {
+                @include header-3;
+                @include button-underline;
+
+                position: relative;
+                z-index: $z-buttons;
+                padding-bottom: 0.5rem;
+                pointer-events: all;
+            }
+        }
+
+        &-more {
+            position: relative;
+            z-index: $z-buttons;
+            text-align: center;
+            pointer-events: none;
+            margin: auto 0 10vh;
+
+            &-button {
+                $color: $c-bg-l;
+                @include header-3;
+                @include button-no-underline;
+
+                color: $color;
+                font-weight: 600;
+                pointer-events: all;
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -2rem;
+                    left: calc(50% - 1rem);
+                    padding: 0.5rem;
+                    border: solid $color;
+                    border-width: 0 3px 3px 0;
+                    border-bottom-right-radius: 0.25rem;
+                    rotate: 45deg;
+                    transition: bottom $ani-lg;
+                }
+
+                &:hover::after {
+                    bottom: -3rem;
+                }
+            }
+        }
+    }
+}
