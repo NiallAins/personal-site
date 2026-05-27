@@ -11,11 +11,11 @@
     &__title {
         display: contents;
 
-        &-primary {
+        &--primary {
             @include header-1;
         }
         
-        &-secondary {
+        &--secondary {
             @include header-2;
         }
     }

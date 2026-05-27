@@ -60,14 +60,14 @@ body {
 .header__title {
   display: contents;
 }
-.header__title-primary {
+.header__title--primary {
   font-size: 4.5rem;
   font-weight: normal;
   letter-spacing: 2px;
   font-family: "Neuton";
   color: #ffffff;
 }
-.header__title-secondary {
+.header__title--secondary {
   font-size: 3.25rem;
   font-weight: normal;
   letter-spacing: 1px;
