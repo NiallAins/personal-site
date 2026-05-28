@@ -1,16 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Neuton:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
-$f-fam-title-src: url(https://fonts.gstatic.com/s/neuton/v24/UMBQrPtMoH62xUZKAKkvcwr4Pro.woff2);
-$f-fam-title:     "Neuton";
-$f-fam-body:      "Roboto", san-serif;
-$f-size-base:     16px;
-$f-size-h1:       4.5rem;
-$f-size-h2:       3.25rem;
-$f-size-h3:       2.5rem;
-$f-size-h4:       1.75rem;
-$f-size-bl:       1.25rem;
-$f-size-bm:       1.125rem;
-$f-size-bs:       0.875rem;
+$f-fam-title-src:  url(https://fonts.gstatic.com/s/neuton/v24/UMBQrPtMoH62xUZKAKkvcwr4Pro.woff2);
+$f-fam-title:      "Neuton";
+$f-fam-body:       "Roboto", san-serif;   
+$f-size-base:      16px;
+$f-size-h1:        4.5rem;
+$f-size-h2:        3.25rem;
+$f-size-h3:        2.5rem;
+$f-size-h4:        1.75rem;
+$f-size-bl:        1.25rem;
+$f-size-bm:        1.125rem;
+$f-size-bs:        0.875rem;
+$f-size-section:   4rem;
+$f-weight-section: 500;
 
 $c-bg-d:        #111111;
 $c-bg-l:        #111128;
@@ -28,5 +30,5 @@ $z-page:       30;
 $ani-sh: 500ms;
 $ani-lg: 1000ms;
 
-$cl-can-sea-lower: "canvas__sea--lower";
-$cl-section-open:  "section--open";
+$cl-body-page-open: 'body--page-open';
+$cl-page-open:  "page--open";

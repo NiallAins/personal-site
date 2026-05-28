@@ -31,4 +31,7 @@ body {
     font-family: $f-fam-title;
     height: 380vh;
     
+    .#{ $cl-body-page-open } {
+        overflow: hidden;
+    }
 }

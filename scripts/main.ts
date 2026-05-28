@@ -1,5 +1,5 @@
 import { loadFont } from './util';
-import { init as initGraphics, setCanvasSize } from './graphics/graphics';
+import { init as initGraphics, setCanvasSize } from './graphics/main';
 import { createPages } from './pages';
 import { FONT_FAM_TITLE, FONT_FAM_TITLE_SRC, PAGE_HEIGHT_MAX, PAGE_WIDTH_MAX, WINDOW_RESIZE_DEBOUNCE } from './consts';
 

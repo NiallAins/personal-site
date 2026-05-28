@@ -19,7 +19,7 @@
         transition:
             top $ani-sh;
 
-        &.#{ $cl-can-sea-lower } {
+        .#{ $cl-body-page-open } & {
             top: 60%;
         }
     }

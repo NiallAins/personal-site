@@ -1,5 +1,5 @@
 import { tTerrainDetail } from "./types";
-import { getEls } from "./util";
+import { getEl, getEls } from "./util";
 
 
 //
@@ -20,11 +20,20 @@ export const
 
 
 //
+// Elements
+//
+
+export const
+    EL_BODY = getEl('body'),
+    EL_LABEL_BUTTONS = getEls<HTMLButtonElement>('.main__topic-button'),
+    EL_PAGE_CONTAINER = getEl('.pages');
+
+
+//
 // Labels
 //
 
 export const
-    EL_SECTION_LABELS = getEls<HTMLButtonElement>('.main__topic-button'),
     LABEL_LETTER_WIDTH: number = 74,
     LABEL_LETTER_HEIGHT: number = 48,
     LABEL_LETTER_SHADOW: number = 4;

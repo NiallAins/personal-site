@@ -12,6 +12,8 @@ export const
     FONT_SIZE_BL: number = 20,
     FONT_SIZE_BM: number = 18,
     FONT_SIZE_BS: number = 14,
+    FONT_SIZE_SECTION: number = 64,
+    FONT_WEIGHT_SECTION: number = 500,
     COLOR_BG_D: string = '#111111',
     COLOR_BG_L: string = '#111128',
     COLOR_BG_LL: string = 'rgba(255, 255, 255, 0.9333333333)',
@@ -25,5 +27,5 @@ export const
     Z_PAGE: number = 30,
     ANI_SH: number = 500,
     ANI_LG: number = 1000,
-    CLASS_CAN_SEA_LOWER: string = 'canvas__sea--lower',
-    CLASS_SECTION_OPEN: string = 'section--open';
+    CLASS_BODY_PAGE_OPEN: string = 'body--page-open',
+    CLASS_PAGE_OPEN: string = 'page--open';

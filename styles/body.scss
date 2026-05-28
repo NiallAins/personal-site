@@ -34,10 +34,10 @@
     }
 }
 
-.section {
+.page {
     display: none;
 
-    .#{ $cl-section-open } {
+    .#{ $cl-page-open } {
         display: block;
     }
 

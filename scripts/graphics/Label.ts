@@ -1,12 +1,14 @@
 import {
     COLOR_TEXT_L, COLOR_TEXT_SHADOW,
-    EL_SECTION_LABELS,
     FONT_FAM_TITLE,
+    FONT_SIZE_SECTION,
+    FONT_WEIGHT_SECTION,
     ISO_SCALE,
     LABEL_LETTER_HEIGHT, LABEL_LETTER_SHADOW, LABEL_LETTER_WIDTH
 } from "../consts";
 import { Canvas } from "./Canvas";
-import { ptFromScreen, toggleSectionOpen } from "./graphics";
+import { toggleSectionOpen } from "./main";
+import { ptFromScreen } from "./terrain";
 
 export class Label {
     public hover: number = 0;
@@ -15,10 +17,10 @@ export class Label {
     private readonly letters: LabelLetter[];
     private readonly INDEX: number;
 
-    constructor(index: number) {
+    constructor(el: HTMLButtonElement, index: number) {
+        this.EL = el;
         this.INDEX = index;
-        
-        this.EL = EL_SECTION_LABELS[index];
+
         this.EL.onclick = () => toggleSectionOpen();
         this.EL.onmouseenter = () => this.hover = 0.1;
         this.EL.onmouseleave = () => this.hover = 0;
@@ -29,11 +31,10 @@ export class Label {
     }
 
     public setPosition(pageWidth: number, pageHeight: number) {
-        const
-            PT = ptFromScreen(
-                (pageWidth * (this.INDEX % 2 ? 0.65 : 0.35)) - (this.letters.length * ISO_SCALE * 2),
-                (pageHeight * 1.425) + (pageHeight * 0.5 * this.INDEX)
-            );
+        const PT = ptFromScreen(
+            (pageWidth * (this.INDEX % 2 ? 0.65 : 0.35)) - (this.letters.length * ISO_SCALE * 2),
+            (pageHeight * 1.425) + (pageHeight * 0.5 * this.INDEX)
+        );
 
         this.EL.style.left = (pageWidth * (this.INDEX % 2 ? 0.65 : 0.325)) + 'px';
 
@@ -94,7 +95,7 @@ export class LabelLetter {
             c.translate(LABEL_LETTER_WIDTH * 0.5, LABEL_LETTER_HEIGHT * 0.45);
             c.scale(1.25 * ISO_SCALE, 0.75 * ISO_SCALE);
             c.rotate(-0.7616);
-            c.font = `500 4px "${ FONT_FAM_TITLE }"`;
+            c.font = `${ FONT_WEIGHT_SECTION } ${ FONT_SIZE_SECTION / ISO_SCALE }px "${ FONT_FAM_TITLE }"`;
             c.textAlign = 'center';
             c.textBaseline = 'middle';
             c.fillText(this.LETTER, 0, 0);

@@ -17,11 +17,11 @@ export function msToFrames(ms: number) {
     return (ms / 1000) * TARGET_FPS;
 }
 
-export function getEl<tEl>(query: string): tEl {
-    return document.querySelectorAll(query) as tEl;
+export function getEl<tEl = HTMLDivElement>(query: string): tEl {
+    return document.querySelector(query) as tEl;
 }
 
-export function getEls<tEl>(query: string): tEl[] {
+export function getEls<tEl = HTMLDivElement>(query: string): tEl[] {
     return  Array.from(document.querySelectorAll(query)) as tEl[];
 }
 

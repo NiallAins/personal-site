@@ -32,6 +32,9 @@ body {
   font-family: "Neuton";
   height: 380vh;
 }
+body .body--page-open {
+  overflow: hidden;
+}
 
 .canvas__sky, .canvas__sea {
   position: fixed;
@@ -46,7 +49,7 @@ body {
   z-index: 10;
   transition: top 500ms;
 }
-.canvas__sea.canvas__sea--lower {
+.body--page-open .canvas__sea {
   top: 60%;
 }
 
@@ -173,13 +176,13 @@ body {
   outline: 2px solid #ffffff;
 }
 
-.section {
+.page {
   display: none;
 }
-.section .section--open {
+.page .page--open {
   display: block;
 }
-.section__container {
+.page__container {
   position: fixed;
   inset: 0;
   z-index: 30;
@@ -187,7 +190,7 @@ body {
   overflow: auto;
   pointer-events: none;
 }
-.section__item {
+.page__item {
   display: flex;
   gap: 1rem;
   max-width: 80rem;
