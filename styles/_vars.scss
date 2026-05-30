@@ -16,19 +16,28 @@ $f-weight-section: 500;
 
 $c-bg-d:        #111111;
 $c-bg-l:        #111128;
-$c-bg-ll:       #ffffffee;
 $c-text-l:      #ffffff;
 $c-text-d:      $c-bg-l;
 $c-text-shadow: #11111188;
 $c-text-link:   #4848c8;
 
-$z-canvas-bg:   0;
-$z-canvas-fg:  10;
-$z-buttons:    20;
-$z-page:       30;
+$-z: 0;
+@function z() {
+    $-z: $-z + 10 !global;
+    @return $-z;
+}
+
+$z-canvas-bg:  z();
+$z-page:       z();
+$z-box-top:    z();
+$z-canvas-fg:  z();
+$z-buttons:    z();
+$z-page-close: z();
+
+$height-min-sea: 14vh;
 
 $ani-sh: 500ms;
 $ani-lg: 1000ms;
 
-$cl-body-page-open: 'body--page-open';
+$cl-body-page-open: "body--page-open";
 $cl-page-open:  "page--open";

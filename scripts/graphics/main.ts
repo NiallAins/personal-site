@@ -2,16 +2,13 @@
 // Animation
 //
 
-import {
-    SKY_HEIGHT_RATIO,
-    ANI_SH,
-    EL_LABEL_BUTTONS,
-} from "../consts";
+import { SKY_HEIGHT_RATIO, ANI_SH, TARGET_FPS } from "../consts";
 import { Canvas } from "./Canvas";
 import { Splash } from "./Splash";
 import { Label } from "./Label";
 import { render as renderTerrain } from "./terrain";
-import { msToFrames, requestFrameScaled } from "../util";
+import { logDt, msToFrames, requestFrameScaled } from "../util";
+import { EL_TOPIC_BUTTONS } from "../pages";
 
 
 //
@@ -24,7 +21,7 @@ const
     CAN_SEA = new Canvas('CAN_SEA');
 
 export const
-    LABELS = EL_LABEL_BUTTONS.map((el, i) => new Label(el, i));
+    LABELS: Label[] = [];
 
 
 //
@@ -42,6 +39,7 @@ export function togglePause() {
 
 export function toggleSectionOpen() {
     sectionOpen = !sectionOpen;
+    paused = !paused;
 }
 
 
@@ -51,6 +49,7 @@ export function toggleSectionOpen() {
 
 export function init() {
     CAN_SEA.CAN.onmousemove = e => Splash.createSplash(e.clientX, e.clientY);
+    EL_TOPIC_BUTTONS.forEach((el, i) => LABELS.push(new Label(el, i)));
     LABELS.forEach(l => l.draw());
     animate();
 }
@@ -59,7 +58,7 @@ export function setCanvasSize(pageWidth: number, pageHeight: number) {
     CAN_SKY.setSize(pageWidth, pageHeight * SKY_HEIGHT_RATIO);
     CAN_SEA.setSize(pageWidth, pageHeight);
     LABELS.forEach(l => l.setPosition(pageWidth, pageHeight));
-    renderSky(CAN_SKY.CTX);
+    renderSky(CAN_SKY);
 }
 
 
@@ -67,6 +66,7 @@ export function setCanvasSize(pageWidth: number, pageHeight: number) {
 // Animation loop
 //
 
+const FR = [0, 0];
 function animate(t: number = 0, dT: number = 1) {
     if (!paused) {
         renderTerrain(CAN_SEA, fade, t, dT);
@@ -79,6 +79,7 @@ function animate(t: number = 0, dT: number = 1) {
         }
         fade = Math.max(0, Math.min(1, fade));
     }
+    logDt(dT);
     requestFrameScaled(animate.bind(null, t));
 }
 
@@ -87,17 +88,17 @@ function animate(t: number = 0, dT: number = 1) {
 // Sky
 //
 
-function renderSky(c: CanvasRenderingContext2D) {
+function renderSky(can: Canvas) {
     for (let i = 0; i < 50; i++) {
         const
-            X = Math.random() * c.canvas.width,
-            Y = Math.random() * c.canvas.height;
-        c.fillStyle = `hsl(${Math.floor(Math.random() * 360)}deg, 100%, 90%)`
-        c.save();
-            c.translate(X, Y);
-            c.rotate(0.785);
+            X = Math.random() * can.width,
+            Y = Math.random() * can.height;
+        can.CTX.fillStyle = `hsl(${Math.floor(Math.random() * 360)}deg, 100%, 90%)`
+        can.CTX.save();
+            can.CTX.translate(X, Y);
+            can.CTX.rotate(0.785);
             const W = 1 + (Math.random() * 2);
-            c.fillRect(0, 0, W, W);
-        c.restore();
+            can.CTX.fillRect(0, 0, W, W);
+        can.CTX.restore();
     }
 }

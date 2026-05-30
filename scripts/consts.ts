@@ -25,7 +25,7 @@ export const
 
 export const
     EL_BODY = getEl('body'),
-    EL_LABEL_BUTTONS = getEls<HTMLButtonElement>('.main__topic-button'),
+    EL_MAIN = getEl('main'),
     EL_PAGE_CONTAINER = getEl('.pages');
 
 
@@ -44,6 +44,7 @@ export const
 //
 
 export const
+    CAN_QUALITY = 2,
     SKY_HEIGHT_RATIO: number = 0.75,
     ISO_SCALE: number = 16,
     TERRAIN_SEA: tTerrainDetail =

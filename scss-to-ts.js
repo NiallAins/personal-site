@@ -39,7 +39,7 @@ FS.readFile(
                     name: v.match(/--([^:]*)/)[1],
                     value: v.match(/:\s*([^;]*)/)[1]
                     })),
-            REM = parseInt(CSS_VARS.find(v => v.name === 'f-size-base').value);
+            REM = parseInt(CSS_VARS.find(v => v.name === 'f-size-base')?.value) || 16;
 
         const JS_VARS = CSS_VARS
             .map(v => {
@@ -51,10 +51,13 @@ FS.readFile(
                         .replace(/^c/, 'COLOR')
                         .toUpperCase();
                     VALUE_NUM = parseFloat(v.value),
+                    VALUE_SUFFIX = v.value.match(/[a-z%]*$/)[0],
                     VALUE = isNaN(VALUE_NUM)
                         ? `'${ v.value.replace(/"^(.*)$"/, '$1') }'`
-                        : v.value.indexOf('rem') > -1
+                        : VALUE_SUFFIX === 'rem'
                         ? VALUE_NUM * REM
+                        : VALUE_SUFFIX === '%' || VALUE_SUFFIX === 'vh' || VALUE_SUFFIX === 'vw'
+                        ? VALUE_NUM / 100
                         : VALUE_NUM;
                 return {
                     name: NAME,

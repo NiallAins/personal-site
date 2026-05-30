@@ -1,0 +1,36 @@
+@use 'vars' as *;
+@use 'mixins' as *;
+
+
+html {
+    font-size: $f-size-base;
+    background:
+        linear-gradient(
+            $c-bg-d 0,
+            $c-bg-l 75vh,
+            $c-bg-l
+        ) fixed,
+        $c-bg-l;
+}
+
+body {
+    overflow-x: hidden;
+    font-family: $f-fam-title;
+    height: 380vh;
+    margin: 0;
+    
+    &.#{ $cl-body-page-open } {
+        overflow: hidden;
+    }
+}
+
+button {
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    margin: 0;
+}

@@ -17,10 +17,11 @@
     &__sea {
         z-index: $z-canvas-fg;
         transition:
-            top $ani-sh;
+            top ease-out $ani-sh;
 
         .#{ $cl-body-page-open } & {
-            top: 60%;
+            top: (100vh - $height-min-sea) * 0.75;
+            pointer-events: none;
         }
     }
 }

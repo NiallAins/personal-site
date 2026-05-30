@@ -7,7 +7,6 @@ import {
     LABEL_LETTER_HEIGHT, LABEL_LETTER_SHADOW, LABEL_LETTER_WIDTH
 } from "../consts";
 import { Canvas } from "./Canvas";
-import { toggleSectionOpen } from "./main";
 import { ptFromScreen } from "./terrain";
 
 export class Label {
@@ -21,26 +20,32 @@ export class Label {
         this.EL = el;
         this.INDEX = index;
 
-        this.EL.onclick = () => toggleSectionOpen();
         this.EL.onmouseenter = () => this.hover = 0.1;
         this.EL.onmouseleave = () => this.hover = 0;
 
         this.letters = this.EL.innerText
             .split('')
+            .filter(l => l !== ' ')
             .map(l => new LabelLetter(this, l));
     }
 
     public setPosition(pageWidth: number, pageHeight: number) {
-        const PT = ptFromScreen(
-            (pageWidth * (this.INDEX % 2 ? 0.65 : 0.35)) - (this.letters.length * ISO_SCALE * 2),
-            (pageHeight * 1.425) + (pageHeight * 0.5 * this.INDEX)
-        );
+        const
+            BREAK = this.letters.findIndex(l => l.LETTER === '/'),
+            PT = ptFromScreen(
+                (pageWidth * (this.INDEX % 2 ? 0.65 : 0.35)) - ((BREAK > -1 ? BREAK : this.letters.length) * ISO_SCALE * 2),
+                (pageHeight * 1.425) + (pageHeight * 0.5 * this.INDEX)
+            );
 
         this.EL.style.left = (pageWidth * (this.INDEX % 2 ? 0.65 : 0.325)) + 'px';
 
+        let newLine = 0;
         this.letters.forEach((l, li) => {
-            l.x = PT[0];
-            l.y = PT[1] - (li * 2)
+            l.x = PT[0] + (newLine ? 3 : 0);
+            l.y = PT[1] - (li * 2) + newLine;
+            if (l.LETTER === '/') {
+                newLine = (li * 2) + 3;
+            }
         });
     }
 
@@ -52,7 +57,7 @@ export class Label {
         this.letters.forEach(l => l.draw());
     }
 
-    public toggleClick(state: boolean) {
+    public toggleAllowClick(state: boolean) {
         this.EL.style.pointerEvents = state ? 'all' : 'none';
     }
 
@@ -62,12 +67,12 @@ export class Label {
 }
 
 export class LabelLetter {
-    private readonly LETTER: string;
     private readonly CTX_FG: CanvasRenderingContext2D;
     private readonly CTX_BG: CanvasRenderingContext2D;
-
+    
     public x: number = 0;
     public y: number = 0;
+    public readonly LETTER: string;
     public readonly CAN_FG: HTMLCanvasElement;
     public readonly CAN_BG: HTMLCanvasElement;
     public readonly LABEL: Label;
@@ -77,8 +82,8 @@ export class LabelLetter {
         this.LETTER = letter;
 
         const
-            CAN_FG = new Canvas('', LABEL_LETTER_WIDTH, LABEL_LETTER_HEIGHT),
-            CAN_BG = new Canvas('', LABEL_LETTER_WIDTH, LABEL_LETTER_HEIGHT);
+            CAN_FG = new Canvas('', LABEL_LETTER_WIDTH, LABEL_LETTER_HEIGHT, true),
+            CAN_BG = new Canvas('', LABEL_LETTER_WIDTH, LABEL_LETTER_HEIGHT, true);
 
         this.CTX_FG = CAN_FG.CTX;
         this.CTX_BG = CAN_BG.CTX;

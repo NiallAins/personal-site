@@ -1,4 +1,36 @@
-@use 'base';
-@use 'canvas';
-@use 'header';
-@use 'body';
+@use 'vars' as *;
+@use 'mixins' as *;
+
+.main {
+    position: relative;
+    
+    &__topic {
+        height: 50vh;
+
+        .#{ $cl-body-page-open } & {
+            display: none;
+        }
+
+        // Invisible proxy buttons
+        &-button {
+            position: absolute;
+            z-index: $z-buttons;
+            width: 35rem;
+            height: 10rem;
+            padding-bottom: 0.5rem;
+            border: none;
+            translate: -50% 0;
+            rotate: -28deg;
+            font-size: 60px;
+            font-family: monospace;
+            letter-spacing: 30px;
+            color: transparent;
+            background: none;
+            cursor: pointer;
+
+            &:focus-visible {
+                outline: 2px solid $c-text-l;
+            }
+        }
+    }
+}

@@ -1,5 +1,6 @@
 @use 'vars' as *;
 
+
 //
 // Text
 //
@@ -88,20 +89,82 @@
     }
 }
 
-
-//
-// Animations
-//
-
-@keyframes ani-bob {
-    from { top: -0.5rem; }
-    to   { top:  0.5rem; }
+@mixin caret-down {
+    position: absolute;
+    left: calc(50% - 1rem);
+    padding: 0.5rem;
+    border: solid currentColor;
+    border-width: 0 3px 3px 0;
+    border-bottom-right-radius: 0.25rem;
+    rotate: 45deg;
+    translate: 0 0;
+    transition: translate $ani-lg;
+}
+@mixin caret-down-hover {
+    translate: 0 1rem;
 }
 
 
 //
-// Debug
+// Layouts
 //
+
+@mixin layout-iso() {
+    position: relative;
+    aspect-ratio: 1;
+
+    & > * {
+        position: absolute;
+        inset: 0 25% 50%;
+
+        @for $i from 1 through 3 {
+            &:nth-child(#{ $i }) {
+                opacity: 1;
+                transition:
+                    transform 1000ms,
+                    _if($i == 1, opacity 1000ms);
+                transform:
+                    rotate(#{ 30deg * _if($i == 2, 1, -1) })
+                      skew(#{ 30deg * _if($i == 3, -1, 1) })
+                    scaleY(0.864)
+                    _if($i == 2, translate(-50%, 100%))
+                    _if($i == 3, translate(50%, 100%));
+            }
+        }
+    }
+
+    // &:hover {
+    //     & > :nth-child(1) {
+    //         transform:
+    //             translateY(50%)
+    //             rotate(-30deg)
+    //               skew( 30deg)
+    //             scaleY( 0.864);
+    //         opacity: 0;
+    //     }
+
+    //     & > :nth-child(2) {
+    //         transform: translate(-50%, 50%);
+    //     }
+
+    //     & > :nth-child(3) {
+    //         transform: translate(50%, 50%);
+    //     }
+    // }
+}
+
+
+//
+// Utility functions
+//
+
+@function _if($cond, $if-true, $if-false: null) {
+    @if ($cond) {
+        @return $if-true;
+    } @else {
+        @return $if-false;
+    }
+}
 
 @mixin frame($color: red) {
     outline: 2px solid $color;

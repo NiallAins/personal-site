@@ -3,10 +3,14 @@
 
 .header {
     padding-top: 14vh;
-    height: 86vh;
+    height: 100vh - $height-min-sea;
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    .#{ $cl-body-page-open } & {
+        visibility: hidden;
+    }
 
     &__title {
         display: contents;
@@ -25,7 +29,7 @@
 
         &-links {
             display: flex;
-            margin: 14vh auto;
+            margin: $height-min-sea auto;
             width: 32rem;
             justify-content: space-between;
             pointer-events: none;
@@ -49,29 +53,21 @@
             margin: auto 0 10vh;
 
             &-button {
-                $color: $c-bg-l;
                 @include header-3;
                 @include button-no-underline;
 
-                color: $color;
+                color: $c-bg-l;
                 font-weight: 600;
                 pointer-events: all;
 
                 &::after {
+                    @include caret-down();
                     content: '';
-                    position: absolute;
                     bottom: -2rem;
-                    left: calc(50% - 1rem);
-                    padding: 0.5rem;
-                    border: solid $color;
-                    border-width: 0 3px 3px 0;
-                    border-bottom-right-radius: 0.25rem;
-                    rotate: 45deg;
-                    transition: bottom $ani-lg;
                 }
 
                 &:hover::after {
-                    bottom: -3rem;
+                    @include caret-down-hover();
                 }
             }
         }

@@ -27,7 +27,7 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
     C.save();
         C.translate(0, window.scrollY * -1);
         let offsetRow = false;
-        LABELS.forEach(l => l.toggleClick(false));
+        LABELS.forEach(l => l.toggleAllowClick(false));
         LABELS.forEach(l => l.hover && l.hover < 1 ? l.hover += 0.2 * dT : null);
         const MAX_Y = (can.height * (fade === 1 ? 0.4 : 1)) + window.scrollY + (ISO_SCALE * 10);
         for (
@@ -43,7 +43,7 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
                     Y = y + DY - (ISO_SCALE * 10),
                     I = ROW / 30;
                 if (DY < 180) {
-                    LABELS[I].toggleClick(true);
+                    LABELS[I].toggleAllowClick(true);
                     LABELS[I].setY(Y - 945);
                 }
             }
@@ -248,7 +248,7 @@ function getLandZ(x: number, y: number, width: number, height: number): number {
     if (
         x > width ||
         y < height ||
-        y > height * 3.6
+        y > height * 4
     ) {
         return -5;
     }
