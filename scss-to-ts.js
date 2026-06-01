@@ -38,7 +38,7 @@ FS.readFile(
                 .map(v => ({
                     name: v.match(/--([^:]*)/)[1],
                     value: v.match(/:\s*([^;]*)/)[1]
-                    })),
+                })),
             REM = parseInt(CSS_VARS.find(v => v.name === 'f-size-base')?.value) || 16;
 
         const JS_VARS = CSS_VARS
@@ -50,18 +50,11 @@ FS.readFile(
                         .replace(/^cl/, 'CLASS')
                         .replace(/^c/, 'COLOR')
                         .toUpperCase();
-                    VALUE_NUM = parseFloat(v.value),
-                    VALUE_SUFFIX = v.value.match(/[a-z%]*$/)[0],
-                    VALUE = isNaN(VALUE_NUM)
-                        ? `'${ v.value.replace(/"^(.*)$"/, '$1') }'`
-                        : VALUE_SUFFIX === 'rem'
-                        ? VALUE_NUM * REM
-                        : VALUE_SUFFIX === '%' || VALUE_SUFFIX === 'vh' || VALUE_SUFFIX === 'vw'
-                        ? VALUE_NUM / 100
-                        : VALUE_NUM;
+                    [VALUE, TYPE] = convertValue(v.value, REM);
                 return {
                     name: NAME,
-                    value: VALUE
+                    value: VALUE,
+                    type: TYPE
                 };
             });
 
@@ -70,7 +63,7 @@ FS.readFile(
                 '/* Generated from styles/_vars.scss */\n\n' +
                 'export const\n' +
                 JS_VARS
-                    .map(v => `    ${ v.name }: ${ typeof v.value } = ${ v.value }`)
+                    .map(v => `    ${ v.name }: ${ v.type } = ${ v.value }`)
                     .join(',\n') +
                 ';',
             'utf8',
@@ -78,3 +71,37 @@ FS.readFile(
         );
     }
 );
+
+function convertValue(value, rem) {
+    if (value.indexOf(',') > -1 & !value.match(/^[a-z0-9_-]+\(/i)) {
+        const VALUES = value
+            .split(',')
+            .map(v => convertValue(v));
+
+        return [
+            `[${
+                VALUES
+                    .map(v => v[0])
+                    .join(', ')
+            }]`,
+            `[${
+                VALUES
+                    .map(v => v[1])
+                    .join(', ')
+            }]`,
+        ];
+    }
+
+    const
+        VALUE_NUM = parseFloat(value),
+        VALUE_SUFFIX = value.match(/[a-z%]*$/)[0],
+        VALUE = isNaN(VALUE_NUM)
+            ? `'${ value.replace(/"^(.*)$"/, '$1') }'`
+            : VALUE_SUFFIX === 'rem'
+            ? VALUE_NUM * rem
+            : VALUE_SUFFIX === '%' || VALUE_SUFFIX === 'vh' || VALUE_SUFFIX === 'vw'
+            ? VALUE_NUM / 100
+            : VALUE_NUM;
+    
+    return [VALUE, typeof VALUE];
+}

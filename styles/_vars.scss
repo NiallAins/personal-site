@@ -1,4 +1,16 @@
+@use 'sass:list' as *;
+
 @import url('https://fonts.googleapis.com/css2?family=Neuton:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+$-z: 0;
+@function z() {
+    $-z: $-z + 10 !global;
+    @return $-z;
+}
+
+@function list-to-hsl($list) {
+    @return hsl(nth($list, 1), nth($list, 2) * 1%, nth($list, 3) * 1%, nth($list, 4));
+}
 
 $f-fam-title-src:  url(https://fonts.gstatic.com/s/neuton/v24/UMBQrPtMoH62xUZKAKkvcwr4Pro.woff2);
 $f-fam-title:      "Neuton";
@@ -21,11 +33,15 @@ $c-text-d:      $c-bg-l;
 $c-text-shadow: #11111188;
 $c-text-link:   #4848c8;
 
-$-z: 0;
-@function z() {
-    $-z: $-z + 10 !global;
-    @return $-z;
-}
+$c-hsl-terrain-sea:    (174, 53, 40, 0.5);
+$c-terrain-sea:        list-to-hsl($c-hsl-terrain-sea);
+$c-hsl-terrain-land-1: ( 18, 70, 20, 1.0);
+$c-terrain-land-1:     list-to-hsl($c-hsl-terrain-land-1);
+$c-hsl-terrain-land-2: ( 62, 82, 35, 1.0);
+$c-terrainland-2:      list-to-hsl($c-hsl-terrain-land-2);
+$c-hsl-terrain-land-3: (106, 80, 15, 1.0);
+$c-terrain-land-3:     list-to-hsl($c-hsl-terrain-land-3);
+
 
 $z-canvas-bg:  z();
 $z-page:       z();

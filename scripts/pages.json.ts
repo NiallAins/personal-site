@@ -20,7 +20,7 @@ export const PAGE_DATA: tPageData[] = [
             },
             {
                 "title": "Personal site",
-                "desc": "This very site you are using!", 
+                "desc": "This very site!", 
                 "linkCode": "https://github.com/NiallAins/personal-site",
                 "tags": [tPageTag.Typescript, tPageTag.Canvas]
             },
@@ -52,7 +52,7 @@ export const PAGE_DATA: tPageData[] = [
             },
             {
                 "title": "The Carnegie Hall chart",
-                "desc": "",
+                "desc": "A recreation of the 1941 ",
                 "linkLive": "",
                 "linkCode": "",
                 "tags": []

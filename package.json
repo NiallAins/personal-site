@@ -2,7 +2,7 @@
     "name": "personalsite",
     "main": "main.js",
     "scripts": {
-        "dev": "clear; clear; npm run build && concurrently \"npm run build-watch\" \"npm run serve\"",
+        "dev": "npm run build && concurrently \"npm run build-watch\" \"npm run serve\"",
         "serve": "http-server ./dist -o -c-1",
         "build": "npm run build-script && npm run build-style",
         "build-style": "node scss-to-ts && sass ./styles/index.scss > ./dist/style.css",

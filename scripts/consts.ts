@@ -1,5 +1,6 @@
+import { COLOR_HSL_TERRAIN_LAND_1, COLOR_HSL_TERRAIN_LAND_2, COLOR_HSL_TERRAIN_LAND_3, COLOR_HSL_TERRAIN_SEA } from "./consts-css";
 import { tTerrainDetail } from "./types";
-import { getEl, getEls } from "./util";
+import { getEl } from "./util";
 
 
 //
@@ -48,11 +49,11 @@ export const
     SKY_HEIGHT_RATIO: number = 0.75,
     ISO_SCALE: number = 16,
     TERRAIN_SEA: tTerrainDetail =
-        [0.5, [174, 53, 40, 0.5]],
+        [0.5, COLOR_HSL_TERRAIN_SEA],
     TERRAIN: tTerrainDetail[] = [
-        [0.0, [ 18,  70,  20]],
-        [0.3, [ 62,  82,  35]],
-        [1.0, [106,  80,  15]]
+        [0.0, COLOR_HSL_TERRAIN_LAND_1],
+        [0.3, COLOR_HSL_TERRAIN_LAND_2],
+        [1.0, COLOR_HSL_TERRAIN_LAND_3]
     ],
     SPLASH_MAX_DIST: number = 90000,
     SPLASH_FADE_DIST: number = SPLASH_MAX_DIST / 6,
