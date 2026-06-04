@@ -66,7 +66,6 @@ export function setCanvasSize(pageWidth: number, pageHeight: number) {
 // Animation loop
 //
 
-const FR = [0, 0];
 function animate(t: number = 0, dT: number = 1) {
     if (!paused) {
         renderTerrain(CAN_SEA, fade, t, dT);
@@ -79,7 +78,7 @@ function animate(t: number = 0, dT: number = 1) {
         }
         fade = Math.max(0, Math.min(1, fade));
     }
-    logDt(dT);
+    // logDt(dT);
     requestFrameScaled(animate.bind(null, t));
 }
 

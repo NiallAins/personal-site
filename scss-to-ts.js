@@ -49,6 +49,7 @@ FS.readFile(
                         .replace(/^f/, 'FONT')
                         .replace(/^cl/, 'CLASS')
                         .replace(/^c/, 'COLOR')
+                        .replace(/^w/, 'WIDTH')
                         .toUpperCase();
                     [VALUE, TYPE] = convertValue(v.value, REM);
                 return {

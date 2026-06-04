@@ -1,12 +1,12 @@
 @use 'vars' as *;
 @use 'mixins' as *;
 
-$row-overlap: 16vh;
+$row-overlap: 12vh;
 
 .pages {
     &__page {
         position: fixed;
-        top: 100vh;
+        bottom: 100vh;
         left: 0;
         right: 0;
         z-index: $z-page;
@@ -15,19 +15,20 @@ $row-overlap: 16vh;
         opacity: 0;
         transition:
             opacity $ani-lg,
-            top $ani-lg;
+            bottom $ani-lg;
 
-        &.#{ $cl-page-open }{
+        &.#{ $cl-page-open } {
             opacity: 1;
-            top: 0;
+            bottom: 0;
         }
 
         &-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            padding: 3rem 0 #{ $height-min-sea + $row-overlap };
-            max-width: 60rem;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            width: 100%;
+            max-width: $w-page-max;
+            padding: 3rem $w-page-pad #{ $height-min-sea + $row-overlap };
             margin: 0 auto;
         }
         
@@ -37,7 +38,8 @@ $row-overlap: 16vh;
             transition: translate $ani-lg;
 
             &:hover {
-                translate: 1rem 1rem;
+                $hover-shift: 0.75rem;
+                translate: #{ $hover-shift * 2 } $hover-shift;
             }
 
             @for $i from 1 through 6 {

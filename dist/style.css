@@ -1,14 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Neuton:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 html {
   font-size: 16px;
-  background: linear-gradient(#111111 0, #111128 75vh, #111128) fixed, #111128;
+  background: linear-gradient(#111111 0, #111128 75vh, #111128), #111128;
 }
 
 body {
   overflow-x: hidden;
   font-family: "Neuton";
+  max-width: 65.5rem;
   height: 380vh;
-  margin: 0;
+  padding: 1rem;
+  margin: 0 auto;
 }
 body.body--page-open {
   overflow: hidden;
@@ -23,6 +25,11 @@ button {
 
 h1, h2, h3, h4, h5, h6, p {
   margin: 0;
+}
+
+*::selection {
+  color: #ffffff;
+  background-color: #4848c8;
 }
 
 .canvas__sky, .canvas__sea {
@@ -44,8 +51,8 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .header {
-  padding-top: 14vh;
   height: 86vh;
+  padding-top: 14vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -145,26 +152,31 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .main {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  margin-top: 14rem;
 }
 .main__topic {
+  width: 50%;
   height: 50vh;
+  text-align: center;
+}
+.main__topic:nth-child(2n) {
+  align-self: end;
 }
 .body--page-open .main__topic {
   display: none;
 }
 .main__topic-button {
-  position: absolute;
+  position: relative;
   z-index: 50;
-  width: 35rem;
-  height: 10rem;
-  padding-bottom: 0.5rem;
+  padding: 1rem 2rem 2rem;
   border: none;
-  translate: -50% 0;
   rotate: -28deg;
-  font-size: 60px;
-  font-family: monospace;
-  letter-spacing: 30px;
+  font-family: "Neuton";
+  font-size: 3.25rem;
+  letter-spacing: 3.472135955rem;
   color: transparent;
   background: none;
   cursor: pointer;
@@ -175,25 +187,26 @@ h1, h2, h3, h4, h5, h6, p {
 
 .pages__page {
   position: fixed;
-  top: 100vh;
+  bottom: 100vh;
   left: 0;
   right: 0;
   z-index: 20;
   height: 100vh;
   overflow: auto;
   opacity: 0;
-  transition: opacity 1000ms, top 1000ms;
+  transition: opacity 1000ms, bottom 1000ms;
 }
 .pages__page.page--open {
   opacity: 1;
-  top: 0;
+  bottom: 0;
 }
 .pages__page-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  padding: 3rem 0 30vh;
-  max-width: 60rem;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+  max-width: 65.5rem;
+  padding: 3rem 1rem 26vh;
   margin: 0 auto;
 }
 .pages__page-item {
@@ -220,11 +233,11 @@ h1, h2, h3, h4, h5, h6, p {
   transform: rotate(-30deg) skew(-30deg) scaleY(0.864) translate(50%, 100%);
 }
 .pages__page-item {
-  margin-bottom: -16vh;
+  margin-bottom: -12vh;
   transition: translate 1000ms;
 }
 .pages__page-item:hover {
-  translate: 1rem 1rem;
+  translate: 1.5rem 0.75rem;
 }
 .pages__page-item:nth-child(2), .pages__page-item:nth-child(1) {
   z-index: 19;

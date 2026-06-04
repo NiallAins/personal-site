@@ -45,9 +45,8 @@ export const
 //
 
 export const
-    CAN_QUALITY = 2,
+    CAN_QUALITY = 1,
     SKY_HEIGHT_RATIO: number = 0.75,
-    ISO_SCALE: number = 16,
     TERRAIN_SEA: tTerrainDetail =
         [0.5, COLOR_HSL_TERRAIN_SEA],
     TERRAIN: tTerrainDetail[] = [

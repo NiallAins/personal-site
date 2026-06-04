@@ -1,4 +1,4 @@
-import { ISO_SCALE, TERRAIN, TERRAIN_SEA } from "../consts";
+import { COLOR_BG_L, COLOR_TEXT_L, ISO_SCALE, TERRAIN, TERRAIN_SEA, WIDTH_PAGE_MAX, WIDTH_STROKE_UNDERLINE } from "../consts";
 import { LABELS } from "./main";
 import { Canvas } from "./Canvas";
 import { LabelLetter } from "./Label";
@@ -12,6 +12,14 @@ import { Splash } from "./Splash";
 
 export const
     NOISE = new Noise();
+
+const
+    ROW_OVERSHOOT_MIN = -4,
+    ROW_OVERSHOOT_MAX = 8,
+    ROW_OVERSHOOT_MIN_LETTER = 14,
+    LETTER_Z = 3,
+    TEXT_UNDERLINE_WIDTH_OFFSET = WIDTH_STROKE_UNDERLINE / ISO_SCALE,
+    TERRAIN_MAX_X = WIDTH_PAGE_MAX * 0.5;
 
 
 //
@@ -28,41 +36,78 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
         C.translate(0, window.scrollY * -1);
         let offsetRow = false;
         LABELS.forEach(l => l.toggleAllowClick(false));
-        LABELS.forEach(l => l.hover && l.hover < 1 ? l.hover += 0.2 * dT : null);
-        const MAX_Y = (can.height * (fade === 1 ? 0.4 : 1)) + window.scrollY + (ISO_SCALE * 10);
-        for (
-            let y = Math.max(can.height * 0.75, window.scrollY - (ISO_SCALE * 6));
-            y < MAX_Y;
-            y += ISO_SCALE
-        ) {
-            const ROW = Math.floor(y / ISO_SCALE) - 80;
-            if (ROW >= 0 && ROW < 150 && ROW % 30 === 0) {
-                const
-                    SY = y - window.scrollY,
-                    DY = SY < 500 ? Math.pow((1 - ((SY - 200) / 300)) * 10.5, 2) : 0,
-                    Y = y + DY - (ISO_SCALE * 10),
-                    I = ROW / 30;
-                if (DY < 180) {
-                    LABELS[I].toggleAllowClick(true);
-                    LABELS[I].setY(Y - 945);
+        LABELS.forEach(l => {
+            if (l.hovering) {
+                if (l.hover < 0.9) {
+                    l.hover += 0.2 * dT;
+                } else if (l.hover !== 1) {
+                    l.hover = 1;
+                }
+            } else {
+                if (l.hover > 0.1) {
+                    l.hover -= 0.2 * dT;
+                } else if (l.hover !== 0) {
+                    l.hover = 0;
                 }
             }
+        });
 
+        const
+            MIN_Y = Math.max(can.height * 0.75, window.scrollY - (ISO_SCALE * ROW_OVERSHOOT_MIN)),
+            MAX_Y = (can.height * (fade === 1 ? 0.4 : 1)) + window.scrollY + (ISO_SCALE * ROW_OVERSHOOT_MAX),
+            LETTERS = LabelLetter.LETTERS.filter(l => l.screenY > MIN_Y && l.screenY < MAX_Y);
+
+        // Render "over the horizon" letters
+        LabelLetter
+            .LETTERS
+            .filter(l => (
+                l.screenY < MIN_Y &&
+                l.screenY > MIN_Y - (ISO_SCALE * ROW_OVERSHOOT_MIN_LETTER)
+            ))    
+            .forEach(l => {
+                const HORIZON_DROP = horizonZDrop(
+                    ptToScreen(...ptFromScreen(
+                        l.y % 2 ? 0 : ISO_SCALE * 2,
+                        l.screenY
+                    ))[1]
+                );
+                renderLetter(
+                    can.CTX,
+                    fade,
+                    0,
+                    HORIZON_DROP,
+                    l,
+                    true
+                )
+            });
+
+        // Render terrain, with letters
+        for (let y = MIN_Y; y < MAX_Y; y += ISO_SCALE) {
             offsetRow = !offsetRow;
+
+            const HORIZON_DROP = horizonZDrop(
+                ptToScreen(...ptFromScreen(
+                    offsetRow ? ISO_SCALE * 2 : 0,
+                    y
+                ))[1]
+            );
+
             for (let x = 0; x < can.width + (ISO_SCALE * 4); x += ISO_SCALE * 4) {
                 const
                     ISO_PT = ptFromScreen(
                         x + (offsetRow ? ISO_SCALE * 2 : 0),
                         y
                     ),
-                    SCR_PT = ptToScreen(ISO_PT[0], ISO_PT[1]);
+                    SCR_PT = ptToScreen(...ISO_PT);
 
                 renderTerrainIso(
                     can,
                     fade,
                     t,
                     ISO_PT[0], ISO_PT[1],
-                    SCR_PT[0], SCR_PT[1]
+                    SCR_PT[0], SCR_PT[1],
+                    HORIZON_DROP,
+                    LETTERS.find(l => l.x === ISO_PT[0] && l.y === ISO_PT[1])
                 );
             }
         }
@@ -77,44 +122,43 @@ function renderTerrainIso(
     fade: number,
     t: number,
     x: number, y: number,
-    sx: number, sy: number
+    sx: number, sy: number,
+    horizonDrop: number,
+    letter?: LabelLetter
 ) {
     const
         LAND_Z = getLandZ(sx, sy, can.width, can.height),
         SEA_Z = getSeaZ(t, x, y, sx, sy),
-        MIN_Z = -3,
-        FADE_Z = sy < 450 ? Math.pow((1 - ((sy - 170) / 280)) * 1.9, 2) : 0;
+        MIN_Z = -3;
 
     // Render land
     if (LAND_Z > MIN_Z) {
         renderSingleIso(
             can.CTX,
             x, y,
-            MIN_Z - FADE_Z, LAND_Z - FADE_Z,
+            MIN_Z - horizonDrop, LAND_Z - horizonDrop,
             getTerrainColor(LAND_Z, false)
         );
     }
 
     // Render sea
-    if (
-        SEA_Z >= LAND_Z &&
-        sy > 0 &&
-        sy < window.innerHeight + ISO_SCALE * 4
-    ) {
-        let label;
-        for (let i = 0; i < LABELS.length; i++) {
-            label = LABELS[i].findLetter(x, y);
-            if (label) {
-                break;
-            }
-        }
+    if (SEA_Z >= LAND_Z) {
         renderSingleIso(
             can.CTX,
             x, y,
-            Math.max(LAND_Z, SEA_Z - 2) - FADE_Z, SEA_Z - FADE_Z,
-            getTerrainColor(SEA_Z - LAND_Z, true),
+            Math.max(LAND_Z, SEA_Z - 2) - horizonDrop, SEA_Z - horizonDrop,
+            getTerrainColor(SEA_Z - LAND_Z, true)
+        );
+    }
+
+    // Render letter
+    if (letter) {
+        renderLetter(
+            can.CTX,
             fade,
-            label
+            Math.max(LAND_Z, SEA_Z),
+            horizonDrop,
+            letter
         );
     }
 }
@@ -124,9 +168,7 @@ function renderSingleIso(
     c: CanvasRenderingContext2D,
     x: number, y: number,
     z0: number, z: number,
-    color: string[],
-    fade: number = 0,
-    letter?: LabelLetter
+    color: string[]
 ) {
     const H = Math.max(0, (z - z0) * 2);
     c.save();
@@ -157,26 +199,96 @@ function renderSingleIso(
         c.lineTo(2.125, -1);
         c.fillStyle = color[2];
         c.fill();
+    c.restore();
+}
 
-        if (letter) {
-            c.scale(1 / -ISO_SCALE, 1 / ISO_SCALE);
-            c.globalAlpha = Math.max(0, 1 - fade);
-            
-            // Shdaow
-            c.drawImage(
-                letter.CAN_BG,
-                2.25 * -ISO_SCALE,
-                -3.5 * ISO_SCALE
+function renderLetter(
+    c: CanvasRenderingContext2D,
+    fade: number,
+    terrainZ: number,
+    horizonDrop: number,
+    letter: LabelLetter,
+    noShadow: boolean = false
+) {
+    terrainZ *= 2;
+    horizonDrop *= 2;
+    
+    c.save();
+        c.globalAlpha = Math.max(0, 1 - fade);
+
+        if (!noShadow) {
+            c.translate(
+                ((letter.x * 2) + (letter.y * -2)) * ISO_SCALE,
+                (letter.x + letter.y - terrainZ + horizonDrop) * ISO_SCALE
             );
 
-            // Letter
-            c.drawImage(
-                letter.CAN_FG,
-                -2 * ISO_SCALE,
-                (-5 - (letter.LABEL.hover ? 2 * Math.min(letter.LABEL.hover, 1) : 0)) * ISO_SCALE
+            // Shdaow
+            if (!noShadow) {
+                c.drawImage(
+                    letter.CAN_BG,
+                    2.25 * -ISO_SCALE,
+                    -3.5 * ISO_SCALE
+                );
+            }
+
+            c.translate(0, (terrainZ - LETTER_Z) * ISO_SCALE);
+        } else {
+             c.translate(
+                ((letter.x * 2) + (letter.y * -2)) * ISO_SCALE,
+                (letter.x + letter.y - LETTER_Z + horizonDrop) * ISO_SCALE
             );
         }
 
+        // Letter
+        c.textRendering
+        c.drawImage(
+            letter.CAN_FG,
+            -2 * ISO_SCALE,
+            -5 * ISO_SCALE
+        );
+
+        // Underline
+        if (letter.LAST_LINE) {
+            letter.LABEL.setY(horizonDrop * ISO_SCALE);
+            
+            if (letter.LABEL.hover) {
+                const PTS: [number, number][] = letter.LABEL.LETTERS
+                    .slice(letter.LABEL.LETTERS.length - letter.LAST_LINE)
+                    .map((l, li) => [
+                        3 + (li * 4),
+                        -2 - (li * 2) +
+                        horizonZDrop(
+                            ptToScreen(...ptFromScreen(
+                                l.y % 2 ? 0 : ISO_SCALE * 2,
+                                l.screenY
+                            ))[1]
+                        ) * 2
+                    ]);
+                PTS.unshift([
+                    PTS[0][0] - ((PTS[1][0] - PTS[0][0]) * 0.4),
+                    PTS[0][1] - ((PTS[1][1] - PTS[0][1]) * 0.4)
+                ]);
+                PTS.push([
+                    PTS[PTS.length - 1][0] - ((PTS[PTS.length - 2][0] - PTS[PTS.length - 1][0]) * 0.2),
+                    PTS[PTS.length - 1][1] - ((PTS[PTS.length - 2][1] - PTS[PTS.length - 1][1]) * 0.2)
+                ]);
+                c.scale(ISO_SCALE, ISO_SCALE);
+                c.translate(0, -horizonDrop);
+                c.beginPath();
+                    for (let i = 0; i < PTS.length; i++) {
+                        c.lineTo(...PTS[i]);
+                    }
+                    c.translate(
+                        TEXT_UNDERLINE_WIDTH_OFFSET * letter.LABEL.hover * -1.25,
+                        TEXT_UNDERLINE_WIDTH_OFFSET * letter.LABEL.hover * -0.625
+                    );
+                    for (let i = PTS.length - 1; i >= 0; i--) {
+                        c.lineTo(...PTS[i]);
+                    }
+                c.fillStyle = COLOR_TEXT_L;
+                c.fill();
+            }
+        }
     c.restore();
 }
 
@@ -228,12 +340,12 @@ export function ptFromScreen(x: number, y: number): [number, number] {
     return [x, y];
 }
 
-function ptToScreen(x: number, y: number): [number, number] {
+export function ptToScreen(x: number, y: number): [number, number] {
     x *= ISO_SCALE;
     y *= ISO_SCALE;
 
     x = y - x,
-        y = y - x * 0.5;
+    y = y - x * 0.5;
 
     x /= -0.5;
     y /= 0.5;
@@ -241,35 +353,65 @@ function ptToScreen(x: number, y: number): [number, number] {
     return [x, y - window.scrollY];
 }
 
-function getLandZ(x: number, y: number, width: number, height: number): number {
-    y += window.scrollY;
+function horizonZDrop(y: number) {
+    return y < 450 ? Math.pow((1 - ((y - 170) / 280)) * 1.9, 2) : 0;
+}
 
-    // Out of bounds
-    if (
-        x > width ||
-        y < height ||
-        y > height * 4
-    ) {
-        return -5;
+function getLandZ(x: number, y: number, width: number, height: number): number {
+    return -3;
+    y += window.scrollY; 
+
+    x -= width * 0.5;
+
+    const
+        MAX_WIDTH = Math.min(width, WIDTH_PAGE_MAX),
+        MAX_Z = 4,
+        MIN_Z = -10,
+        MIN_Y = height,
+        OFF_X = MAX_WIDTH * 0.25,
+        LAND_NOISE = 0.25,
+        PERIOD = width * 0.25,
+        PERIOD_Y = height * 0.5,
+        RANGE_Z = MAX_Z - LAND_NOISE - (MIN_Z + LAND_NOISE);
+
+    let amp = MIN_Z + LAND_NOISE + (RANGE_Z * 0.5);
+
+    for (let i = 0; i < LABELS.length; i += 1) {
+        amp += 
+            RANGE_Z * 0.5 *
+            Math.cos((x + (OFF_X * (i % 2 ? -1 : 1))) / PERIOD) *
+            Math.sin((y + MIN_Y) / PERIOD);
     }
 
-    // Islands
-    const
-        PHASE_X = width / 28,
-        PHASE_Y = height * 0.55,
-        PHASE_Z = -3,
-        PERIOD_X = width / 6,
-        PERIOD_Y = height / 6,
-        AMP = 5;
-    return (
-        PHASE_Z +
-        (
-            AMP *
-            Math.sin((x + PHASE_X) / PERIOD_X) *
-            Math.sin((y + PHASE_Y) / PERIOD_Y)
-        ) +
-        (NOISE.get(x / 32, y / 32) * 0.25)
-    );
+    // amp += NOISE.get(x / 32, y / 32) * 0.25;
+
+    return amp;
+
+    // if (
+    //     x > TERRAIN_MAX_X ||
+    //     x < TERRAIN_MAX_X * -1 ||
+    //     y < height
+    // ) {
+    //     return -5;
+    // }
+
+    // // Islands
+    // const
+    //     PHASE_X = width * 0.5,
+    //     PHASE_Y = height * 0.5,
+    //     PHASE_Z = -1,
+    //     PERIOD_X = width / 6,
+    //     PERIOD_Y = height / 6,
+    //     AMP = 5;
+    // return (
+    //     PHASE_Z +
+    //     (
+    //         AMP *
+    //         Math.sin((x + PHASE_X) / PERIOD_X) *
+    //         Math.sin((y + PHASE_Y) / PERIOD_Y)
+    //     ) +
+    //     (NOISE.get(x / 32, y / 32) * 0.25)
+    // );
 }
 
 function getSeaZ(t: number, x: number, y: number, sx: number, sy: number): number {

@@ -1,11 +1,21 @@
+@use 'sass:math' as *;
 @use 'vars' as *;
 @use 'mixins' as *;
 
 .main {
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-top: 14rem;
     
     &__topic {
+        width: 50%;
         height: 50vh;
+        text-align: center;
+
+        &:nth-child(2n) {
+           align-self: end;
+        }
 
         .#{ $cl-body-page-open } & {
             display: none;
@@ -13,17 +23,14 @@
 
         // Invisible proxy buttons
         &-button {
-            position: absolute;
+            position: relative;
             z-index: $z-buttons;
-            width: 35rem;
-            height: 10rem;
-            padding-bottom: 0.5rem;
+            padding: 1rem 2rem 2rem;
             border: none;
-            translate: -50% 0;
             rotate: -28deg;
-            font-size: 60px;
-            font-family: monospace;
-            letter-spacing: 30px;
+            font-family: $f-fam-title;
+            font-size: $f-size-section;
+            letter-spacing: #{ (2 * $iso-scale * hypot(2, 1)) - 1rem };
             color: transparent;
             background: none;
             cursor: pointer;
