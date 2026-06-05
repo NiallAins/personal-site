@@ -17,8 +17,7 @@ const
     ROW_OVERSHOOT_MAX = 8,
     ROW_OVERSHOOT_MIN_OBJ = 14,
     LETTER_Z = 4 * ISO_SCALE,
-    TEXT_UNDERLINE_WIDTH_OFFSET = WIDTH_STROKE_UNDERLINE / ISO_SCALE,
-    TERRAIN_MAX_X = WIDTH_PAGE_MAX * 0.5;
+    TEXT_UNDERLINE_WIDTH_OFFSET = WIDTH_STROKE_UNDERLINE / ISO_SCALE;
 
 
 //
@@ -100,19 +99,15 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
                     l.drawen = true;
                 });
 
+            C.strokeStyle = COLOR_TEXT_L;
+            C.fillStyle = COLOR_TEXT_L;
+            C.lineWidth = 2;
             CUBLETS
                 .filter(c => !c.drawen && c.y <= y)
                 .forEach(c => {
-                    c.draw(can.CTX, fade, getHorizonIsoZ(c.y));
+                    renderCublet(can, t, c, fade);
                     c.drawen = true;
                 });
-
-            // LETTERS
-            //     .filter(l => !l.drawen && Math.abs(l.y - y) <= ISO_SCALE * 0.5)
-            //     .forEach(l => {
-            //         renderLetter(can, t, l, fade);
-            //         l.drawen = true;
-            //     });
         }
         
         Splash.splashes.forEach(s => s.step(dT));
@@ -262,6 +257,33 @@ function renderLetter(
                 C.fill();
             }
         }
+    C.restore();
+}
+
+function renderCublet(
+    can: Canvas,
+    t: number,
+    cube: Cublet,
+    fade: number
+) {
+    const
+        C = can.CTX,
+        HORIZON_Z = getHorizonIsoZ(cube.y),
+        TERRAIN_Z = getTerrainIsoZ(
+            can.width, can.height,
+            t,
+            ...ptFromScreen(cube.x, cube.y),
+            cube.x, cube.y - window.scrollY,
+            HORIZON_Z
+        )[2] * ISO_SCALE * 2;
+    
+    C.save();
+        C.globalAlpha = Math.max(0, 1 - fade);
+        C.translate(
+            cube.x - (ISO_SCALE * 3),
+            cube.y - (ISO_SCALE * 2) - TERRAIN_Z
+        );
+        cube.draw(C);
     C.restore();
 }
 

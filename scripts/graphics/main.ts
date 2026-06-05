@@ -55,17 +55,6 @@ export function init() {
     CAN_SEA.CAN.onmousemove = e => Splash.createSplash(e.clientX, e.clientY);
     EL_TOPIC_BUTTONS.forEach((el, i) => LABELS.push(new Label(el, i)));
     LABELS.forEach(l => l.preRender());
-    CUBLETS.forEach((t, ti) => {
-        t.forEach(c => {
-            c.x =
-                (CAN_SEA.width * 0.5) + (
-                    (Math.random() * Math.min(CAN_SEA.width, WIDTH_PAGE_MAX) * 0.5) *
-                    (ti % 2 ? -1 : 1)
-                );
-            c.y = ((ti + 2) * CAN_SEA.height * 0.5) + (Math.random() * CAN_SEA.height * 0.5);
-        });
-    });
-
     animate();
 }
 
@@ -73,6 +62,7 @@ export function setCanvasSize(pageWidth: number, pageHeight: number) {
     CAN_SKY.setSize(pageWidth, pageHeight * SKY_HEIGHT_RATIO);
     CAN_SEA.setSize(pageWidth, pageHeight);
     LABELS.forEach(l => l.setPosition(pageWidth, pageHeight));
+    CUBLETS.forEach((s, ti) => s.forEach(c => c.setPosition(CAN_SEA.width, CAN_SEA.height, ti)));
     renderSky(CAN_SKY);
 }
 

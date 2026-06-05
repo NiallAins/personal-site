@@ -15,7 +15,7 @@ export const
     FONT_SIZE_SECTION: number = 52,
     FONT_WEIGHT_SECTION: number = 500,
     WIDTH_PAGE_PAD: number = 16,
-    WIDTH_PAGE_MAX: number = 1048,
+    WIDTH_PAGE_MAX: number = 1120,
     WIDTH_STROKE_UNDERLINE: number = 6,
     ISO_SCALE: number = 16,
     COLOR_BG_D: string = '#111111',

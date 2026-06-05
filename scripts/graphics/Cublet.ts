@@ -1,4 +1,4 @@
-import { COLOR_TEXT_L, ISO_SCALE } from "../consts-css";
+import { ISO_SCALE, WIDTH_PAGE_MAX } from "../consts-css";
 import { tPointArr } from "../types";
 
 export class Cublet {
@@ -6,6 +6,8 @@ export class Cublet {
 
     private readonly _PTS: tPointArr[];
     private readonly _WIDTH: number = ISO_SCALE * 2;
+    private readonly _RAND_X: number = Math.random();
+    private readonly _RAND_Y: number = Math.random();
 
     public x: number = 0;
     public y: number = 0;
@@ -47,14 +49,24 @@ export class Cublet {
         Cublet.CUBLETS.push(this);
     }
 
-    public draw(c: CanvasRenderingContext2D, fade: number, hDrop: number) {
+    public setPosition(
+        cw: number, ch: number,
+        section: number
+    ) {
+        const
+            W = Math.min(WIDTH_PAGE_MAX, cw),
+            W_OFF = (this._WIDTH + cw - W) * 0.5,
+            H = ch * 0.5,
+            H_OFF = ch * 1.1,
+            H_PAD = ch * 0.1;
+        this.x = W_OFF + (section % 2 ? 0 : W * 0.5) + (W * 0.5 * this._RAND_X);
+        this.y = H_OFF + (section * H) + H_PAD + ((H - (H_PAD * 2)) * this._RAND_Y);
+    }
+
+    public draw(c: CanvasRenderingContext2D) {
         const PTS = this._PTS as [number, number][];
 
         c.save();
-            c.strokeStyle = COLOR_TEXT_L;
-            c.fillStyle = COLOR_TEXT_L;
-            c.lineWidth = 2;
-            c.translate(this.x, this.y + (hDrop * ISO_SCALE * 2));
             c.beginPath();
                 for (let i = 0; i < 4; i++) {
                     c.lineTo(...PTS[i]);

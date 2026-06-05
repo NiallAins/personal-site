@@ -7,7 +7,7 @@ html {
 body {
   overflow-x: hidden;
   font-family: "Neuton";
-  max-width: 65.5rem;
+  max-width: 70rem;
   height: 380vh;
   padding: 1rem;
   margin: 0 auto;
@@ -205,7 +205,7 @@ h1, h2, h3, h4, h5, h6, p {
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem;
   width: 100%;
-  max-width: 65.5rem;
+  max-width: 70rem;
   padding: 3rem 1rem 26vh;
   margin: 0 auto;
 }
