@@ -2,13 +2,15 @@
 // Animation
 //
 
-import { SKY_HEIGHT_RATIO, ANI_SH, TARGET_FPS } from "../consts";
+import { SKY_HEIGHT_RATIO, ANI_SH, WIDTH_PAGE_MAX } from "../consts";
 import { Canvas } from "./Canvas";
 import { Splash } from "./Splash";
 import { Label } from "./Label";
 import { render as renderTerrain } from "./terrain";
-import { logDt, msToFrames, requestFrameScaled } from "../util";
+import { msToFrames, requestFrameScaled } from "../util";
 import { EL_TOPIC_BUTTONS } from "../pages";
+import { Cublet } from "./Cublet";
+import { PAGE_DATA } from "../pages.json";
 
 
 //
@@ -21,7 +23,9 @@ const
     CAN_SEA = new Canvas('CAN_SEA');
 
 export const
-    LABELS: Label[] = [];
+    LABELS: Label[] = [],
+    CUBLETS: Cublet[][] = PAGE_DATA
+        .map(p => p.items.map(i => new Cublet()))
 
 
 //
@@ -50,7 +54,18 @@ export function toggleSectionOpen() {
 export function init() {
     CAN_SEA.CAN.onmousemove = e => Splash.createSplash(e.clientX, e.clientY);
     EL_TOPIC_BUTTONS.forEach((el, i) => LABELS.push(new Label(el, i)));
-    LABELS.forEach(l => l.draw());
+    LABELS.forEach(l => l.preRender());
+    CUBLETS.forEach((t, ti) => {
+        t.forEach(c => {
+            c.x =
+                (CAN_SEA.width * 0.5) + (
+                    (Math.random() * Math.min(CAN_SEA.width, WIDTH_PAGE_MAX) * 0.5) *
+                    (ti % 2 ? -1 : 1)
+                );
+            c.y = ((ti + 2) * CAN_SEA.height * 0.5) + (Math.random() * CAN_SEA.height * 0.5);
+        });
+    });
+
     animate();
 }
 

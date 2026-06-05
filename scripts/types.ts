@@ -41,10 +41,15 @@ export type tPageData = {
     }[]
 };
 
-export type tPointArr = [ number, number ];
+export type tPointArr = [
+    x: number,
+    y: number,
+    z?: number
+];
 export type tPoint = {
     x: number,
-    y: number
+    y: number,
+    z?: number
 };
 
 export type tSplash = {};

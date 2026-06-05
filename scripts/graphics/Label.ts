@@ -26,6 +26,7 @@ export class Label {
 
         this.EL.setAttribute('aria-label', this.EL.innerText);
         this.EL.innerText = this.EL.innerText.replace(/ /g, '');
+
         const LAST_LINE = this.EL.innerText
             .match(/(^|\/)([^\/]+)$/)![2]
             .length;
@@ -43,24 +44,31 @@ export class Label {
     public setPosition(pageWidth: number, pageHeight: number) {
         const
             BREAK = this.LETTERS.findIndex(l => l.LETTER === '/'),
-            PT = ptFromScreen(
-                (pageWidth * (this.INDEX % 2 ? 0.65 : 0.35)) - ((BREAK > -1 ? BREAK : this.LETTERS.length) * ISO_SCALE * 2),
-                (pageHeight * 1.5) + (pageHeight * 0.5 * this.INDEX)
-            );
+            X = (pageWidth * (this.INDEX % 2 ? 0.65 : 0.35)) - ((BREAK > -1 ? BREAK : this.LETTERS.length) * ISO_SCALE * 2),
+            Y = (pageHeight * 1.5) + (pageHeight * 0.5 * this.INDEX);
 
-        let newLine = 0;
+        const
+            LETTER_SPACE = ISO_SCALE * 2,
+            LINE_HEIGHT = ISO_SCALE * 4;
+        let
+            x = X,
+            y = Y;
         this.LETTERS.forEach((l, li) => {
-            l.x = PT[0] + (newLine ? 3 : 0);
-            l.y = PT[1] - (li * 2) + newLine;
-            l.screenY = ptToScreen(l.x, l.y)[1] + window.scrollY;
+            l.x = x;
+            l.y = y;
+
+            x += LETTER_SPACE * 2;
+            y -= LETTER_SPACE;
+
             if (l.LETTER === '/') {
-                newLine = (li * 2) + 3;
+                x = X + LINE_HEIGHT;
+                y = Y + LINE_HEIGHT;
             }
         });
     }
 
-    public draw() {
-        this.LETTERS.forEach(l => l.draw());
+    public preRender() {
+        this.LETTERS.forEach(l => l.preRender());
     }
 
     public toggleAllowClick(state: boolean) {
@@ -69,7 +77,7 @@ export class Label {
 
     public setY(y: number) {
         this.EL.style.top = y + 'px';
-        this.EL.style.pointerEvents = y > 120 ? 'none' : 'all';
+        this.EL.style.pointerEvents = y > 100 ? 'none' : 'all';
     }
 }
 
@@ -81,7 +89,7 @@ export class LabelLetter {
     
     public x: number = 0;
     public y: number = 0;
-    public screenY: number = 0;
+    public drawen: boolean = false;
     public readonly LETTER: string;
     public readonly CAN_FG: HTMLCanvasElement;
     public readonly CAN_BG: HTMLCanvasElement;
@@ -105,7 +113,7 @@ export class LabelLetter {
         LabelLetter.LETTERS.push(this);
     }
 
-    public draw() {
+    public preRender() {
         this.CTX_FG.fillStyle = COLOR_TEXT_L;
         this.CTX_BG.fillStyle = COLOR_TEXT_SHADOW;
         this.CTX_BG.filter = `blur(${ LABEL_LETTER_SHADOW }px)`;
