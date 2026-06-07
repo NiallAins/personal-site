@@ -2,12 +2,12 @@
 // Animation
 //
 
-import { SKY_HEIGHT_RATIO, ANI_SH, WIDTH_PAGE_MAX } from "../consts";
+import { SKY_HEIGHT_RATIO, ANI_SH } from "../consts";
 import { Canvas } from "./Canvas";
 import { Splash } from "./Splash";
 import { Label } from "./Label";
-import { render as renderTerrain } from "./terrain";
-import { msToFrames, requestFrameScaled } from "../util";
+import { init as initTerrain, render as renderTerrain } from "./terrain";
+import { logDt, msToFrames, requestFrameScaled } from "../util";
 import { EL_TOPIC_BUTTONS } from "../pages";
 import { Cublet } from "./Cublet";
 import { PAGE_DATA } from "../pages.json";
@@ -55,6 +55,7 @@ export function init() {
     CAN_SEA.CAN.onmousemove = e => Splash.createSplash(e.clientX, e.clientY);
     EL_TOPIC_BUTTONS.forEach((el, i) => LABELS.push(new Label(el, i)));
     LABELS.forEach(l => l.preRender());
+    initTerrain();
     animate();
 }
 

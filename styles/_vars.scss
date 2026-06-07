@@ -1,5 +1,6 @@
 @use 'sass:math' as *;
 @use 'sass:list' as *;
+@use 'sass:color' as *;
 
 @import url('https://fonts.googleapis.com/css2?family=Neuton:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
@@ -27,20 +28,12 @@ $f-size-bs:        0.875rem;
 $f-size-section:   $f-size-h2;
 $f-weight-section: 500;
 
-$w-page-pad:         1rem;
 $-w-page-max-total:  1152px;
+$w-page-pad:         1rem;
 $w-page-max:         div($-w-page-max-total, $f-size-base) - (2 * $w-page-pad);
+$w-iso-scale:        1rem;
 $w-stroke-underline: 0.375rem;
-$iso-scale:          1rem;
-
-$c-bg-d:        #111111;
-$c-bg-l:        #111128;
-$c-text-l:      #ffffff;
-$c-text-d:      $c-bg-l;
-$c-text-shadow: #11111188;
-$c-text-link:   #4848c8;
-$c-bg-select:   $c-text-link;
-$c-text-select: $c-text-l;
+$w-stroke-outline:   3px;
 
 $c-hsl-terrain-sea:    (174, 53, 40, 0.5);
 $c-terrain-sea:        list-to-hsl($c-hsl-terrain-sea);
@@ -50,6 +43,16 @@ $c-hsl-terrain-land-2: ( 62, 82, 35, 1.0);
 $c-terrainland-2:      list-to-hsl($c-hsl-terrain-land-2);
 $c-hsl-terrain-land-3: (106, 80, 15, 1.0);
 $c-terrain-land-3:     list-to-hsl($c-hsl-terrain-land-3);
+
+$c-bg-d:           #111111;
+$c-bg-l:           #111128;
+$c-text-l:         #ffffff;
+$c-text-d:         $c-bg-l;
+$c-text-l-outline: scale($c-terrain-sea, $lightness: -100%, $alpha: 100%);
+$c-text-shadow:    #11111188;
+$c-text-link:      #4848c8;
+$c-bg-select:      $c-text-link;
+$c-text-select:    $c-text-l;
 
 $z-canvas-bg:  z();
 $z-page:       z();

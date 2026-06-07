@@ -1,13 +1,14 @@
 import {
-    COLOR_TEXT_L, COLOR_TEXT_SHADOW,
+    COLOR_TEXT_D,
+    COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE, COLOR_TEXT_SHADOW,
     FONT_FAM_TITLE,
     FONT_SIZE_SECTION,
     FONT_WEIGHT_SECTION,
     ISO_SCALE,
-    LABEL_LETTER_HEIGHT, LABEL_LETTER_SHADOW, LABEL_LETTER_WIDTH
+    LABEL_LETTER_HEIGHT, LABEL_LETTER_SHADOW_BLUR, LABEL_LETTER_WIDTH,
+    WIDTH_STROKE_OUTLINE
 } from "../consts";
 import { Canvas } from "./Canvas";
-import { ptFromScreen, ptToScreen } from "./terrain";
 
 export class Label {
     public hover: number = 0;
@@ -114,17 +115,23 @@ export class LabelLetter {
     }
 
     public preRender() {
+        this.CTX_FG.strokeStyle = COLOR_TEXT_L_OUTLINE;
         this.CTX_FG.fillStyle = COLOR_TEXT_L;
+        
+        this.CTX_BG.strokeStyle = '#0000';
         this.CTX_BG.fillStyle = COLOR_TEXT_SHADOW;
-        this.CTX_BG.filter = `blur(${ LABEL_LETTER_SHADOW }px)`;
+        this.CTX_BG.filter = `blur(${ LABEL_LETTER_SHADOW_BLUR }px)`;
 
         [this.CTX_FG, this.CTX_BG].forEach(c => {
-            c.translate(LABEL_LETTER_WIDTH * 0.55, LABEL_LETTER_HEIGHT * 0.4);
-            c.scale(1.25 * ISO_SCALE, 0.75 * ISO_SCALE);
-            c.rotate(-0.70);
             c.font = `${ FONT_WEIGHT_SECTION } ${ FONT_SIZE_SECTION / ISO_SCALE }px "${ FONT_FAM_TITLE }"`;
             c.textAlign = 'center';
             c.textBaseline = 'middle';
+            c.lineWidth = (WIDTH_STROKE_OUTLINE * 2) / ISO_SCALE;
+
+            c.translate(LABEL_LETTER_WIDTH * 0.55, LABEL_LETTER_HEIGHT * 0.4);
+            c.scale(1.25 * ISO_SCALE, 0.75 * ISO_SCALE);
+            c.rotate(-0.7);
+            c.strokeText(this.LETTER, 0, 0);
             c.fillText(this.LETTER, 0, 0);
         });
     }

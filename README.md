@@ -8,7 +8,7 @@ Live at [niall.design](http://niall.design) or [niallains.github.io/personal-sit
 
 ### Start dev
 
-Build, watch files, auto-convert `_vars.scss` to `consts-css.ts`, and serve site locally
+Build, watch files, auto-convert `_vars.scss` to `consts-css.ts`.
 
 ```bash
 npm run dev

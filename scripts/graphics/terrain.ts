@@ -1,5 +1,5 @@
-import { COLOR_TEXT_L, ISO_SCALE, TERRAIN, TERRAIN_SEA, WIDTH_PAGE_MAX, WIDTH_STROKE_UNDERLINE } from "../consts";
-import { CUBLETS, LABELS } from "./main";
+import { COLOR_TEXT_D, COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE, ISO_SCALE, LABEL_ISO_Z, LABEL_LETTER_HEIGHT, LABEL_LETTER_WIDTH, MAX_SEA_ISO_DEPTH, MIN_LAND_ISO_Z, ROW_HEIGHT, TERRAIN, TERRAIN_SEA, WIDTH_STROKE_OUTLINE, WIDTH_STROKE_UNDERLINE, X_UNIT, Y_UNIT, Z_UNIT } from "../consts";
+import { LABELS } from "./main";
 import { Canvas } from "./Canvas";
 import { LabelLetter } from "./Label";
 import { Noise } from "./Noise";
@@ -13,24 +13,37 @@ import { Cublet } from "./Cublet";
 
 const
     NOISE = new Noise(),
-    ROW_OVERSHOOT_MIN = -4,
-    ROW_OVERSHOOT_MAX = 8,
-    ROW_OVERSHOOT_MIN_OBJ = 14,
-    LETTER_Z = 4 * ISO_SCALE,
-    TEXT_UNDERLINE_WIDTH_OFFSET = WIDTH_STROKE_UNDERLINE / ISO_SCALE;
+    OVERSHOOT_MIN_SEA = -4 * ROW_HEIGHT,
+    OVERSHOOT_MIN_OBJ = 12 * ROW_HEIGHT,
+    OVERSHOOT_MAX_SEA =  4 * ROW_HEIGHT,
+    OVERSHOOT_MAX_OBJ =  7 * ROW_HEIGHT,
+    LETTER_Z = LABEL_ISO_Z * Z_UNIT,
+    TEXT_UNDERLINE_WIDTH_OFFSET = WIDTH_STROKE_UNDERLINE / ISO_SCALE,
+    CAN_SEA_PRE_RENDER = new Canvas('', X_UNIT, (MAX_SEA_ISO_DEPTH + 1) * Z_UNIT);
 
 
 //
 // Render functions
 //
 
+export function init() {
+    const C = CAN_SEA_PRE_RENDER.CTX;
+    C.translate(X_UNIT * 0.5, Y_UNIT);
+    renderSingleIso(
+        CAN_SEA_PRE_RENDER.CTX,
+        0, 0,
+        -MAX_SEA_ISO_DEPTH, 0,
+        getTerrainColor(MAX_SEA_ISO_DEPTH, true)
+    );
+}
+
 export function render(can: Canvas, fade: number, t: number, dT: number) {
     const C = can.CTX;
 
     C.clearRect(0, 0, can.width, can.height);
 
-    // Draw isometic
     C.save();
+        // Update label element states
         LABELS.forEach(l => l.toggleAllowClick(false));
         LABELS.forEach(l => {
             if (l.hovering) {
@@ -48,29 +61,34 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
             }
         });
 
+        // Calculate viewport
         const
-            MIN_Y_SEA = Math.max(can.height * 0.75, window.scrollY - (ISO_SCALE * ROW_OVERSHOOT_MIN)),
-            MIN_Y_OBJ = MIN_Y_SEA - (ISO_SCALE * ROW_OVERSHOOT_MIN_OBJ),
-            MAX_Y = (can.height * (fade === 1 ? 0.4 : 1)) + window.scrollY + (ISO_SCALE * ROW_OVERSHOOT_MAX);
-
+            MIN_Y_SEA = Math.max(can.height * 0.75, window.scrollY - OVERSHOOT_MIN_SEA),
+            MIN_Y_OBJ = MIN_Y_SEA - OVERSHOOT_MIN_OBJ,
+            MAX_Y_SEA = (can.height * (fade === 1 ? 0.4 : 1)) + window.scrollY + OVERSHOOT_MAX_SEA,
+            MAX_Y_OBJ = MAX_Y_SEA + OVERSHOOT_MAX_OBJ;
+            
+        // Find visible objects
         const
-            LETTERS = LabelLetter.LETTERS.filter(l => l.y > MIN_Y_OBJ && l.y < MAX_Y),
-            CUBLETS = Cublet.CUBLETS.filter(c => c.y > MIN_Y_OBJ && c.y < MAX_Y);
+            LETTERS = LabelLetter.LETTERS.filter(l => l.y > MIN_Y_OBJ && l.y < MAX_Y_OBJ),
+            CUBLETS = Cublet.CUBLETS.filter(c => c.y > MIN_Y_OBJ && c.y < MAX_Y_OBJ);
         LETTERS.forEach(l => l.drawen = false);
         CUBLETS.forEach(l => l.drawen = false);
 
         let offsetRow = false;
         C.translate(0, window.scrollY * -1);
 
-        for (let y = MIN_Y_OBJ; y < MAX_Y; y += ISO_SCALE) {
+        // Render
+        for (let y = MIN_Y_OBJ; y < MAX_Y_OBJ; y += ROW_HEIGHT) {
             offsetRow = !offsetRow;
 
-            if (y >= MIN_Y_SEA) {
+            // Terrain
+            if (y >= MIN_Y_SEA && y <= MAX_Y_SEA) {
                 const HORIZON_ISO_Z = getHorizonIsoZOfRow(offsetRow, y);
-                for (let x = 0; x < can.width + (ISO_SCALE * 4); x += ISO_SCALE * 4) {
+                for (let x = 0; x < can.width + X_UNIT; x += X_UNIT) {
                     const
                         ISO_PT = ptFromScreen(
-                            x + (offsetRow ? ISO_SCALE * 2 : 0),
+                            x + (offsetRow ? X_UNIT * 0.5 : 0),
                             y
                         ),
                         SCR_PT = ptToScreen(...ISO_PT),
@@ -84,6 +102,7 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
 
                     renderTerrainIso(
                         can,
+                        ...SCR_PT,
                         ...ISO_PT,
                         LAND_Z, SEA_Z,
                         HORIZON_ISO_Z
@@ -92,6 +111,7 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
                 }
             }
 
+            // Labels
             LETTERS
                 .filter(l => !l.drawen && l.y <= y)
                 .forEach(l => {
@@ -99,6 +119,7 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
                     l.drawen = true;
                 });
 
+            // Cublets
             C.strokeStyle = COLOR_TEXT_L;
             C.fillStyle = COLOR_TEXT_L;
             C.lineWidth = 2;
@@ -118,28 +139,38 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
 function renderTerrainIso(
     can: Canvas,
     x: number, y: number,
+    isoX: number, isoY: number,
     landZ: number, seaZ: number,
     horizonIsoZ: number
 ) {
-    const MIN_Z = -3 - horizonIsoZ;
+    const MIN_Z = MIN_LAND_ISO_Z - horizonIsoZ;
 
     // Render land
     if (landZ > MIN_Z) {
         renderSingleIso(
             can.CTX,
-            x, y,
+            isoX, isoY,
             MIN_Z, landZ,
             getTerrainColor(landZ + horizonIsoZ, false)
         );
+
+        // Render sea over land
+        if (seaZ >= landZ) {
+            renderSingleIso(
+                can.CTX,
+                isoX, isoY,
+                Math.max(landZ, seaZ - MAX_SEA_ISO_DEPTH), seaZ,
+                getTerrainColor(seaZ - landZ + horizonIsoZ, true)
+            );
+        }
     }
 
-    // Render sea
-    if (seaZ >= landZ) {
-        renderSingleIso(
-            can.CTX,
-            x, y,
-            Math.max(landZ, seaZ - 2), seaZ,
-            getTerrainColor(seaZ - landZ + horizonIsoZ, true)
+    else {
+        // Render sea without land
+        can.CTX.drawImage(
+            CAN_SEA_PRE_RENDER.CAN,
+            x - (X_UNIT * 0.5),
+            y - (seaZ * Z_UNIT) - Y_UNIT + window.scrollY
         );
     }
 }
@@ -151,7 +182,7 @@ function renderSingleIso(
     z0: number, z: number,
     color: string[]
 ) {
-    const H = Math.max(0, (z - z0) * 2);
+    const H = (z - z0) * 2;
     c.save();
 
     c.scale(-ISO_SCALE, ISO_SCALE);
@@ -192,33 +223,51 @@ function renderLetter(
     const
         C = can.CTX,
         HORIZON_Z = getHorizonIsoZ(letter.y),
-        HORIZON_Z_LETTER = HORIZON_Z * ISO_SCALE * 2.5,
-        HORIZON_Z_SHADOW = HORIZON_Z * ISO_SCALE * 0.25,
+        HORIZON_Z_LETTER = HORIZON_Z * Z_UNIT * 1.25,
         TERRAIN_Z = getTerrainIsoZ(
             can.width, can.height,
             t,
             ...ptFromScreen(letter.x, letter.y),
             letter.x, letter.y - window.scrollY,
             HORIZON_Z
-        )[2] * ISO_SCALE * 2;
+        )[2] * Z_UNIT;
     
     C.save();
+        // renderSingleIso(
+        //     C,
+        //     ...ptFromScreen(letter.x, letter.y),
+        //     0, 0, ['red']
+        // );
+
         C.globalAlpha = Math.max(0, 1 - fade);
-        C.translate(ISO_SCALE * -3, ISO_SCALE * -4.5);
 
-        // Shadow
-        C.drawImage(
-            letter.CAN_BG,
-            letter.x,
-            letter.y - TERRAIN_Z + HORIZON_Z_SHADOW
+        C.translate(
+            LABEL_LETTER_WIDTH * -0.5,
+            LABEL_LETTER_HEIGHT * -1.5
         );
 
-        // Letter
-        C.drawImage(
-            letter.CAN_FG,
-            letter.x,
-            letter.y - LETTER_Z + HORIZON_Z_LETTER
-        );
+        C.save();
+
+            // Shadow
+            C.drawImage(
+                letter.CAN_BG,
+                letter.x,
+                letter.y - TERRAIN_Z
+            );
+
+            // Letter
+            C.translate(
+                letter.x,
+                letter.y - LETTER_Z + HORIZON_Z_LETTER
+            );
+            let scale = 1 - (HORIZON_Z / 6);
+            C.scale(1, scale);
+            C.drawImage(
+                letter.CAN_FG,
+                0, 0
+            );
+
+        C.restore();
 
         // Underline
         if (letter.LAST_LINE) {
@@ -233,14 +282,15 @@ function renderLetter(
                         (getHorizonIsoZ(l.y) * 2.5)
                     ]);
                 PTS.unshift([
-                    PTS[0][0] - ((PTS[1][0] - PTS[0][0]) * 0.4),
-                    PTS[0][1] - ((PTS[1][1] - PTS[0][1]) * 0.4)
+                    PTS[0][0] - ((PTS[1][0] - PTS[0][0]) * 0.25),
+                    PTS[0][1] - ((PTS[1][1] - PTS[0][1]) * 0.25)
                 ]);
                 PTS.push([
-                    PTS[PTS.length - 1][0] - ((PTS[PTS.length - 2][0] - PTS[PTS.length - 1][0]) * 0.2),
-                    PTS[PTS.length - 1][1] - ((PTS[PTS.length - 2][1] - PTS[PTS.length - 1][1]) * 0.2)
+                    PTS[PTS.length - 1][0] - ((PTS[PTS.length - 2][0] - PTS[PTS.length - 1][0]) * 0.25),
+                    PTS[PTS.length - 1][1] - ((PTS[PTS.length - 2][1] - PTS[PTS.length - 1][1]) * 0.25)
                 ]);
-                C.translate(letter.x + (ISO_SCALE * 2), letter.y + (ISO_SCALE * 1))
+
+                C.translate(letter.x + (X_UNIT * 0.5), letter.y + (Y_UNIT * -0.25))
                 C.scale(ISO_SCALE, ISO_SCALE);
                 C.beginPath();
                     for (let i = 0; i < PTS.length; i++) {
@@ -248,11 +298,15 @@ function renderLetter(
                     }
                     C.translate(
                         TEXT_UNDERLINE_WIDTH_OFFSET * letter.LABEL.hover * -1.25,
-                        TEXT_UNDERLINE_WIDTH_OFFSET * letter.LABEL.hover * -0.625
+                        TEXT_UNDERLINE_WIDTH_OFFSET * letter.LABEL.hover * -0.75
                     );
                     for (let i = PTS.length - 1; i >= 0; i--) {
                         C.lineTo(...PTS[i]);
                     }
+                C.closePath();
+                C.strokeStyle = COLOR_TEXT_L_OUTLINE;
+                C.lineWidth = (WIDTH_STROKE_OUTLINE * 2) / ISO_SCALE;
+                C.stroke();
                 C.fillStyle = COLOR_TEXT_L;
                 C.fill();
             }
@@ -275,7 +329,7 @@ function renderCublet(
             ...ptFromScreen(cube.x, cube.y),
             cube.x, cube.y - window.scrollY,
             HORIZON_Z
-        )[2] * ISO_SCALE * 2;
+        )[2] * Z_UNIT;
     
     C.save();
         C.globalAlpha = Math.max(0, 1 - fade);
@@ -380,15 +434,13 @@ function getTerrainIsoZ(
 }
 
 function getLandZ(x: number, y: number, width: number, height: number): number {
-    return -5;
+    // return -5;
 
-    // if (
-    //     x > TERRAIN_MAX_X ||
-    //     x < TERRAIN_MAX_X * -1 ||
-    //     y < height
-    // ) {
-    //     return -5;
-    // }
+    if (
+        y < height
+    ) {
+        return -5;
+    }
 
     // Islands
     const

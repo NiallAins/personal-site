@@ -1,4 +1,4 @@
-import { ISO_SCALE, WIDTH_PAGE_MAX } from "../consts-css";
+import { ISO_SCALE, WIDTH_PAGE_MAX } from "../consts";
 import { tPointArr } from "../types";
 
 export class Cublet {

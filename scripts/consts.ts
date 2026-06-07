@@ -1,4 +1,4 @@
-import { COLOR_HSL_TERRAIN_LAND_1, COLOR_HSL_TERRAIN_LAND_2, COLOR_HSL_TERRAIN_LAND_3, COLOR_HSL_TERRAIN_SEA } from "./consts-css";
+import { COLOR_HSL_TERRAIN_LAND_1, COLOR_HSL_TERRAIN_LAND_2, COLOR_HSL_TERRAIN_LAND_3, COLOR_HSL_TERRAIN_SEA, WIDTH_ISO_SCALE } from "./consts-css";
 import { tTerrainDetail } from "./types";
 import { getEl } from "./util";
 
@@ -37,7 +37,7 @@ export const
 export const
     LABEL_LETTER_WIDTH: number = 74,
     LABEL_LETTER_HEIGHT: number = 48,
-    LABEL_LETTER_SHADOW: number = 4;
+    LABEL_LETTER_SHADOW_BLUR: number = 4;
 
 
 //
@@ -54,7 +54,17 @@ export const
         [0.3, COLOR_HSL_TERRAIN_LAND_2],
         [1.0, COLOR_HSL_TERRAIN_LAND_3]
     ],
+    MAX_SEA_ISO_DEPTH: number = 2,
+    MIN_LAND_ISO_Z: number = -3,
+    LABEL_ISO_Z: number = 3,
+    ISO_SCALE: number = WIDTH_ISO_SCALE,
+    X_UNIT: number = 4 * ISO_SCALE,
+    Y_UNIT: number = 2 * ISO_SCALE,
+    Z_UNIT: number = 2 * ISO_SCALE,
+    ROW_HEIGHT: number = ISO_SCALE,
     SPLASH_MAX_DIST: number = 90000,
     SPLASH_FADE_DIST: number = SPLASH_MAX_DIST / 6,
     SPLASH_FADE_TIME: number = 0.0002,
-    TARGET_FPS: number = 33.33;
+    TARGET_FPS: number = 33.33,
+    SECTION_HEIGHT: number = 0.5,
+    SECTION_GAP: number = 0.25;

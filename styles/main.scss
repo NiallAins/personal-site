@@ -30,7 +30,7 @@
             rotate: -28deg;
             font-family: $f-fam-title;
             font-size: $f-size-section;
-            letter-spacing: #{ (2 * $iso-scale * hypot(2, 1)) - 1rem };
+            letter-spacing: #{ (2 * $w-iso-scale * hypot(2, 1)) - 1rem };
             color: transparent;
             background: none;
             cursor: pointer;
