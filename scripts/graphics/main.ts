@@ -1,8 +1,4 @@
-//
-// Animation
-//
-
-import { SKY_HEIGHT_RATIO, ANI_SH } from "../consts";
+import { SKY_HEIGHT_RATIO, DURATION_SH } from "../consts";
 import { Canvas } from "./Canvas";
 import { Splash } from "./Splash";
 import { Label } from "./Label";
@@ -11,6 +7,7 @@ import { logDt, msToFrames, requestFrameScaled } from "../util";
 import { EL_TOPIC_BUTTONS } from "../pages";
 import { Cublet } from "./Cublet";
 import { PAGE_DATA } from "../pages.json";
+import { Ease } from "./Ease";
 
 
 //
@@ -18,7 +15,7 @@ import { PAGE_DATA } from "../pages.json";
 //
 
 const
-    ANI_PER_FRAME = 1 / msToFrames(ANI_SH),
+    ANI_PER_FRAME = 1 / msToFrames(DURATION_SH),
     CAN_SKY = new Canvas('CAN_SKY'),
     CAN_SEA = new Canvas('CAN_SEA');
 
@@ -74,6 +71,7 @@ export function setCanvasSize(pageWidth: number, pageHeight: number) {
 
 function animate(t: number = 0, dT: number = 1) {
     if (!paused) {
+        Ease.step(dT);
         renderTerrain(CAN_SEA, fade, t, dT);
         t = (t + (0.00075 * dT)) % 1;
 

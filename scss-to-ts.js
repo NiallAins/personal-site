@@ -5,8 +5,7 @@ const
 
 const
     PATH_FROM   = './styles/_vars.scss',
-    PATH_TO_CSS = './styles/vars-css.scss',
-    PATH_TO_TS  = './scripts/consts-css.ts';
+    PATH_TO_TS  = './scripts/consts.scss.ts';
 
 FS.readFile(
     PATH_FROM, 'utf8',
@@ -45,12 +44,14 @@ FS.readFile(
             .map(v => {
                 const
                     NAME = v.name
-                        .replace(/-/g, '_')
-                        .replace(/^f/, 'FONT')
-                        .replace(/^cl/, 'CLASS')
-                        .replace(/^c/, 'COLOR')
-                        .replace(/^w/, 'WIDTH')
-                        .toUpperCase();
+                        .replace(/-/g,   '_')
+                        .replace(/^f/,   'FONT')
+                        .replace(/^cl/,  'CLASS')
+                        .replace(/^c/,   'COLOR')
+                        .replace(/^w/,   'WIDTH')
+                        .replace(/^h/,   'HEIGHT')
+                        .replace(/^dur/, 'DURATION')
+                        .toUpperCase(),
                     [VALUE, TYPE] = convertValue(v.value, REM);
                 return {
                     name: NAME,
@@ -61,7 +62,7 @@ FS.readFile(
 
         FS.writeFile(
             PATH_TO_TS,
-                '/* Generated from styles/_vars.scss */\n\n' +
+                `/* Generated from ${ PATH_FROM } */\n\n` +
                 'export const\n' +
                 JS_VARS
                     .map(v => `    ${ v.name }: ${ v.type } = ${ v.value }`)

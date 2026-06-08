@@ -1,4 +1,12 @@
-import { COLOR_TEXT_D, COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE, ISO_SCALE, LABEL_ISO_Z, LABEL_LETTER_HEIGHT, LABEL_LETTER_WIDTH, MAX_SEA_ISO_DEPTH, MIN_LAND_ISO_Z, ROW_HEIGHT, TERRAIN, TERRAIN_SEA, WIDTH_STROKE_OUTLINE, WIDTH_STROKE_UNDERLINE, X_UNIT, Y_UNIT, Z_UNIT } from "../consts";
+import { 
+    ISO_SCALE, LABEL_ISO_Z, X_UNIT, Y_UNIT, Z_UNIT,
+    LABEL_LETTER_HEIGHT, LABEL_LETTER_WIDTH,
+    MAX_SEA_ISO_DEPTH, MIN_LAND_ISO_Z, ROW_HEIGHT,
+    TERRAIN, TERRAIN_SEA,
+    COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE,
+    WIDTH_STROKE_OUTLINE, WIDTH_STROKE_UNDERLINE,
+    LABEL_DEPRESS_Z, LABEL_LETTER_SPACE_ISO, LABEL_LINE_HEIGHT_ISO
+} from "../consts";
 import { LABELS } from "./main";
 import { Canvas } from "./Canvas";
 import { LabelLetter } from "./Label";
@@ -15,7 +23,7 @@ const
     NOISE = new Noise(),
     OVERSHOOT_MIN_SEA = -4 * ROW_HEIGHT,
     OVERSHOOT_MIN_OBJ = 12 * ROW_HEIGHT,
-    OVERSHOOT_MAX_SEA =  4 * ROW_HEIGHT,
+    OVERSHOOT_MAX_SEA =  5 * ROW_HEIGHT,
     OVERSHOOT_MAX_OBJ =  7 * ROW_HEIGHT,
     LETTER_Z = LABEL_ISO_Z * Z_UNIT,
     TEXT_UNDERLINE_WIDTH_OFFSET = WIDTH_STROKE_UNDERLINE / ISO_SCALE,
@@ -43,24 +51,6 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
     C.clearRect(0, 0, can.width, can.height);
 
     C.save();
-        // Update label element states
-        LABELS.forEach(l => l.toggleAllowClick(false));
-        LABELS.forEach(l => {
-            if (l.hovering) {
-                if (l.hover < 0.9) {
-                    l.hover += 0.2 * dT;
-                } else if (l.hover !== 1) {
-                    l.hover = 1;
-                }
-            } else {
-                if (l.hover > 0.1) {
-                    l.hover -= 0.2 * dT;
-                } else if (l.hover !== 0) {
-                    l.hover = 0;
-                }
-            }
-        });
-
         // Calculate viewport
         const
             MIN_Y_SEA = Math.max(can.height * 0.75, window.scrollY - OVERSHOOT_MIN_SEA),
@@ -222,6 +212,8 @@ function renderLetter(
 ) {
     const
         C = can.CTX,
+        LABEL = letter.LABEL,
+        LABEL_DEPRESS = LABEL.pressAni.value * LABEL_DEPRESS_Z,
         HORIZON_Z = getHorizonIsoZ(letter.y),
         HORIZON_Z_LETTER = HORIZON_Z * Z_UNIT * 1.25,
         TERRAIN_Z = getTerrainIsoZ(
@@ -249,16 +241,27 @@ function renderLetter(
         C.save();
 
             // Shadow
-            C.drawImage(
-                letter.CAN_BG,
-                letter.x,
-                letter.y - TERRAIN_Z
-            );
+            C.save();
+                const
+                    SHADOW_SIZE = 1 + (LABEL_DEPRESS * 0.005),
+                    HALF_CAN_W = letter.CAN_BG.width * 0.5,
+                    HALF_CAN_H = letter.CAN_BG.height * 0.5;
+                C.translate(
+                    letter.x + HALF_CAN_W,
+                    letter.y - TERRAIN_Z + HALF_CAN_H
+                );
+                C.scale(SHADOW_SIZE, SHADOW_SIZE);
+                C.drawImage(
+                    letter.CAN_BG,
+                    HALF_CAN_W * -1,
+                    HALF_CAN_H * -1
+                );
+            C.restore();
 
             // Letter
             C.translate(
                 letter.x,
-                letter.y - LETTER_Z + HORIZON_Z_LETTER
+                letter.y + HORIZON_Z_LETTER - LETTER_Z + LABEL_DEPRESS
             );
             let scale = 1 - (HORIZON_Z / 6);
             C.scale(1, scale);
@@ -271,15 +274,16 @@ function renderLetter(
 
         // Underline
         if (letter.LAST_LINE) {
-            letter.LABEL.setY(HORIZON_Z_LETTER * 1.25);
+            LABEL.setY(HORIZON_Z_LETTER * 1.25);
 
-            if (letter.LABEL.hover) {
-                const PTS: [number, number][] = letter.LABEL.LETTERS
+            const HOVER = LABEL.hoverAni.value;
+            if (HOVER) {
+                const PTS: [number, number][] = LABEL.LETTERS
                     .slice(letter.LABEL.LETTERS.length - letter.LAST_LINE)
                     .map((l, li) => [
-                        3 + (li * 4),
-                        -2 - (li * 2) +
-                        (getHorizonIsoZ(l.y) * 2.5)
+                        3 + (li * LABEL_LETTER_SPACE_ISO),
+                        -2 - (li * LABEL_LINE_HEIGHT_ISO) +
+                        (getHorizonIsoZ(l.y) * 2)
                     ]);
                 PTS.unshift([
                     PTS[0][0] - ((PTS[1][0] - PTS[0][0]) * 0.25),
@@ -290,22 +294,25 @@ function renderLetter(
                     PTS[PTS.length - 1][1] - ((PTS[PTS.length - 2][1] - PTS[PTS.length - 1][1]) * 0.25)
                 ]);
 
-                C.translate(letter.x + (X_UNIT * 0.5), letter.y + (Y_UNIT * -0.25))
+                C.translate(
+                    letter.x + (X_UNIT * 0.5),
+                    letter.y + (Y_UNIT * -0.25) + LABEL_DEPRESS
+                );
                 C.scale(ISO_SCALE, ISO_SCALE);
                 C.beginPath();
                     for (let i = 0; i < PTS.length; i++) {
                         C.lineTo(...PTS[i]);
                     }
                     C.translate(
-                        TEXT_UNDERLINE_WIDTH_OFFSET * letter.LABEL.hover * -1.25,
-                        TEXT_UNDERLINE_WIDTH_OFFSET * letter.LABEL.hover * -0.75
+                        TEXT_UNDERLINE_WIDTH_OFFSET * HOVER * -1.25,
+                        TEXT_UNDERLINE_WIDTH_OFFSET * HOVER * -0.75
                     );
                     for (let i = PTS.length - 1; i >= 0; i--) {
                         C.lineTo(...PTS[i]);
                     }
                 C.closePath();
                 C.strokeStyle = COLOR_TEXT_L_OUTLINE;
-                C.lineWidth = (WIDTH_STROKE_OUTLINE * 2) / ISO_SCALE;
+                C.lineWidth = (WIDTH_STROKE_OUTLINE * 2 * HOVER) / ISO_SCALE;
                 C.stroke();
                 C.fillStyle = COLOR_TEXT_L;
                 C.fill();
@@ -434,7 +441,7 @@ function getTerrainIsoZ(
 }
 
 function getLandZ(x: number, y: number, width: number, height: number): number {
-    // return -5;
+    return -5;
 
     if (
         y < height

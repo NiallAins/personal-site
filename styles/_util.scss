@@ -1,0 +1,11 @@
+@use 'sass:list' as *;
+
+$-z: 0;
+@function next-z() {
+    $-z: $-z + 10 !global;
+    @return $-z;
+}
+
+@function list-to-hsl($list) {
+    @return hsl(nth($list, 1), nth($list, 2) * 1%, nth($list, 3) * 1%, nth($list, 4));
+}

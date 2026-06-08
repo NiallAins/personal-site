@@ -1,18 +1,18 @@
 import {
-    COLOR_TEXT_D,
     COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE, COLOR_TEXT_SHADOW,
-    FONT_FAM_TITLE,
-    FONT_SIZE_SECTION,
-    FONT_WEIGHT_SECTION,
-    ISO_SCALE,
-    LABEL_LETTER_HEIGHT, LABEL_LETTER_SHADOW_BLUR, LABEL_LETTER_WIDTH,
+    DURATION_LG, DURATION_SH,
+    FONT_FAM_TITLE, FONT_SIZE_SECTION, FONT_WEIGHT_SECTION,
+    ISO_SCALE, LABEL_LETTER_HEIGHT, LABEL_LETTER_SHADOW_BLUR, LABEL_LETTER_SPACE, LABEL_LETTER_WIDTH,
+    LABEL_LINE_HEIGHT,
     WIDTH_STROKE_OUTLINE
 } from "../consts";
+import { eEaseState, eEaseType } from "../types";
 import { Canvas } from "./Canvas";
+import { Ease } from "./Ease";
 
 export class Label {
-    public hover: number = 0;
-    public hovering: boolean = false;
+    public pressAni: Ease = new Ease(DURATION_LG, eEaseType.Elastic, true);
+    public hoverAni: Ease = new Ease(DURATION_SH, eEaseType.Ease, true);
     public readonly LETTERS: LabelLetter[];
 
     private EL: HTMLButtonElement;
@@ -22,8 +22,13 @@ export class Label {
         this.EL = el;
         this.INDEX = index;
 
-        this.EL.onmouseenter = () => this.hovering = true;
-        this.EL.onmouseleave = () => this.hovering = false;
+        this.EL.onmousedown  = () => this.pressAni.play(eEaseState.Forward);
+        this.EL.onmouseup    = () => this.pressAni.play(eEaseState.Backward);
+        this.EL.onmouseenter = () => this.hoverAni.play(eEaseState.Forward);
+        this.EL.onmouseleave = () => {
+            this.pressAni.play(eEaseState.Backward);
+            this.hoverAni.play(eEaseState.Backward);
+        };
 
         this.EL.setAttribute('aria-label', this.EL.innerText);
         this.EL.innerText = this.EL.innerText.replace(/ /g, '');
@@ -48,32 +53,25 @@ export class Label {
             X = (pageWidth * (this.INDEX % 2 ? 0.65 : 0.35)) - ((BREAK > -1 ? BREAK : this.LETTERS.length) * ISO_SCALE * 2),
             Y = (pageHeight * 1.5) + (pageHeight * 0.5 * this.INDEX);
 
-        const
-            LETTER_SPACE = ISO_SCALE * 2,
-            LINE_HEIGHT = ISO_SCALE * 4;
         let
             x = X,
             y = Y;
-        this.LETTERS.forEach((l, li) => {
+        this.LETTERS.forEach(l => {
             l.x = x;
             l.y = y;
 
-            x += LETTER_SPACE * 2;
-            y -= LETTER_SPACE;
+            x += LABEL_LETTER_SPACE;
+            y -= LABEL_LINE_HEIGHT;
 
             if (l.LETTER === '/') {
-                x = X + LINE_HEIGHT;
-                y = Y + LINE_HEIGHT;
+                x = X + LABEL_LINE_HEIGHT;
+                y = Y + (LABEL_LINE_HEIGHT * 2);
             }
         });
     }
 
     public preRender() {
         this.LETTERS.forEach(l => l.preRender());
-    }
-
-    public toggleAllowClick(state: boolean) {
-        this.EL.style.pointerEvents = state ? 'all' : 'none';
     }
 
     public setY(y: number) {

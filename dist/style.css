@@ -176,7 +176,8 @@ h1, h2, h3, h4, h5, h6, p {
   rotate: -28deg;
   font-family: "Neuton";
   font-size: 3.25rem;
-  letter-spacing: 3.472135955rem;
+  letter-spacing: 4rem;
+  line-height: 4.472135955rem;
   color: transparent;
   background: none;
   cursor: pointer;

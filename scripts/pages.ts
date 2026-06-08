@@ -1,4 +1,7 @@
-import { CLASS_BODY_PAGE_OPEN, CLASS_PAGE_OPEN, EL_BODY, EL_MAIN, EL_PAGE_CONTAINER } from "./consts";
+import {
+    CLASS_BODY_PAGE_OPEN, CLASS_PAGE_OPEN,
+    EL_BODY, EL_MAIN, EL_PAGE_CONTAINER
+} from "./consts";
 import { PAGE_DATA } from "./pages.json";
 import { toggleSectionOpen as toggleGraphicsSectionOpen } from "./graphics/main";
 import { html, toCamelCase } from "./util";
@@ -67,14 +70,14 @@ export function initPages() {
 }
 
 export function openPage(index: number) {
-    toggleGraphicsSectionOpen();
-    EL_BODY.classList.add(CLASS_BODY_PAGE_OPEN);
-    EL_PAGES[index].classList.add(CLASS_PAGE_OPEN);
+    // toggleGraphicsSectionOpen();
+    // EL_BODY.classList.add(CLASS_BODY_PAGE_OPEN);
+    // EL_PAGES[index].classList.add(CLASS_PAGE_OPEN);
 
-    // Lazy load images
-    EL_IMGS[index]
-        .filter(img => !img.getAttribute('src'))
-        .forEach(img => img.setAttribute('src', img.dataset.src!));
+    // // Lazy load images
+    // EL_IMGS[index]
+    //     .filter(img => !img.getAttribute('src'))
+    //     .forEach(img => img.setAttribute('src', img.dataset.src!));
 }
 
 export function closePage() {

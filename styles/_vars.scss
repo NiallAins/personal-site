@@ -1,39 +1,33 @@
 @use 'sass:math' as *;
-@use 'sass:list' as *;
 @use 'sass:color' as *;
+@use 'util' as *;
 
 @import url('https://fonts.googleapis.com/css2?family=Neuton:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
-$-z: 0;
-@function z() {
-    $-z: $-z + 10 !global;
-    @return $-z;
-}
+$f-fam-title-src:      url(https://fonts.gstatic.com/s/neuton/v24/UMBQrPtMoH62xUZKAKkvcwr4Pro.woff2);
+$f-fam-title:          "Neuton";
+$f-fam-body:           "Roboto", san-serif;   
+$f-size-base:          16px;
+$f-size-h1:            4.5rem;
+$f-size-h2:            3.25rem;
+$f-size-h3:            2.5rem;
+$f-size-h4:            1.75rem;
+$f-size-bl:            1.25rem;
+$f-size-bm:            1.125rem;
+$f-size-bs:            0.875rem;
+$f-size-section:       $f-size-h2;
+$f-weight-section:     500;
 
-@function list-to-hsl($list) {
-    @return hsl(nth($list, 1), nth($list, 2) * 1%, nth($list, 3) * 1%, nth($list, 4));
-}
+$-w-page-max-total:    1152px;
+$w-page-pad:           1rem;
+$w-page-max:           div($-w-page-max-total, $f-size-base) - (2 * $w-page-pad);
+$w-iso-scale:          1rem;
+$w-stroke-underline:   0.375rem;
+$w-stroke-outline:     2px;
+$h-min-sea:            14vh;
 
-$f-fam-title-src:  url(https://fonts.gstatic.com/s/neuton/v24/UMBQrPtMoH62xUZKAKkvcwr4Pro.woff2);
-$f-fam-title:      "Neuton";
-$f-fam-body:       "Roboto", san-serif;   
-$f-size-base:      16px;
-$f-size-h1:        4.5rem;
-$f-size-h2:        3.25rem;
-$f-size-h3:        2.5rem;
-$f-size-h4:        1.75rem;
-$f-size-bl:        1.25rem;
-$f-size-bm:        1.125rem;
-$f-size-bs:        0.875rem;
-$f-size-section:   $f-size-h2;
-$f-weight-section: 500;
-
-$-w-page-max-total:  1152px;
-$w-page-pad:         1rem;
-$w-page-max:         div($-w-page-max-total, $f-size-base) - (2 * $w-page-pad);
-$w-iso-scale:        1rem;
-$w-stroke-underline: 0.375rem;
-$w-stroke-outline:   3px;
+$label-letter-space:   $w-iso-scale * 4;
+$label-line-height:    $w-iso-scale * 2;
 
 $c-hsl-terrain-sea:    (174, 53, 40, 0.5);
 $c-terrain-sea:        list-to-hsl($c-hsl-terrain-sea);
@@ -44,27 +38,25 @@ $c-terrainland-2:      list-to-hsl($c-hsl-terrain-land-2);
 $c-hsl-terrain-land-3: (106, 80, 15, 1.0);
 $c-terrain-land-3:     list-to-hsl($c-hsl-terrain-land-3);
 
-$c-bg-d:           #111111;
-$c-bg-l:           #111128;
-$c-text-l:         #ffffff;
-$c-text-d:         $c-bg-l;
-$c-text-l-outline: scale($c-terrain-sea, $lightness: -100%, $alpha: 100%);
-$c-text-shadow:    #11111188;
-$c-text-link:      #4848c8;
-$c-bg-select:      $c-text-link;
-$c-text-select:    $c-text-l;
+$c-bg-d:               #111111;
+$c-bg-l:               #111128;
+$c-text-l:             #ffffff;
+$c-text-d:             $c-bg-l;
+$c-text-l-outline:     scale($c-terrain-sea, $lightness: -50%, $alpha: 100%);
+$c-text-shadow:        #11111188;
+$c-text-link:          #4848c8;
+$c-bg-select:          $c-text-link;
+$c-text-select:        $c-text-l;
 
-$z-canvas-bg:  z();
-$z-page:       z();
-$z-box-top:    z();
-$z-canvas-fg:  z();
-$z-buttons:    z();
-$z-page-close: z();
+$z-canvas-bg:          next-z();
+$z-page:               next-z();
+$z-box-top:            next-z();
+$z-canvas-fg:          next-z();
+$z-buttons:            next-z();
+$z-page-close:         next-z();
 
-$height-min-sea: 14vh;
+$dur-sh:               500ms;
+$dur-lg:               1000ms;
 
-$ani-sh: 500ms;
-$ani-lg: 1000ms;
-
-$cl-body-page-open: "body--page-open";
-$cl-page-open:  "page--open";
+$cl-body-page-open:    "body--page-open";
+$cl-page-open:         "page--open";

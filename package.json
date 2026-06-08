@@ -3,7 +3,7 @@
     "main": "main.js",
     "scripts": {
         "dev": "npm run build && concurrently \"npm run build-watch\"",
-        "build": "npm run build-script && npm run build-style",
+        "build": "npm run build-style && npm run build-script",
         "build-style": "node scss-to-ts && sass ./styles/index.scss > ./dist/style.css",
         "build-script": "webpack",
         "build-watch": "concurrently \"onchange \\\"./scripts/**/*.ts\\\" -e \\\"./scripts/consts-css.ts\\\" -- npm run build-script\" \"onchange \\\"./styles/**/*.scss\\\" -- npm run build-style\""

@@ -11,6 +11,27 @@ export enum tPageTag {
     Canvas
 };
 
+export enum eEaseType {
+    Linear,
+    Ease,
+    EaseIn,
+    EaseOut,
+    Elastic,
+    _ElasticIn
+};
+
+export enum eEaseState {
+    BackwardReverseLoop = -4,
+    BackwardReverse = -3,
+    BackwardLoop = -2,
+    Backward = -1,
+    Paused = 0,
+    Forward = 1,
+    ForwardLoop = 2,
+    ForwardReverse = 3,
+    ForwardReverseLoop = 4
+}
+
 
 //
 // Interfaces
@@ -51,6 +72,8 @@ export type tPoint = {
     y: number,
     z?: number
 };
+
+export type tEaseFunc = (x: number) => number;
 
 export type tSplash = {};
 export type tTerrainDetail = [number, number[]];

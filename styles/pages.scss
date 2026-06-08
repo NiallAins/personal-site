@@ -14,8 +14,8 @@ $row-overlap: 12vh;
         overflow: auto;
         opacity: 0;
         transition:
-            opacity $ani-lg,
-            bottom $ani-lg;
+            opacity $dur-lg,
+            bottom $dur-lg;
 
         &.#{ $cl-page-open } {
             opacity: 1;
@@ -28,14 +28,14 @@ $row-overlap: 12vh;
             gap: 1rem;
             width: 100%;
             max-width: $w-page-max;
-            padding: 3rem $w-page-pad #{ $height-min-sea + $row-overlap };
+            padding: 3rem $w-page-pad #{ $h-min-sea + $row-overlap };
             margin: 0 auto;
         }
         
         &-item {
             @include layout-iso();
             margin-bottom: $row-overlap * -1;
-            transition: translate $ani-lg;
+            transition: translate $dur-lg;
 
             &:hover {
                 $hover-shift: 0.75rem;
@@ -77,7 +77,7 @@ $row-overlap: 12vh;
     }
 
     &__close {
-        $height-page-close: $height-min-sea * 0.75;
+        $height-page-close: $h-min-sea * 0.75;
 
         position: fixed;
         left: 0;
@@ -86,7 +86,7 @@ $row-overlap: 12vh;
         z-index: $z-page-close;
         height: $height-page-close;
         text-align: center;
-        transition: height $ani-lg;
+        transition: height $dur-lg;
 
         .#{ $cl-body-page-open } & {
             bottom: 0;

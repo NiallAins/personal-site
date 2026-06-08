@@ -1,4 +1,4 @@
-/* Generated from styles/_vars.scss */
+/* Generated from ./styles/_vars.scss */
 
 export const
     FONT_FAM_TITLE_SRC: string = 'url(https://fonts.gstatic.com/s/neuton/v24/UMBQrPtMoH62xUZKAKkvcwr4Pro.woff2)',
@@ -18,7 +18,10 @@ export const
     WIDTH_PAGE_MAX: number = 1120,
     WIDTH_ISO_SCALE: number = 16,
     WIDTH_STROKE_UNDERLINE: number = 6,
-    WIDTH_STROKE_OUTLINE: number = 3,
+    WIDTH_STROKE_OUTLINE: number = 2,
+    HEIGHT_MIN_SEA: number = 0.14,
+    LABEL_LETTER_SPACE: number = 64,
+    LABEL_LINE_HEIGHT: number = 32,
     COLOR_HSL_TERRAIN_SEA: [number, number, number, number] = [174, 53, 40, 0.5],
     COLOR_TERRAIN_SEA: string = 'hsla(174, 53%, 40%, 0.5)',
     COLOR_HSL_TERRAIN_LAND_1: [number, number, number, number] = [18, 70, 20, 1],
@@ -31,7 +34,7 @@ export const
     COLOR_BG_L: string = '#111128',
     COLOR_TEXT_L: string = '#ffffff',
     COLOR_TEXT_D: string = '#111128',
-    COLOR_TEXT_L_OUTLINE: string = 'hsl(174, 53%, 0%)',
+    COLOR_TEXT_L_OUTLINE: string = 'hsl(174, 53%, 20%)',
     COLOR_TEXT_SHADOW: string = 'rgba(17, 17, 17, 0.5333333333)',
     COLOR_TEXT_LINK: string = '#4848c8',
     COLOR_BG_SELECT: string = '#4848c8',
@@ -42,8 +45,7 @@ export const
     Z_CANVAS_FG: number = 40,
     Z_BUTTONS: number = 50,
     Z_PAGE_CLOSE: number = 60,
-    HEIGHT_MIN_SEA: number = 0.14,
-    ANI_SH: number = 500,
-    ANI_LG: number = 1000,
+    DURATION_SH: number = 500,
+    DURATION_LG: number = 1000,
     CLASS_BODY_PAGE_OPEN: string = 'body--page-open',
     CLASS_PAGE_OPEN: string = 'page--open';

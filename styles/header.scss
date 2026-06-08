@@ -2,8 +2,8 @@
 @use 'mixins' as *;
 
 .header {
-    height: 100vh - $height-min-sea;
-    padding-top: $height-min-sea;
+    height: 100vh - $h-min-sea;
+    padding-top: $h-min-sea;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -29,7 +29,7 @@
 
         &-links {
             display: flex;
-            margin: $height-min-sea auto;
+            margin: $h-min-sea auto;
             width: 32rem;
             justify-content: space-between;
             pointer-events: none;
