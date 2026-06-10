@@ -24,10 +24,13 @@ $w-page-max:           div($-w-page-max-total, $f-size-base) - (2 * $w-page-pad)
 $w-iso-scale:          1rem;
 $w-stroke-underline:   0.375rem;
 $w-stroke-outline:     2px;
+$h-main-section:       40vh;
+$h-main-section-gap:   20vh;
 $h-min-sea:            14vh;
 
-$label-letter-space:   $w-iso-scale * 4;
-$label-line-height:    $w-iso-scale * 2;
+$label-letter-space:   3rem;
+$label-line-height:    $f-size-section * 1.5;
+$label-angle:          -0.488rad;
 
 $c-hsl-terrain-sea:    (174, 53, 40, 0.5);
 $c-terrain-sea:        list-to-hsl($c-hsl-terrain-sea);
@@ -60,3 +63,4 @@ $dur-lg:               1000ms;
 
 $cl-body-page-open:    "body--page-open";
 $cl-page-open:         "page--open";
+$cl-main-section-button-disabled: "main__section-button--disabled"

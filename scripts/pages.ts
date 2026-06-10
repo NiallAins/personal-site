@@ -17,9 +17,9 @@ export function initPages() {
     PAGE_DATA.forEach((page, pi) => {
         // Add topic button
         const [EL_TOPIC, EL_TOPIC_BUTTON] = html`
-            <div class="main__topic">
+            <div class="main__section">
                 <#button
-                    class="main__topic-button"
+                    class="main__section-button"
                     onclick="${ openPage.bind(null, pi) }"
                 >
                     ${ page.label }

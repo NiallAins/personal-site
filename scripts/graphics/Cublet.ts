@@ -1,4 +1,4 @@
-import { ISO_SCALE, WIDTH_PAGE_MAX } from "../consts";
+import { HEIGHT_MAIN_SECTION, HEIGHT_MAIN_SECTION_GAP, ISO_SCALE, WIDTH_PAGE_MAX } from "../consts";
 import { tPointArr } from "../types";
 
 export class Cublet {
@@ -54,13 +54,13 @@ export class Cublet {
         section: number
     ) {
         const
-            W = Math.min(WIDTH_PAGE_MAX, cw),
-            W_OFF = (this._WIDTH + cw - W) * 0.5,
-            H = ch * 0.5,
-            H_OFF = ch * 1.1,
-            H_PAD = ch * 0.1;
-        this.x = W_OFF + (section % 2 ? 0 : W * 0.5) + (W * 0.5 * this._RAND_X);
-        this.y = H_OFF + (section * H) + H_PAD + ((H - (H_PAD * 2)) * this._RAND_Y);
+            W = Math.min(WIDTH_PAGE_MAX, cw) * 0.5,
+            W_OFF = ((this._WIDTH + cw) * 0.5) + (section % 2 ? W * -1 : 0),
+            H = ch * HEIGHT_MAIN_SECTION,
+            H_GAP = ch * HEIGHT_MAIN_SECTION_GAP,
+            H_OFF = ch + H_GAP + (section * (H + H_GAP));
+        this.x = W_OFF + (W * this._RAND_X);
+        this.y = H_OFF + (H * this._RAND_Y);
     }
 
     public draw(c: CanvasRenderingContext2D) {

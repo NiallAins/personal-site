@@ -1,10 +1,17 @@
 import {
+    CLASS_MAIN_SECTION_BUTTON_DISABLED,
     COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE, COLOR_TEXT_SHADOW,
     DURATION_LG, DURATION_SH,
     FONT_FAM_TITLE, FONT_SIZE_SECTION, FONT_WEIGHT_SECTION,
-    ISO_SCALE, LABEL_LETTER_HEIGHT, LABEL_LETTER_SHADOW_BLUR, LABEL_LETTER_SPACE, LABEL_LETTER_WIDTH,
+    HEIGHT_MAIN_SECTION,
+    HEIGHT_MAIN_SECTION_GAP,
+    ISO_SCALE, LABEL_ANGLE, LABEL_ISO_Z, LABEL_LETTER_HEIGHT, LABEL_LETTER_SHADOW_BLUR, LABEL_LETTER_SPACE, LABEL_LETTER_WIDTH,
     LABEL_LINE_HEIGHT,
-    WIDTH_STROKE_OUTLINE
+    LABEL_LINE_HEIGHT_ISO,
+    WIDTH_PAGE_MAX,
+    WIDTH_STROKE_OUTLINE,
+    Y_UNIT,
+    Z_UNIT
 } from "../consts";
 import { eEaseState, eEaseType } from "../types";
 import { Canvas } from "./Canvas";
@@ -50,23 +57,44 @@ export class Label {
     public setPosition(pageWidth: number, pageHeight: number) {
         const
             BREAK = this.LETTERS.findIndex(l => l.LETTER === '/'),
-            X = (pageWidth * (this.INDEX % 2 ? 0.65 : 0.35)) - ((BREAK > -1 ? BREAK : this.LETTERS.length) * ISO_SCALE * 2),
-            Y = (pageHeight * 1.5) + (pageHeight * 0.5 * this.INDEX);
+            LINE_0_LENGTH = BREAK === -1 ? this.LETTERS.length - 1 : BREAK,
+            LINE_1_LENGTH = this.LETTERS.length - LINE_0_LENGTH,
+            LINE_0_WIDTH = (LINE_0_LENGTH * LABEL_LETTER_WIDTH),
+            LINE_1_WIDTH = (LINE_1_LENGTH * LABEL_LETTER_WIDTH),
+            LINE_0_OFF_X = (LINE_0_WIDTH * -0.5) + (LABEL_LETTER_WIDTH * 0.5),
+            LINE_1_OFF_X = (LINE_1_WIDTH * -0.5) + (LABEL_LETTER_WIDTH * 0.5),
+            LINE_0_OFF_Y = LABEL_LETTER_HEIGHT * -0.5,
+            LINE_1_OFF_Y = LINE_0_OFF_Y + LABEL_LINE_HEIGHT;
 
-        let
-            x = X,
-            y = Y;
-        this.LETTERS.forEach(l => {
-            l.x = x;
-            l.y = y;
+        const
+            IS_LEFT = this.INDEX % 2 === 0,
+            SECTION_WIDTH = Math.min(pageWidth, WIDTH_PAGE_MAX) * 0.5,
+            SECTION_HEIGHT = pageHeight * HEIGHT_MAIN_SECTION,
+            SECTION_GAP = pageHeight * HEIGHT_MAIN_SECTION_GAP,
+            SECTION_OFFSET_X =
+                (pageWidth * 0.5) +
+                (SECTION_WIDTH * (IS_LEFT ? -0.5 : 0.5)) -
+                (LABEL_LETTER_WIDTH * 0.5),
+            SECTION_OFFSET_Y =
+                pageHeight +
+                SECTION_GAP +
+                (this.INDEX * (SECTION_HEIGHT + SECTION_GAP)) +
+                (SECTION_HEIGHT * 0.5) +
+                (LABEL_LETTER_HEIGHT * 0.25) +
+                (Z_UNIT * LABEL_ISO_Z);
 
-            x += LABEL_LETTER_SPACE;
-            y -= LABEL_LINE_HEIGHT;
+        this.LETTERS.forEach((l, li) => {
+            const
+                LINE_1 = li > LINE_0_LENGTH,
+                X =
+                    (LINE_1 ? LINE_1_OFF_X : LINE_0_OFF_X) +
+                    ((LINE_1 ? li - LINE_0_LENGTH : li) * LABEL_LETTER_WIDTH),
+                Y = LINE_1 ? LINE_1_OFF_Y : LINE_0_OFF_Y,
+                MAG = Math.sqrt(X**2 + Y**2),
+                ANG = Math.atan2(Y, X) + LABEL_ANGLE;
 
-            if (l.LETTER === '/') {
-                x = X + LABEL_LINE_HEIGHT;
-                y = Y + (LABEL_LINE_HEIGHT * 2);
-            }
+            l.x = SECTION_OFFSET_X + (Math.cos(ANG) * MAG);
+            l.y = SECTION_OFFSET_Y + (Math.sin(ANG) * MAG);
         });
     }
 
@@ -76,7 +104,7 @@ export class Label {
 
     public setY(y: number) {
         this.EL.style.top = y + 'px';
-        this.EL.style.pointerEvents = y > 100 ? 'none' : 'all';
+        this.EL.classList.toggle(CLASS_MAIN_SECTION_BUTTON_DISABLED, y > 100);
     }
 }
 
