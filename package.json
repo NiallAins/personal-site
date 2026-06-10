@@ -1,10 +1,10 @@
 {
-    "name": "personalsite",
+    "name": "personalsite-main",
     "main": "main.js",
     "scripts": {
         "echod": "",
         "dev": "npm run build && concurrently \"npm run build-watch\"",
-        "deploy": "git add * && git commit -m \"Sync with prod\" && git push origin main && git checkout prod && npm run build-script-prod && git add * && git commit -m \"Push to prod and deploy\" && git push origin prod && git checkout main && npm run build-script",
+        "deploy": "git add * && git commit -m \"Sync with prod\" && git push origin main && git checkout prod && git pull origin main && npm run build-script-prod && git add * && git commit -m \"Push to prod and deploy\" && git push origin prod && git checkout main && npm run build-script",
         "build": "npm run build-style && npm run build-script",
         "build-style": "node scss-to-ts && sass ./styles/index.scss > ./dist/style.css",
         "build-script": "webpack",
