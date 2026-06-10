@@ -5,7 +5,8 @@ import {
     TERRAIN, TERRAIN_SEA,
     COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE,
     WIDTH_STROKE_OUTLINE, WIDTH_STROKE_UNDERLINE,
-    LABEL_DEPRESS_Z, LABEL_LETTER_SPACE_ISO, LABEL_LINE_HEIGHT_ISO
+    LABEL_DEPRESS_Z, LABEL_LETTER_SPACE_ISO, LABEL_LINE_HEIGHT_ISO,
+    LABEL_LINE_HEIGHT
 } from "../consts";
 import { LABELS } from "./main";
 import { Canvas } from "./Canvas";
@@ -281,8 +282,8 @@ function renderLetter(
                 const PTS: [number, number][] = LABEL.LETTERS
                     .slice(letter.LABEL.LETTERS.length - letter.LAST_LINE)
                     .map((l, li) => [
-                        3 + (li * LABEL_LETTER_SPACE_ISO),
-                        -2 - (li * LABEL_LINE_HEIGHT_ISO) +
+                        2 + (li * LABEL_LETTER_WIDTH / ISO_SCALE),
+                        -1.5 - (li * LABEL_LINE_HEIGHT / Y_UNIT) +
                         (getHorizonIsoZ(l.y) * 2)
                     ]);
                 PTS.unshift([
@@ -290,8 +291,8 @@ function renderLetter(
                     PTS[0][1] - ((PTS[1][1] - PTS[0][1]) * 0.25)
                 ]);
                 PTS.push([
-                    PTS[PTS.length - 1][0] - ((PTS[PTS.length - 2][0] - PTS[PTS.length - 1][0]) * 0.25),
-                    PTS[PTS.length - 1][1] - ((PTS[PTS.length - 2][1] - PTS[PTS.length - 1][1]) * 0.25)
+                    PTS[PTS.length - 1][0] - ((PTS[PTS.length - 2][0] - PTS[PTS.length - 1][0]) * 0.2),
+                    PTS[PTS.length - 1][1] - ((PTS[PTS.length - 2][1] - PTS[PTS.length - 1][1]) * 0.2)
                 ]);
 
                 C.translate(
@@ -469,6 +470,7 @@ function getLandZ(x: number, y: number, width: number, height: number): number {
 }
 
 function getSeaZ(t: number, x: number, y: number, sx: number, sy: number): number {
+    // return 0;
     return (
         // Ebb
         Math.cos((y + (x * 0.25) + (t * 200)) * 0.125) +

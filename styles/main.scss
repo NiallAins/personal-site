@@ -6,11 +6,11 @@
     display: flex;
     flex-direction: column;
     align-items: start;
-    margin-top: 14rem;
     
-    &__topic {
+    &__section {
         width: 50%;
-        height: 50vh;
+        height: $h-main-section;
+        margin-top: $h-main-section-gap;
         text-align: center;
 
         &:nth-child(2n) {
@@ -25,19 +25,27 @@
         &-button {
             position: relative;
             z-index: $z-buttons;
-            padding: 1rem 2rem 2rem;
+            padding: 2rem 2rem 4rem;
             border: none;
-            rotate: -28deg;
+            rotate: $label-angle;
             font-family: $f-fam-title;
             font-size: $f-size-section;
             letter-spacing: $label-letter-space;
-            line-height: $label-line-height * hypot(2, 1);
+            line-height: $label-line-height;
             color: transparent;
             background: none;
             cursor: pointer;
 
             &:focus-visible {
                 outline: 2px solid $c-text-l;
+            }
+
+            &.#{ $cl-main-section-button-disabled } {
+                pointer-events: none;
+
+                &:focus-visible {
+                    outline: 0px;
+                }
             }
         }
     }

@@ -8,7 +8,7 @@ body {
   overflow-x: hidden;
   font-family: "Neuton";
   max-width: 70rem;
-  height: 380vh;
+  height: 480vh;
   padding: 1rem;
   margin: 0 auto;
 }
@@ -155,35 +155,41 @@ h1, h2, h3, h4, h5, h6, p {
   display: flex;
   flex-direction: column;
   align-items: start;
-  margin-top: 14rem;
 }
-.main__topic {
+.main__section {
   width: 50%;
-  height: 50vh;
+  height: 40vh;
+  margin-top: 20vh;
   text-align: center;
 }
-.main__topic:nth-child(2n) {
+.main__section:nth-child(2n) {
   align-self: end;
 }
-.body--page-open .main__topic {
+.body--page-open .main__section {
   display: none;
 }
-.main__topic-button {
+.main__section-button {
   position: relative;
   z-index: 50;
-  padding: 1rem 2rem 2rem;
+  padding: 2rem 2rem 4rem;
   border: none;
-  rotate: -28deg;
+  rotate: -0.488rad;
   font-family: "Neuton";
   font-size: 3.25rem;
-  letter-spacing: 4rem;
-  line-height: 4.472135955rem;
+  letter-spacing: 3rem;
+  line-height: 4.875rem;
   color: transparent;
   background: none;
   cursor: pointer;
 }
-.main__topic-button:focus-visible {
+.main__section-button:focus-visible {
   outline: 2px solid #ffffff;
+}
+.main__section-button.main__section-button--disabled {
+  pointer-events: none;
+}
+.main__section-button.main__section-button--disabled:focus-visible {
+  outline: 0px;
 }
 
 .pages__page {

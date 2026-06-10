@@ -19,9 +19,12 @@ export const
     WIDTH_ISO_SCALE: number = 16,
     WIDTH_STROKE_UNDERLINE: number = 6,
     WIDTH_STROKE_OUTLINE: number = 2,
+    HEIGHT_MAIN_SECTION: number = 0.4,
+    HEIGHT_MAIN_SECTION_GAP: number = 0.2,
     HEIGHT_MIN_SEA: number = 0.14,
-    LABEL_LETTER_SPACE: number = 64,
-    LABEL_LINE_HEIGHT: number = 32,
+    LABEL_LETTER_SPACE: number = 48,
+    LABEL_LINE_HEIGHT: number = 78,
+    LABEL_ANGLE: number = -0.488,
     COLOR_HSL_TERRAIN_SEA: [number, number, number, number] = [174, 53, 40, 0.5],
     COLOR_TERRAIN_SEA: string = 'hsla(174, 53%, 40%, 0.5)',
     COLOR_HSL_TERRAIN_LAND_1: [number, number, number, number] = [18, 70, 20, 1],
@@ -48,4 +51,5 @@ export const
     DURATION_SH: number = 500,
     DURATION_LG: number = 1000,
     CLASS_BODY_PAGE_OPEN: string = 'body--page-open',
-    CLASS_PAGE_OPEN: string = 'page--open';
+    CLASS_PAGE_OPEN: string = 'page--open',
+    CLASS_MAIN_SECTION_BUTTON_DISABLED: string = 'main__section-button--disabled';
