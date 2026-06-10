@@ -1,5 +1,5 @@
 {
-    "name": "personalsite-main",
+    "name": "personalsite",
     "main": "main.js",
     "scripts": {
         "echod": "",
