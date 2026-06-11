@@ -5,7 +5,7 @@ git commit -m "$2";
 git push origin main;
 
 if [ $1 == "deploy" ]; then
-    git merge -s ours prod;
+    git merge -s ours prod --no-edit;
     git checkout prod;
     git merge --ff-only main;
     npm run build-script-prod;
