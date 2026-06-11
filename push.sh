@@ -14,5 +14,3 @@ if [ $1 == "deploy" ]; then
     git push origin prod;
     git checkout main;
 fi
-
-read -p "Press any key to continue" x
