@@ -1,10 +1,10 @@
 #!/bin/bash
 
 git add *;
-git commit -m "$1";
+git commit -m $1;
 git push origin main;
 
-if [ $1 == "--deploy" ]; then
+if [ $2 == "--deploy" ]; then
     git checkout prod;
     git reset --hard origin/main;
     npm run build-script-prod;
