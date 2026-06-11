@@ -8,6 +8,7 @@ if [ $1 == "deploy" ]; then
     git checkout prod;
     git fetch --all;
     git reset --hard origin/main;
+    git pull origin main;
     npm run build-script-prod;
     git add *;
     git commit -m "Pull from main and deploy";
