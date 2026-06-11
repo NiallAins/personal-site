@@ -5,7 +5,7 @@ export class Cublet {
     public static readonly CUBLETS: Cublet[] = [];
 
     private readonly _PTS: tPointArr[];
-    private readonly _WIDTH: number = ISO_SCALE * 2;
+    private readonly _WIDTH: number = ISO_SCALE * 1.5;
     private readonly _RAND_X: number = Math.random();
     private readonly _RAND_Y: number = Math.random();
 
