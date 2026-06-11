@@ -6,10 +6,7 @@ import {
     COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE,
     WIDTH_STROKE_OUTLINE, WIDTH_STROKE_UNDERLINE,
     LABEL_DEPRESS_Z, LABEL_LETTER_SPACE_ISO, LABEL_LINE_HEIGHT_ISO,
-    LABEL_LINE_HEIGHT,
-    WIDTH_PAGE_MAX,
-    HEIGHT_MAIN_SECTION,
-    HEIGHT_MAIN_SECTION_GAP
+    LABEL_LINE_HEIGHT
 } from "../consts";
 import { LABELS } from "./main";
 import { Canvas } from "./Canvas";
@@ -27,7 +24,7 @@ const
     NOISE = new Noise(),
     OVERSHOOT_MIN_SEA = -4 * ROW_HEIGHT,
     OVERSHOOT_MIN_OBJ = 12 * ROW_HEIGHT,
-    OVERSHOOT_MAX_SEA =  9 * ROW_HEIGHT,
+    OVERSHOOT_MAX_SEA =  5 * ROW_HEIGHT,
     OVERSHOOT_MAX_OBJ =  7 * ROW_HEIGHT,
     LETTER_Z = LABEL_ISO_Z * Z_UNIT,
     TEXT_UNDERLINE_WIDTH_OFFSET = WIDTH_STROKE_UNDERLINE / ISO_SCALE,
@@ -290,12 +287,12 @@ function renderLetter(
                         (getHorizonIsoZ(l.y) * 2)
                     ]);
                 PTS.unshift([
-                    PTS[0][0] - ((PTS[1][0] - PTS[0][0]) * 0.15),
-                    PTS[0][1] - ((PTS[1][1] - PTS[0][1]) * 0.15)
+                    PTS[0][0] - ((PTS[1][0] - PTS[0][0]) * 0.25),
+                    PTS[0][1] - ((PTS[1][1] - PTS[0][1]) * 0.25)
                 ]);
                 PTS.push([
-                    PTS[PTS.length - 1][0] - ((PTS[PTS.length - 2][0] - PTS[PTS.length - 1][0]) * 0.1),
-                    PTS[PTS.length - 1][1] - ((PTS[PTS.length - 2][1] - PTS[PTS.length - 1][1]) * 0.1)
+                    PTS[PTS.length - 1][0] - ((PTS[PTS.length - 2][0] - PTS[PTS.length - 1][0]) * 0.2),
+                    PTS[PTS.length - 1][1] - ((PTS[PTS.length - 2][1] - PTS[PTS.length - 1][1]) * 0.2)
                 ]);
 
                 C.translate(
@@ -435,7 +432,7 @@ function getTerrainIsoZ(
     horizonIsoZ: number
 ): [number, number, number] {
     const
-        LAND_Z = getLandZ(sx, sy + window.scrollY, cw, ch) - horizonIsoZ,
+        LAND_Z = getLandZ(sx, sy, cw, ch) - horizonIsoZ,
         SEA_Z = getSeaZ(t, x, y, sx, sy) - horizonIsoZ;
     return [
         LAND_Z,
@@ -445,23 +442,31 @@ function getTerrainIsoZ(
 }
 
 function getLandZ(x: number, y: number, width: number, height: number): number {
-    const
-        MAX_DIST = (HEIGHT_MAIN_SECTION * height) ** 2,
-        HEIGHT_MAIN_SECTION_FULL = (HEIGHT_MAIN_SECTION + HEIGHT_MAIN_SECTION_GAP) * height,
-        OFF_Y = height + (HEIGHT_MAIN_SECTION_GAP * height) + (HEIGHT_MAIN_SECTION * height * 0.5),
-        SECTION_I = Math.floor((y - OFF_Y) / HEIGHT_MAIN_SECTION_FULL),
-        PEAK_X = (width * 0.5) + (Math.min(WIDTH_PAGE_MAX, width) * (SECTION_I % 2 ? -0.25 : 0.25)),
-        PEAK_Y = OFF_Y + (SECTION_I * HEIGHT_MAIN_SECTION_FULL),
-        DIST = (PEAK_X - x)**2 + (PEAK_Y - y)**2,
-        MAX_Z = 3,
-        MIN_Z = -5;
+    return -5;
 
-    return y < OFF_Y
-        ? MIN_Z
-        : (
-            (MIN_Z + (Math.max(0, (MAX_DIST - DIST) / MAX_DIST) * (MAX_Z - MIN_Z))) +
-            (NOISE.get(x / 32, y / 32) * 0.5)
-        );
+    if (
+        y < height
+    ) {
+        return -5;
+    }
+
+    // Islands
+    const
+        PHASE_X = width * 0.5,
+        PHASE_Y = height * 0.5,
+        PHASE_Z = -1,
+        PERIOD_X = width / 6,
+        PERIOD_Y = height / 6,
+        AMP = 5;
+    return (
+        PHASE_Z +
+        (
+            AMP *
+            Math.sin((x + PHASE_X) / PERIOD_X) *
+            Math.sin((y + PHASE_Y) / PERIOD_Y)
+        ) +
+        (NOISE.get(x / 32, y / 32) * 0.25)
+    );
 }
 
 function getSeaZ(t: number, x: number, y: number, sx: number, sy: number): number {
@@ -471,9 +476,9 @@ function getSeaZ(t: number, x: number, y: number, sx: number, sy: number): numbe
         Math.cos((y + (x * 0.25) + (t * 200)) * 0.125) +
 
         // Splash waves
-        Splash.splashes.reduce((sum, s) => sum + s.getZ(sx, sy), 0) +
+        Splash.splashes.reduce((sum, s) => sum + s.getZ(sx, sy), 0) +0
 
         // Noise
-        (NOISE.get(x, y) * 0.15)
+        // (NOISE.get(x, y) * 0.15)
     );
 }
