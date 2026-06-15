@@ -1,4 +1,4 @@
-/* Generated from ./styles/_vars.scss */
+/* Generated from styles/_vars.scss */
 
 export const
     FONT_FAM_TITLE_SRC: string = 'url(https://fonts.gstatic.com/s/neuton/v24/UMBQrPtMoH62xUZKAKkvcwr4Pro.woff2)',

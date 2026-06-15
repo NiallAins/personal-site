@@ -1,15 +1,15 @@
 {
     "name": "personalsite",
     "main": "main.js",
-    "scripts": {
+     "scripts": {
         "dev": "npm run build && concurrently \"npm run build-watch\"",
-        "push": "push.sh nodeploy",
-        "push-deploy": "push.sh deploy",
         "build": "npm run build-style && npm run build-script",
-        "build-style": "node scss-to-ts && sass ./styles/index.scss > ./dist/style.css",
-        "build-script": "webpack",
-        "build-script-prod": "webpack --mode production",
-        "build-watch": "concurrently \"onchange \\\"./scripts/**/*.ts\\\" -e \\\"./scripts/consts-css.ts\\\" -- npm run build-script\" \"onchange \\\"./styles/**/*.scss\\\" -- npm run build-style\""
+        "build-style": "node ./build-scripts/scss-to-ts && sass ./styles/index.scss > ./dist/style.css",
+        "build-script": "webpack --config ./build-scripts/webpack.config.js",
+        "build-script-prod": "webpack --config ./build-scripts/webpack.config.js --mode production",
+        "build-watch": "concurrently \"onchange \\\"./scripts/**/*.ts\\\" -e \\\"./scripts/consts-css.ts\\\" -- npm run build-script\" \"onchange \\\"./styles/**/*.scss\\\" -- npm run build-style\"",
+        "push": "bash ./build-scripts/push.sh",
+        "push-deploy": "bash ./build-scripts/deploy.sh"
     },
     "repository": {
         "type": "git",
