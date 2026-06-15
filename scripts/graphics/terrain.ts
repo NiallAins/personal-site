@@ -2,21 +2,19 @@ import {
     ISO_SCALE, LABEL_ISO_Z, X_UNIT, Y_UNIT, Z_UNIT,
     LABEL_LETTER_HEIGHT, LABEL_LETTER_WIDTH,
     MAX_SEA_ISO_DEPTH, MIN_LAND_ISO_Z, ROW_HEIGHT,
-    TERRAIN, TERRAIN_SEA,
+    TERRAIN_COLOR_SEA,
     COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE,
     WIDTH_STROKE_OUTLINE, WIDTH_STROKE_UNDERLINE,
-    LABEL_DEPRESS_Z, LABEL_LETTER_SPACE_ISO, LABEL_LINE_HEIGHT_ISO,
-    LABEL_LINE_HEIGHT,
-    WIDTH_PAGE_MAX,
-    HEIGHT_MAIN_SECTION,
-    HEIGHT_MAIN_SECTION_GAP
+    LABEL_DEPRESS_Z, LABEL_LINE_HEIGHT,
+    WIDTH_PAGE_MAX, HEIGHT_MAIN_SECTION, HEIGHT_MAIN_SECTION_GAP,
+    TERRAIN_TYPES, TERRAIN_COLOR_LAND, TERRAIN_SEA_NOISE
 } from "../consts";
-import { LABELS } from "./main";
 import { Canvas } from "./Canvas";
 import { LabelLetter } from "./Label";
 import { Noise } from "./Noise";
 import { Splash } from "./Splash";
 import { Cublet } from "./Cublet";
+import { tColorLayers } from "../types";
 
 
 //
@@ -24,7 +22,16 @@ import { Cublet } from "./Cublet";
 //
 
 const
-    NOISE = new Noise(),
+    NOISE_SEA = new Noise(...TERRAIN_SEA_NOISE),
+    NOISE_TERRAIN: Noise[] = TERRAIN_TYPES
+        .map(t => (new Noise(t[2], t[3], t[4]))),
+    TERRAIN_COLORS: tColorLayers[] = TERRAIN_TYPES
+        .map(t => (
+                t[5]
+                    .map((l, li) => [l, TERRAIN_COLOR_LAND[li]])
+                    .filter(l => l[0] as number > -1)
+            ) as tColorLayers
+        ),
     OVERSHOOT_MIN_SEA = -4 * ROW_HEIGHT,
     OVERSHOOT_MIN_OBJ = 12 * ROW_HEIGHT,
     OVERSHOOT_MAX_SEA =  9 * ROW_HEIGHT,
@@ -45,7 +52,7 @@ export function init() {
         CAN_SEA_PRE_RENDER.CTX,
         0, 0,
         -MAX_SEA_ISO_DEPTH, 0,
-        getTerrainColor(MAX_SEA_ISO_DEPTH, true)
+        getTerrainColor(MAX_SEA_ISO_DEPTH, -1)
     );
 }
 
@@ -86,7 +93,7 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
                             y
                         ),
                         SCR_PT = ptToScreen(...ISO_PT),
-                        [LAND_Z, SEA_Z] = getTerrainIsoZ(
+                        [LAND_Z, SEA_Z, _, TERRAIN_I] = getTerrainIsoZ(
                             can.width, can.height,
                             t,
                             ...ISO_PT,
@@ -99,6 +106,7 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
                         ...SCR_PT,
                         ...ISO_PT,
                         LAND_Z, SEA_Z,
+                        TERRAIN_I,
                         HORIZON_ISO_Z
                     );
 
@@ -135,6 +143,7 @@ function renderTerrainIso(
     x: number, y: number,
     isoX: number, isoY: number,
     landZ: number, seaZ: number,
+    terrainI: number,
     horizonIsoZ: number
 ) {
     const MIN_Z = MIN_LAND_ISO_Z - horizonIsoZ;
@@ -145,26 +154,26 @@ function renderTerrainIso(
             can.CTX,
             isoX, isoY,
             MIN_Z, landZ,
-            getTerrainColor(landZ + horizonIsoZ, false)
+            getTerrainColor(landZ + horizonIsoZ, terrainI)
         );
-
-        // Render sea over land
-        if (seaZ >= landZ) {
-            renderSingleIso(
-                can.CTX,
-                isoX, isoY,
-                Math.max(landZ, seaZ - MAX_SEA_ISO_DEPTH), seaZ,
-                getTerrainColor(seaZ - landZ + horizonIsoZ, true)
-            );
-        }
     }
 
-    else {
-        // Render sea without land
+    // Render sea independent of land
+    if (landZ <= MIN_Z || seaZ - landZ > MAX_SEA_ISO_DEPTH) {
         can.CTX.drawImage(
             CAN_SEA_PRE_RENDER.CAN,
             x - (X_UNIT * 0.5),
             y - (seaZ * Z_UNIT) - Y_UNIT + window.scrollY
+        );
+    }
+    
+    // Render shallow sea over land
+    else if (seaZ > landZ) {
+        renderSingleIso(
+            can.CTX,
+            isoX, isoY,
+            landZ, seaZ,
+            getTerrainColor(seaZ - landZ + horizonIsoZ, -1)
         );
     }
 }
@@ -357,14 +366,15 @@ function renderCublet(
 // Color
 //
 
-function getTerrainColor(z: number, isSea: boolean): string[] {
+function getTerrainColor(z: number, terrainI: number): string[] {
     let c, alpha = 1;
-    if (isSea) {
-        c = TERRAIN_SEA[1];
+    if (terrainI === -1) {
+        c = TERRAIN_COLOR_SEA;
         alpha = c[3] * (z < 0.2 ? z / 0.2 : 1);
     } else {
         z = Math.min(1, Math.max(0, (z + 3) / 8));
         const
+            TERRAIN = TERRAIN_COLORS[terrainI],
             CI = TERRAIN.findIndex(c => z <= c[0]),
             C0 = TERRAIN[CI - 1],
             C1 = TERRAIN[CI],
@@ -373,7 +383,7 @@ function getTerrainColor(z: number, isSea: boolean): string[] {
     }
 
     return [0, 8, 12]
-        .map(h => `hsl(${c[0]} ${c[1]}% ${c[2] - h}% / ${alpha})`);
+        .map(h => `hsl(${ c[0] } ${ c[1] }% ${ c[2] - h }% / ${ alpha })`);
 }
 
 
@@ -433,39 +443,62 @@ function getTerrainIsoZ(
     x: number, y: number,
     sx: number, sy: number,
     horizonIsoZ: number
-): [number, number, number] {
+): [number, number, number, number] {
     const
-        LAND_Z = getLandZ(sx, sy + window.scrollY, cw, ch) - horizonIsoZ,
-        SEA_Z = getSeaZ(t, x, y, sx, sy) - horizonIsoZ;
+        [LAND_Z, TERRAIN_I] = getLandZ(sx, sy + window.scrollY, cw, ch),
+        SEA_Z = getSeaZ(t, x, y, sx, sy);
     return [
-        LAND_Z,
-        SEA_Z,
-        Math.max(SEA_Z, LAND_Z)
+        LAND_Z - horizonIsoZ,
+        SEA_Z - horizonIsoZ,
+        Math.max(SEA_Z, LAND_Z - horizonIsoZ),
+        TERRAIN_I
     ];
 }
 
-function getLandZ(x: number, y: number, width: number, height: number): number {
+function getLandZ(x: number, y: number, width: number, height: number): [number, number] {
     const
-        MAX_DIST = (HEIGHT_MAIN_SECTION * height) ** 2,
         HEIGHT_MAIN_SECTION_FULL = (HEIGHT_MAIN_SECTION + HEIGHT_MAIN_SECTION_GAP) * height,
-        OFF_Y = height + (HEIGHT_MAIN_SECTION_GAP * height) + (HEIGHT_MAIN_SECTION * height * 0.5),
+        OFF_Y = height + (HEIGHT_MAIN_SECTION_GAP * height) + (HEIGHT_MAIN_SECTION * height * 0.25),
         SECTION_I = Math.floor((y - OFF_Y) / HEIGHT_MAIN_SECTION_FULL),
+        TERRAIN_I = SECTION_I % TERRAIN_TYPES.length;
+
+    if (y < OFF_Y) {
+        return [MIN_LAND_ISO_Z, 0];
+    }
+
+    // const
+    //     MAX_DIST = (parseFloat((window as any).terrain_maxDist) * height) ** 2,
+    //     PEAK_X = (width * 0.5) + (Math.min(WIDTH_PAGE_MAX, width) * (SECTION_I % 2 ? -0.25 : 0.25)),
+    //     PEAK_Y = OFF_Y + (SECTION_I * HEIGHT_MAIN_SECTION_FULL),
+    //     DIST = (PEAK_X - x)**2 + (PEAK_Y - y)**2,
+    //     MAX_Z = parseFloat((window as any).terrain_maxZ);
+
+    // if (parseInt((window as any).terrain_reseed)) {
+    //     console.log(NOISE_TERRAIN[TERRAIN_I].reseed());
+    //     (window as any).terrain_reseed = 0;
+    // }
+    // NOISE_TERRAIN[TERRAIN_I].set(
+    //     parseFloat((window as any).terrain_noiseWidth),
+    //     parseFloat((window as any).terrain_noiseHeight) * 1.438
+    // );
+
+    const
+        MAX_DIST = (TERRAIN_TYPES[TERRAIN_I][0] * height) ** 2,
         PEAK_X = (width * 0.5) + (Math.min(WIDTH_PAGE_MAX, width) * (SECTION_I % 2 ? -0.25 : 0.25)),
         PEAK_Y = OFF_Y + (SECTION_I * HEIGHT_MAIN_SECTION_FULL),
         DIST = (PEAK_X - x)**2 + (PEAK_Y - y)**2,
-        MAX_Z = 3,
-        MIN_Z = -5;
+        MAX_Z = TERRAIN_TYPES[TERRAIN_I][1];
 
-    return y < OFF_Y
-        ? MIN_Z
-        : (
-            (MIN_Z + (Math.max(0, (MAX_DIST - DIST) / MAX_DIST) * (MAX_Z - MIN_Z))) +
-            (NOISE.get(x / 32, y / 32) * 0.5)
-        );
+    return [
+        MIN_LAND_ISO_Z + (
+            (Math.max(0, (MAX_DIST - DIST) / MAX_DIST) * MAX_Z) *
+            (1 + NOISE_TERRAIN[TERRAIN_I].get(x / 32, y / 32))
+        ),
+        TERRAIN_I
+    ];
 }
 
 function getSeaZ(t: number, x: number, y: number, sx: number, sy: number): number {
-    // return 0;
     return (
         // Ebb
         Math.cos((y + (x * 0.25) + (t * 200)) * 0.125) +
@@ -474,6 +507,6 @@ function getSeaZ(t: number, x: number, y: number, sx: number, sy: number): numbe
         Splash.splashes.reduce((sum, s) => sum + s.getZ(sx, sy), 0) +
 
         // Noise
-        (NOISE.get(x, y) * 0.15)
+        (NOISE_SEA.get(x, y) * 0.15)
     );
 }

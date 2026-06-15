@@ -27,7 +27,7 @@ async function init() {
         FONT_FAM_TITLE,
         FONT_FAM_TITLE_SRC,
     );
-    
+
     initGraphics();
     onResize();
 }

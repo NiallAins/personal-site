@@ -1,9 +1,9 @@
 import {
     WIDTH_ISO_SCALE,
-    COLOR_HSL_TERRAIN_LAND_1, COLOR_HSL_TERRAIN_LAND_2, COLOR_HSL_TERRAIN_LAND_3, COLOR_HSL_TERRAIN_SEA,
+    COLOR_HSL_TERRAIN_LAND_1, COLOR_HSL_TERRAIN_LAND_2, COLOR_HSL_TERRAIN_LAND_3, COLOR_HSL_TERRAIN_LAND_4, COLOR_HSL_TERRAIN_SEA,
     LABEL_LETTER_SPACE, LABEL_LINE_HEIGHT
 } from "./consts.scss";
-import { tTerrainDetail } from "./types";
+import { tColor, tTerrainSettings } from "./types";
 import { getEl } from "./util";
 
 
@@ -41,13 +41,6 @@ export const
 export const
     CAN_QUALITY = window.devicePixelRatio,
     SKY_HEIGHT_RATIO: number = 0.75,
-    TERRAIN_SEA: tTerrainDetail =
-        [0.5, COLOR_HSL_TERRAIN_SEA],
-    TERRAIN: tTerrainDetail[] = [
-        [0.0, COLOR_HSL_TERRAIN_LAND_1],
-        [0.3, COLOR_HSL_TERRAIN_LAND_2],
-        [1.0, COLOR_HSL_TERRAIN_LAND_3]
-    ],
     MAX_SEA_ISO_DEPTH: number = 2,
     MIN_LAND_ISO_Z: number = -3,
     ISO_SCALE: number = WIDTH_ISO_SCALE,
@@ -64,6 +57,33 @@ export const
     SECTION_HEIGHT: number = 0.5,
     SECTION_GAP: number = 0.25;
 
+
+//
+// Terrain settings
+//
+
+export const
+    TERRAIN_COLOR_SEA: tColor =
+        COLOR_HSL_TERRAIN_SEA,
+    TERRAIN_COLOR_LAND: tColor[] = [
+        COLOR_HSL_TERRAIN_LAND_1,
+        COLOR_HSL_TERRAIN_LAND_2,
+        COLOR_HSL_TERRAIN_LAND_3,
+        COLOR_HSL_TERRAIN_LAND_4
+    ],
+    TERRAIN_SEA_NOISE: [number, number, number] = [
+        10, 5, 8881155010
+    ],
+    TERRAIN_TYPES: tTerrainSettings[] = [
+        // Rocks
+        [0.6, 3,  5, 2.0, 1749988589, [0, 0.2, 0.7, 1.0]],
+        // Desert
+        [0.6, 3, 10, 2.5, 1749988589, [0, -1, 0.3, 1.0]],
+        // Cliff
+        [0.6, 3, 10, 2.5, 1749988589, [0, -1, 0.3, 1.0]],
+        // Island
+        [0.6, 3, 10, 2.5, 1749988589, [0, -1, 0.3, 1.0]]
+    ];
 
 //
 // Labels

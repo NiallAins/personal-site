@@ -76,5 +76,13 @@ export type tPoint = {
 export type tEaseFunc = (x: number) => number;
 
 export type tSplash = {};
-export type tTerrainDetail = [number, number[]];
-
+export type tColor = [number, number, number, number];
+export type tColorLayers = [number, tColor][];
+export type tTerrainSettings = [
+    rad: number,
+    maxZ: number,
+    noiseW: number,
+    noiseH: number,
+    noiseSeed: number,
+    colorLayers: number[]
+];
