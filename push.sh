@@ -7,7 +7,7 @@ if [ $1 == "deploy" ]; then
     git checkout prod;
     git merge -X theirs main -m "Auto-deploy from main";
     npm run build-script-prod;
-    git commit -ma "Auto-deploy from main";
+    git commit -am "Auto-deploy from main";
     git push origin prod;
     git checkout main;
 fi
