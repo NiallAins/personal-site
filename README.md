@@ -1,70 +1,52 @@
 # Personal Site - niall.design
 
-## View site
+This project is my personal portfolio web site.\
+It is curently running live at [niall.design](http://niall.design) or [niallains.github.io/personal-site/dist](`http://niallains.github.io/personal-site/dist`).
 
-Live at [niall.design](http://niall.design) or [niallains.github.io/personal-site/dist](`http://niallains.github.io/personal-site/dist`)
 
-## Development 
 
-### Start dev
+## Development
 
-Build, watch files, auto-convert `_vars.scss` to `consts-css.ts`.
 
+### Set up
+
+[Install Node](https://nodejs.org/en/download)
+
+Download code and install dev packages:
+```bash
+  git clone https://github.com/NiallAins/personal-site.git;
+  cd personal-site;
+  npm ci;
+```
+
+
+### Start development
+
+Auto convert `_vars.scss` to `consts.css.ts`, build scripts and styles to `./dist`, then repeat on file change:
 ```bash
 npm run dev
 ```
 
-### Add project
+Open `./dist/index.html` in browser to see changes running.\
+VSCode extension "Live Server" can be used to auto-refresh browser on file change.
+
+### Add a project
 
 - Add project details to `scripts/pages.json.ts`
 - Add project image to `dist/images` as `project-label-camel-case.png`
 
-### Push to GitHub pages
 
+### Push changes
+
+Commit and push all changes to non-production branch in GitHub:
 ```bash
-git add *;
-git commit -m "Push to pages";
-git push origin main;
+  npm run push "Commit message"
 ```
 
 
-## Notes
+### Deploy
 
-Visuals
-  Election posters
-  Football progression
-  Strava mapper
-  Tides
-  Daylight
-  Tartan
-  Gradients
-
-Apps
-  Mage hand
-  Tiny painter
-  Oddles
-  Name colour
-  Chord maker / Finder
-  Tin whistle
-  Pace calculator
-  Running Plan gerarator
-
-Sites
-  Johnny Cgarette
-  PaperWon
-  Clever Keys
-
-Games
-  Buck and sons
-  Agent regex
-  Cross Creator
-
-Tools
-  Text formatting sandbox
-  Date picker
-  SCSS compiler
-
-
-Music
-
-Visualisations
+Copy `main` branch to `prod` branch, build scripts in production mode, then push to Git where changes will be reflected on GitHub Pages site:
+```bash
+  npm run deploy
+```

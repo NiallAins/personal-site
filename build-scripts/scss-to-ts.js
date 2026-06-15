@@ -1,5 +1,4 @@
 const
-    { parse } = require('path'),
     FS = require('fs'),
     SASS = require('sass');
 
