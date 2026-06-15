@@ -46,7 +46,7 @@ Commit and push all changes to non-production branch in GitHub:
 
 ### Deploy
 
-Copy `main` branch to `prod` branch, build scripts in production mode, then push to Git where changes will be reflected on GitHub Pages site:
+Copy branch `main` to `prod`, build scripts in production mode, then push to Git where changes will be reflected on GitHub Pages site:
 ```bash
   npm run deploy
 ```
