@@ -2,7 +2,6 @@
     "name": "personalsite",
     "main": "main.js",
     "scripts": {
-        "echod": "",
         "dev": "npm run build && concurrently \"npm run build-watch\"",
         "push": "push.sh nodeploy",
         "push-deploy": "push.sh deploy",

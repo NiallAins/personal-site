@@ -1,16 +1,13 @@
 #!/bin/bash
 
-git add *;
-git commit -m "$2";
+git commit -am "$2";
 git push origin main;
 
 if [ $1 == "deploy" ]; then
-    git merge -s ours prod --no-edit;
     git checkout prod;
-    git merge --ff-only main;
+    git merge -X theirs main --no-commit;
     npm run build-script-prod;
-    git add *;
-    git commit -m "Auto-deploy";
+    git commit -ma "Auto-deploy from main";
     git push origin prod;
     git checkout main;
 fi
