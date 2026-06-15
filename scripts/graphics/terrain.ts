@@ -173,7 +173,7 @@ function renderTerrainIso(
             can.CTX,
             isoX, isoY,
             landZ, seaZ,
-            getTerrainColor(seaZ - landZ + horizonIsoZ, -1)
+            getTerrainColor(seaZ - landZ, -1)
         );
     }
 }
@@ -295,7 +295,7 @@ function renderLetter(
                     .slice(letter.LABEL.LETTERS.length - letter.LAST_LINE)
                     .map((l, li) => [
                         2 + (li * LABEL_LETTER_WIDTH / ISO_SCALE),
-                        -1.5 - (li * LABEL_LINE_HEIGHT / Y_UNIT) +
+                        -1.75 - (li * LABEL_LINE_HEIGHT / Y_UNIT) +
                         (getHorizonIsoZ(l.y) * 2)
                     ]);
                 PTS.unshift([
@@ -458,7 +458,7 @@ function getTerrainIsoZ(
 function getLandZ(x: number, y: number, width: number, height: number): [number, number] {
     const
         HEIGHT_MAIN_SECTION_FULL = (HEIGHT_MAIN_SECTION + HEIGHT_MAIN_SECTION_GAP) * height,
-        OFF_Y = height + (HEIGHT_MAIN_SECTION_GAP * height) + (HEIGHT_MAIN_SECTION * height * 0.25),
+        OFF_Y = height + (HEIGHT_MAIN_SECTION_GAP * height) + (HEIGHT_MAIN_SECTION * height * 0.15),
         SECTION_I = Math.floor((y - OFF_Y) / HEIGHT_MAIN_SECTION_FULL),
         TERRAIN_I = SECTION_I % TERRAIN_TYPES.length;
 
