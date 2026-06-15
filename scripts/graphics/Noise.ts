@@ -45,7 +45,8 @@ export class Noise {
     }
 
     _rand(x: number, y: number) {
-        return ((this._RNG[1] * (Math.floor(x) * 142 + Math.floor(y)) * this._RNG[3] + this._RNG[2]) % this._RNG[0]) / this._RNG[0];
+        const C = (Math.floor(x) * 123) + (Math.floor(y) * 321);
+        return ((C *this._RNG[1] * this._RNG[3] + this._RNG[2]) % this._RNG[0]) / this._RNG[0];
     }
     
     _randVect(x: number, y: number): tPoint {

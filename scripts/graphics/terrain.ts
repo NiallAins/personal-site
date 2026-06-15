@@ -357,7 +357,7 @@ function renderCublet(
             cube.x - (ISO_SCALE * 3),
             cube.y - (ISO_SCALE * 2) - TERRAIN_Z
         );
-        cube.draw(C);
+        // cube.draw(C);
     C.restore();
 }
 
@@ -484,7 +484,7 @@ function getLandZ(x: number, y: number, width: number, height: number): [number,
 
     const
         MAX_DIST = (TERRAIN_TYPES[TERRAIN_I][0] * height) ** 2,
-        PEAK_X = (width * 0.5) + (Math.min(WIDTH_PAGE_MAX, width) * (SECTION_I % 2 ? -0.25 : 0.25)),
+        PEAK_X = (width * 0.5) + (Math.max(WIDTH_PAGE_MAX * 0.25, width * 0.2) * (SECTION_I % 2 ? -1 : 1)),
         PEAK_Y = OFF_Y + (SECTION_I * HEIGHT_MAIN_SECTION_FULL),
         DIST = (PEAK_X - x)**2 + (PEAK_Y - y)**2,
         MAX_Z = TERRAIN_TYPES[TERRAIN_I][1];
