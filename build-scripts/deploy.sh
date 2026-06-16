@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ "$1" ]; then
+    git add *;
+    git commit -m "$1";
+    git push origin main;
+fi;
+
 git checkout prod;
 git reset origin/main --hard;
 npm run build-script-prod;
