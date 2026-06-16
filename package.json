@@ -7,7 +7,7 @@
         "build-style": "node ./build-scripts/scss-to-ts && sass ./styles/index.scss > ./dist/style.css",
         "build-script": "webpack --config ./build-scripts/webpack.config.js --mode development",
         "build-script-prod": "webpack --config ./build-scripts/webpack.config.js --mode production",
-        "build-watch": "concurrently \"onchange \\\"./scripts/**/*.ts\\\" -e \\\"./scripts/consts-css.ts\\\" -- npm run build-script\" \"onchange \\\"./styles/**/*.scss\\\" -- npm run build-style\"",
+        "build-watch": "concurrently \"onchange \\\"./scripts/**/*.ts\\\" -e \\\"./scripts/consts.scss.ts\\\" -- npm run build-script\" \"onchange \\\"./styles/**/*.scss\\\" -- npm run build-style\"",
         "push": "bash ./build-scripts/push.sh",
         "deploy": "bash ./build-scripts/deploy.sh"
     },

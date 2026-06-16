@@ -22,7 +22,7 @@ Download code and install dev packages:
 
 ### Start development
 
-Auto convert `_vars.scss` to `consts.css.ts`, build scripts and styles to `./dist`, then repeat on file change:
+Auto convert `_vars.scss` to `consts.scss.ts`, build scripts and styles to `./dist`, then repeat on file change:
 ```bash
 npm run dev
 ```
@@ -49,4 +49,9 @@ Commit and push all changes to non-production branch in GitHub:
 Copy branch `main` to `prod`, build scripts in production mode, then push to Git where changes will be reflected on GitHub Pages site:
 ```bash
   npm run deploy
+```
+
+Commit and push all changes to `main` branch, before running `deploy`:
+```bash
+  npm run deploy "Commit message"
 ```
