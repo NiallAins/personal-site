@@ -2,12 +2,12 @@
     "name": "personalsite",
     "main": "main.js",
      "scripts": {
-        "dev": "npm run build && concurrently \"npm run build-watch\"",
+        "dev": "npm run build && npm run build-watch",
         "build": "npm run build-style && npm run build-script",
         "build-style": "node ./build-scripts/scss-to-ts && sass ./styles/index.scss > ./dist/style.css",
         "build-script": "webpack --config ./build-scripts/webpack.config.js --mode development",
         "build-script-prod": "webpack --config ./build-scripts/webpack.config.js --mode production",
-        "build-watch": "concurrently \"onchange \\\"./scripts/**/*.ts\\\" -e \\\"./scripts/consts.scss.ts\\\" -- npm run build-script\" \"onchange \\\"./styles/**/*.scss\\\" -- npm run build-style\"",
+        "build-watch": "bash ./build-scripts/watch.sh",
         "push": "bash ./build-scripts/push.sh",
         "deploy": "bash ./build-scripts/deploy.sh"
     },

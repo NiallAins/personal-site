@@ -6,7 +6,7 @@
 
 $f-fam-title-src:      url(https://fonts.gstatic.com/s/neuton/v24/UMBQrPtMoH62xUZKAKkvcwr4Pro.woff2);
 $f-fam-title:          "Neuton";
-$f-fam-body:           "Roboto", san-serif;   
+$f-fam-body:           "Roboto", san-serif;
 $f-size-base:          14px;
 $f-size-h1:            4.5rem;
 $f-size-h2:            3.25rem;
@@ -32,7 +32,7 @@ $label-letter-space:   3rem;
 $label-line-height:    $f-size-section * 1.5;
 $label-angle:          -0.488rad;
 
-$c-hsl-terrain-sea:    (174, 53, 40, 1);
+$c-hsl-terrain-sea:    (174, 53, 40, 0.45);
 $c-terrain-sea:        list-to-hsl($c-hsl-terrain-sea);
 $c-hsl-terrain-land-1: ( 18, 70, 20, 1);
 $c-terrain-land-1:     list-to-hsl($c-hsl-terrain-land-1);
