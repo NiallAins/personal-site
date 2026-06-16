@@ -1,13 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Neuton:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 html {
-  font-size: 14px;
+  font-size: 1px;
   background: linear-gradient(#111111 0, #111128 75vh, #111128), #111128;
 }
 
 body {
   overflow-x: hidden;
   font-family: "Neuton";
-  max-width: 80.2857142857rem;
+  max-width: 1150rem;
   height: 480vh;
   padding: 1rem;
   margin: 0 auto;
@@ -212,7 +212,7 @@ h1, h2, h3, h4, h5, h6, p {
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem;
   width: 100%;
-  max-width: 80.2857142857rem;
+  max-width: 1150rem;
   padding: 3rem 1rem 26vh;
   margin: 0 auto;
 }
