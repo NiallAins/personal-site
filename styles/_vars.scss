@@ -7,7 +7,7 @@
 $f-fam-title-src:      url(https://fonts.gstatic.com/s/neuton/v24/UMBQrPtMoH62xUZKAKkvcwr4Pro.woff2);
 $f-fam-title:          "Neuton";
 $f-fam-body:           "Roboto", san-serif;
-$f-size-base:          1px;
+$f-size-base:          14px;
 $f-size-h1:            4.5rem;
 $f-size-h2:            3.25rem;
 $f-size-h3:            2.5rem;
@@ -21,11 +21,12 @@ $f-weight-section:     500;
 $-w-page-max-total:    1152px;
 $w-page-pad:           1rem;
 $w-page-max:           div($-w-page-max-total, $f-size-base) - (2 * $w-page-pad);
+$w-page-bg-max:        1800px;
 $w-iso-scale:          1rem;
 $w-stroke-underline:   0.375rem;
 $w-stroke-outline:     2px;
 $h-main-section:       40vh;
-$h-main-section-gap:   20vh;
+$h-main-section-gap:   30vh;
 $h-min-sea:            14vh;
 
 $label-letter-space:   3rem;

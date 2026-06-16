@@ -7,30 +7,30 @@ import { tPoint } from "../types";
 
 export class Noise {
     private readonly _RNG = [0x80000000, 1103515245, 12345, 0];
-    private _width: number;
-    private _height: number;
     private _gradients: { [pt: string]: tPoint } = {};
+    private _height: number = 1;
+
+    public width: number;
     
     constructor(width: number = 10, height: number = 1, seed: number = 8881155010) {
         this._RNG[3] = seed;
-        this._width = width;
-        this._height = height * 1.438;
+        this.width = width;
+        this.height = height;
     }
 
-    set(w: number, h: number) {
-        this._width = w;
-        this._height = h;
+    set height(v: number) {
+        this._height = v * 1.438;
     }
 
-    reseed(): number {
+    public reseed(): number {
         this._gradients = {};
-        this._RNG[3] = Math.floor(1*10 * Math.random());
+        this._RNG[3] = Math.floor(Math.random()*10**10);
         return this._RNG[3];
     }
     
-    get(x: number, y: number = 0): number {
-        x /= this._width;
-        y /= this._width;
+    public get(x: number, y: number = 0): number {
+        x /= this.width;
+        y /= this.width;
         let
             xf = Math.floor(x),
             yf = Math.floor(y),
@@ -44,12 +44,12 @@ export class Noise {
         return this._height * v;
     }
 
-    _rand(x: number, y: number) {
+    private _rand(x: number, y: number): number {
         const C = (Math.floor(x) * 123) + (Math.floor(y) * 321);
         return ((C *this._RNG[1] * this._RNG[3] + this._RNG[2]) % this._RNG[0]) / this._RNG[0];
     }
     
-    _randVect(x: number, y: number): tPoint {
+    private _randVect(x: number, y: number): tPoint {
         const THETA = this._rand(x, y) * 2 * Math.PI;
         return {
             x: Math.cos(THETA),
@@ -57,7 +57,7 @@ export class Noise {
         };
     }
 
-    _dotProd(x: number, y: number, vx: number, vy: number): number {
+    private _dotProd(x: number, y: number, vx: number, vy: number): number {
         let
             g_vect,
             d_vect = { x: x - vx, y: y - vy };
@@ -70,11 +70,11 @@ export class Noise {
         return d_vect.x * g_vect.x + d_vect.y * g_vect.y;
     }
 
-    _smootherStep(x: number): number {
+    private _smootherStep(x: number): number {
         return 6*x**5 - 15*x**4 + 10*x**3;
     }
 
-    _interp(x: number, a: number, b: number): number {
+    private _interp(x: number, a: number, b: number): number {
         return a + this._smootherStep(x) * (b - a);
     }
 }

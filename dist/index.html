@@ -73,10 +73,10 @@
         EL.style.backgroundColor = 'white';
         EL.style.zIndex = '1000';
         const PROPS = {
-            maxDist:     [  0,  1, 0.05, 0.6 ],
-            maxZ:        [ -8,  8, 0.25, 3.0 ],
-            noiseWidth:  [  0, 20, 0.20, 5.0 ],
-            noiseHeight: [  0, 20, 1.00, 2.0 ]
+            maxDist:     [  0, 0.5, 0.288 ],
+            maxZ:        [ -3,   8, 5.37 ],
+            noiseWidth:  [  0, 800, 227 ],
+            noiseHeight: [  0,  10, 0.71 ]
         };
         Object
             .entries(PROPS)
@@ -88,14 +88,14 @@
                         type="range"
                         min="${ o[1][0] }"
                         max="${ o[1][1] }"
-                        step="${ o[1][2] }"
-                        value="${ o[1][3] }"
+                        step="any"
+                        value="${ o[1][2] }"
                         step="any"
                         oninput="window.terrain_${ o[0] } = event.target.value"
                     />
                     <br/>
                 `;
-                window['terrain_' + o[0]] = o[1][3];
+                window['terrain_' + o[0]] = o[1][2];
             });
         EL.innerHTML += `
             <br/>

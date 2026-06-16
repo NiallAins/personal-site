@@ -3,7 +3,7 @@ import {
     COLOR_HSL_TERRAIN_LAND_1, COLOR_HSL_TERRAIN_LAND_2, COLOR_HSL_TERRAIN_LAND_3, COLOR_HSL_TERRAIN_LAND_4, COLOR_HSL_TERRAIN_SEA,
     LABEL_LETTER_SPACE, LABEL_LINE_HEIGHT
 } from "./consts.scss";
-import { tColor, tTerrainSettings } from "./types";
+import { tColor, tTerrainParams } from "./types";
 import { getEl } from "./util";
 
 
@@ -74,15 +74,15 @@ export const
     TERRAIN_SEA_NOISE: [number, number, number] = [
         10, 5, 8881155010
     ],
-    TERRAIN_TYPES: tTerrainSettings[] = [
+    TERRAIN_TYPES: tTerrainParams[] = [
         // Island
-        [0.58, 5.0, 10, 1.0, 1749988589, [0,  -1, 0.3, 1.0]],
+        [0.24, 5.2, 227, 0.71,  523303901, [0,  -1, 0.3, 1.0]],
         // Rocks
-        [0.50, 3.0,  5, 2.0, 1749988589, [0, 0.2, 0.7, 1.0]],
-        // Cliff
-        [0.50, 5.0,  7, 2.8, 1749988589, [0,  -1, 0.3, 1.0]],
+        [0.26, 2.2, 168, 1.95, 7553011583, [0, 0.2, 0.7, 1.0]],
         // Desert
-        [0.65, 3.0, 10, 1.0, 1749988589, [0,  -1, 0.3, 1.0]]
+        [0.30, 3.6, 256, 0.48, 3351662809, [0,  -1, 0.3, 1.0]],
+        // Cliff
+        [0.24, 3.5, 248, 2.30, 2612260822, [0,  -1,  -1, 1.0]]
     ];
 
 //

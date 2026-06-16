@@ -8,14 +8,14 @@ import { init as initGraphics, setCanvasSize } from './graphics/main';
 import { initPages } from './pages';
 
 let resizeDebounce: number = 0;
-function onResize(immediate: boolean = false) {
+function onResize() {
     window.clearTimeout(resizeDebounce);
-    resizeDebounce = window.setTimeout(
-        () => setCanvasSize(
-            Math.min(PAGE_WIDTH_MAX, window.innerWidth),
-            Math.min(PAGE_HEIGHT_MAX, window.innerHeight)
-        ),
-        immediate ? 0 : WINDOW_RESIZE_DEBOUNCE
+    resizeDebounce = window.setTimeout(resize, WINDOW_RESIZE_DEBOUNCE);
+}
+function resize() {
+    setCanvasSize(
+        Math.min(PAGE_WIDTH_MAX, window.innerWidth),
+        Math.min(PAGE_HEIGHT_MAX, window.innerHeight)
     );
 }
 
@@ -29,7 +29,7 @@ async function init() {
     );
 
     initGraphics();
-    onResize();
+    resize();
 }
 
 init();

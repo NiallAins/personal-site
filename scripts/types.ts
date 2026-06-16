@@ -1,3 +1,5 @@
+import { Noise } from "./graphics/Noise";
+
 //
 // Enums
 //
@@ -78,11 +80,21 @@ export type tEaseFunc = (x: number) => number;
 export type tSplash = {};
 export type tColor = [number, number, number, number];
 export type tColorLayers = [number, tColor][];
-export type tTerrainSettings = [
-    rad: number,
-    maxZ: number,
+export type tTerrainParams = [
+    dist: number,
+    z: number,
     noiseW: number,
     noiseH: number,
     noiseSeed: number,
     colorLayers: number[]
 ];
+export type tTerrain = {
+    x: number,
+    y: number,
+    z: number,
+    distBase: number,
+    dist: number,
+    color: tColorLayers,
+    noiseWidthBase: number,
+    noise: Noise
+};

@@ -2,7 +2,7 @@ import { SKY_HEIGHT_RATIO, DURATION_SH } from "../consts";
 import { Canvas } from "./Canvas";
 import { Splash } from "./Splash";
 import { Label } from "./Label";
-import { init as initTerrain, render as renderTerrain } from "./terrain";
+import { init as initTerrain, render as renderTerrain, resize as resizeTerrain } from "./terrain";
 import { logDt, msToFrames, requestFrameScaled } from "../util";
 import { EL_TOPIC_BUTTONS } from "../pages";
 import { Cublet } from "./Cublet";
@@ -22,7 +22,7 @@ const
 export const
     LABELS: Label[] = [],
     CUBLETS: Cublet[][] = PAGE_DATA
-        .map(p => p.items.map(i => new Cublet()))
+        .map(p => p.items.map(i => new Cublet()));
 
 
 //
@@ -53,7 +53,8 @@ export function init() {
     EL_TOPIC_BUTTONS.forEach((el, i) => LABELS.push(new Label(el, i)));
     LABELS.forEach(l => l.preRender());
     initTerrain();
-    animate();
+
+    window.requestAnimationFrame(() => animate());
 }
 
 export function setCanvasSize(pageWidth: number, pageHeight: number) {
@@ -62,6 +63,7 @@ export function setCanvasSize(pageWidth: number, pageHeight: number) {
     LABELS.forEach(l => l.setPosition(pageWidth, pageHeight));
     CUBLETS.forEach((s, ti) => s.forEach(c => c.setPosition(CAN_SEA.width, CAN_SEA.height, ti)));
     renderSky(CAN_SKY);
+    resizeTerrain(pageWidth, pageHeight);
 }
 
 
