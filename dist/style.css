@@ -200,18 +200,18 @@ h1, h2, h3, h4, h5, h6, p {
 
 .pages__page {
   position: fixed;
-  top: 100vh;
+  bottom: 100vh;
   left: 0;
   right: 0;
   z-index: 50;
   height: 100vh;
   overflow: auto;
   opacity: 0;
-  transition: opacity 1000ms, top 1000ms;
+  transition: opacity 1000ms, bottom 1000ms;
 }
 .pages__page.page--open {
   opacity: 1;
-  top: 0;
+  bottom: 0;
 }
 .pages__page-container {
   display: grid;

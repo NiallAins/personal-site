@@ -23,7 +23,7 @@ const
 export const
     LABELS: Label[] = [],
     CUBLETS: Cublet[][] = PAGE_DATA
-        .map(p => p.items.map(i => new Cublet()));
+        .map((p, pi) => p.items.map(() => new Cublet(pi)));
 
 
 //
@@ -67,7 +67,6 @@ export function setCanvasSize(pageWidth: number, pageHeight: number) {
     CAN_SKY.setSize(pageWidth, pageHeight * SKY_HEIGHT_RATIO);
     CAN_SEA.setSize(pageWidth, pageHeight);
     LABELS.forEach(l => l.setPosition(pageWidth, pageHeight));
-    CUBLETS.forEach((s, ti) => s.forEach(c => c.setPosition(CAN_SEA.width, CAN_SEA.height, ti)));
     renderSky(CAN_SKY);
     resizeTerrain(pageWidth, pageHeight);
 }

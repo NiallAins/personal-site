@@ -112,6 +112,15 @@ export function resize(width: number, height: number) {
         t.y = terrainLayout_offsetY + (ti * terrainLayout_sectionFullHeight) + (HEIGHT_MAIN_SECTION * height * 0.5);
         t.dist = (t.distBase * TERRAIN_WIDTH) ** 2;
         t.noise.width = t.noiseWidthBase * (TERRAIN_WIDTH / WIDTH_PAGE_BG_MAX);
+
+        Cublet.CUBLETS
+            .filter(c => c.sectionI === ti)
+            .forEach(c => {
+                c.x = t.x + ((c.RAND_X - 0.5) * TERRAIN_WIDTH * 0.25);
+                c.y = t.y + ((c.RAND_Y - 0.5) * TERRAIN_WIDTH * 0.25);
+
+                c.setAngle();
+            });
     });
 }
 
@@ -155,7 +164,7 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
                             y
                         ),
                         SCR_PT = ptToScreen(...ISO_PT),
-                        [LAND_Z, SEA_Z, _, SECTION_I] = getTerrainIsoZ(
+                        [LAND_Z, SEA_Z, MAX_Z, SECTION_I] = getTerrainIsoZ(
                             t,
                             ...ISO_PT,
                             ...SCR_PT,
@@ -172,6 +181,34 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
                         HORIZON_ISO_Z
                     );
 
+                    // Cublets
+                    C.strokeStyle = COLOR_TEXT_L;
+                    C.fillStyle = COLOR_TEXT_L;
+                    C.lineWidth = 2;
+                    CUBLETS
+                        .filter(c => c.isoX === undefined)
+                        .filter(c => !c.drawen && c.y <= y && c.x <= x)
+                        .forEach(c => {
+                            c.isoX = ISO_PT[0];
+                            c.isoY = ISO_PT[1];
+                            if (MAX_Z - LAND_Z > 1) {
+                                c.inSea = true;
+                                c.setAngle(true);
+                            }
+                        });
+
+                    CUBLETS
+                        .filter(c => c.isoX === ISO_PT[0] && c.isoY === ISO_PT[1])
+                        .forEach(c => {
+                            renderCublet(
+                                can,
+                                c,
+                                SCR_PT[0],
+                                SCR_PT[1] - (MAX_Z * Z_UNIT) + window.scrollY,
+                                fade
+                            );
+                            c.drawen = true;
+                        });
                 }
             }
 
@@ -181,17 +218,6 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
                 .forEach(l => {
                     renderLetter(C, t, l, fade);
                     l.drawen = true;
-                });
-
-            // Cublets
-            C.strokeStyle = COLOR_TEXT_L;
-            C.fillStyle = COLOR_TEXT_L;
-            C.lineWidth = 2;
-            CUBLETS
-                .filter(c => !c.drawen && c.y <= y)
-                .forEach(c => {
-                    renderCublet(can, t, c, fade);
-                    c.drawen = true;
                 });
         }
         
@@ -395,27 +421,20 @@ function renderLetter(
 
 function renderCublet(
     can: Canvas,
-    t: number,
     cube: Cublet,
+    x: number,
+    y: number,
     fade: number
 ) {
-    const
-        C = can.CTX,
-        HORIZON_Z = getHorizonIsoZ(cube.y),
-        TERRAIN_Z = getTerrainIsoZ(
-            t,
-            ...ptFromScreen(cube.x, cube.y),
-            cube.x, cube.y - window.scrollY,
-            HORIZON_Z
-        )[2] * Z_UNIT;
+    const C = can.CTX;
     
     C.save();
         C.globalAlpha = Math.max(0, 1 - fade);
         C.translate(
-            cube.x - (ISO_SCALE * 3),
-            cube.y - (ISO_SCALE * 2) - TERRAIN_Z
+            x,
+            y - (ISO_SCALE * (cube.inSea ? 0.875 : 1.75)) - (Z_UNIT * 20 * Math.max(0, fade - cube.RAND_X * 0.5))
         );
-        // cube.draw(C);
+        cube.draw(C);
     C.restore();
 }
 
@@ -507,7 +526,7 @@ function getTerrainIsoZ(
     return [
         LAND_Z - horizonIsoZ,
         SEA_Z - horizonIsoZ,
-        Math.max(SEA_Z, LAND_Z - horizonIsoZ),
+        Math.max(SEA_Z - horizonIsoZ, LAND_Z - horizonIsoZ),
         SECTION_I
     ];
 }
