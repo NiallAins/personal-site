@@ -1,7 +1,7 @@
 import {
     CLASS_MAIN_SECTION_BUTTON_DISABLED,
     COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE, COLOR_TEXT_SHADOW,
-    DURATION_LG, DURATION_SH,
+    DURATION_SH,
     FONT_FAM_TITLE, FONT_SIZE_SECTION, FONT_WEIGHT_SECTION,
     HEIGHT_MAIN_SECTION,
     HEIGHT_MAIN_SECTION_GAP,
@@ -16,7 +16,7 @@ import { Canvas } from "./Canvas";
 import { Ease } from "./Ease";
 
 export class Label {
-    public pressAni: Ease = new Ease(DURATION_SH, eEaseType.Ease, true);
+    public pressAni: Ease = new Ease(100, eEaseType.Ease, true);
     public hoverAni: Ease = new Ease(DURATION_SH, eEaseType.Ease, true);
     public readonly LETTERS: LabelLetter[];
 
@@ -101,7 +101,7 @@ export class Label {
     }
 
     public setY(y: number) {
-        this.EL.style.top = y + 'px';
+        this.EL.style.top = y + 24 + 'px';
         this.EL.classList.toggle(CLASS_MAIN_SECTION_BUTTON_DISABLED, y > 100);
     }
 }

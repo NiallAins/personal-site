@@ -4,12 +4,19 @@ import { Canvas } from "./graphics/Canvas";
 import { renderSingleIso } from "./graphics/terrain";
 import { tTerrain } from "./types";
 
-const LOG_DT = {
-    t: 0,
-    dtSum: 0,
-    el: document.createElement('div')
-};
+const
+    PROD = false,
+    LOG_DT = {
+        t: 0,
+        dtSum: 0,
+        el: document.createElement('div')
+    };
+
 export function _DEBUG_logDt(dT: number) {
+    if (PROD) {
+        return;
+    }
+
     if (!LOG_DT.el.parentElement) {
         document.body.appendChild(LOG_DT.el);
         LOG_DT.el.style.position = 'fixed';
@@ -33,6 +40,10 @@ export function _DEBUG_logDt(dT: number) {
 }
 
 export function _DEBUG_showPreRenderTerrain(CAN_LAND_PRE_RENDER: Canvas) {
+    if (PROD) {
+        return;
+    }
+
     document.body.appendChild(CAN_LAND_PRE_RENDER.CAN);
     CAN_LAND_PRE_RENDER.CAN.style.position = 'fixed';
     CAN_LAND_PRE_RENDER.CAN.style.top = '0px';
@@ -45,6 +56,10 @@ export function _DEBUG_renderBaseIso(
     x: number,
     y: number
 ) {
+    if (PROD) {
+        return;
+    }
+
     renderSingleIso(
         ctx,
         x, y,
@@ -53,6 +68,10 @@ export function _DEBUG_renderBaseIso(
 }
 
 export function _DEBUG_showTerrainControls() {
+    if (PROD) {
+        return;
+    }
+
     const EL = document.createElement('div');
     document.body.appendChild(EL);
     EL.style.position = 'fixed';
@@ -106,6 +125,10 @@ export function _DEBUG_showTerrainControls() {
 }
 
 export function _DEBUG_updateTerrainControls(peaks: tTerrain[]) {
+    if (PROD) {
+        return;
+    }
+
     const W = window as any;
     peaks.forEach((p, pi) => {
         if (parseInt(W.terrain_reseed)) {

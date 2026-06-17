@@ -1,5 +1,6 @@
 import {
     CLASS_BODY_PAGE_OPEN, CLASS_PAGE_OPEN,
+    DURATION_SH,
     EL_BODY, EL_MAIN, EL_PAGE_CONTAINER
 } from "./consts";
 import { PAGE_DATA } from "./pages.json";
@@ -70,14 +71,17 @@ export function initPages() {
 }
 
 export function openPage(index: number) {
-    // toggleGraphicsSectionOpen();
-    // EL_BODY.classList.add(CLASS_BODY_PAGE_OPEN);
-    // EL_PAGES[index].classList.add(CLASS_PAGE_OPEN);
+    toggleGraphicsSectionOpen();
 
-    // // Lazy load images
-    // EL_IMGS[index]
-    //     .filter(img => !img.getAttribute('src'))
-    //     .forEach(img => img.setAttribute('src', img.dataset.src!));
+    setTimeout(() => {
+        EL_BODY.classList.add(CLASS_BODY_PAGE_OPEN);
+        EL_PAGES[index].classList.add(CLASS_PAGE_OPEN);
+    }, DURATION_SH);
+
+    // Lazy load images
+    EL_IMGS[index]
+        .filter(img => !img.getAttribute('src'))
+        .forEach(img => img.setAttribute('src', img.dataset.src!));
 }
 
 export function closePage() {

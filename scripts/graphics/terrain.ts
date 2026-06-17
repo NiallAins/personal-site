@@ -128,7 +128,7 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
             MIN_Y_SEA = Math.max(can.height * 0.75, window.scrollY - OVERSHOOT_MIN_SEA),
             MIN_Y_LAND = MIN_Y_SEA - OVERSHOOT_MIN_LAND,
             MIN_Y_OBJ = MIN_Y_SEA - OVERSHOOT_MIN_OBJ,
-            MAX_Y_SEA = (can.height * (fade === 1 ? 0.4 : 1)) + window.scrollY + OVERSHOOT_MAX_SEA,
+            MAX_Y_SEA = can.height + window.scrollY + OVERSHOOT_MAX_SEA,
             MAX_Y_OBJ = MAX_Y_SEA + OVERSHOOT_MAX_OBJ;
             
         // Find visible objects
@@ -293,7 +293,9 @@ function renderLetter(
 ) {
     const
         LABEL = letter.LABEL,
-        LABEL_DEPRESS = LABEL.pressAni.value * LABEL_DEPRESS_Z,
+        LABEL_DEPRESS =
+            (LABEL.pressAni.value * LABEL_DEPRESS_Z) +
+            fade * Z_UNIT * -20,
         HORIZON_Z = getHorizonIsoZ(letter.y),
         HORIZON_Z_LETTER = HORIZON_Z * Z_UNIT * 1.25,
         TERRAIN_Z = getTerrainIsoZ(
@@ -357,7 +359,8 @@ function renderLetter(
                     .slice(letter.LABEL.LETTERS.length - letter.LAST_LINE)
                     .map((l, li) => [
                         l.x + (X_UNIT * 1.5),
-                        l.y - Y_UNIT + LABEL_DEPRESS + (getHorizonIsoZ(l.y) * Z_UNIT)
+                        l.y - Y_UNIT + LABEL_DEPRESS +
+                        (getHorizonIsoZ(l.y) * Z_UNIT)
                     ]);
                 PTS.unshift([
                     PTS[0][0] - ((PTS[1][0] - PTS[0][0]) * 0.2),

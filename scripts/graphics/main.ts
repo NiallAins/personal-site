@@ -3,12 +3,13 @@ import { Canvas } from "./Canvas";
 import { Splash } from "./Splash";
 import { Label } from "./Label";
 import { init as initTerrain, render as renderTerrain, resize as resizeTerrain } from "./terrain";
-import { msToFrames, requestFrameScaled } from "../util";
+import { requestFrameScaled } from "../util";
 import { EL_TOPIC_BUTTONS } from "../pages";
 import { Cublet } from "./Cublet";
 import { PAGE_DATA } from "../pages.json";
 import { Ease } from "./Ease";
 import { _DEBUG_logDt } from "../_debug";
+import { eEaseType } from "../types";
 
 
 //
@@ -16,7 +17,6 @@ import { _DEBUG_logDt } from "../_debug";
 //
 
 const
-    ANI_PER_FRAME = 1 / msToFrames(DURATION_SH),
     CAN_SKY = new Canvas('CAN_SKY'),
     CAN_SEA = new Canvas('CAN_SEA');
 
@@ -33,7 +33,7 @@ export const
 let
     sectionOpen: boolean = false,
     paused: boolean = false,
-    fade: number = 0;
+    fade: Ease = new Ease(DURATION_SH, eEaseType.EaseOut, true);
 
 export function togglePause() {
     paused = !paused;
@@ -41,7 +41,12 @@ export function togglePause() {
 
 export function toggleSectionOpen() {
     sectionOpen = !sectionOpen;
-    paused = !paused;
+    fade.play();
+    if (paused) {
+        paused = false;
+    } else {
+        setTimeout(() => paused = true, DURATION_SH * 2);
+    }
 }
 
 
@@ -75,15 +80,9 @@ export function setCanvasSize(pageWidth: number, pageHeight: number) {
 function animate(t: number = 0, dT: number = 1) {
     if (!paused) {
         Ease.step(dT);
-        renderTerrain(CAN_SEA, fade, t, dT);
-        t = (t + (0.00075 * dT)) % 1;
 
-        if (sectionOpen && fade < 1) {
-            fade += ANI_PER_FRAME * dT;
-        } else if (!sectionOpen && fade > 0) {
-            fade -= ANI_PER_FRAME * dT;
-        }
-        fade = Math.max(0, Math.min(1, fade));
+        renderTerrain(CAN_SEA, fade.value, t, dT);
+        t = (t + (0.00075 * dT)) % 1;
     }
 
     _DEBUG_logDt(dT);

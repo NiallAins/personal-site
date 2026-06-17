@@ -20,8 +20,8 @@ export class Ease {
 
     private _value: number = 0;
     private _valueAbs: number = 0;
-    private _state: number = eEaseState.Paused;
-    private _prevState: number = eEaseState.Paused;
+    private _state: eEaseState = eEaseState.Paused;
+    private _prevState?: eEaseState;
     private readonly _FRAMES: number;
     private readonly _EASE_FUNC: [
         forward: tEaseFunc,
@@ -52,6 +52,10 @@ export class Ease {
 
     set value(v: number) {
         this._valueAbs = v;
+    }
+
+    get state(): eEaseState {
+        return this._state;
     }
 
     public static step(dT: number = 1) {
@@ -106,6 +110,8 @@ export class Ease {
 
     public reverse() {
         this._state *= -1;
-        this._prevState *= -1;
+        if (this._prevState) {
+            this._prevState *= -1;
+        }
     }
 }

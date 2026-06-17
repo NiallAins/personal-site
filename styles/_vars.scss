@@ -52,14 +52,14 @@ $c-text-d:             $c-bg-l;
 $c-text-l-outline:     scale($c-terrain-sea, $lightness: -50%, $alpha: 100%);
 $c-text-shadow:        #11111188;
 $c-text-link:          #4848c8;
-$c-bg-select:          $c-text-link;
+$c-bg-select:          change($c-text-link, $alpha: 50%);
 $c-text-select:        $c-text-l;
 
 $z-canvas-bg:          next-z();
-$z-page:               next-z();
 $z-box-top:            next-z();
 $z-canvas-fg:          next-z();
 $z-buttons:            next-z();
+$z-page:               next-z();
 $z-page-close:         next-z();
 
 $dur-sh:               500ms;

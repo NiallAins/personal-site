@@ -6,7 +6,7 @@ $row-overlap: 12vh;
 .pages {
     &__page {
         position: fixed;
-        bottom: 100vh;
+        top: 100vh;
         left: 0;
         right: 0;
         z-index: $z-page;
@@ -15,11 +15,11 @@ $row-overlap: 12vh;
         opacity: 0;
         transition:
             opacity $dur-lg,
-            bottom $dur-lg;
+            top $dur-lg;
 
         &.#{ $cl-page-open } {
             opacity: 1;
-            bottom: 0;
+            top: 0;
         }
 
         &-container {

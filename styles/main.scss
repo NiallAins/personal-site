@@ -40,11 +40,19 @@
                 outline: 2px solid $c-text-l;
             }
 
+            &::selection {
+                color: transparent;
+            }
+
             &.#{ $cl-main-section-button-disabled } {
                 pointer-events: none;
 
                 &:focus-visible {
                     outline: 0px;
+                }
+
+                &::selection {
+                    background-color: transparent;
                 }
             }
         }

@@ -29,7 +29,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 *::selection {
   color: #ffffff;
-  background-color: #4848c8;
+  background-color: rgba(72, 72, 200, 0.5);
 }
 
 .canvas__sky, .canvas__sea {
@@ -42,7 +42,7 @@ h1, h2, h3, h4, h5, h6, p {
   z-index: 10;
 }
 .canvas__sea {
-  z-index: 40;
+  z-index: 30;
   transition: top ease-out 500ms;
 }
 .body--page-open .canvas__sea {
@@ -107,13 +107,13 @@ h1, h2, h3, h4, h5, h6, p {
 }
 .header__nav-links-button {
   position: relative;
-  z-index: 50;
+  z-index: 40;
   padding-bottom: 0.5rem;
   pointer-events: all;
 }
 .header__nav-more {
   position: relative;
-  z-index: 50;
+  z-index: 40;
   text-align: center;
   pointer-events: none;
   margin: auto 0 10vh;
@@ -170,7 +170,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 .main__section-button {
   position: relative;
-  z-index: 50;
+  z-index: 40;
   padding: 2rem 2rem 4rem;
   border: none;
   rotate: -0.488rad;
@@ -185,27 +185,33 @@ h1, h2, h3, h4, h5, h6, p {
 .main__section-button:focus-visible {
   outline: 2px solid #ffffff;
 }
+.main__section-button::selection {
+  color: transparent;
+}
 .main__section-button.main__section-button--disabled {
   pointer-events: none;
 }
 .main__section-button.main__section-button--disabled:focus-visible {
   outline: 0px;
 }
+.main__section-button.main__section-button--disabled::selection {
+  background-color: transparent;
+}
 
 .pages__page {
   position: fixed;
-  bottom: 100vh;
+  top: 100vh;
   left: 0;
   right: 0;
-  z-index: 20;
+  z-index: 50;
   height: 100vh;
   overflow: auto;
   opacity: 0;
-  transition: opacity 1000ms, bottom 1000ms;
+  transition: opacity 1000ms, top 1000ms;
 }
 .pages__page.page--open {
   opacity: 1;
-  bottom: 0;
+  top: 0;
 }
 .pages__page-container {
   display: grid;
@@ -247,22 +253,22 @@ h1, h2, h3, h4, h5, h6, p {
   translate: 1.5rem 0.75rem;
 }
 .pages__page-item:nth-child(2), .pages__page-item:nth-child(1) {
-  z-index: 19;
+  z-index: 49;
 }
 .pages__page-item:nth-child(4), .pages__page-item:nth-child(3) {
-  z-index: 18;
+  z-index: 48;
 }
 .pages__page-item:nth-child(6), .pages__page-item:nth-child(5) {
-  z-index: 17;
+  z-index: 47;
 }
 .pages__page-item:nth-child(8), .pages__page-item:nth-child(7) {
-  z-index: 16;
+  z-index: 46;
 }
 .pages__page-item:nth-child(10), .pages__page-item:nth-child(9) {
-  z-index: 15;
+  z-index: 45;
 }
 .pages__page-item:nth-child(12), .pages__page-item:nth-child(11) {
-  z-index: 14;
+  z-index: 44;
 }
 .pages__page-item > * {
   border: 2px solid #ffffff;
