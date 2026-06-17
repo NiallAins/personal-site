@@ -3,11 +3,12 @@ import { Canvas } from "./Canvas";
 import { Splash } from "./Splash";
 import { Label } from "./Label";
 import { init as initTerrain, render as renderTerrain, resize as resizeTerrain } from "./terrain";
-import { logDt, msToFrames, requestFrameScaled } from "../util";
+import { msToFrames, requestFrameScaled } from "../util";
 import { EL_TOPIC_BUTTONS } from "../pages";
 import { Cublet } from "./Cublet";
 import { PAGE_DATA } from "../pages.json";
 import { Ease } from "./Ease";
+import { _DEBUG_logDt } from "../_debug";
 
 
 //
@@ -84,7 +85,8 @@ function animate(t: number = 0, dT: number = 1) {
         }
         fade = Math.max(0, Math.min(1, fade));
     }
-    // logDt(dT);
+
+    _DEBUG_logDt(dT);
     requestFrameScaled(animate.bind(null, t));
 }
 

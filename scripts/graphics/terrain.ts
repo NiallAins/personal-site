@@ -17,6 +17,7 @@ import { Splash } from "./Splash";
 import { Cublet } from "./Cublet";
 import { tColorLayers, tTerrain } from "../types";
 import { LABELS } from "./main";
+import { _DEBUG_renderBaseIso, _DEBUG_showPreRenderTerrain, _DEBUG_showTerrainControls, _DEBUG_updateTerrainControls } from "../_debug";
 
 
 //
@@ -26,13 +27,22 @@ import { LABELS } from "./main";
 const
     NOISE_SEA = new Noise(...TERRAIN_SEA_NOISE),
     SECTION_TERRAIN: tTerrain[] = [],
-    OVERSHOOT_MIN_SEA = -4 * ROW_HEIGHT,
-    OVERSHOOT_MIN_OBJ = 14 * ROW_HEIGHT,
-    OVERSHOOT_MAX_SEA =  9 * ROW_HEIGHT,
-    OVERSHOOT_MAX_OBJ =  7 * ROW_HEIGHT,
+    OVERSHOOT_MIN_SEA  = -3 * ROW_HEIGHT,
+    OVERSHOOT_MIN_LAND = 19 * ROW_HEIGHT,
+    OVERSHOOT_MIN_OBJ  = 19 * ROW_HEIGHT,
+    OVERSHOOT_MAX_SEA  =  9 * ROW_HEIGHT,
+    OVERSHOOT_MAX_OBJ  =  7 * ROW_HEIGHT,
     LETTER_Z = LABEL_ISO_Z * Z_UNIT,
-    TEXT_UNDERLINE_WIDTH_OFFSET = WIDTH_STROKE_UNDERLINE / ISO_SCALE,
-    CAN_SEA_PRE_RENDER = new Canvas('', X_UNIT, (MAX_SEA_ISO_DEPTH + 1) * Z_UNIT, true);
+    CAN_SEA_PRE_RENDER = new Canvas('', X_UNIT, (MAX_SEA_ISO_DEPTH + 1) * Z_UNIT, true),
+    LAND_PRE_RENDER_Q = 10,
+    LAND_PRE_RENDER_DEPTH_ISO = 4,
+    LAND_PRE_RENDER_DEPTH = (LAND_PRE_RENDER_DEPTH_ISO * Z_UNIT) + (Y_UNIT),
+    CAN_LAND_PRE_RENDER = new Canvas(
+        '',
+        X_UNIT * LAND_PRE_RENDER_Q,
+        LAND_PRE_RENDER_DEPTH * TERRAIN_TYPES.length,
+        true
+    );
 
 let
     terrainLayout_sectionFullHeight: number,
@@ -62,11 +72,30 @@ export function init() {
         })
     });
 
-    const C = CAN_SEA_PRE_RENDER.CTX;
-    C.translate(X_UNIT * 0.5, Y_UNIT);
+    // _DEBUG_showTerrainControls();
+    // _DEBUG_showPreRenderTerrain(CAN_LAND_PRE_RENDE);
 
+    const CL = CAN_LAND_PRE_RENDER.CTX;
+    CL.translate(X_UNIT * 0.5, Y_UNIT);
+    TERRAIN_TYPES.forEach((_, ti) => {
+        CL.save();
+            for (let i = 0; i < LAND_PRE_RENDER_Q; i++) {
+                renderSingleIso(
+                    CL,
+                    0, 0,
+                    -1 * LAND_PRE_RENDER_DEPTH_ISO, 0,
+                    getTerrainColor((8 * (i / LAND_PRE_RENDER_Q)) - 2.9, ti)
+                );
+                CL.translate(X_UNIT, 0);
+            }
+        CL.restore();
+        CL.translate(0, LAND_PRE_RENDER_DEPTH);
+    });
+
+    const CS = CAN_SEA_PRE_RENDER.CTX;
+    CS.translate(X_UNIT * 0.5, Y_UNIT);
     renderSingleIso(
-        CAN_SEA_PRE_RENDER.CTX,
+        CS,
         0, 0,
         -MAX_SEA_ISO_DEPTH, 0,
         getTerrainColor(MAX_SEA_ISO_DEPTH, -1)
@@ -87,6 +116,8 @@ export function resize(width: number, height: number) {
 }
 
 export function render(can: Canvas, fade: number, t: number, dT: number) {
+    // _DEBUG_updateTerrainControls(SECTION_TERRAIN);
+
     const C = can.CTX;
 
     C.clearRect(0, 0, can.width, can.height);
@@ -95,6 +126,7 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
         // Calculate viewport
         const
             MIN_Y_SEA = Math.max(can.height * 0.75, window.scrollY - OVERSHOOT_MIN_SEA),
+            MIN_Y_LAND = MIN_Y_SEA - OVERSHOOT_MIN_LAND,
             MIN_Y_OBJ = MIN_Y_SEA - OVERSHOOT_MIN_OBJ,
             MAX_Y_SEA = (can.height * (fade === 1 ? 0.4 : 1)) + window.scrollY + OVERSHOOT_MAX_SEA,
             MAX_Y_OBJ = MAX_Y_SEA + OVERSHOOT_MAX_OBJ;
@@ -114,7 +146,7 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
             offsetRow = !offsetRow;
 
             // Terrain
-            if (y >= MIN_Y_SEA && y <= MAX_Y_SEA) {
+            if (y >= MIN_Y_LAND && y <= MAX_Y_SEA) {
                 const HORIZON_ISO_Z = getHorizonIsoZOfRow(offsetRow, y);
                 for (let x = 0; x < can.width + X_UNIT; x += X_UNIT) {
                     const
@@ -135,6 +167,7 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
                         ...SCR_PT,
                         ...ISO_PT,
                         LAND_Z, SEA_Z,
+                        y >= MIN_Y_SEA,
                         SECTION_I,
                         HORIZON_ISO_Z
                     );
@@ -172,6 +205,7 @@ function renderTerrainIso(
     x: number, y: number,
     isoX: number, isoY: number,
     landZ: number, seaZ: number,
+    drawSea: boolean,
     sectionI: number,
     horizonIsoZ: number
 ) {
@@ -179,36 +213,41 @@ function renderTerrainIso(
 
     // Render land
     if (landZ > MIN_Z) {
-        renderSingleIso(
-            can.CTX,
-            isoX, isoY,
-            MIN_Z, landZ,
-            getTerrainColor(landZ + horizonIsoZ, sectionI)
+        can.CTX.drawImage(
+            CAN_LAND_PRE_RENDER.CAN,
+            X_UNIT * Math.floor(LAND_PRE_RENDER_Q * Math.min(1, Math.max(0, ((landZ + horizonIsoZ) + 3) / 8))),
+            (sectionI % TERRAIN_TYPES.length) * LAND_PRE_RENDER_DEPTH,
+            X_UNIT, LAND_PRE_RENDER_DEPTH,
+            x - (X_UNIT * 0.5),
+            y - (landZ * Z_UNIT) - Y_UNIT + window.scrollY,
+            X_UNIT, LAND_PRE_RENDER_DEPTH
         );
     }
 
-    // Render sea independent of land
-    if (landZ <= MIN_Z || seaZ - landZ > MAX_SEA_ISO_DEPTH) {
-        can.CTX.drawImage(
-            CAN_SEA_PRE_RENDER.CAN,
-            x - (X_UNIT * 0.5),
-            y - (seaZ * Z_UNIT) - Y_UNIT + window.scrollY
-        );
-    }
-    
-    // Render shallow sea over land
-    else if (seaZ > landZ) {
-        renderSingleIso(
-            can.CTX,
-            isoX, isoY,
-            landZ, seaZ,
-            getTerrainColor(seaZ - landZ, -1)
-        );
+    if (drawSea) {
+        // Render sea independent of land
+        if (landZ <= MIN_Z || seaZ - landZ > MAX_SEA_ISO_DEPTH) {
+            can.CTX.drawImage(
+                CAN_SEA_PRE_RENDER.CAN,
+                x - (X_UNIT * 0.5),
+                y - (seaZ * Z_UNIT) - Y_UNIT + window.scrollY
+            );
+        }
+        
+        // Render shallow sea over land
+        else if (seaZ > landZ) {
+            renderSingleIso(
+                can.CTX,
+                isoX, isoY,
+                landZ, seaZ,
+                getTerrainColor(seaZ - landZ, -1)
+            );
+        }
     }
 }
 
 // Draw a single isometic block
-function renderSingleIso(
+export function renderSingleIso(
     c: CanvasRenderingContext2D,
     x: number, y: number,
     z0: number, z: number,
@@ -239,8 +278,8 @@ function renderSingleIso(
         c.beginPath();
         c.moveTo(0, 0);
         c.lineTo(0, H);
-        c.lineTo(2.125, H - 1);
-        c.lineTo(2.125, -1);
+        c.lineTo(2, H - 1);
+        c.lineTo(2, -1);
         c.fillStyle = color[2];
         c.fill();
     c.restore();
@@ -265,11 +304,7 @@ function renderLetter(
         )[2] * Z_UNIT;
     
     c.save();
-        // renderSingleIso(
-        //     C,
-        //     ...ptFromScreen(letter.x, letter.y),
-        //     0, 0, ['red']
-        // );
+        // _DEBUG_renderBaseIso(c, ...ptFromScreen(letter.x, letter.y))
 
         c.globalAlpha = Math.max(0, 1 - fade);
 
@@ -321,38 +356,32 @@ function renderLetter(
                 const PTS: [number, number][] = LABEL.LETTERS
                     .slice(letter.LABEL.LETTERS.length - letter.LAST_LINE)
                     .map((l, li) => [
-                        2 + (li * LABEL_LETTER_WIDTH / ISO_SCALE),
-                        -1.75 - (li * LABEL_LINE_HEIGHT / Y_UNIT) +
-                        (getHorizonIsoZ(l.y) * 2)
+                        l.x + (X_UNIT * 1.5),
+                        l.y - Y_UNIT + LABEL_DEPRESS + (getHorizonIsoZ(l.y) * Z_UNIT)
                     ]);
                 PTS.unshift([
-                    PTS[0][0] - ((PTS[1][0] - PTS[0][0]) * 0.15),
-                    PTS[0][1] - ((PTS[1][1] - PTS[0][1]) * 0.15)
+                    PTS[0][0] - ((PTS[1][0] - PTS[0][0]) * 0.2),
+                    PTS[0][1] - ((PTS[1][1] - PTS[0][1]) * 0.2)
                 ]);
                 PTS.push([
-                    PTS[PTS.length - 1][0] - ((PTS[PTS.length - 2][0] - PTS[PTS.length - 1][0]) * 0.1),
-                    PTS[PTS.length - 1][1] - ((PTS[PTS.length - 2][1] - PTS[PTS.length - 1][1]) * 0.1)
+                    PTS[PTS.length - 1][0] - ((PTS[PTS.length - 2][0] - PTS[PTS.length - 1][0]) * 0.2),
+                    PTS[PTS.length - 1][1] - ((PTS[PTS.length - 2][1] - PTS[PTS.length - 1][1]) * 0.2)
                 ]);
 
-                c.translate(
-                    letter.x + (X_UNIT * 0.5),
-                    letter.y + (Y_UNIT * -0.25) + LABEL_DEPRESS
-                );
-                c.scale(ISO_SCALE, ISO_SCALE);
                 c.beginPath();
                     for (let i = 0; i < PTS.length; i++) {
                         c.lineTo(...PTS[i]);
                     }
                     c.translate(
-                        TEXT_UNDERLINE_WIDTH_OFFSET * HOVER * -1.25,
-                        TEXT_UNDERLINE_WIDTH_OFFSET * HOVER * -0.75
+                        WIDTH_STROKE_UNDERLINE * HOVER * -1.25,
+                        WIDTH_STROKE_UNDERLINE * HOVER * -0.75
                     );
                     for (let i = PTS.length - 1; i >= 0; i--) {
                         c.lineTo(...PTS[i]);
                     }
                 c.closePath();
                 c.strokeStyle = COLOR_TEXT_L_OUTLINE;
-                c.lineWidth = (WIDTH_STROKE_OUTLINE * 2 * HOVER) / ISO_SCALE;
+                c.lineWidth = WIDTH_STROKE_OUTLINE * 2 * HOVER;
                 c.stroke();
                 c.fillStyle = COLOR_TEXT_L;
                 c.fill();
@@ -481,15 +510,6 @@ function getTerrainIsoZ(
 }
 
 function getLandZ(x: number, y: number): [number, number] {
-    // const
-    //     MAX_DIST = (parseFloat((window as any).terrain_maxDist) * height) ** 2,
-    //     PEAK_X = (width * 0.5) + (Math.min(WIDTH_PAGE_MAX, width) * (SECTION_I % 2 ? -0.25 : 0.25)),
-    //     PEAK_Y = OFF_Y + (SECTION_I * HEIGHT_MAIN_SECTION_FULL),
-    //     DIST = (PEAK_X - x)**2 + (PEAK_Y - y)**2,
-    //     MAX_Z = parseFloat((window as any).terrain_maxZ);
-
-   
-
     const
         SECTION_I = Math.floor((y - terrainLayout_offsetY) / terrainLayout_sectionFullHeight),
         PEAK = SECTION_TERRAIN[SECTION_I];
@@ -497,17 +517,6 @@ function getLandZ(x: number, y: number): [number, number] {
     if (!PEAK) {
         return [MIN_LAND_ISO_Z, 0];
     }
-
-    // if (parseInt((window as any).terrain_reseed)) {
-    //     console.log(PEAK.noise.reseed());
-    //     (window as any).terrain_reseed = 0;
-    // }
-    // const TERRAIN_WIDTH = Math.min(window.innerWidth, WIDTH_PAGE_BG_MAX);
-    // PEAK.noise.width = parseFloat((window as any).terrain_noiseWidth) * (TERRAIN_WIDTH / WIDTH_PAGE_BG_MAX);
-    // PEAK.noise.height = parseFloat((window as any).terrain_noiseHeight);
-
-    // PEAK.dist = (parseFloat((window as any).terrain_maxDist) * TERRAIN_WIDTH) ** 2;
-    // PEAK.z = parseFloat((window as any).terrain_maxZ);
 
     const
         DX = PEAK.x - x,

@@ -5,12 +5,10 @@ import {
     FONT_FAM_TITLE, FONT_SIZE_SECTION, FONT_WEIGHT_SECTION,
     HEIGHT_MAIN_SECTION,
     HEIGHT_MAIN_SECTION_GAP,
-    ISO_SCALE, LABEL_ANGLE, LABEL_ISO_Z, LABEL_LETTER_HEIGHT, LABEL_LETTER_SHADOW_BLUR, LABEL_LETTER_SPACE, LABEL_LETTER_WIDTH,
+    ISO_SCALE, LABEL_ANGLE, LABEL_ISO_Z, LABEL_LETTER_HEIGHT, LABEL_LETTER_SHADOW_BLUR, LABEL_LETTER_WIDTH,
     LABEL_LINE_HEIGHT,
-    LABEL_LINE_HEIGHT_ISO,
     WIDTH_PAGE_MAX,
     WIDTH_STROKE_OUTLINE,
-    Y_UNIT,
     Z_UNIT
 } from "../consts";
 import { eEaseState, eEaseType } from "../types";
@@ -18,7 +16,7 @@ import { Canvas } from "./Canvas";
 import { Ease } from "./Ease";
 
 export class Label {
-    public pressAni: Ease = new Ease(DURATION_LG, eEaseType.Elastic, true);
+    public pressAni: Ease = new Ease(DURATION_SH, eEaseType.Ease, true);
     public hoverAni: Ease = new Ease(DURATION_SH, eEaseType.Ease, true);
     public readonly LETTERS: LabelLetter[];
 

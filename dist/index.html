@@ -64,59 +64,6 @@
         class="pages"
     ></section>
 
-    <!-- <script>
-        const EL = document.createElement('div');
-        document.body.appendChild(EL);
-        EL.style.position = 'fixed';
-        EL.style.padding = '0.5rem';
-        EL.style.inset = '0 calc(100% - 200px) auto 0';
-        EL.style.backgroundColor = 'white';
-        EL.style.zIndex = '1000';
-        const PROPS = {
-            maxDist:     [  0, 0.5, 0.288 ],
-            maxZ:        [ -3,   8, 5.37 ],
-            noiseWidth:  [  0, 800, 227 ],
-            noiseHeight: [  0,  10, 0.71 ]
-        };
-        Object
-            .entries(PROPS)
-            .forEach(o => {
-                EL.innerHTML += `
-                    <strong>${ o[0] }</strong>
-                    <br/>
-                    <input
-                        type="range"
-                        min="${ o[1][0] }"
-                        max="${ o[1][1] }"
-                        step="any"
-                        value="${ o[1][2] }"
-                        step="any"
-                        oninput="window.terrain_${ o[0] } = event.target.value"
-                    />
-                    <br/>
-                `;
-                window['terrain_' + o[0]] = o[1][2];
-            });
-        EL.innerHTML += `
-            <br/>
-            <button onclick="window.terrain_reseed = 1">
-                Reseed
-            </button>
-            <br/><br/>
-            <button onclick="
-                ${
-                    Object
-                        .keys(PROPS)
-                        .map(p => `console.log('${ p }', window.terrain_${ p });`)
-                        .join('')
-                }
-            ">
-                Log
-            </button>
-            <br/><br/>
-        `;
-    </script> -->
-
     <script src="./script.js"></script>
 
 </body>

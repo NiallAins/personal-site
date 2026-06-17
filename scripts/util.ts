@@ -132,36 +132,3 @@ export function html(
             .flat()
     ];
 }
-
-
-//
-// Debug
-//
-
-const LOG_DT = {
-    t: 0,
-    dtSum: 0,
-    el: document.createElement('div')
-};
-export function logDt(dT: number) {
-    if (!LOG_DT.el.parentElement) {
-        document.body.appendChild(LOG_DT.el);
-        LOG_DT.el.style.position = 'fixed';
-        LOG_DT.el.style.top = '0px';
-        LOG_DT.el.style.left = '0px';
-        LOG_DT.el.style.padding = '1rem';
-        LOG_DT.el.style.color = 'red';
-        LOG_DT.el.style.font = '16px "Courier New"';
-        LOG_DT.el.style.fontWeight = 'bold';
-        LOG_DT.el.innerHTML = '0';
-    }
-
-    LOG_DT.t += 1;
-    LOG_DT.dtSum += dT;
-
-    if (LOG_DT.t > TARGET_FPS * 0.5) {
-        LOG_DT.el.innerHTML = (LOG_DT.dtSum / LOG_DT.t).toFixed(2)
-        LOG_DT.t = 0;
-        LOG_DT.dtSum = 0;
-    }
-}
