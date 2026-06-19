@@ -41,7 +41,7 @@ export function initPages() {
                                 <div class="pages__page-item-image">
                                     <#img
                                         class="pages__page-item-image-image"
-                                        data-src="./images/${ toCamelCase(item.title) }.png"
+                                        data-src="./images/${ toCamelCase(item.title) }.sm.png"
                                         alt='screenshot from the project "${ item.title }"'
                                     />
                                 </div>

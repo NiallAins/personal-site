@@ -1,13 +1,15 @@
 {
     "name": "personalsite",
     "main": "main.js",
-     "scripts": {
+    "scripts": {
         "dev": "npm run build && npm run build-watch",
         "build": "npm run build-style && npm run build-script",
         "build-style": "node ./build-scripts/scss-to-ts && sass ./styles/index.scss > ./dist/style.css",
         "build-script": "webpack --config ./build-scripts/webpack.config.js --mode development",
         "build-script-prod": "sed -i -e 's/PROD = false/PROD = true/' ./scripts/_debug.ts && webpack --config ./build-scripts/webpack.config.js --mode production",
         "build-watch": "bash ./build-scripts/watch.sh",
+        "prep-images": "node ./build-scripts/prep-images.js",
+        "resize-images": "node ./build-scripts/resize-images.js",
         "push": "bash ./build-scripts/push.sh",
         "deploy": "bash ./build-scripts/deploy.sh"
     },
@@ -18,6 +20,7 @@
     "license": "ISC",
     "homepage": "https://github.com/NiallAins/personal-site#readme",
     "devDependencies": {
+        "canvas": "^3.2.3",
         "concurrently": "^9.2.1",
         "http-server": "^14.1.1",
         "onchange": "^7.1.0",
@@ -25,6 +28,8 @@
         "ts-loader": "^9.5.7",
         "typescript": "^6.0.3",
         "webpack": "^5.107.2",
-        "webpack-cli": "^7.0.2"
+        "webpack-cli": "^7.0.2",
+        "@img/sharp-win32-x64": "^0.35.1",
+        "sharp": "^0.35.1"
     }
 }

@@ -34,6 +34,34 @@ export async function loadFont(name: string, src: string) {
 
 
 //
+// Random
+//
+
+export class Rand {
+    private readonly _RNG = [0x80000000, 1103515245, 12345, 8881155010];
+
+    constructor(seed?: number) {
+        if (!seed) {
+            this._RNG[3] = this.get(10**10);
+        } else {
+            this._RNG[3] = seed;
+        }
+    }
+
+    public get(max: number = 1, min: number = 0): number {
+        this._RNG[3] = (this._RNG[1] * this._RNG[3] + this._RNG[2]) % this._RNG[0];
+        const R = this._RNG[3] / this._RNG[0];
+
+        return min + (R * (max - min));
+    }
+
+    get seed(): number {
+        return this._RNG[3];
+    }
+}
+
+
+//
 // HTML
 //
 

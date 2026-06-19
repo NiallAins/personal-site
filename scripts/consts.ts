@@ -72,7 +72,7 @@ export const
         COLOR_HSL_TERRAIN_LAND_4
     ],
     TERRAIN_SEA_NOISE: [number, number, number] = [
-        10, 5, 8881155010
+        10, 0.75, 8881155010
     ],
     TERRAIN_TYPES: tTerrainParams[] = [
         // Island
@@ -83,6 +83,14 @@ export const
         [0.30, 3.6, 256, 0.48, 3351662809, [0,  -1, 0.3, 1.0]],
         // Cliff
         [0.21, 4.6, 234, 2.62, 8818974905, [0,  -1,  -1, 1.0]]
+    ],
+    CUBLET_SEEDS: number[] = [
+        434981953,
+        434981953,
+        434981953,
+        434981953,
+        434981953,
+        434981953
     ];
 
 //

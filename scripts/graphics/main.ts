@@ -23,7 +23,7 @@ const
 export const
     LABELS: Label[] = [],
     CUBLETS: Cublet[][] = PAGE_DATA
-        .map((p, pi) => p.items.map(() => new Cublet(pi)));
+        .map((p, pi) => p.items.map(i => new Cublet(pi, i.title)));
 
 
 //

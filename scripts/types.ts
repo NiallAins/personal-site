@@ -10,7 +10,9 @@ export enum tPageTag {
     Vue,
     Javascipt,
     Typescript,
-    Canvas
+    Canvas,
+    NodeJS,
+    Bash
 };
 
 export enum eEaseType {
@@ -64,16 +66,15 @@ export type tPageData = {
     }[]
 };
 
-export type tPointArr = [
+export type tPoint2 = [
     x: number,
-    y: number,
-    z?: number
+    y: number
 ];
-export type tPoint = {
+export type tPoint3 = [
     x: number,
     y: number,
-    z?: number
-};
+    z: number
+];
 
 export type tEaseFunc = (x: number) => number;
 

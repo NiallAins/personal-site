@@ -117,11 +117,40 @@ export function resize(width: number, height: number) {
             .filter(c => c.sectionI === ti)
             .forEach(c => {
                 c.x = t.x + ((c.RAND_X - 0.5) * TERRAIN_WIDTH * 0.25);
-                c.y = t.y + ((c.RAND_Y - 0.5) * TERRAIN_WIDTH * 0.25);
+                c.y = t.y + ((TERRAIN_WIDTH * 0.07) + ((c.RAND_Y - 0.5) * TERRAIN_WIDTH * 0.18));
 
                 c.setAngle();
             });
     });
+
+    // Align cublets with grid
+    const
+        MIN_Y = height * 0.75,
+        MAX_Y = Math.max(...Cublet.CUBLETS.map(c => c.y));
+
+    let offsetRow = false;
+    for (let y = MIN_Y; y < MAX_Y; y += ROW_HEIGHT) {
+        offsetRow = !offsetRow;
+
+        for (let x = 0; x < width + X_UNIT; x += X_UNIT) {
+            const
+                ISO_PT = ptFromScreen(
+                    x + (offsetRow ? X_UNIT * 0.5 : 0),
+                    y
+                ),
+                LAND_Z = getLandZ(x, y)[0],
+                CUBE = Cublet.CUBLETS.find(c => c.isoX === undefined && c.y <= y && c.x <= x);
+
+            if (CUBE) {
+                CUBE.isoX = ISO_PT[0];
+                CUBE.isoY = ISO_PT[1];
+                if (LAND_Z < -1.5) {
+                    CUBE.inSea = true;
+                    CUBE.setAngle(true);
+                }
+            };
+        }
+    }
 }
 
 export function render(can: Canvas, fade: number, t: number, dT: number) {
@@ -145,7 +174,6 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
             LETTERS = LabelLetter.LETTERS.filter(l => l.y > MIN_Y_OBJ && l.y < MAX_Y_OBJ),
             CUBLETS = Cublet.CUBLETS.filter(c => c.y > MIN_Y_OBJ && c.y < MAX_Y_OBJ);
         LETTERS.forEach(l => l.drawen = false);
-        CUBLETS.forEach(l => l.drawen = false);
 
         let offsetRow = false;
         C.translate(0, window.scrollY * -1);
@@ -181,34 +209,19 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
                         HORIZON_ISO_Z
                     );
 
-                    // Cublets
-                    C.strokeStyle = COLOR_TEXT_L;
-                    C.fillStyle = COLOR_TEXT_L;
-                    C.lineWidth = 2;
-                    CUBLETS
-                        .filter(c => c.isoX === undefined)
-                        .filter(c => !c.drawen && c.y <= y && c.x <= x)
-                        .forEach(c => {
-                            c.isoX = ISO_PT[0];
-                            c.isoY = ISO_PT[1];
-                            if (MAX_Z - LAND_Z > 1) {
-                                c.inSea = true;
-                                c.setAngle(true);
-                            }
-                        });
-
-                    CUBLETS
-                        .filter(c => c.isoX === ISO_PT[0] && c.isoY === ISO_PT[1])
-                        .forEach(c => {
-                            renderCublet(
-                                can,
-                                c,
-                                SCR_PT[0],
-                                SCR_PT[1] - (MAX_Z * Z_UNIT) + window.scrollY,
-                                fade
-                            );
-                            c.drawen = true;
-                        });
+                    const CUBE = CUBLETS.find(c => c.isoX === ISO_PT[0] && c.isoY === ISO_PT[1]);
+                    if (CUBE) {
+                        C.strokeStyle = COLOR_TEXT_L;
+                        C.fillStyle = COLOR_TEXT_L;
+                        C.lineWidth = 2;
+                        renderCublet(
+                            can,
+                            CUBE,
+                            SCR_PT[0],
+                            SCR_PT[1] - (MAX_Z * Z_UNIT) + window.scrollY,
+                            fade
+                        );
+                    };
                 }
             }
 
@@ -562,6 +575,6 @@ function getSeaZ(t: number, x: number, y: number, sx: number, sy: number): numbe
         Splash.splashes.reduce((sum, s) => sum + s.getZ(sx, sy), 0) +
 
         // Noise
-        (NOISE_SEA.get(x, y) * 0.15)
+        NOISE_SEA.get(x, y)
     );
 }

@@ -1,4 +1,4 @@
-import { tPoint } from "../types";
+import { tPoint2 } from "../types";
 
 
 //
@@ -7,7 +7,7 @@ import { tPoint } from "../types";
 
 export class Noise {
     private readonly _RNG = [0x80000000, 1103515245, 12345, 0];
-    private _gradients: { [pt: string]: tPoint } = {};
+    private _gradients: { [pt: string]: tPoint2 } = {};
     private _height: number = 1;
 
     public width: number;
@@ -49,25 +49,25 @@ export class Noise {
         return ((C *this._RNG[1] * this._RNG[3] + this._RNG[2]) % this._RNG[0]) / this._RNG[0];
     }
     
-    private _randVect(x: number, y: number): tPoint {
+    private _randVect(x: number, y: number): tPoint2 {
         const THETA = this._rand(x, y) * 2 * Math.PI;
-        return {
-            x: Math.cos(THETA),
-            y: Math.sin(THETA)
-        };
+        return [
+            Math.cos(THETA),
+            Math.sin(THETA)
+        ];
     }
 
     private _dotProd(x: number, y: number, vx: number, vy: number): number {
         let
             g_vect,
-            d_vect = { x: x - vx, y: y - vy };
+            d_vect = [ x - vx, y - vy ];
         if (this._gradients[[vx, vy].join()]){
             g_vect = this._gradients[[vx,vy].join()];
         } else {
             g_vect = this._randVect(x, y);
             this._gradients[[vx, vy].join()] = g_vect;
         }
-        return d_vect.x * g_vect.x + d_vect.y * g_vect.y;
+        return d_vect[0] * g_vect[0] + d_vect[1] * g_vect[1];
     }
 
     private _smootherStep(x: number): number {
