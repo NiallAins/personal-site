@@ -6,6 +6,7 @@ import {
 import { PAGE_DATA } from "./pages.json";
 import { toggleSectionOpen as toggleGraphicsSectionOpen } from "./graphics/main";
 import { html, toCamelCase } from "./util";
+import { DATA_BG } from "./graphics/cublet-pixels.json";
 
 const
     EL_PAGES: HTMLDivElement[] = [],
@@ -38,10 +39,13 @@ export function initPages() {
                         page.items.map(item => html`
                             <button class="pages__page-item">
                                 <div class="pages__page-item-top"></div>
-                                <div class="pages__page-item-image">
+                                <div
+                                    class="pages__page-item-image"
+                                    style="--color-bg: ${ DATA_BG[toCamelCase(item.title)] }"
+                                >
                                     <#img
                                         class="pages__page-item-image-image"
-                                        data-src="./images/${ toCamelCase(item.title) }.sm.png"
+                                        data-src="./assets/${ toCamelCase(item.title) }.sm.png"
                                         alt='screenshot from the project "${ item.title }"'
                                     />
                                 </div>

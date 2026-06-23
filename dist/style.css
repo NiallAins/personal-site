@@ -275,7 +275,8 @@ h1, h2, h3, h4, h5, h6, p {
 }
 .pages__page-item-image {
   z-index: 1;
-  background-color: #111128;
+  background-color: var(--color-bg, #111128);
+  padding: 1rem;
 }
 .pages__page-item-image-image {
   width: 100%;

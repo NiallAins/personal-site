@@ -55,7 +55,8 @@ $row-overlap: 12vh;
 
             &-image {
                 z-index: 1;
-                background-color: $c-bg-l;
+                background-color: var(--color-bg, #{ $c-bg-l });
+                padding: 1rem;
 
                 &-image {
                     width: 100%;
