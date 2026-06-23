@@ -28,10 +28,9 @@ export class Cublet {
 
         let rand = Cublet.RANDS[sectionI];
         if (!rand) {
-            const SEED = Math.floor(Math.random()*10**10);
+            // const SEED = Math.floor(Math.random()*10**10);
             rand = new Rand(CUBLET_SEEDS[sectionI]);
             Cublet.RANDS.push(rand);
-            console.log(sectionI, SEED);
         }
         this.RAND_X = rand.get();
         this.RAND_Y = rand.get();
@@ -41,7 +40,7 @@ export class Cublet {
 
     public setAngle(rand: boolean = false) {
         this._X_ANG = rand ? this.RAND_X * Math.PI * 2 : 0.615;
-        this._Y_ANG = rand ? this.RAND_Y * Math.PI * 2 : 0.785;
+        this._Y_ANG = rand ? this.RAND_Y * Math.PI * 2 : 0.785 - (this.RAND_Y > 0.5 ? 1.57 : 0);
 
         this._PTS = [
             [ 1,  1,  1],
@@ -66,29 +65,13 @@ export class Cublet {
         p[1] = y*Math.cos(this._X_ANG) - z*Math.sin(this._X_ANG);
         p[2] = y*Math.sin(this._X_ANG) + z*Math.cos(this._X_ANG);
 
-        return [x, y, z];
+        return p as tPoint3;
     }
 
     public draw(c: CanvasRenderingContext2D) {
         const PTS = this._PTS as any as tPoint2[];
 
         c.save();
-            if (this._PIXELS) {
-                const
-                    HALF_W = this._WIDTH * 0.5,
-                    PIX_W = (this._PIXELS.length / 3)**0.5;
-                for (let y = -HALF_W; y < HALF_W; y++) {
-                    for (let x = -HALF_W; x < HALF_W; x++) {
-                        const
-                            PIX_X = Math.floor(((y + HALF_W) / this._WIDTH) * PIX_W),
-                            PIX_Y = Math.floor(((x + HALF_W) / this._WIDTH) * PIX_W),
-                            PIX_I = ((PIX_Y * PIX_W) + PIX_X) * 3,
-                            [ROT_X, ROT_Y] = this._rotatePoint([x, y, -HALF_W]);
-                        c.fillStyle = `rgb(${ this._PIXELS[PIX_I] }, ${ this._PIXELS[PIX_I + 1] }, ${ this._PIXELS[PIX_I + 2] })`;
-                        c.fillRect(ROT_X, ROT_Y, 1, 1);
-                    }
-                }
-            }
             c.beginPath();
                 for (let i = 0; i < 4; i++) {
                     c.lineTo(...PTS[i]);
@@ -103,6 +86,22 @@ export class Cublet {
                     c.lineTo(...PTS[i + 4]);
                 }
             c.stroke();
+            if (this._PIXELS) {
+                const
+                    HALF_W = this._WIDTH * 0.5,
+                    PIX_W = (this._PIXELS.length / 3)**0.5;
+                for (let y = -HALF_W + 2; y < HALF_W - 2; y++) {
+                    for (let x = -HALF_W + 2; x < HALF_W - 2; x++) {
+                        const
+                            PIX_X = Math.floor(((y + HALF_W) / this._WIDTH) * PIX_W),
+                            PIX_Y = Math.floor(((x + HALF_W) / this._WIDTH) * PIX_W),
+                            PIX_I = ((PIX_Y * PIX_W) + PIX_X) * 3,
+                            [ROT_X, ROT_Y] = this._rotatePoint([x, y, -HALF_W]);
+                        c.fillStyle = `rgb(${ this._PIXELS[PIX_I] }, ${ this._PIXELS[PIX_I + 1] }, ${ this._PIXELS[PIX_I + 2] })`;
+                        c.fillRect(ROT_X, ROT_Y, 1, 1);
+                    }
+                }
+            }
         c.restore();
     }
 }

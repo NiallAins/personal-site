@@ -4,21 +4,46 @@ const
     sharp = require('sharp'),
     { createCanvas, loadImage } = require('canvas');
 
-
-//
-// Extracts a Q*Q version of each project image to be used as a micro-preview by cublets,
-// without the need for client to load full image
-//
-
 const
     DIR_FROM = 'images',
     DIR_TO = 'dist/assets',
     PATH_TO_TS = 'scripts/graphics/cublet-pixels.json.ts',
-    Q = 12,
-    CAN = createCanvas(Q, Q),
-    CTX = CAN.getContext('2d');
+    WIDTH_SM = 12,
+    WIDTH_MD = 200,
+    CAN_SM = createCanvas(WIDTH_SM, WIDTH_SM),
+    CAN_MD = createCanvas(WIDTH_MD, WIDTH_MD),
+    CTX_SM = CAN_SM.getContext('2d');
+    CTX_MD = CAN_MD.getContext('2d');
 
-CTX.imageSmoothingEnabled = false;
+CTX_SM.imageSmoothingEnabled = false;
+
+
+//
+// Resizes all images to medium width squares for faster loading
+//
+
+FS.readdir(DIR_FROM, (_, files) => {
+    files
+        .filter(f => f.match(/\.png$/))
+        .forEach(f => {
+            const
+                PATH_FROM = DIR_FROM + '/' + f;
+                PATH_TO = DIR_TO + '/' + f.replace('.png', '.sm.png');
+            sharp(PATH_FROM)
+                .resize(WIDTH_MD, WIDTH_MD, {
+                    kernel: sharp.kernel.mks2021,
+                    fit: 'cover',
+                    position: 'center'
+                })
+                .toFile(PATH_TO)
+        });
+});
+
+
+//
+// Extracts a WIDTH_SM*WIDTH_SM version of each project image to be used as a micro-preview by cublets,
+// without the need for client to load full image
+//
 
 FS.readdir(DIR_FROM, (_, files) => {
     const FILES = files.filter(f => f.match(/\.png$/));
@@ -48,23 +73,29 @@ async function parseImages(files) {
         const
             FILE = files[i],
             IMG = await loadImage(DIR_FROM + '/' + FILE);
-        CTX.drawImage(IMG, 0, 0, Q, Q);
+
+        CTX_SM.drawImage(IMG, 0, 0, WIDTH_SM, WIDTH_SM);
+        CTX_MD.drawImage(IMG, 0, 0, WIDTH_MD, WIDTH_MD);
+        
         const
-            IMG_DATA = CTX.getImageData(0, 0, Q, Q)
+            IMG_DATA_SM = CTX_SM.getImageData(0, 0, WIDTH_SM, WIDTH_SM)
+                .data
+                .filter((_, i) => i % 4 !== 3),
+            IMG_DATA_MD = CTX_MD.getImageData(0, 0, WIDTH_MD, WIDTH_MD)
                 .data
                 .filter((_, i) => i % 4 !== 3),
             BG = {};
 
         // Get most common edge color to use as background
-        for (let y = 0; y < Q; y++) {
-            for (let x = 0; x < Q; x++) {
-                if (y === 0 || y === Q - 1 || x === 0 || x === Q - 1) {
+        for (let y = 0; y < WIDTH_MD; y++) {
+            for (let x = 0; x < WIDTH_MD; x++) {
+                if (y === 0 || y === WIDTH_MD - 1 || x === 0 || x === WIDTH_MD - 1) {
                     const
-                        I = ((y * Q) + x) * 3,
+                        I = ((y * WIDTH_MD) + x) * 3,
                         C = [
-                            IMG_DATA[I],
-                            IMG_DATA[I + 1],
-                            IMG_DATA[I + 2]
+                            IMG_DATA_MD[I],
+                            IMG_DATA_MD[I + 1],
+                            IMG_DATA_MD[I + 2]
                         ].join();
                     BG[C] = BG[C] ? BG[C] + 1 : 1;
                 }
@@ -72,7 +103,7 @@ async function parseImages(files) {
         }
         DATA.push([
             FILE.replace(/\.png/, ''),
-            IMG_DATA,
+            IMG_DATA_SM,
             Object
                 .entries(BG)
                 .sort((a, b) => b[1] - a[1])[0][0]
@@ -81,27 +112,3 @@ async function parseImages(files) {
     }
     return DATA;
 }
-
-
-//
-// Resizes all images to smaller width squares for faster loading
-//
-
-const WIDTH_SM = 200;
-
-FS.readdir(DIR_FROM, (_, files) => {
-    files
-        .filter(f => f.match(/\.png$/))
-        .forEach(f => {
-            const
-                PATH_FROM = DIR_FROM + '/' + f;
-                PATH_TO = DIR_TO + '/' + f.replace('.png', '.sm.png');
-            sharp(PATH_FROM)
-                .resize(WIDTH_SM, WIDTH_SM, {
-                    kernel: sharp.kernel.mks2021,
-                    fit: 'cover',
-                    position: 'center'
-                })
-                .toFile(PATH_TO)
-        });
-});

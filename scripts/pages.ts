@@ -1,5 +1,6 @@
 import {
     CLASS_BODY_PAGE_OPEN, CLASS_PAGE_OPEN,
+    COLOR_BG_L,
     DURATION_SH,
     EL_BODY, EL_MAIN, EL_PAGE_CONTAINER
 } from "./consts";
@@ -14,6 +15,8 @@ const
 
 export const
     EL_TOPIC_BUTTONS: HTMLButtonElement[] = [];
+
+let openPageIndex: number = -1;
 
 export function initPages() {
     PAGE_DATA.forEach((page, pi) => {
@@ -41,15 +44,22 @@ export function initPages() {
                                 <div class="pages__page-item-top"></div>
                                 <div
                                     class="pages__page-item-image"
-                                    style="--color-bg: ${ DATA_BG[toCamelCase(item.title)] }"
-                                >
-                                    <#img
-                                        class="pages__page-item-image-image"
-                                        data-src="./assets/${ toCamelCase(item.title) }.sm.png"
-                                        alt='screenshot from the project "${ item.title }"'
-                                    />
-                                </div>
-                                <h3 class="pages__page-item-label">
+                                    style="
+                                        --bg-url: url(./assets/${ toCamelCase(item.title) }.sm.png);
+                                        --bg-color: ${ DATA_BG[toCamelCase(item.title)] || COLOR_BG_L };
+                                    "
+                                ></div>
+                                <h3 class="
+                                    pages__page-item-label
+                                    ${
+                                        item.title
+                                            .match(/[^ ]+/g)!
+                                            .sort((a, b) => b.length - a.length)
+                                            [0].length > 8
+                                        ? 'pages__page-item-label--sm'
+                                        : ''
+                                    }
+                                ">
                                     ${ item.title }
                                 </h3>
                             </button>
@@ -75,7 +85,9 @@ export function initPages() {
 }
 
 export function openPage(index: number) {
-    toggleGraphicsSectionOpen();
+    openPageIndex = index;
+
+    toggleGraphicsSectionOpen(openPageIndex);
 
     setTimeout(() => {
         EL_BODY.classList.add(CLASS_BODY_PAGE_OPEN);
@@ -89,7 +101,7 @@ export function openPage(index: number) {
 }
 
 export function closePage() {
-    toggleGraphicsSectionOpen();
+    toggleGraphicsSectionOpen(openPageIndex);
     EL_BODY.classList.remove(CLASS_BODY_PAGE_OPEN);
     EL_PAGES.forEach(p => p.classList.remove(CLASS_PAGE_OPEN));
 }

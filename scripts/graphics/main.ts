@@ -33,15 +33,15 @@ export const
 let
     sectionOpen: boolean = false,
     paused: boolean = false,
-    fade: Ease = new Ease(DURATION_SH, eEaseType.EaseOut, true);
+    fades: Ease[] = [];
 
 export function togglePause() {
     paused = !paused;
 }
 
-export function toggleSectionOpen() {
+export function toggleSectionOpen(sectionI: number) {
     sectionOpen = !sectionOpen;
-    fade.play();
+    fades[sectionI].play();
     if (paused) {
         paused = false;
     } else {
@@ -56,7 +56,10 @@ export function toggleSectionOpen() {
 
 export function init() {
     CAN_SEA.CAN.onmousemove = e => Splash.createSplash(e.clientX, e.clientY);
-    EL_TOPIC_BUTTONS.forEach((el, i) => LABELS.push(new Label(el, i)));
+    EL_TOPIC_BUTTONS.forEach((el, i) => {
+        LABELS.push(new Label(el, i));
+        fades.push(new Ease(DURATION_SH, eEaseType.EaseOut, true));
+    });
     LABELS.forEach(l => l.preRender());
     initTerrain();
 
@@ -80,7 +83,7 @@ function animate(t: number = 0, dT: number = 1) {
     if (!paused) {
         Ease.step(dT);
 
-        renderTerrain(CAN_SEA, fade.value, t, dT);
+        renderTerrain(CAN_SEA, fades.map(f => f.value), t, dT);
         t = (t + (0.00075 * dT)) % 1;
     }
 

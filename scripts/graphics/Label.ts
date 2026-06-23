@@ -16,12 +16,14 @@ import { Canvas } from "./Canvas";
 import { Ease } from "./Ease";
 
 export class Label {
+    private EL: HTMLButtonElement;
+    
+    public readonly LETTERS: LabelLetter[];
+    public readonly INDEX: number;
+
     public pressAni: Ease = new Ease(100, eEaseType.Ease, true);
     public hoverAni: Ease = new Ease(DURATION_SH, eEaseType.Ease, true);
-    public readonly LETTERS: LabelLetter[];
 
-    private EL: HTMLButtonElement;
-    private readonly INDEX: number;
 
     constructor(el: HTMLButtonElement, index: number) {
         this.EL = el;

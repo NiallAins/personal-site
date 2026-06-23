@@ -117,7 +117,7 @@ export function resize(width: number, height: number) {
             .filter(c => c.sectionI === ti)
             .forEach(c => {
                 c.x = t.x + ((c.RAND_X - 0.5) * TERRAIN_WIDTH * 0.25);
-                c.y = t.y + ((TERRAIN_WIDTH * 0.07) + ((c.RAND_Y - 0.5) * TERRAIN_WIDTH * 0.18));
+                c.y = t.y + ((TERRAIN_WIDTH * 0.07) + ((c.RAND_Y - 0.5) * TERRAIN_WIDTH * 0.15));
 
                 c.setAngle();
             });
@@ -153,7 +153,7 @@ export function resize(width: number, height: number) {
     }
 }
 
-export function render(can: Canvas, fade: number, t: number, dT: number) {
+export function render(can: Canvas, fades: number[], t: number, dT: number) {
     // _DEBUG_updateTerrainControls(SECTION_TERRAIN);
 
     const C = can.CTX;
@@ -219,7 +219,7 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
                             CUBE,
                             SCR_PT[0],
                             SCR_PT[1] - (MAX_Z * Z_UNIT) + window.scrollY,
-                            fade
+                            fades[CUBE.sectionI]
                         );
                     };
                 }
@@ -229,7 +229,7 @@ export function render(can: Canvas, fade: number, t: number, dT: number) {
             LETTERS
                 .filter(l => !l.drawen && l.y <= y)
                 .forEach(l => {
-                    renderLetter(C, t, l, fade);
+                    renderLetter(C, t, l, fades[l.LABEL.INDEX]);
                     l.drawen = true;
                 });
         }

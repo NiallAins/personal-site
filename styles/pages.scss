@@ -55,13 +55,9 @@ $row-overlap: 12vh;
 
             &-image {
                 z-index: 1;
-                background-color: var(--color-bg, #{ $c-bg-l });
-                padding: 1rem;
-
-                &-image {
-                    width: 100%;
-                    height: 100%;
-                }
+                background: 
+                    var(--bg-url) center / calc(100% - 3rem) no-repeat,
+                    var(--bg-color);
             }
 
             &-label {
@@ -73,6 +69,10 @@ $row-overlap: 12vh;
                 text-align: center;
                 color: $c-text-l;
                 background-color: $c-bg-l;
+
+                &--sm {
+                    @include header-3--sm;
+                }
             }
         }
     }
