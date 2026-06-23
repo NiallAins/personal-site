@@ -14,7 +14,7 @@ const
     DIR_FROM = 'images',
     DIR_TO = 'dist/assets',
     PATH_TO_TS = 'scripts/graphics/cublet-pixels.json.ts',
-    Q = 7,
+    Q = 12,
     CAN = createCanvas(Q, Q),
     CTX = CAN.getContext('2d');
 
