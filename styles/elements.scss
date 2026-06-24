@@ -16,14 +16,17 @@ html {
 body {
     overflow-x: hidden;
     font-family: $f-fam-title;
-    max-width: $w-page-max;
     height: 100vh + $h-main-section-gap + (6 * ($h-main-section + $h-main-section-gap));
-    padding: $w-page-pad;
-    margin: 0 auto;
     
     &.#{ $cl-body-page-open } {
         overflow: hidden;
     }
+}
+
+.page-width-container {
+    max-width: $w-page-max;
+    padding: $w-page-pad;
+    margin: 0 auto;
 }
 
 button {

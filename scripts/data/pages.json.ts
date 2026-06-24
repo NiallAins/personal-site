@@ -1,4 +1,4 @@
-import { tPageData, tPageTag } from "./types";
+import { tPageData, tPageTag } from "../types";
 
 export const PAGE_DATA: tPageData[] = [
     {
@@ -22,7 +22,7 @@ export const PAGE_DATA: tPageData[] = [
                 "title": "Personal site",
                 "desc": "This very site!", 
                 "linkCode": "https://github.com/NiallAins/personal-site",
-                "tags": [tPageTag.Typescript, tPageTag.Canvas]
+                "tags": [tPageTag.Typescript, tPageTag.Canvas, tPageTag.NodeJS]
             },
             {
                 "title": "PaperWon",

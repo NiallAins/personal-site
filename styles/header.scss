@@ -2,11 +2,10 @@
 @use 'mixins' as *;
 
 .header {
-    height: 100vh - $h-min-sea;
-    padding-top: $h-min-sea;
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
 
     .#{ $cl-body-page-open } & {
         visibility: hidden;

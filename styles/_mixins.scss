@@ -122,6 +122,7 @@
     & > * {
         position: absolute;
         inset: 0 25% 50%;
+        border: 2px solid $c-text-l;
 
         @for $i from 1 through 3 {
             &:nth-child(#{ $i }) {
@@ -136,6 +137,13 @@
                     _if($i == 2, translate(-50%, 100%))
                     _if($i == 3, translate(50%, 100%));
             }
+        }
+
+        &::nth-child(2) {
+            z-index: 1;
+            background: 
+                var(--bg-url) center / calc(100% - 3rem) no-repeat,
+                var(--bg-color, $c-bg-l);
         }
     }
 

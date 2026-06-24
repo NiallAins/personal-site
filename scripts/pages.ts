@@ -4,10 +4,10 @@ import {
     DURATION_SH,
     EL_BODY, EL_MAIN, EL_PAGE_CONTAINER
 } from "./consts";
-import { PAGE_DATA } from "./pages.json";
+import { PAGE_DATA } from "./data/pages.json";
 import { toggleSectionOpen as toggleGraphicsSectionOpen } from "./graphics/main";
 import { html, toCamelCase } from "./util";
-import { DATA_BG } from "./graphics/cublet-pixels.json";
+import { DATA_BG } from "./data/images.json";
 
 const
     EL_PAGES: HTMLDivElement[] = [],
@@ -37,26 +37,26 @@ export function initPages() {
         // Add page
         const [EL_PAGE, ...EL_PAGE_IMGS] = html`
             <div class="pages__page">
-                <div class="pages__page-container">
+                <div class="block-layout">
                     ${
                         page.items.map(item => html`
-                            <button class="pages__page-item">
-                                <div class="pages__page-item-top"></div>
+                            <button class="block-layout__item">
+                                <div></div>
                                 <div
-                                    class="pages__page-item-image"
+                                    class="block-layout__item-image"
                                     style="
                                         --bg-url: url(./assets/${ toCamelCase(item.title) }.sm.png);
                                         --bg-color: ${ DATA_BG[toCamelCase(item.title)] || COLOR_BG_L };
                                     "
                                 ></div>
                                 <h3 class="
-                                    pages__page-item-label
+                                    block-layout__item-label
                                     ${
                                         item.title
                                             .match(/[^ ]+/g)!
                                             .sort((a, b) => b.length - a.length)
                                             [0].length > 8
-                                        ? 'pages__page-item-label--sm'
+                                        ? 'block-layout__item-label--sm'
                                         : ''
                                     }
                                 ">

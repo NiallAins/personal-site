@@ -1,7 +1,7 @@
 import { CUBLET_SEEDS, ISO_SCALE } from "../consts";
 import { tPoint2, tPoint3 } from "../types";
 import { Rand, toCamelCase } from "../util";
-import { DATA as CUBLET_PIXELS } from "./cublet-pixels.json";
+import { DATA as CUBLET_PIXELS } from "../data/images.json";
 
 export class Cublet {
     public static readonly CUBLETS: Cublet[] = [];

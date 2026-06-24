@@ -6,7 +6,7 @@ import { init as initTerrain, render as renderTerrain, resize as resizeTerrain }
 import { requestFrameScaled } from "../util";
 import { EL_TOPIC_BUTTONS } from "../pages";
 import { Cublet } from "./Cublet";
-import { PAGE_DATA } from "../pages.json";
+import { PAGE_DATA } from "../data/pages.json";
 import { Ease } from "./Ease";
 import { _DEBUG_logDt } from "../_debug";
 import { eEaseType } from "../types";

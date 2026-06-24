@@ -18,39 +18,104 @@
         class="canvas__sky"
     ></canvas>
 
-    <div class="header">
-        <header class="header__title">
-            <h1 class="header__title--primary">
-                Niall Ainsworth
-            </h1>
-            <span class="header__title--secondary">
-                Design / Development
-            </span>
-        </header>
+    <div class="slider">
+        <section class="experience">
 
-        <nav class="header__nav">
-            <div class="header__nav-links">
-                <button class="header__nav-links-button">
-                    Experience
-                </button>
-                <button class="header__nav-links-button">
-                    Contact
-                </button>
+        </section>
+
+        <div>
+            <div class="header page-width-container">
+                <header class="header__title">
+                    <h1 class="header__title--primary">
+                        Niall Ainsworth
+                    </h1>
+                    <span class="header__title--secondary">
+                        Design / Development
+                    </span>
+                </header>
+
+                <nav class="header__nav">
+                    <div class="header__nav-links">
+                        <button class="header__nav-links-button">
+                            Experience
+                        </button>
+                        <button class="header__nav-links-button">
+                            Contact
+                        </button>
+                    </div>
+                    <div class="header__nav-more">
+                        <button
+                            class="header__nav-more-button"
+                            onclick="
+                                window.scrollTo({
+                                    top: (window.innerHeight * 0.75),
+                                    behavior: 'smooth'
+                                })
+                            "
+                        >
+                            Dive into Projects
+                        </button>
+                    </div>
+                </nav>
             </div>
-            <div class="header__nav-more">
-                <button
-                    class="header__nav-more-button"
-                    onclick="
-                        window.scrollTo({
-                            top: (window.innerHeight * 0.75),
-                            behavior: 'smooth'
-                        })
-                    "
+        </div>
+
+        <section class="contact">
+            <div class="block-layout page-width-container">
+                <a
+                    class="block-layout__item"
+                    href="mailto:niallainsworth@gmail.com"
                 >
-                    Dive into Projects
-                </button>
+                    <div></div>
+                    <div
+                        class="block-layout__item-image"
+                        style="--bg-url: url('./assets/email-logo.svg')"
+                    ></div>
+                    <div class="block-layout__item-title block-layout__item-title--sm">
+                        niallainsworth@gmail.com
+                    </div>
+                </a>
+                <a
+                    class="block-layout__item"
+                    href="https://www.linkedin.com/in/niall-ainsworth-5508551a3/"
+                >
+                    <div></div>
+                    <div
+                        class="block-layout__item-image"
+                        style="--bg-url: url('./assets/linkedin-logo.svg')"
+                    ></div>
+                    <div class="block-layout__item-label">
+                        LinkedIn
+                    </div>
+                </a>
+                <a
+                    class="block-layout__item"
+                    href="https://github.com/NiallAins"
+                >
+                    <div></div>
+                    <div
+                        class="block-layout__item-image"
+                        style="--bg-url: url('./assets/github-logo.svg')"
+                    ></div>
+                    <div class="block-layout__item-label">
+                        GitHub
+                    </div>
+                </a>
+                <a
+                    class="block-layout__item"
+                    href="https://codepen.io/niallains"
+                >
+                    <div></div>
+                    <div
+                        class="block-layout__item-image"
+                        style="--bg-url: url('./assets/codepen-logo.svg')"
+                    ></div>
+                    <div class="block-layout__item-label">
+                        CodePen
+                    </div>
+                </a>
             </div>
-        </nav>
+        </section>
     </div>
 
     <canvas
@@ -58,13 +123,15 @@
         class="canvas__sea"
     ></canvas>
 
-    <main
-        class="main"
-    ></main>
+    <div class="page-width-container">
+        <main
+            class="main"
+        ></main>
 
-    <section
-        class="pages"
-    ></section>
+        <section
+            class="pages"
+        ></section>
+    </div>
 
     <script src="./script.js"></script>
 

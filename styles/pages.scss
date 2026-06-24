@@ -1,8 +1,6 @@
 @use 'vars' as *;
 @use 'mixins' as *;
 
-$row-overlap: 12vh;
-
 .pages {
     &__page {
         position: fixed;
@@ -20,60 +18,6 @@ $row-overlap: 12vh;
         &.#{ $cl-page-open } {
             opacity: 1;
             bottom: 0;
-        }
-
-        &-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 1rem;
-            width: 100%;
-            max-width: $w-page-max;
-            padding: 3rem $w-page-pad #{ $h-min-sea + $row-overlap };
-            margin: 0 auto;
-        }
-        
-        &-item {
-            @include layout-iso();
-            margin-bottom: $row-overlap * -1;
-            transition: translate $dur-lg;
-
-            &:hover {
-                $hover-shift: 0.75rem;
-                translate: #{ $hover-shift * 2 } $hover-shift;
-            }
-
-            @for $i from 1 through 6 {
-                &:nth-child(#{ ($i * 2) }),
-                &:nth-child(#{ ($i * 2) - 1 }) {
-                    z-index: $z-page - $i;
-                }
-            }
-
-            & > * {
-                border: 2px solid $c-text-l;
-            }
-
-            &-image {
-                z-index: 1;
-                background: 
-                    var(--bg-url) center / calc(100% - 3rem) no-repeat,
-                    var(--bg-color);
-            }
-
-            &-label {
-                @include header-3;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 0.5rem;
-                text-align: center;
-                color: $c-text-l;
-                background-color: $c-bg-l;
-
-                &--sm {
-                    @include header-3--sm;
-                }
-            }
         }
     }
 
