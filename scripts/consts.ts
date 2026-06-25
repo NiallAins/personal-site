@@ -31,7 +31,11 @@ export const
 export const
     EL_BODY = getEl('body'),
     EL_MAIN = getEl('main'),
-    EL_PAGE_CONTAINER = getEl('.pages');
+    EL_PAGE_CONTAINER = getEl('.pages'),
+    EL_SLIDER = getEl('.slider'),
+    EL_HEADER_NAV_LINKS_EXPERIENCE = getEl('#header_navLinksExperience'),
+    EL_HEADER_NAV_LINKS_CONTACT = getEl('#header_navLinksContact'),
+    EL_HEADER_NAV_MORE = getEl('#header_navMore');
 
 
 //

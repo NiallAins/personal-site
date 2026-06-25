@@ -35,8 +35,11 @@ let
     paused: boolean = false,
     fades: Ease[] = [];
 
-export function togglePause() {
-    paused = !paused;
+export function togglePause(state?: boolean) {
+    if (state === undefined) {
+        state = !paused;
+    }
+    paused = state;
 }
 
 export function toggleSectionOpen(sectionI: number) {

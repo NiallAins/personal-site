@@ -11,6 +11,12 @@ $row-overlap: 12vh;
     max-width: $w-page-max;
     padding: 3rem $w-page-pad #{ $h-min-sea + $row-overlap };
     margin: 0 auto;
+
+    &--2-col {
+        grid-template-columns: 1fr 1fr;
+        max-width: $w-page-max * 0.75;
+        gap: 2rem;
+    }
     
     &__item {
         @include layout-iso();
@@ -53,6 +59,10 @@ $row-overlap: 12vh;
 
             &--sm {
                 @include header-3--sm;
+            }
+
+            &--xs {
+                font-size: 1.5rem;
             }
         }
     }

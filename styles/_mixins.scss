@@ -76,7 +76,6 @@
 
 @mixin body-link {
     @include body-text;
-    font-size: $f-size-bl;
     padding-bottom: 0.25rem;
     color: $c-text-link;
     text-decoration: none;

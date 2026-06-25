@@ -5,7 +5,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100%;
+    height: calc(100% - #{ $h-min-sea });
+    padding-top: $h-min-sea;
 
     .#{ $cl-body-page-open } & {
         visibility: hidden;
@@ -29,7 +30,7 @@
         &-links {
             display: flex;
             margin: $h-min-sea auto;
-            width: 32rem;
+            width: 28.5rem;
             justify-content: space-between;
             pointer-events: none;
 
@@ -39,7 +40,7 @@
 
                 position: relative;
                 z-index: $z-buttons;
-                padding-bottom: 0.5rem;
+                padding-bottom: 0.75rem;
                 pointer-events: all;
             }
         }

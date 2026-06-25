@@ -36,22 +36,23 @@
 
                 <nav class="header__nav">
                     <div class="header__nav-links">
-                        <button class="header__nav-links-button">
+                        <button
+                            id="header_navLinksExperience"
+                            class="header__nav-links-button"
+                        >
                             Experience
                         </button>
-                        <button class="header__nav-links-button">
+                        <button
+                            id="header_navLinksContact"
+                            class="header__nav-links-button"
+                        >
                             Contact
                         </button>
                     </div>
                     <div class="header__nav-more">
                         <button
+                            id="header_navMore"
                             class="header__nav-more-button"
-                            onclick="
-                                window.scrollTo({
-                                    top: (window.innerHeight * 0.75),
-                                    behavior: 'smooth'
-                                })
-                            "
                         >
                             Dive into Projects
                         </button>
@@ -61,7 +62,7 @@
         </div>
 
         <section class="contact">
-            <div class="block-layout page-width-container">
+            <div class="block-layout block-layout--2-col page-width-container">
                 <a
                     class="block-layout__item"
                     href="mailto:niallainsworth@gmail.com"
@@ -71,8 +72,8 @@
                         class="block-layout__item-image"
                         style="--bg-url: url('./assets/email-logo.svg')"
                     ></div>
-                    <div class="block-layout__item-title block-layout__item-title--sm">
-                        niallainsworth@gmail.com
+                    <div class="block-layout__item-label block-layout__item-label--xs">
+                        niallainsworth&ZeroWidthSpace;@gmail.com
                     </div>
                 </a>
                 <a

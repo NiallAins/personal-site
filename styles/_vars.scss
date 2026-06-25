@@ -9,13 +9,12 @@ $f-fam-title:          "Neuton";
 $f-fam-body:           "Roboto", san-serif;
 $f-size-base:          16px;
 $f-size-h1:            4.5rem;
-$f-size-h2:            2.875rem;
-$f-size-h3:            2.25rem;
+$f-size-h2:            3.25rem;
+$f-size-h3:            2.375rem;
 $f-size-h4:            1.75rem;
-$f-size-bl:            1.25rem;
 $f-size-bm:            1.125rem;
 $f-size-bs:            0.875rem;
-$f-size-section:       $f-size-h2;
+$f-size-section:       $f-size-h3;
 $f-weight-section:     500;
 
 $-w-page-max-total:    1152px;
@@ -67,4 +66,6 @@ $dur-lg:               1000ms;
 
 $cl-body-page-open:    "body--page-open";
 $cl-page-open:         "page--open";
-$cl-main-section-button-disabled: "main__section-button--disabled"
+$cl-slider-open-left:  "slider--open-left";
+$cl-slider-open-right: "slider--open-right";
+$cl-main-section-button-disabled: "main__section-button--disabled";

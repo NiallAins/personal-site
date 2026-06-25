@@ -44,6 +44,11 @@ h1, h2, h3, h4, h5, h6, p {
   padding: 3rem 1rem 26vh;
   margin: 0 auto;
 }
+.block-layout--2-col {
+  grid-template-columns: 1fr 1fr;
+  max-width: 52.5rem;
+  gap: 2rem;
+}
 .block-layout__item {
   position: relative;
   aspect-ratio: 1;
@@ -105,8 +110,8 @@ h1, h2, h3, h4, h5, h6, p {
   background: var(--bg-url) center/calc(100% - 3rem) no-repeat, var(--bg-color, #111128);
 }
 .block-layout__item-label {
-  font-size: 2.25rem;
-  line-height: 2.375rem;
+  font-size: 2.375rem;
+  line-height: 2.5rem;
   font-weight: normal;
   letter-spacing: 3px;
   font-family: "Neuton";
@@ -121,8 +126,11 @@ h1, h2, h3, h4, h5, h6, p {
   background-color: #111128;
 }
 .block-layout__item-label--sm {
-  font-size: 1.875rem;
+  font-size: 2rem;
   letter-spacing: 2px;
+}
+.block-layout__item-label--xs {
+  font-size: 1.5rem;
 }
 
 .slider {
@@ -130,19 +138,19 @@ h1, h2, h3, h4, h5, h6, p {
   left: -100vw;
   display: flex;
   width: 300vw;
-  height: 86vh;
-  padding-top: 14vh;
+  height: 100vh;
   transition: left 1000ms;
+  will-change: left;
 }
 .slider > * {
   width: 100vw;
   height: 100%;
 }
-.slider--open-left {
+.slider.slider--open-left {
   left: 0;
 }
-.slider--open-right {
-  left: 200vw;
+.slider.slider--open-right {
+  left: -200vw;
 }
 
 .canvas__sky, .canvas__sea {
@@ -167,7 +175,8 @@ h1, h2, h3, h4, h5, h6, p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
+  height: calc(100% - 14vh);
+  padding-top: 14vh;
 }
 .body--page-open .header {
   visibility: hidden;
@@ -183,7 +192,7 @@ h1, h2, h3, h4, h5, h6, p {
   color: #ffffff;
 }
 .header__title--secondary {
-  font-size: 2.875rem;
+  font-size: 3.25rem;
   font-weight: normal;
   letter-spacing: 1px;
   font-family: "Neuton";
@@ -195,13 +204,13 @@ h1, h2, h3, h4, h5, h6, p {
 .header__nav-links {
   display: flex;
   margin: 14vh auto;
-  width: 32rem;
+  width: 28.5rem;
   justify-content: space-between;
   pointer-events: none;
 }
 .header__nav-links-button {
-  font-size: 2.25rem;
-  line-height: 2.375rem;
+  font-size: 2.375rem;
+  line-height: 2.5rem;
   font-weight: normal;
   letter-spacing: 3px;
   font-family: "Neuton";
@@ -221,7 +230,7 @@ h1, h2, h3, h4, h5, h6, p {
 .header__nav-links-button {
   position: relative;
   z-index: 40;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.75rem;
   pointer-events: all;
 }
 .header__nav-more {
@@ -232,8 +241,8 @@ h1, h2, h3, h4, h5, h6, p {
   margin: auto 0 10vh;
 }
 .header__nav-more-button {
-  font-size: 2.25rem;
-  line-height: 2.375rem;
+  font-size: 2.375rem;
+  line-height: 2.5rem;
   font-weight: normal;
   letter-spacing: 3px;
   font-family: "Neuton";
@@ -289,9 +298,9 @@ h1, h2, h3, h4, h5, h6, p {
   border: none;
   rotate: -0.488rad;
   font-family: "Neuton";
-  font-size: 2.875rem;
+  font-size: 2.375rem;
   letter-spacing: 3rem;
-  line-height: 4.3125rem;
+  line-height: 3.5625rem;
   color: transparent;
   background: none;
   cursor: pointer;

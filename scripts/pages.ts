@@ -37,7 +37,10 @@ export function initPages() {
         // Add page
         const [EL_PAGE, ...EL_PAGE_IMGS] = html`
             <div class="pages__page">
-                <div class="block-layout">
+                <div class="
+                    block-layout
+                    ${ page.items.length < 5 ? 'block-layout--2-col' : ''}
+                ">
                     ${
                         page.items.map(item => html`
                             <button class="block-layout__item">
