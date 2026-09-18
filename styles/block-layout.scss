@@ -1,32 +1,33 @@
 @use 'vars' as *;
 @use 'mixins' as *;
 
-$row-overlap: 12vh;
+$row-overlap: 18vh;
 
 .block-layout {
+    $w-layout-grid-size-sm: 2;
+    $w-layout-grid-size-lg: 3;
+    $w-layout-lg: $w-page-max;
+    $w-layout-sm: $w-page-max * 0.75;
+    $w-layout-pad-top: $w-page-pad;
+    $w-layout-pad-bottom: 4rem;
+
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
-    width: 100%;
-    max-width: $w-page-max;
-    padding: 3rem $w-page-pad #{ $h-min-sea + $row-overlap };
+    grid-template-columns: repeat($w-layout-grid-size-lg, 1fr);
+    max-width: $w-layout-lg;
+    padding: $w-layout-pad-top $w-page-pad $w-layout-pad-bottom;
     margin: 0 auto;
 
     &--2-col {
-        grid-template-columns: 1fr 1fr;
-        max-width: $w-page-max * 0.75;
-        gap: 2rem;
+        grid-template-columns: repeat($w-layout-grid-size-sm, 1fr);
+        max-width: $w-layout-sm;
     }
-    
-    &__item {
-        @include layout-iso();
-        margin-bottom: $row-overlap * -1;
-        transition: translate $dur-lg;
 
-        &:hover {
-            $hover-shift: 0.75rem;
-            translate: #{ $hover-shift * 2 } $hover-shift;
-        }
+    &__slot {
+        width: calc(min(100vw, #{ $w-layout-lg }) / #{ $w-layout-grid-size-lg });
+        height: calc(
+            ((100vh - #{ $w-layout-pad-top + $w-layout-pad-bottom }) / #{ $w-layout-grid-size-lg }) -
+            (min(100vw, #{ $w-layout-lg }) / #{ $w-layout-grid-size-lg * 8 })
+        );
 
         @for $i from 1 through 6 {
             &:nth-child(#{ ($i * 2) }),
@@ -34,9 +35,37 @@ $row-overlap: 12vh;
                 z-index: $z-page - $i;
             }
         }
+    }
+
+    &__slot:has(&__item:focus-visible) {
+        z-index: $z-focus-visible;
+    }
+
+    &--2-col &__slot {
+        width: calc(min(100vw, #{ $w-layout-sm }) / #{ $w-layout-grid-size-sm });
+        height: calc(
+            ((100vh - #{ $w-layout-pad-top + $w-layout-pad-bottom }) / #{ $w-layout-grid-size-sm }) -
+            (min(100vw, #{ $w-layout-sm }) / #{ $w-layout-grid-size-sm * 8 })
+        );
+    }
+    
+    &__item {
+        @include layout-iso;
+        @include focus-outline;
+
+        display: inline-block;
+        width: calc(100% - 1rem);
+        transition: translate $dur-lg;
+
+        &:hover,
+        &:focus-visible {
+            $hover-shift: 0.75rem;
+            translate: #{ $hover-shift * 2 } $hover-shift;
+        }
 
         & > * {
             border: 2px solid $c-text-l;
+            background-color: $c-bg-l;
         }
 
         &-image {

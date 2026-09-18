@@ -29,13 +29,21 @@ export const
 //
 
 export const
-    EL_BODY = getEl('body'),
-    EL_MAIN = getEl('main'),
-    EL_PAGE_CONTAINER = getEl('.pages'),
-    EL_SLIDER = getEl('.slider'),
+    EL_BODY                        = getEl('body'),
+    EL_MAIN                        = getEl('main'),
+    EL_PAGE_CONTAINER              = getEl('.pages'),
     EL_HEADER_NAV_LINKS_EXPERIENCE = getEl('#header_navLinksExperience'),
-    EL_HEADER_NAV_LINKS_CONTACT = getEl('#header_navLinksContact'),
-    EL_HEADER_NAV_MORE = getEl('#header_navMore');
+    EL_HEADER_NAV_LINKS_CONTACT    = getEl('#header_navLinksContact'),
+    EL_HEADER_NAV_MORE             = getEl('#header_navMore'),
+    EL_PAGES_EXPERIENCE            = getEl('#pages_experience'),
+    EL_PAGES_CONTACT               = getEl('#pages_contact'),
+    EL_PAGES_PROJECT               = getEl('#pages_project'),
+    EL_PAGES_PROJECT_TITLE         = getEl('#project_title'),
+    EL_PAGES_PROJECT_DESC          = getEl('#project_desc'),
+    EL_PAGES_PROJECT_LINK_LIVE     = getEl('#project_linkLive'),
+    EL_PAGES_PROJECT_LINK_CODE     = getEl('#project_linkCode'),
+    EL_PAGES_PROJECT_TAGS          = getEl('#project_tags'),
+    EL_PAGES_PROJECT_IMAGE         = getEl<HTMLImageElement>('#project_image');
 
 
 //

@@ -14,7 +14,7 @@ $f-size-h3:            2.375rem;
 $f-size-h4:            1.75rem;
 $f-size-bm:            1.125rem;
 $f-size-bs:            0.875rem;
-$f-size-section:       $f-size-h3;
+$f-size-section:       2.75rem;
 $f-weight-section:     500;
 
 $-w-page-max-total:    1152px;
@@ -43,7 +43,6 @@ $c-terrainland-3:      list-to-hsl($c-hsl-terrain-land-3);
 $c-hsl-terrain-land-4: (106, 80, 15, 1);
 $c-terrain-land-4:     list-to-hsl($c-hsl-terrain-land-4);
 
-
 $c-bg-d:               #111111;
 $c-bg-l:               #111128;
 $c-text-l:             #ffffff;
@@ -60,12 +59,12 @@ $z-canvas-fg:          next-z();
 $z-buttons:            next-z();
 $z-page:               next-z();
 $z-page-close:         next-z();
+$z-focus-visible:      next-z();
 
 $dur-sh:               500ms;
 $dur-lg:               1000ms;
 
 $cl-body-page-open:    "body--page-open";
 $cl-page-open:         "page--open";
-$cl-slider-open-left:  "slider--open-left";
-$cl-slider-open-right: "slider--open-right";
+$cl-page-active:       "page--active";
 $cl-main-section-button-disabled: "main__section-button--disabled";

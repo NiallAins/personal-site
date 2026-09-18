@@ -17,8 +17,8 @@ import { eEaseType } from "../types";
 //
 
 const
-    CAN_SKY = new Canvas('CAN_SKY'),
-    CAN_SEA = new Canvas('CAN_SEA');
+    CAN_SKY = new Canvas('canvas_sky'),
+    CAN_SEA = new Canvas('canvas_sea');
 
 export const
     LABELS: Label[] = [],
@@ -44,7 +44,8 @@ export function togglePause(state?: boolean) {
 
 export function toggleSectionOpen(sectionI: number) {
     sectionOpen = !sectionOpen;
-    fades[sectionI].play();
+    fades[sectionI]?.play();
+
     if (paused) {
         paused = false;
     } else {

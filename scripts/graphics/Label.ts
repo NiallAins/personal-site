@@ -24,7 +24,6 @@ export class Label {
     public pressAni: Ease = new Ease(100, eEaseType.Ease, true);
     public hoverAni: Ease = new Ease(DURATION_SH, eEaseType.Ease, true);
 
-
     constructor(el: HTMLButtonElement, index: number) {
         this.EL = el;
         this.INDEX = index;

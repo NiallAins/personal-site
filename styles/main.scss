@@ -23,6 +23,8 @@
 
         // Invisible proxy buttons
         &-button {
+            @include focus-outline;
+            
             position: relative;
             z-index: $z-buttons;
             padding: 2rem 2rem 4rem;
@@ -35,10 +37,6 @@
             color: transparent;
             background: none;
             cursor: pointer;
-
-            &:focus-visible {
-                outline: 2px solid $c-text-l;
-            }
 
             &::selection {
                 color: transparent;

@@ -55,15 +55,17 @@ export type tHTMLTemplateValue = string | number | tHTMLEvent;
 export type tHTMLTemplateResult = HTMLElement[];
 export type tHTMLTemplateVar = tHTMLTemplateValue | tHTMLTemplateResult;
 
+export type tPageDataItem = {
+    title: string,
+    desc: string,
+    linkLive?: string,
+    linkCode?: string,
+    tags?: tPageTag[]
+};
+
 export type tPageData = {
     label: string,
-    items: {
-        title: string,
-        desc: string,
-        linkLive?: string,
-        linkCode?: string,
-        tags?: tPageTag[]
-    }[]
+    items: tPageDataItem[]
 };
 
 export type tPoint2 = [

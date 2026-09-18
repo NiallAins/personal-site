@@ -13,125 +13,209 @@
 </head>
 <body>
 
+
+    <!--
+    ---- Sky canvas
+    --->
+
     <canvas
-        id="CAN_SKY"
+        id="canvas_sky"
         class="canvas__sky"
     ></canvas>
 
-    <div class="slider">
-        <section class="experience">
+    
+    <!--
+    ---- Header
+    --->
+    
+    <div class="header page-width-container">
+        <header class="header__title">
+            <h1 class="header__title--primary">
+                Niall Ainsworth
+            </h1>
+            <span class="header__title--secondary">
+                Design / Development
+            </span>
+        </header>
 
-        </section>
-
-        <div>
-            <div class="header page-width-container">
-                <header class="header__title">
-                    <h1 class="header__title--primary">
-                        Niall Ainsworth
-                    </h1>
-                    <span class="header__title--secondary">
-                        Design / Development
-                    </span>
-                </header>
-
-                <nav class="header__nav">
-                    <div class="header__nav-links">
-                        <button
-                            id="header_navLinksExperience"
-                            class="header__nav-links-button"
-                        >
-                            Experience
-                        </button>
-                        <button
-                            id="header_navLinksContact"
-                            class="header__nav-links-button"
-                        >
-                            Contact
-                        </button>
-                    </div>
-                    <div class="header__nav-more">
-                        <button
-                            id="header_navMore"
-                            class="header__nav-more-button"
-                        >
-                            Dive into Projects
-                        </button>
-                    </div>
-                </nav>
+        <nav class="header__nav">
+            <div class="header__nav-links">
+                <button
+                    id="header_navLinksExperience"
+                    class="header__nav-links-button"
+                >
+                    Experience
+                </button>
+                <button
+                    id="header_navLinksContact"
+                    class="header__nav-links-button"
+                >
+                    Contact
+                </button>
             </div>
-        </div>
-
-        <section class="contact">
-            <div class="block-layout block-layout--2-col page-width-container">
-                <a
-                    class="block-layout__item"
-                    href="mailto:niallainsworth@gmail.com"
+            <div class="header__nav-more">
+                <button
+                    id="header_navMore"
+                    class="header__nav-more-button"
                 >
-                    <div></div>
-                    <div
-                        class="block-layout__item-image"
-                        style="--bg-url: url('./assets/email-logo.svg')"
-                    ></div>
-                    <div class="block-layout__item-label block-layout__item-label--xs">
-                        niallainsworth&ZeroWidthSpace;@gmail.com
-                    </div>
-                </a>
-                <a
-                    class="block-layout__item"
-                    href="https://www.linkedin.com/in/niall-ainsworth-5508551a3/"
-                >
-                    <div></div>
-                    <div
-                        class="block-layout__item-image"
-                        style="--bg-url: url('./assets/linkedin-logo.svg')"
-                    ></div>
-                    <div class="block-layout__item-label">
-                        LinkedIn
-                    </div>
-                </a>
-                <a
-                    class="block-layout__item"
-                    href="https://github.com/NiallAins"
-                >
-                    <div></div>
-                    <div
-                        class="block-layout__item-image"
-                        style="--bg-url: url('./assets/github-logo.svg')"
-                    ></div>
-                    <div class="block-layout__item-label">
-                        GitHub
-                    </div>
-                </a>
-                <a
-                    class="block-layout__item"
-                    href="https://codepen.io/niallains"
-                >
-                    <div></div>
-                    <div
-                        class="block-layout__item-image"
-                        style="--bg-url: url('./assets/codepen-logo.svg')"
-                    ></div>
-                    <div class="block-layout__item-label">
-                        CodePen
-                    </div>
-                </a>
+                    Dive into Projects
+                </button>
             </div>
-        </section>
+        </nav>
     </div>
 
+
+    <!--
+    ---- Sea and land canvas
+    --->
+
     <canvas
-        id="CAN_SEA"
+        id="canvas_sea"
         class="canvas__sea"
     ></canvas>
 
-    <div class="page-width-container">
-        <main
-            class="main"
-        ></main>
+
+    <!--
+    ---- Project label container
+    --->
+
+    <main
+        class="main page-width-container"
+    ></main>
+
+
+    <!--
+    ---- Overlay pages
+    --->
+
+    <div class="pages">
+
+        <!--
+        ---- Experience
+        --->
 
         <section
-            class="pages"
-        ></section>
+            id="pages_experience"
+            class="pages__page experience"
+        >
+
+        </section>
+
+
+        <!--
+        ---- Contact
+        --->
+
+        <section
+            id="pages_contact"
+            class="pages__page"
+        >
+            <div class="block-layout block-layout--2-col page-width-container">
+                <div class="block-layout__slot">
+                    <a
+                        class="block-layout__item"
+                        href="mailto:niallainsworth@gmail.com"
+                    >
+                        <div></div>
+                        <div
+                            class="block-layout__item-image"
+                            style="--bg-url: url('./assets/email-logo.svg')"
+                        ></div>
+                        <div class="block-layout__item-label block-layout__item-label--xs">
+                            niallainsworth&ZeroWidthSpace;@gmail.com
+                        </div>
+                    </a>
+                </div>
+                <div class="block-layout__slot">
+                    <a
+                        class="block-layout__item"
+                        href="https://www.linkedin.com/in/niall-ainsworth-5508551a3/"
+                    >
+                        <div></div>
+                        <div
+                            class="block-layout__item-image"
+                            style="--bg-url: url('./assets/linkedin-logo.svg')"
+                        ></div>
+                        <div class="block-layout__item-label">
+                            LinkedIn
+                        </div>
+                    </a>
+                </div>
+                <div class="block-layout__slot">
+                    <a
+                        class="block-layout__item"
+                        href="https://github.com/NiallAins"
+                    >
+                        <div></div>
+                        <div
+                            class="block-layout__item-image"
+                            style="--bg-url: url('./assets/github-logo.svg')"
+                        ></div>
+                        <div class="block-layout__item-label">
+                            GitHub
+                        </div>
+                    </a>
+                </div>
+                <div class="block-layout__slot">
+                    <a
+                        class="block-layout__item"
+                        href="https://codepen.io/niallains"
+                    >
+                        <div></div>
+                        <div
+                            class="block-layout__item-image"
+                            style="--bg-url: url('./assets/codepen-logo.svg')"
+                        ></div>
+                        <div class="block-layout__item-label">
+                            CodePen
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+
+        <!--
+        ---- Individual project page (dyanmically generated)
+        --->
+
+        <section
+            id="pages_project"
+            class="pages__page"
+        >
+            <div class="project">
+                <h2
+                    id="project_title"
+                    class="project__title"
+                ></h2>
+                <img
+                    id="project_image"
+                    class="project__image"
+                    alt="screenshot from project"
+                />
+                <div
+                    id="project_tags"
+                    class="project__tags"
+                ></div>
+                <p
+                    id="project_desc"
+                    class="project__desc"
+                ></p>
+                <div
+                    id="project_linkLive"
+                    class="project__link-live"
+                ></div>
+                <div
+                    id="project_linkCode"
+                    class="project__link-code"
+                ></div>
+            </div>
+        </section>
+
+
+        <!--
+        ---- Project sections (dynamically inserted)
+        --->
     </div>
 
     <script src="./script.js"></script>

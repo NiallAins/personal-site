@@ -20,7 +20,7 @@
             top ease-out $dur-sh;
 
         .#{ $cl-body-page-open } & {
-            top: (100vh - $h-min-sea) * 0.75;
+            top: 100vh;
             pointer-events: none;
         }
     }

@@ -445,7 +445,7 @@ function renderCublet(
         C.globalAlpha = Math.max(0, 1 - fade);
         C.translate(
             x,
-            y - (ISO_SCALE * (cube.inSea ? 0.875 : 1.75)) - (Z_UNIT * 20 * Math.max(0, fade - cube.RAND_X * 0.5))
+            y - (ISO_SCALE * (cube.inSea ? 0.875 : 1.75)) - (Z_UNIT * 40 * Math.max(0, fade - cube.RAND_X * 0.5))
         );
         cube.draw(C);
     C.restore();
