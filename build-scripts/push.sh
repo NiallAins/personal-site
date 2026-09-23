@@ -7,6 +7,7 @@ if [ "$1" ]; then
 
     read -p "Complete push? " complete;
     if [ $complete == "y" ]; then
+        echo $complete;
         echo "Push failed: Canceled";
     else
         git push origin main &&
