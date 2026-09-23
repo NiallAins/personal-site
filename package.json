@@ -6,7 +6,7 @@
         "build": "npm run build-style && npm run build-script",
         "build-style": "node ./build-scripts/scss-to-ts && sass ./styles/index.scss > ./dist/style.css",
         "build-script": "webpack --config ./build-scripts/webpack.config.js --mode development",
-        "build-script-prod": "sed -i -e 's/PROD = false/PROD = true/' ./scripts/_debug.ts && webpack --config ./build-scripts/webpack.config.js --mode production",
+        "build-script-prod": "bash ./build-scripts/set-prod-mode.sh && webpack --config ./build-scripts/webpack.config.js --mode production",
         "build-watch": "bash ./build-scripts/watch.sh",
         "prep-images": "node ./build-scripts/prep-images.js",
         "resize-images": "node ./build-scripts/resize-images.js",
