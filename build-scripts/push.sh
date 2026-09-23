@@ -7,7 +7,7 @@ if [ "$1" ]; then
 
     read -p $'\nComplete push? (y) ' complete;
     if [ "$complete" = "y" ]; then
-        git pushsdf origin main &&
+        git push origin main &&
         echo $'\nPush successful' &&
         exit 1;
     else
