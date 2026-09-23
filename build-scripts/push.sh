@@ -14,6 +14,7 @@ if [ "$1" ]; then
     else
         echo $complete;
         echo "Push failed: Canceled";
+        exit 1;
     fi
 
     echo "Push failed: Command failed";
