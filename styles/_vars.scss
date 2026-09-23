@@ -15,7 +15,10 @@ $f-size-h4:            1.75rem;
 $f-size-bm:            1.125rem;
 $f-size-bs:            0.875rem;
 $f-size-section:       2.75rem;
-$f-weight-section:     500;
+$f-weight-norm:        400;
+$f-weight-demi:        500;
+$f-weight-bold:        600;
+$f-weight-section:     $f-weight-demi;
 
 $-w-page-max-total:    1152px;
 $w-page-pad:           1rem;
@@ -77,9 +80,9 @@ $z-focus-visible:      next-z();
 $dur-sh:               500ms;
 $dur-lg:               1000ms;
 $dur-page-open:        $dur-lg;
-$dur-page-open-delay:  $dur-lg;
+$dur-page-open-delay:  $dur-sh;
 
-$cl-transition-closed:            "transition--closed";
+$cl-transition-inactive:            "transition--inactive";
 $cl-transition-closing:           "transition--closing";
 $cl-transition-sub-opening:       "transition--sub-opening";
 $cl-main-section-button-disabled: "main__section-button--disabled";

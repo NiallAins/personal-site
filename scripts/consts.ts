@@ -45,11 +45,11 @@ export const
     EL_HEADER_NAV_LINKS_EXPERIENCE = getEl('#header_navLinksExperience'),
     EL_HEADER_NAV_LINKS_CONTACT    = getEl('#header_navLinksContact'),
     EL_HEADER_NAV_MORE             = getEl('#header_navMore'),
-    EL_PAGES_CLOSE                 = getEls('.pages__close'),
-    EL_PAGES_EXPERIENCE            = getEl('#pages_experience'),
-    EL_PAGES_CONTACT               = getEl('#pages_contact'),
-    EL_PAGES_TOPIC                 = getEl('#pages_topic'),
-    EL_PAGES_PROJECT               = getEl('#pages_project'),
+    EL_PAGE_CLOSES                 = getEls('.page__close'),
+    EL_PAGE_EXPERIENCE             = getEl('#pages_experience'),
+    EL_PAGE_CONTACT                = getEl('#pages_contact'),
+    EL_PAGE_TOPIC                  = getEl('#pages_topic'),
+    EL_PAGE_PROJECT                = getEl('#pages_project'),
     EL_PROJECT_CLOSE               = getEl('#project_close'),
     EL_PROJECT_TITLE               = getEl('#project_title'),
     EL_PROJECT_TAGS                = getEl('#project_tags'),
@@ -118,6 +118,7 @@ export const
         434981953
     ];
 
+    
 //
 // Labels
 //

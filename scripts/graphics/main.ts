@@ -36,19 +36,20 @@ let
     sectionOpenTimeout: number = -1;
 
 export function toggleSectionOpen(state: boolean, sectionI: number = -1) {
+    clearTimeout(sectionOpenTimeout);
+    
     if (sectionI >= 0) {
         fades[sectionI]?.play(state ? eEaseState.Forward : eEaseState.Backward);
     }
 
-    if (state) {
-        paused = false;
-    } else {
-        clearTimeout(sectionOpenTimeout);
-        sectionOpenTimeout = setTimeout(
-            () => paused = true,
-            DURATION_PAGE_OPEN + DURATION_PAGE_OPEN_DELAY
-        );
-    }
+    // if (state) {
+    //     paused = false;
+    // } else {
+    //     sectionOpenTimeout = setTimeout(
+    //         () => paused = true,
+    //         DURATION_PAGE_OPEN + DURATION_PAGE_OPEN_DELAY
+    //     );
+    // }
 }
 
 

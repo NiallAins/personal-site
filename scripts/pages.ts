@@ -1,13 +1,14 @@
 import {
-    CLASS_TRANSITION_CLOSED, CLASS_TRANSITION_CLOSING, CLASS_TRANSITION_SUB_OPENING,
+    CLASS_TRANSITION_INACTIVE, CLASS_TRANSITION_CLOSING, CLASS_TRANSITION_SUB_OPENING,
     DURATION_PAGE_OPEN,
     COLOR_BG_L,
     EL_BODY, EL_HEADER_NAV_LINKS_CONTACT, EL_HEADER_NAV_LINKS_EXPERIENCE, EL_MAIN,
-    EL_PAGES_CLOSE,
-    EL_PAGES_CONTACT, EL_PAGES_EXPERIENCE, EL_PAGES_PROJECT, EL_PROJECT_CLOSE, EL_PROJECT_DESC,
+    EL_PAGE_CLOSES,
+    EL_PAGE_CONTACT, EL_PAGE_EXPERIENCE, EL_PAGE_PROJECT, EL_PROJECT_CLOSE, EL_PROJECT_DESC,
     EL_PROJECT_IMAGE, EL_PROJECT_LINK_CODE, EL_PROJECT_LINK_LIVE,
-    EL_PROJECT_TAGS, EL_PROJECT_TITLE, EL_PAGES_TOPIC,
-    ROUTES
+    EL_PROJECT_TAGS, EL_PROJECT_TITLE, EL_PAGE_TOPIC,
+    ROUTES,
+    DURATION_PAGE_OPEN_DELAY
 } from "./consts";
 import { PAGE_DATA } from "./data/pages.json";
 import { toggleSectionOpen as toggleGraphicsSectionOpen } from "./graphics/main";
@@ -18,10 +19,10 @@ import { ePageTag, ePages } from "./types";
 const
     PAGE_ELS: { [key in ePages]: HTMLElement } = {
         [ePages.Main]: EL_BODY,
-        [ePages.Contact]: EL_PAGES_CONTACT,
-        [ePages.Experience]: EL_PAGES_EXPERIENCE,
-        [ePages.Topic]: EL_PAGES_TOPIC,
-        [ePages.Project]: EL_PAGES_PROJECT
+        [ePages.Contact]: EL_PAGE_CONTACT,
+        [ePages.Experience]: EL_PAGE_EXPERIENCE,
+        [ePages.Topic]: EL_PAGE_TOPIC,
+        [ePages.Project]: EL_PAGE_PROJECT
     },
     TOPIC_PAGES_CONTENT: HTMLElement[] = [],
     TOPIC_PAGES_IMAGES: { el: HTMLDivElement, url: string }[][] = [];
@@ -33,7 +34,9 @@ let
     currentOpenPage: ePages | null = null,
     currentOpenTopic: number = -1,
     transitionDelayTimeout: number = -1,
+    transitionDelayToTimeout: number = -1,
     transitionDurationTimeout: number = -1,
+    // When user is linked direct to project page, back button should open main page
     initialLoadOnProject: boolean = false;
 
 export function initPages() {
@@ -88,10 +91,10 @@ export function initPages() {
                         ${ PROJECT_BLOCKS }
                     </div>
                     <button
-                        class="pages__close"
+                        class="page__close"
                         onclick="${ openPage.bind(null, ePages.Main, -1, -1, false) }"
                     >
-                        <span class="pages__close-caret"></span>
+                        <span class="page__close-caret"></span>
                     </button>
                 </div>
             `;
@@ -110,9 +113,14 @@ export function initPages() {
     EL_HEADER_NAV_LINKS_CONTACT.onclick = () => openPage(ePages.Contact);
 
     // Close buttons
-    EL_PAGES_CLOSE.forEach(el => el.onclick = () => openPage(ePages.Main));
+    EL_PAGE_CLOSES.forEach(el => el.onclick = () => openPage(ePages.Main));
     EL_PROJECT_CLOSE.onclick = () => openPage(ePages.Topic, currentOpenTopic);
 }
+
+
+//
+// Convert URL hash to page, then open
+//
 
 export function openPageFromUrl() {
     const HASH = window.location.hash
@@ -145,105 +153,139 @@ export function openPageFromUrl() {
     openPage(page, topic, project, true);
 }
 
-function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = -1, isInital: boolean = false) {
-    if (page === ePages.Main) {
-        toggleGraphicsSectionOpen(true);
-        transitionPage(page);
-        setUrl(ROUTES[page]!);
-    }
 
-    else if (page === ePages.Experience || page === ePages.Contact) {
-        toggleGraphicsSectionOpen(false);
-        transitionPage(page);
-        setUrl(ROUTES[page]!);
-    }
+//
+// Open page, or sub page
+//
 
-    else if (page === ePages.Topic) {
-        if (initialLoadOnProject) {
-            initialLoadOnProject = false;
-            openPage(ePages.Main);
-            return;
-        } else {
-            const TOPIC = PAGE_DATA[topicIndex];
+function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = -1, isInitial: boolean = false) {
+    switch (page) {
+        case ePages.Main:
+            toggleGraphicsSectionOpen(true);
+            transitionPage(page);
+            setUrl(ROUTES[page]!, isInitial);
+        break;
 
-            EL_PAGES_TOPIC.innerHTML = '';
-            EL_PAGES_TOPIC.appendChild(TOPIC_PAGES_CONTENT[topicIndex]);
-            
-            // Lazy load images
-            TOPIC_PAGES_IMAGES[topicIndex].forEach(img => img.el.style.setProperty('--bg-url', img.url));
-            
-            currentOpenTopic = topicIndex;
-
+        case ePages.Experience:
+        case ePages.Contact:
             toggleGraphicsSectionOpen(false);
             transitionPage(page);
-            setUrl(TOPIC.label);
-        }
-    }
+            setUrl(ROUTES[page]!, isInitial);
+        break;
 
-    else if (page === ePages.Project) {
-        const PROJECT = PAGE_DATA[topicIndex].items[projectIndex];
+        case ePages.Topic:
+            if (initialLoadOnProject) {
+                initialLoadOnProject = false;
+                openPage(ePages.Main);
+                return;
+            } else {
+                EL_PAGE_TOPIC.innerHTML = '';
+                EL_PAGE_TOPIC.appendChild(TOPIC_PAGES_CONTENT[topicIndex]);
+                currentOpenTopic = topicIndex;
+                
+                // Lazy load images
+                TOPIC_PAGES_IMAGES[topicIndex].forEach(img => img.el.style.setProperty('--bg-url', img.url));
 
-        EL_PROJECT_TITLE.innerHTML = PROJECT.title;
-        EL_PROJECT_DESC.innerHTML = PROJECT.desc;
-        EL_PROJECT_IMAGE.src = `assets/${ toCamelCase(PROJECT.title) }.sm.png`;
-        EL_PROJECT_LINK_LIVE.href = PROJECT.linkCode || '#';
-        EL_PROJECT_LINK_CODE.href = PROJECT.linkLive || '#';
-        EL_PROJECT_TAGS.innerHTML = (PROJECT.tags || [])
-            .map(t => `<span class="project__tags-tag project__tags-tag--${ t }">${ ePageTag[t] }</span>`)
-            .join('');
+                toggleGraphicsSectionOpen(false, topicIndex);
+                // transitionPage(page, currentOpenPage === ePages.Main ? DURATION_PAGE_OPEN_DELAY : 0);
+                // setUrl(PAGE_DATA[topicIndex].label, isInitial);
+            }
+        break;
 
-        toggleGraphicsSectionOpen(false);
-        transitionPage(page);
-        setUrl(PROJECT.title);
+        case ePages.Project:
+            const PROJECT = PAGE_DATA[topicIndex].items[projectIndex];
+
+            EL_PROJECT_TITLE.innerHTML = PROJECT.title;
+            EL_PROJECT_DESC.innerHTML = PROJECT.desc;
+            EL_PROJECT_IMAGE.src = `assets/${ toCamelCase(PROJECT.title) }.sm.png`;
+            EL_PROJECT_LINK_LIVE.href = PROJECT.linkLive || '#';
+            EL_PROJECT_LINK_CODE.href = PROJECT.linkCode || '#';
+            EL_PROJECT_TAGS.innerHTML = (PROJECT.tags || [])
+                .map(t => `<span class="project__tags-tag project__tags-tag--${ t }">${ ePageTag[t] }</span>`)
+                .join('');
+
+            toggleGraphicsSectionOpen(false);
+            transitionPage(page, 0, currentOpenPage == ePages.Topic ? DURATION_PAGE_OPEN_DELAY : 0);
+            setUrl(PROJECT.title, isInitial);
+        break;
     }
 
     currentOpenPage = page;
 }
 
-function transitionPage(pageTo: ePages, delay: number = 0, duration: number = DURATION_PAGE_OPEN) {
+
+//
+// Handle animation classes and timing for page transitions
+//
+
+function transitionPage(pageTo: ePages, delay: number = 0, delayTo: number = 0) {
+    // Reset all pages
     clearTimeout(transitionDelayTimeout);
+    clearTimeout(transitionDelayToTimeout);
     clearTimeout(transitionDurationTimeout);
     Object
         .values(PAGE_ELS)
         .forEach(p => {
-            p.classList.add(CLASS_TRANSITION_CLOSING, CLASS_TRANSITION_CLOSED);
+            p.classList.add(CLASS_TRANSITION_CLOSING, CLASS_TRANSITION_INACTIVE);
             p.classList.remove(CLASS_TRANSITION_SUB_OPENING);
         });
 
     const
         PAGE_FROM = currentOpenPage,
         EL_TO = PAGE_ELS[pageTo],
-        EL_FROM = PAGE_FROM ? PAGE_ELS[PAGE_FROM] : null;
+        EL_FROM = PAGE_FROM === null ? null : PAGE_ELS[PAGE_FROM],
+        TO_SUB_PAGE = PAGE_FROM === ePages.Topic && pageTo === ePages.Project,
+        FROM_SUB_PAGE = PAGE_FROM === ePages.Project && pageTo === ePages.Topic;
 
+    // Initial page load
     if (!EL_FROM) {
-        EL_TO.classList.remove(CLASS_TRANSITION_CLOSING, CLASS_TRANSITION_CLOSED);
-        if (pageTo === ePages.Project) {
-            PAGE_ELS[ePages.Project].classList.add(CLASS_TRANSITION_SUB_OPENING);
-        }
+        EL_TO.classList.remove(CLASS_TRANSITION_CLOSING, CLASS_TRANSITION_INACTIVE);
     }
 
+    // Transition between pages
     else {
+        EL_FROM.classList.remove(CLASS_TRANSITION_INACTIVE, CLASS_TRANSITION_CLOSING);
+        if (FROM_SUB_PAGE) {
+            EL_TO.classList.remove(CLASS_TRANSITION_CLOSING);
+            EL_TO.classList.add(CLASS_TRANSITION_SUB_OPENING);
+        }
+
+        // Transition order
+        //   set currentPageOpen
+        //   initial delay
+        //   fromPage closing animation
+        //   toPage opening delay
+        //   toPage remove inactive
+        //   toPage opening animation
+        //   fromPage add inactive
+        EL_TO.classList.remove(CLASS_TRANSITION_INACTIVE);
         transitionDelayTimeout = setTimeout(() => {
-            EL_FROM.classList.remove(CLASS_TRANSITION_CLOSED);
-            EL_TO.classList.remove(CLASS_TRANSITION_CLOSED);
-            if (pageTo === ePages.Project && PAGE_FROM === ePages.Topic) {
-                EL_FROM.classList.remove(CLASS_TRANSITION_CLOSING);
-                EL_FROM.classList.add(CLASS_TRANSITION_SUB_OPENING);
-            }
-            window.requestAnimationFrame(() => EL_TO.classList.remove(CLASS_TRANSITION_CLOSING, CLASS_TRANSITION_SUB_OPENING));
+            EL_FROM.classList.add(
+                TO_SUB_PAGE
+                    ? CLASS_TRANSITION_SUB_OPENING
+                    : CLASS_TRANSITION_CLOSING
+            );
+            transitionDelayToTimeout = setTimeout(() => {
+                EL_TO.classList.remove(CLASS_TRANSITION_CLOSING, CLASS_TRANSITION_SUB_OPENING);
+            }, Math.max(delayTo, 100));
             transitionDurationTimeout = setTimeout(() => {
-                EL_FROM.classList.add(CLASS_TRANSITION_CLOSED);
-            }, duration);
+                EL_FROM.classList.add(CLASS_TRANSITION_INACTIVE);
+            }, DURATION_PAGE_OPEN);
         }, delay);
     }
 
     currentOpenPage = pageTo;
 }
 
-function setUrl(title: string) {
+
+//
+// Set url hash and page title
+//
+
+function setUrl(title: string, isInitial: boolean) {
     const HREF = window.location.href.replace(/(#.*)?$/, title ? '#' + toCamelCase(title) : '');
     document.title = document.title.replace(/( \| .*)?$/, title ? ' | ' + title : '');
-    if (HREF != window.location.href) {
+    if (!isInitial && HREF != window.location.href) {
         window.history.pushState({}, '', new URL(HREF));
     }
 }

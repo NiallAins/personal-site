@@ -7,14 +7,16 @@
     align-items: center;
     height: calc(100vh - #{ $h-min-sea });
     padding-top: $h-min-sea;
-    transition: opacity $dur-sh;
+    transition:
+        translate $dur-page-open,
+        opacity $dur-page-open;
 
     body.#{ $cl-transition-closing } & {
-        translate: 0 100vh;
+        translate: 0 75vh;
         opacity: 0;
     }
 
-    body.#{ $cl-transition-closed } & {
+    body.#{ $cl-transition-inactive } & {
         display: none;
     }
 
@@ -63,7 +65,7 @@
                 @include button-no-underline;
 
                 color: $c-bg-l;
-                font-weight: 600;
+                font-weight: $f-weight-bold;
                 pointer-events: all;
 
                 &::after {

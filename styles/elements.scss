@@ -21,8 +21,8 @@ body {
     font-family: $f-fam-title;
     height: 100vh + $h-main-section-gap + (6 * ($h-main-section + $h-main-section-gap));
 
-    &.#{ $cl-transition-closing } {
-        height: 100vh;
+    &.#{ $cl-transition-inactive } {
+        overflow: hidden;
     }
 }
 

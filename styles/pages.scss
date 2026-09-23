@@ -10,35 +10,36 @@
     right: 0;
     z-index: $z-page;
     height: 100vh;
-    overflow: auto;
+    overflow: hidden;
     transition:
         opacity $dur-lg,
         bottom $dur-lg;
 
     &.#{ $cl-transition-closing } {
         opacity: 0;
-        bottom: 100vh
+        bottom: 100vh;
+    }
+
+    &--sub.#{ $cl-transition-closing } {
+        bottom: 0;
     }
 
     &.#{ $cl-transition-sub-opening } {
         opacity: 0;
     }
 
-    &.#{ $cl-transition-closed } {
-        display: hidden;
+    &.#{ $cl-transition-inactive } {
+        display: none;
     }
 
     &__close {
-        $height-page-close: $h-min-sea;
-
         position: fixed;
         left: 0;
         right: 0;
-        bottom:  $height-page-close * -1;
+        bottom:  0;
         z-index: $z-page-close;
-        height: $height-page-close;
+        height: $h-min-sea;
         text-align: center;
-        opacity: 1;
         transition: opacity $dur-lg ease $dur-sh;
         
         &-caret {

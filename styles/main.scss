@@ -6,6 +6,10 @@
     display: flex;
     flex-direction: column;
     align-items: start;
+
+    body.#{ $cl-transition-inactive } & {
+        display: none;
+    }
     
     &__section {
         width: 50%;

@@ -34,11 +34,16 @@
         margin-top: 1.5rem;
     }
 
+    &__title {
+        @include header-2;
+    }
+
     &__tags {
         display: flex;
         gap: 1rem;
 
         &-tag {
+            font-family: $f-fam-body;
             border-radius: 2rem;
             padding: 0.25rem 1rem;
             line-height: 1.5rem;
@@ -50,6 +55,7 @@
             }
         }
     }
+
     &__desc {
         @include body-text;
     }

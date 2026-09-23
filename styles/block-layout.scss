@@ -55,7 +55,10 @@ $row-overlap: 18vh;
 
         display: inline-block;
         width: calc(100% - 1rem);
-        transition: translate $dur-lg;
+        transition:
+            scale $dur-page-open,
+            opacity $dur-sh,
+            translate $dur-lg;
 
         &:hover,
         &:focus {
@@ -94,6 +97,12 @@ $row-overlap: 18vh;
                 font-size: 1.5rem;
             }
         }
+    }
+
+    .page.#{ $cl-transition-sub-opening } &__item:focus {
+        scale: 2;
+        opacity: 0;
+        z-index: $z-box-top;
     }
 
     .page.#{ $cl-transition-sub-opening } &__item:not(:focus) {
