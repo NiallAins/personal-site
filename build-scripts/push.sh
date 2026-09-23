@@ -7,11 +7,11 @@ if [ "$1" ]; then
 
     read -p "Complete push? " complete;
     if [ "$complete" = "y" ]; then
-        echo $complete;
-        echo "Push failed: Canceled";
-    else
         git push origin main &&
         echo "Push successful";
+    else
+        echo $complete;
+        echo "Push failed: Canceled";
     fi
 else
     echo "Push failed: Missing commit message";
