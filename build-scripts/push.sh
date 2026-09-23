@@ -5,6 +5,7 @@ if [ "$1" ]; then
     git add . &&
     git commit -m "$1";
 
+    # Confirm push after commit outputs
     read -p $'\nComplete push? (y) ' complete;
     if [ "$complete" = "y" ]; then
         git push origin main &&
