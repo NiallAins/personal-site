@@ -16,8 +16,8 @@ if [ "$1" ]; then
 
         # Build in prod mode
         npm run build-script-prod &&
-        npm run set-base-url "https:\/\/niallains.github.io\/personal-site/dist\/";
-ds
+        npm run set-base-url "https:\/\/niallains.github.io\/personal-site\/dist\/" &&
+
         # Push to prod
         git add *;
         git commit -m "Auto-deploy";
