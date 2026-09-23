@@ -80,7 +80,7 @@ $z-focus-visible:      next-z();
 $dur-sh:               500ms;
 $dur-lg:               1000ms;
 $dur-page-open:        $dur-lg;
-$dur-page-open-delay:  $dur-sh;
+$dur-page-open-delay:  $dur-sh * 0.5;
 
 $cl-transition-inactive:          "transition--inactive";
 $cl-transition-closing:           "transition--closing";

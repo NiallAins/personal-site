@@ -161,14 +161,14 @@ export function openPageFromUrl() {
 function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = -1, isInitial: boolean = false) {
     switch (page) {
         case ePages.Main:
-            toggleGraphicsSectionOpen(true);
+            toggleGraphicsSectionOpen(false, currentOpenTopic);
             transitionPage(page);
             setUrl(ROUTES[page]!, isInitial);
         break;
 
         case ePages.Experience:
         case ePages.Contact:
-            toggleGraphicsSectionOpen(false);
+            toggleGraphicsSectionOpen(true);
             transitionPage(page);
             setUrl(ROUTES[page]!, isInitial);
         break;
@@ -186,9 +186,9 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
                 // Lazy load images
                 TOPIC_PAGES_IMAGES[topicIndex].forEach(img => img.el.style.setProperty('--bg-url', img.url));
 
-                toggleGraphicsSectionOpen(false, topicIndex);
-                // transitionPage(page, currentOpenPage === ePages.Main ? DURATION_PAGE_OPEN_DELAY : 0);
-                // setUrl(PAGE_DATA[topicIndex].label, isInitial);
+                toggleGraphicsSectionOpen(true, topicIndex);
+                transitionPage(page, currentOpenPage === ePages.Main ? DURATION_PAGE_OPEN_DELAY : 0);
+                setUrl(PAGE_DATA[topicIndex].label, isInitial);
             }
         break;
 
@@ -204,7 +204,7 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
                 .map(t => `<span class="project__tags-tag project__tags-tag--${ t }">${ ePageTag[t] }</span>`)
                 .join('');
 
-            toggleGraphicsSectionOpen(false);
+            toggleGraphicsSectionOpen(true, topicIndex);
             transitionPage(page, 0, currentOpenPage == ePages.Topic ? DURATION_PAGE_OPEN_DELAY : 0);
             setUrl(PROJECT.title, isInitial);
         break;

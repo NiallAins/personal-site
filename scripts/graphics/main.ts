@@ -35,21 +35,26 @@ let
     fades: Ease[] = [],
     sectionOpenTimeout: number = -1;
 
-export function toggleSectionOpen(state: boolean, sectionI: number = -1) {
+export function toggleSectionOpen(open: boolean, sectionI: number = -1) {
     clearTimeout(sectionOpenTimeout);
-    
-    if (sectionI >= 0) {
-        fades[sectionI]?.play(state ? eEaseState.Forward : eEaseState.Backward);
-    }
 
-    // if (state) {
-    //     paused = false;
-    // } else {
-    //     sectionOpenTimeout = setTimeout(
-    //         () => paused = true,
-    //         DURATION_PAGE_OPEN + DURATION_PAGE_OPEN_DELAY
-    //     );
-    // }
+    if (open) {
+        if (sectionI >= 0) {
+            fades[sectionI].play(eEaseState.Forward);
+        }
+        sectionOpenTimeout = setTimeout(
+            () => paused = true,
+            DURATION_PAGE_OPEN + DURATION_PAGE_OPEN_DELAY
+        );
+    } else {
+        paused = false;
+        if (sectionI >= 0) {
+            sectionOpenTimeout = setTimeout(
+                () => fades[sectionI].play(eEaseState.Backward),
+                DURATION_PAGE_OPEN
+            );
+        }
+    }
 }
 
 

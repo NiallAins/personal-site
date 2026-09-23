@@ -2,7 +2,7 @@
 
 if [ "$1" ]; then
     # Push to main
-    git add . &&
+    git add .;
     git commit -m "$1";
 
     # Confirm push after commit outputs
@@ -16,11 +16,11 @@ if [ "$1" ]; then
 
         # Build in prod mode
         npm run build-script-prod &&
-        npm run set-base-url "niallains.github.io\/dist\/" &&
-
+        npm run set-base-url "https:\/\/niallains.github.io\/personal-site/dist\/";
+ds
         # Push to prod
-        git add * &&
-        git commit -m "Auto-deploy" &&
+        git add *;
+        git commit -m "Auto-deploy";
         git push origin prod -f &&
 
         # # Return to main

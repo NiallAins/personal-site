@@ -58,7 +58,7 @@ export const
     DURATION_SH: number = 500,
     DURATION_LG: number = 1000,
     DURATION_PAGE_OPEN: number = 1000,
-    DURATION_PAGE_OPEN_DELAY: number = 500,
+    DURATION_PAGE_OPEN_DELAY: number = 250,
     CLASS_TRANSITION_INACTIVE: string = 'transition--inactive',
     CLASS_TRANSITION_CLOSING: string = 'transition--closing',
     CLASS_TRANSITION_SUB_OPENING: string = 'transition--sub-opening',
