@@ -8,14 +8,14 @@ if [ "$1" ]; then
     read -p $'\nComplete push? (y) ' complete;
     if [ "$complete" = "y" ]; then
         git pushsdf origin main &&
-        echo "Push successful" &&
+        echo $'\nPush successful' &&
         exit 1;
     else
-        echo "Push failed: Canceled";
+        echo $'\nPush failed: Canceled' &&
         exit 1;
     fi
 
-    echo "Push failed: Command failed";
+    echo $'\nPush failed: Command failed';
 else
-    echo "Push failed: Missing commit message";
+    echo $'Push failed: Missing commit message';
 fi
