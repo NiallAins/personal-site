@@ -5,9 +5,8 @@ if [ "$1" ]; then
     git add . &&
     git commit -m "$1";
 
-    echo "Complete push?";
-    read resp;
-    if [ "$resp" == "y" ]; then
+    read -p "Complete push? " complete;
+    if [ "$complete" == "y" ]; then
         echo $complete;
         echo "Push failed: Canceled";
     else
