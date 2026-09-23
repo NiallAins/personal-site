@@ -9,10 +9,9 @@ if [ "$1" ]; then
     read -p "Complete push? (y) " complete;
     if [ "$complete" = "y" ]; then
         git pushsdf origin main &&
-        echo "Push successful";
+        echo "Push successful" &&
         exit 1;
     else
-        echo $complete;
         echo "Push failed: Canceled";
         exit 1;
     fi
