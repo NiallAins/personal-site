@@ -17,10 +17,6 @@
            align-self: end;
         }
 
-        .#{ $cl-body-page-open } & {
-            display: none;
-        }
-
         // Invisible proxy buttons
         &-button {
             @include focus-outline;

@@ -16,10 +16,9 @@
 
     &__sea {
         z-index: $z-canvas-fg;
-        transition:
-            top ease-out $dur-sh;
+        transition: top ease-out $dur-page-open;
 
-        .#{ $cl-body-page-open } & {
+        body.#{ $cl-transition-closing } & {
             top: 100vh;
             pointer-events: none;
         }

@@ -43,6 +43,19 @@ $c-terrainland-3:      list-to-hsl($c-hsl-terrain-land-3);
 $c-hsl-terrain-land-4: (106, 80, 15, 1);
 $c-terrain-land-4:     list-to-hsl($c-hsl-terrain-land-4);
 
+$-c-tag-s:             53;
+$-c-tag-l:             50;
+$c-tags: (
+    list-to-hsl((  0, $-c-tag-s, $-c-tag-l)),
+    list-to-hsl((180, $-c-tag-s, $-c-tag-l)),
+    list-to-hsl(( 90, $-c-tag-s, $-c-tag-l)),
+    list-to-hsl((270, $-c-tag-s, $-c-tag-l)),
+    list-to-hsl(( 45, $-c-tag-s, $-c-tag-l)),
+    list-to-hsl((225, $-c-tag-s, $-c-tag-l)),
+    list-to-hsl((135, $-c-tag-s, $-c-tag-l)),
+    list-to-hsl((315, $-c-tag-s, $-c-tag-l))
+);
+
 $c-bg-d:               #111111;
 $c-bg-l:               #111128;
 $c-text-l:             #ffffff;
@@ -63,8 +76,10 @@ $z-focus-visible:      next-z();
 
 $dur-sh:               500ms;
 $dur-lg:               1000ms;
+$dur-page-open:        $dur-lg;
+$dur-page-open-delay:  $dur-lg;
 
-$cl-body-page-open:    "body--page-open";
-$cl-page-open:         "page--open";
-$cl-page-active:       "page--active";
+$cl-transition-closed:            "transition--closed";
+$cl-transition-closing:           "transition--closing";
+$cl-transition-sub-opening:       "transition--sub-opening";
 $cl-main-section-button-disabled: "main__section-button--disabled";

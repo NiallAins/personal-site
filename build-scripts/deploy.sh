@@ -1,10 +1,8 @@
 #!/bin/bash
 
-if [ "$1" ]; then
-    git add *;
-    git commit -m "$1";
-    git push origin main;
-fi;
+git add *;
+git commit -m "$1";
+git push origin main;
 
 git checkout prod;
 git reset origin/main --hard;

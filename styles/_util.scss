@@ -7,5 +7,16 @@ $-z: 0;
 }
 
 @function list-to-hsl($list) {
+    @if (length($list) == 3) {
+        $list: append($list, 1);
+    }
     @return hsl(nth($list, 1), nth($list, 2) * 1%, nth($list, 3) * 1%, nth($list, 4));
+}
+
+@function iif($cond, $if-true, $if-false: null) {
+    @if ($cond) {
+        @return $if-true;
+    } @else {
+        @return $if-false;
+    }
 }

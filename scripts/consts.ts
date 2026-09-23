@@ -1,10 +1,11 @@
 import {
     WIDTH_ISO_SCALE,
-    COLOR_HSL_TERRAIN_LAND_1, COLOR_HSL_TERRAIN_LAND_2, COLOR_HSL_TERRAIN_LAND_3, COLOR_HSL_TERRAIN_LAND_4, COLOR_HSL_TERRAIN_SEA,
+    COLOR_HSL_TERRAIN_LAND_1, COLOR_HSL_TERRAIN_LAND_2, COLOR_HSL_TERRAIN_LAND_3, COLOR_HSL_TERRAIN_LAND_4,
+    COLOR_HSL_TERRAIN_SEA,
     LABEL_LETTER_SPACE, LABEL_LINE_HEIGHT
 } from "./consts.scss";
-import { tColor, tTerrainParams } from "./types";
-import { getEl } from "./util";
+import { ePages, tColor, tTerrainParams } from "./types";
+import { getEl, getEls } from "./util";
 
 
 //
@@ -12,6 +13,16 @@ import { getEl } from "./util";
 //
 
 export * from "./consts.scss";
+
+//
+// Routes
+//
+
+export const ROUTES: { [key in ePages]?: string } = {
+    [ePages.Main]: '',
+    [ePages.Contact]: 'Contact',
+    [ePages.Experience]: 'Experience',
+}
 
 
 //
@@ -31,19 +42,21 @@ export const
 export const
     EL_BODY                        = getEl('body'),
     EL_MAIN                        = getEl('main'),
-    EL_PAGE_CONTAINER              = getEl('.pages'),
     EL_HEADER_NAV_LINKS_EXPERIENCE = getEl('#header_navLinksExperience'),
     EL_HEADER_NAV_LINKS_CONTACT    = getEl('#header_navLinksContact'),
     EL_HEADER_NAV_MORE             = getEl('#header_navMore'),
+    EL_PAGES_CLOSE                 = getEls('.pages__close'),
     EL_PAGES_EXPERIENCE            = getEl('#pages_experience'),
     EL_PAGES_CONTACT               = getEl('#pages_contact'),
+    EL_PAGES_TOPIC                 = getEl('#pages_topic'),
     EL_PAGES_PROJECT               = getEl('#pages_project'),
-    EL_PAGES_PROJECT_TITLE         = getEl('#project_title'),
-    EL_PAGES_PROJECT_DESC          = getEl('#project_desc'),
-    EL_PAGES_PROJECT_LINK_LIVE     = getEl('#project_linkLive'),
-    EL_PAGES_PROJECT_LINK_CODE     = getEl('#project_linkCode'),
-    EL_PAGES_PROJECT_TAGS          = getEl('#project_tags'),
-    EL_PAGES_PROJECT_IMAGE         = getEl<HTMLImageElement>('#project_image');
+    EL_PROJECT_CLOSE               = getEl('#project_close'),
+    EL_PROJECT_TITLE               = getEl('#project_title'),
+    EL_PROJECT_TAGS                = getEl('#project_tags'),
+    EL_PROJECT_DESC                = getEl('#project_desc'),
+    EL_PROJECT_LINK_LIVE           = getEl<HTMLAnchorElement>('#project_linkLive'),
+    EL_PROJECT_LINK_CODE           = getEl<HTMLAnchorElement>('#project_linkCode'),
+    EL_PROJECT_IMAGE               = getEl<HTMLImageElement>('#project_image');
 
 
 //

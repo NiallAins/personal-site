@@ -9,8 +9,13 @@
     padding-top: $h-min-sea;
     transition: opacity $dur-sh;
 
-    .#{ $cl-body-page-open } & {
+    body.#{ $cl-transition-closing } & {
+        translate: 0 100vh;
         opacity: 0;
+    }
+
+    body.#{ $cl-transition-closed } & {
+        display: none;
     }
 
     &__title {

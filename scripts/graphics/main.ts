@@ -1,4 +1,4 @@
-import { SKY_HEIGHT_RATIO, DURATION_SH } from "../consts";
+import { SKY_HEIGHT_RATIO, DURATION_SH, DURATION_PAGE_OPEN, DURATION_PAGE_OPEN_DELAY } from "../consts";
 import { Canvas } from "./Canvas";
 import { Splash } from "./Splash";
 import { Label } from "./Label";
@@ -9,7 +9,7 @@ import { Cublet } from "./Cublet";
 import { PAGE_DATA } from "../data/pages.json";
 import { Ease } from "./Ease";
 import { _DEBUG_logDt } from "../_debug";
-import { eEaseType } from "../types";
+import { eEaseState, eEaseType } from "../types";
 
 
 //
@@ -31,25 +31,23 @@ export const
 //
 
 let
-    sectionOpen: boolean = false,
     paused: boolean = false,
-    fades: Ease[] = [];
+    fades: Ease[] = [],
+    sectionOpenTimeout: number = -1;
 
-export function togglePause(state?: boolean) {
-    if (state === undefined) {
-        state = !paused;
+export function toggleSectionOpen(state: boolean, sectionI: number = -1) {
+    if (sectionI >= 0) {
+        fades[sectionI]?.play(state ? eEaseState.Forward : eEaseState.Backward);
     }
-    paused = state;
-}
 
-export function toggleSectionOpen(sectionI: number) {
-    sectionOpen = !sectionOpen;
-    fades[sectionI]?.play();
-
-    if (paused) {
+    if (state) {
         paused = false;
     } else {
-        setTimeout(() => paused = true, DURATION_SH * 2);
+        clearTimeout(sectionOpenTimeout);
+        sectionOpenTimeout = setTimeout(
+            () => paused = true,
+            DURATION_PAGE_OPEN + DURATION_PAGE_OPEN_DELAY
+        );
     }
 }
 

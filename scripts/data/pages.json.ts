@@ -1,4 +1,4 @@
-import { tPageData, tPageTag } from "../types";
+import { tPageData, ePageTag } from "../types";
 
 export const PAGE_DATA: tPageData[] = [
     {
@@ -9,27 +9,27 @@ export const PAGE_DATA: tPageData[] = [
                 "desc": "A small portfolio website made for the Irish animator known as Johnny Cigerette",
                 "linkLive": "https://johnnycigarette.ie/",
                 "linkCode": "https://github.com/NiallAins/Johnny-Cigarette",
-                "tags": [tPageTag.Vue]
+                "tags": [ePageTag.Vue]
             },
             {
                 "title": "Clever Keys",
                 "desc": "An interactive music education website, created to accompany the Clever Keys book series by Kayleigh Hennessy",
                 "linkLive": "",
                 "linkCode": "",
-                "tags": [tPageTag.Vue]
+                "tags": [ePageTag.Vue]
             },
             {
                 "title": "Personal site",
                 "desc": "This very site!", 
                 "linkCode": "https://github.com/NiallAins/personal-site",
-                "tags": [tPageTag.Typescript, tPageTag.Canvas, tPageTag.NodeJS]
+                "tags": [ePageTag.Typescript, ePageTag.Canvas, ePageTag.NodeJS]
             },
             {
                 "title": "PaperWon",
                 "desc": "Proof of concept for a site exploring educational resources and tools for Irish Leaving cert maths studies",
                 "linkLive": "https://niallains.github.io/PaperWon/dist/",
                 "linkCode": "https://github.com/NiallAins/PaperWon/tree/master",
-                "tags": [tPageTag.Vue, tPageTag.Incomplete]
+                "tags": [ePageTag.Vue, ePageTag.Incomplete]
             }
         ]
     },

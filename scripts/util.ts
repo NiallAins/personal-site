@@ -67,10 +67,10 @@ export class Rand {
 
 export function toCamelCase(text: string): string {
     return text
+        .replace(/[^a-z-]/gi, '')
         .replace(/([a-z])([A-Z])/g, '$1 $2')
         .toLowerCase()
-        .replace(/ /g, '-')
-        .replace(/[^a-z-]/g, '');
+        .replace(/ +/g, '-');
 }
 
 export function getEl<tEl extends HTMLElement = HTMLDivElement>(query: string): tEl {

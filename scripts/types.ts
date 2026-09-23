@@ -4,8 +4,15 @@ import { Noise } from "./graphics/Noise";
 // Enums
 //
 
-export enum tPageTag {
-    Hide,
+export enum ePages {
+    Main,
+    Contact,
+    Experience,
+    Topic,
+    Project
+};
+
+export enum ePageTag {
     Incomplete,
     Vue,
     Javascipt,
@@ -60,7 +67,7 @@ export type tPageDataItem = {
     desc: string,
     linkLive?: string,
     linkCode?: string,
-    tags?: tPageTag[]
+    tags?: ePageTag[]
 };
 
 export type tPageData = {

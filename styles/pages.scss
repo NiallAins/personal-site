@@ -1,31 +1,31 @@
 @use 'vars' as *;
 @use 'mixins' as *;
 
-.pages {
-    &__page {
-        @include scrollbar;
-        
-        position: fixed;
-        bottom: 100vh;
-        left: 0;
-        right: 0;
-        z-index: $z-page;
-        display: none;
-        height: 100vh;
-        overflow: auto;
+.page {
+    @include scrollbar;
+    
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: $z-page;
+    height: 100vh;
+    overflow: auto;
+    transition:
+        opacity $dur-lg,
+        bottom $dur-lg;
+
+    &.#{ $cl-transition-closing } {
         opacity: 0;
-        transition:
-            opacity $dur-lg,
-            bottom $dur-lg;
+        bottom: 100vh
+    }
 
-        &.#{ $cl-page-open } {
-            opacity: 1;
-            bottom: 0;
-        }
+    &.#{ $cl-transition-sub-opening } {
+        opacity: 0;
+    }
 
-        &.#{ $cl-page-active } {
-            display: block;
-        }
+    &.#{ $cl-transition-closed } {
+        display: hidden;
     }
 
     &__close {
@@ -38,13 +38,8 @@
         z-index: $z-page-close;
         height: $height-page-close;
         text-align: center;
-        opacity: 0;
+        opacity: 1;
         transition: opacity $dur-lg ease $dur-sh;
-
-        .#{ $cl-body-page-open } & {
-            bottom: 0;
-            opacity: 1;
-        }
         
         &-caret {
             @include caret-down-lg;
@@ -70,5 +65,9 @@
             inset: -1rem;
             rotate: 45deg;
         }
+    }
+
+    &.#{ $cl-transition-closing } &__close {
+        opacity: 0;
     }
 }

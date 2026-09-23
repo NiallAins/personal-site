@@ -2,13 +2,14 @@
 <head>
 
     <title>
-        Niall | Design & Dev
+        Niall – Design & Dev
     </title>
 
-    <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="stylesheet" href="style.css" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="http://localhost:5500/dist/" />
 
 </head>
 <body>
@@ -85,140 +86,161 @@
 
 
     <!--
-    ---- Overlay pages
+    ---- Experience
     --->
 
-    <div class="pages">
+    <section
+        id="pages_experience"
+        class="page experience"
+    >
 
-        <!--
-        ---- Experience
-        --->
-
-        <section
-            id="pages_experience"
-            class="pages__page experience"
-        >
-
-        </section>
+        <button class="pages__close">
+            <span class="pages__close-caret"></span>
+        </button>
+    </section>
 
 
-        <!--
-        ---- Contact
-        --->
+    <!--
+    ---- Contact
+    --->
 
-        <section
-            id="pages_contact"
-            class="pages__page"
-        >
-            <div class="block-layout block-layout--2-col page-width-container">
-                <div class="block-layout__slot">
-                    <a
-                        class="block-layout__item"
-                        href="mailto:niallainsworth@gmail.com"
-                    >
-                        <div></div>
-                        <div
-                            class="block-layout__item-image"
-                            style="--bg-url: url('./assets/email-logo.svg')"
-                        ></div>
-                        <div class="block-layout__item-label block-layout__item-label--xs">
-                            niallainsworth&ZeroWidthSpace;@gmail.com
-                        </div>
-                    </a>
-                </div>
-                <div class="block-layout__slot">
-                    <a
-                        class="block-layout__item"
-                        href="https://www.linkedin.com/in/niall-ainsworth-5508551a3/"
-                    >
-                        <div></div>
-                        <div
-                            class="block-layout__item-image"
-                            style="--bg-url: url('./assets/linkedin-logo.svg')"
-                        ></div>
-                        <div class="block-layout__item-label">
-                            LinkedIn
-                        </div>
-                    </a>
-                </div>
-                <div class="block-layout__slot">
-                    <a
-                        class="block-layout__item"
-                        href="https://github.com/NiallAins"
-                    >
-                        <div></div>
-                        <div
-                            class="block-layout__item-image"
-                            style="--bg-url: url('./assets/github-logo.svg')"
-                        ></div>
-                        <div class="block-layout__item-label">
-                            GitHub
-                        </div>
-                    </a>
-                </div>
-                <div class="block-layout__slot">
-                    <a
-                        class="block-layout__item"
-                        href="https://codepen.io/niallains"
-                    >
-                        <div></div>
-                        <div
-                            class="block-layout__item-image"
-                            style="--bg-url: url('./assets/codepen-logo.svg')"
-                        ></div>
-                        <div class="block-layout__item-label">
-                            CodePen
-                        </div>
-                    </a>
-                </div>
+    <section
+        id="pages_contact"
+        class="page"
+    >
+        <div class="block-layout page-width-container">
+            <div class="block-layout__slot">
+                <a
+                    class="block-layout__item"
+                    href="mailto:niallainsworth@gmail.com"
+                >
+                    <div></div>
+                    <div
+                        class="block-layout__item-image"
+                        style="--bg-url: url('assets/email-logo.svg')"
+                    ></div>
+                    <div class="block-layout__item-label block-layout__item-label--xs">
+                        niallainsworth&ZeroWidthSpace;@gmail.com
+                    </div>
+                </a>
             </div>
-        </section>
+            <div class="block-layout__slot">
+                <a
+                    class="block-layout__item"
+                    href="https://www.linkedin.com/in/niall-ainsworth-5508551a3/"
+                >
+                    <div></div>
+                    <div
+                        class="block-layout__item-image"
+                        style="--bg-url: url('assets/linkedin-logo.svg')"
+                    ></div>
+                    <div class="block-layout__item-label">
+                        LinkedIn
+                    </div>
+                </a>
+            </div>
+            <div class="block-layout__slot">
+                <a
+                    class="block-layout__item"
+                    href="https://github.com/NiallAins"
+                >
+                    <div></div>
+                    <div
+                        class="block-layout__item-image"
+                        style="--bg-url: url('assets/github-logo.svg')"
+                    ></div>
+                    <div class="block-layout__item-label">
+                        GitHub
+                    </div>
+                </a>
+            </div>
+            <div class="block-layout__slot">
+                <a
+                    class="block-layout__item"
+                    href="https://codepen.io/niallains"
+                >
+                    <div></div>
+                    <div
+                        class="block-layout__item-image"
+                        style="--bg-url: url('assets/codepen-logo.svg')"
+                    ></div>
+                    <div class="block-layout__item-label">
+                        CodePen
+                    </div>
+                </a>
+            </div>
+        </div>
+        <button class="pages__close">
+            <span class="pages__close-caret"></span>
+        </button>
+    </section>
 
 
-        <!--
-        ---- Individual project page (dyanmically generated)
-        --->
+    <!--
+    ---- Topic page
+    --->
 
-        <section
-            id="pages_project"
-            class="pages__page"
-        >
-            <div class="project">
-                <h2
-                    id="project_title"
-                    class="project__title"
-                ></h2>
+    <section
+        id="pages_topic"
+        class="page"
+    ></section>
+
+
+    <!--
+    ---- Individual project page (dyanmically generated)
+    --->
+
+    <section
+        id="pages_project"
+        class="page page-width-container"
+    >
+        <div class="project">
+            <button
+                id="project_close"
+                class="project__close"
+            >
+                More projects
+            </button>
+            <div class="project__body">
                 <img
                     id="project_image"
                     class="project__image"
                     alt="screenshot from project"
                 />
-                <div
-                    id="project_tags"
-                    class="project__tags"
-                ></div>
-                <p
-                    id="project_desc"
-                    class="project__desc"
-                ></p>
-                <div
-                    id="project_linkLive"
-                    class="project__link-live"
-                ></div>
-                <div
-                    id="project_linkCode"
-                    class="project__link-code"
-                ></div>
+                <div class="project__body-content">
+                    <h2
+                        id="project_title"
+                        class="project__title"
+                    ></h2>
+                    
+                    <div
+                        id="project_tags"
+                        class="project__tags"
+                    ></div>
+                    <p
+                        id="project_desc"
+                        class="project__desc"
+                    ></p>
+                    <div class="project__links">
+                        <a
+                            id="project_linkLive"
+                            class="project__links-link"
+                        >
+                            Open project
+                        </a>
+                        <a
+                            id="project_linkCode"
+                            class="project__links-link"
+                        >
+                            View Code
+                        </a>
+                    </div>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-
-        <!--
-        ---- Project sections (dynamically inserted)
-        --->
-    </div>
-
-    <script src="./script.js"></script>
+    <script src="script.js"></script>
 
 </body>
 </html>

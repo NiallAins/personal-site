@@ -12,21 +12,21 @@ $row-overlap: 18vh;
     $w-layout-pad-bottom: 4rem;
 
     display: grid;
-    grid-template-columns: repeat($w-layout-grid-size-lg, 1fr);
-    max-width: $w-layout-lg;
+    grid-template-columns: repeat($w-layout-grid-size-sm, 1fr);
+    max-width: $w-layout-sm;
     padding: $w-layout-pad-top $w-page-pad $w-layout-pad-bottom;
     margin: 0 auto;
 
-    &--2-col {
-        grid-template-columns: repeat($w-layout-grid-size-sm, 1fr);
-        max-width: $w-layout-sm;
+    &:has(&__slot:nth-child(5)) {
+        grid-template-columns: repeat($w-layout-grid-size-lg, 1fr);
+        max-width: $w-layout-lg;
     }
 
     &__slot {
-        width: calc(min(100vw, #{ $w-layout-lg }) / #{ $w-layout-grid-size-lg });
+        width: calc(min(100vw, #{ $w-layout-sm }) / #{ $w-layout-grid-size-sm });
         height: calc(
-            ((100vh - #{ $w-layout-pad-top + $w-layout-pad-bottom }) / #{ $w-layout-grid-size-lg }) -
-            (min(100vw, #{ $w-layout-lg }) / #{ $w-layout-grid-size-lg * 8 })
+            ((100vh - #{ $w-layout-pad-top + $w-layout-pad-bottom }) / #{ $w-layout-grid-size-sm }) -
+            (min(100vw, #{ $w-layout-sm }) / #{ $w-layout-grid-size-sm * 8 })
         );
 
         @for $i from 1 through 6 {
@@ -41,11 +41,11 @@ $row-overlap: 18vh;
         z-index: $z-focus-visible;
     }
 
-    &--2-col &__slot {
-        width: calc(min(100vw, #{ $w-layout-sm }) / #{ $w-layout-grid-size-sm });
+    &:has(&__slot:nth-child(5)) &__slot {
+        width: calc(min(100vw, #{ $w-layout-lg }) / #{ $w-layout-grid-size-lg });
         height: calc(
-            ((100vh - #{ $w-layout-pad-top + $w-layout-pad-bottom }) / #{ $w-layout-grid-size-sm }) -
-            (min(100vw, #{ $w-layout-sm }) / #{ $w-layout-grid-size-sm * 8 })
+            ((100vh - #{ $w-layout-pad-top + $w-layout-pad-bottom }) / #{ $w-layout-grid-size-lg }) -
+            (min(100vw, #{ $w-layout-lg }) / #{ $w-layout-grid-size-lg * 8 })
         );
     }
     
@@ -58,7 +58,7 @@ $row-overlap: 18vh;
         transition: translate $dur-lg;
 
         &:hover,
-        &:focus-visible {
+        &:focus {
             $hover-shift: 0.75rem;
             translate: #{ $hover-shift * 2 } $hover-shift;
         }
@@ -94,5 +94,9 @@ $row-overlap: 18vh;
                 font-size: 1.5rem;
             }
         }
+    }
+
+    .page.#{ $cl-transition-sub-opening } &__item:not(:focus) {
+        translate: -200vw -100vw;
     }
 }

@@ -1,0 +1,66 @@
+@use "sass:list" as *;
+@use "mixins" as *;
+@use "util" as *;
+@use "vars" as *;
+
+.project {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-top: 3rem;
+    align-items: start;
+
+    &__close {
+        @include body-title;
+        @include link-underline;
+    }
+
+    &__body {
+        display: flex;
+        align-items: start;
+        gap: 2rem;
+
+        &-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+    }
+
+    &__image {
+        padding: 0.5rem;
+        background-color: $c-bg-d;
+        border: 1px solid $c-text-l;
+        margin-top: 1.5rem;
+    }
+
+    &__tags {
+        display: flex;
+        gap: 1rem;
+
+        &-tag {
+            border-radius: 2rem;
+            padding: 0.25rem 1rem;
+            line-height: 1.5rem;
+
+            @for $i from 0 to length($c-tags) {
+                &--#{ $i } {
+                    background-color: nth($c-tags, $i + 1);
+                }
+            }
+        }
+    }
+    &__desc {
+        @include body-text;
+    }
+
+    &__links {
+        display: flex;
+        gap: 3rem;
+
+        &-link {
+            @include body-title;
+            @include link-underline;
+        }
+    }
+}
