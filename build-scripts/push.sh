@@ -5,7 +5,7 @@ if [ "$1" ]; then
     git add . &&
     git commit -m "$1";
 
-    read -p "\nComplete push? (y) " complete;
+    read -p $'\nComplete push? (y) ' complete;
     if [ "$complete" = "y" ]; then
         git pushsdf origin main &&
         echo "Push successful" &&
