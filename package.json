@@ -10,6 +10,7 @@
         "build-watch": "bash ./build-scripts/watch.sh",
         "prep-images": "node ./build-scripts/prep-images.js",
         "resize-images": "node ./build-scripts/resize-images.js",
+        "set-base-url": "bash ./build-scripts/set-base-url.sh",
         "push": "bash ./build-scripts/push.sh",
         "deploy": "bash ./build-scripts/deploy.sh"
     },
