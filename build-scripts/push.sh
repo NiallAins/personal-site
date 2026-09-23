@@ -6,7 +6,7 @@ if [ "$1" ]; then
     git commit -m "$1";
 
     read -p "Complete push? " complete;
-    if [ $complete = "y" ]; then
+    if [ "$complete" = "y" ]; then
         echo $complete;
         echo "Push failed: Canceled";
     else
