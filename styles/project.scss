@@ -100,7 +100,7 @@
 
             &-text {
                 @include body-title;
-                @include link-underline;
+                @include button-underline;
             }
 
             &:focus-visible &-text {
@@ -128,7 +128,6 @@
 
         &-text {
             @include body-title;
-            margin-right: 1.25rem;
         }
 
         &:focus-visible &-text {

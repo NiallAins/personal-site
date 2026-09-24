@@ -1,0 +1,249 @@
+@use "mixins" as *;
+@use "vars" as *;
+
+@import url('https://fonts.googleapis.com/css?family=Quattrocento:400,700');
+
+$cv-f-primary: 'Roboto', sans-serif;
+$cv-f-secondary: 'Quattrocento', serif;
+$cv-f-sub-sub-head: 0.6875rem;
+$cv-f-sub-head: 1rem;
+$cv-f-body: 0.875rem;
+$cv-f-head: 1.125rem;
+$cv-f-title: 2.625rem;
+
+$cv-c-primary: #4ebed4;
+$cv-c-font: #f0f0f0;
+$cv-c-bg: #21232d;
+
+$cv-max: 65rem;
+
+.experience {
+    height: calc(100vh - 4rem);
+    padding-bottom: 4rem;
+
+    &__print {
+        max-width: $cv-max;
+        margin: 0 auto;
+        text-align: right;
+        
+        &-button {
+            @include body-title;
+            @include button-underline;
+            
+            position: relative;
+            z-index: $z-page-close + 1;
+            margin-right: 1rem;
+        }
+    }
+
+    &__close::before {
+        $w-caret: 2.25rem;
+
+        content: '';
+        position: absolute;
+        bottom: 1.5rem; 
+        left: calc(50% - #{ $w-caret });  
+        padding: $w-caret;
+        border-radius: 100%;
+        background: $c-bg-l;
+        transition: bottom $dur-lg;
+    }
+
+    &__close:hover,
+    &__close:focus {
+        &::before {
+            bottom: 0.5rem;
+        }
+    }
+}
+
+.cv {
+    max-width: $cv-max - 6rem;
+    padding: 3rem 3rem 4rem;
+    margin: 3rem auto 1rem;
+    line-height: 1.25em;
+    font-family: $cv-f-primary;
+    font-size: $cv-f-body;
+    color: $cv-c-font;
+    background: $cv-c-bg;
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    &__header {
+        text-align: center;
+        
+        &-title {
+            font-size: $cv-f-title;
+            margin-bottom: 1.25rem;
+            font-weight: 400;
+            
+            &--thin {
+                font-weight: 100;
+            }
+        }
+        
+        &-subtitle {
+            margin: 0.25rem 0 0.5rem;
+            color: $cv-c-primary;
+            font-size: $cv-f-head;
+            font-weight: 600;
+            font-family: $cv-f-secondary;
+        }
+        
+        &-link {
+            font-weight: 300;
+
+            &-icon {
+                padding: 0 0.25rem 0 0.675rem;
+            }
+        }
+    }
+
+    &__section {
+        &-sub {
+            display: flex;
+            flex-wrap: wrap;
+            padding-bottom: 1rem;
+        }
+
+        &-title {
+            margin: 1rem 0 0.375rem;
+            font-size: $cv-f-head;
+            font-weight: 600;
+            color: $cv-c-primary;
+            font-family: $cv-f-secondary;
+        }
+
+        &-subhead,
+        &-aside {
+            width: 50%;
+        }
+        
+        &-aside {
+            padding-top: 0.25rem;
+            text-align: right;
+            font-style: italic;
+            
+            &-location {
+                display: block;
+                color: $cv-c-primary;
+            }
+            
+            &-date {
+                display: block;
+            }
+        }
+        
+        &-subhead-title {
+            margin: 0.25rem 0;
+            font-size: $cv-f-sub-head;
+            font-weight: 600;
+            font-family: $cv-f-secondary;
+        }
+        
+        &-subhead-subtitle {
+            margin: 0;
+            font-size: $cv-f-sub-sub-head;
+            font-family: $cv-f-secondary;
+            letter-spacing: 0.25px;
+            text-transform: uppercase;
+            
+            &:first-letter {
+                font-size: $cv-f-sub-sub-head + 0.25rem;
+            }
+        }
+        
+        &-line {
+            position: relative;
+            width: 100%;
+            padding-left: 0.875rem;
+            margin: 0.375rem 0 0;
+            
+            &:after {
+                content: '';
+                position: absolute;
+                left: 0.25rem;
+                top: 0.5rem;
+                background-color: $cv-c-font;
+                border-radius: 100%;
+                padding: 0.125rem;
+            }
+        }
+        
+        &-table {
+            th {
+                text-align: right;
+                white-space: nowrap;
+                font-weight: bold;
+                font-family: $cv-f-secondary;
+            }
+            
+            th, td {
+                vertical-align: top;
+                padding: 0.125rem 0.5rem;
+            }
+            
+            &--sub {
+                margin: 0.5rem 4rem 0.5rem 2rem;
+                
+                th {
+                    font-family: $cv-f-primary;
+                }
+            }
+        }
+    }
+}
+
+@media print {
+    @page {
+        margin: 0cm !important;
+    }
+
+    html:has(.experience:not(.#{ $cl-page-inactive })) {
+        width: 100%;
+        background: $cv-c-bg;
+
+        body {
+            height: auto;
+        }
+
+        *::-webkit-scrollbar {
+            width: 0;
+        }
+
+        .page,
+        .canvas__sky,
+        .canvas__sea,
+        #DEBUG {
+            display: none;
+        }
+
+        .cv,
+        .experience {
+            max-width: unset;
+            padding: 0;
+            margin: 0;
+        }
+
+        .experience {
+            position: relative;
+            display: block;
+            height: auto;
+
+            zoom: 75%;
+            -webkit-print-color-adjust: exact !important;
+
+            &__close,
+            &__print {
+                display: none;
+            }
+        }
+
+        .cv {
+            min-height: calc(100% - 4rem);
+            padding: 3rem 2rem 1rem;
+        }
+    }
+}

@@ -7,11 +7,11 @@ CW='\033[0m';
 CB='\033[0;36m';
 
 if [ "$1" ]; then
-    # Push to main
+    # Deploy to main
     git add .;
     git commit -m "$1";
 
-    # Confirm push after commit outputs
+    # Confirm Deploy after commit outputs
     echo -e -n "\n${CB}Complete deploy? (y)${CW} " &&
     read resp;
     echo '';
@@ -33,14 +33,14 @@ if [ "$1" ]; then
 
         # # Return to main
         git checkout main &&
-        echo -e "\n${CG}Push successful${CW}\n" &&
+        echo -e "\n${CG}Deploy successful${CW}\n" &&
         exit 1;
     else
-        echo -e "\n${CR}Push failed: Cancelled${CW}\n" &&
+        echo -e "\n${CR}Deploy failed: Cancelled${CW}\n" &&
         exit 1;
     fi
 
-    echo -e "\n${CR}Push failed: Command failed${CW}\n";
+    echo -e "\n${CR}Deploy failed: Command failed${CW}\n";
 else
-    echo -e "\n${CR}Push failed: Missing commit message${CW}\n";
+    echo -e "\n${CR}Deploy failed: Missing commit message${CW}\n";
 fi;

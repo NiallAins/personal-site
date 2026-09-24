@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Neuton:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Quattrocento:400,700");
 html {
   overflow-y: scroll;
   font-size: 16px;
@@ -33,6 +34,13 @@ body {
 
 a:focus-visible, button:focus-visible {
   outline: none;
+}
+
+table,
+td,
+th {
+  color: inherit;
+  font-size: inherit;
 }
 
 a {
@@ -247,6 +255,7 @@ body.page--inactive .header {
   outline-offset: 0.5rem;
 }
 .header__nav-links-button {
+  padding-bottom: 0.625rem;
   transition: box-shadow 500ms, translate 500ms;
 }
 .header__nav-links-button:active {
@@ -255,13 +264,12 @@ body.page--inactive .header {
 .header__nav-links-button {
   box-shadow: inset 0 0 0 0 currentColor;
 }
-.header__nav-links-button:hover, .header__nav-links-button:focus {
+.header__nav-links-button:hover, .header__nav-links-button:focus, a:hover > .header__nav-links-button, a:focus > .header__nav-links-button, button:focus > .header__nav-links-button, button:focus > .header__nav-links-button {
   box-shadow: inset 0 -0.375rem 0 0 currentColor;
 }
 .header__nav-links-button {
   position: relative;
   z-index: 40;
-  padding-bottom: 0.75rem;
   pointer-events: all;
 }
 .header__nav-more {
@@ -284,6 +292,7 @@ body.page--inactive .header {
   outline-offset: 0.5rem;
 }
 .header__nav-more-button {
+  padding-bottom: 0.625rem;
   transition: box-shadow 500ms, translate 500ms;
 }
 .header__nav-more-button:active {
@@ -296,7 +305,7 @@ body.page--inactive .header {
 }
 .header__nav-more-button::after {
   position: absolute;
-  left: calc(50% - 1rem - 6px);
+  left: calc(50% - 0.625rem);
   padding: 0.5rem;
   border: solid currentColor;
   border-width: 0 3px 3px 0;
@@ -379,7 +388,7 @@ body.page--inactive .main {
   right: 0;
   z-index: 50;
   height: 100vh;
-  overflow: visible;
+  overflow-y: auto;
   transition: opacity 1000ms, bottom 1000ms;
 }
 .page.page--closing {
@@ -416,7 +425,7 @@ body.page--inactive .main {
 }
 .page__close-caret {
   position: absolute;
-  left: calc(50% - 1.5rem - 8px);
+  left: calc(50% - 0.9375rem);
   padding: 0.75rem;
   border: solid currentColor;
   border-width: 0 4px 4px 0;
@@ -554,6 +563,7 @@ body.page--inactive .main {
   outline-offset: 0.5rem;
 }
 .project__links-link-text {
+  padding-bottom: 0.625rem;
   transition: box-shadow 500ms, translate 500ms;
 }
 .project__links-link-text:active {
@@ -561,9 +571,8 @@ body.page--inactive .main {
 }
 .project__links-link-text {
   box-shadow: inset 0 0 0 0 currentColor;
-  padding-bottom: 0.5rem;
 }
-.project__links-link-text:hover, .project__links-link-text:focus, a:hover > .project__links-link-text, a:focus > .project__links-link-text {
+.project__links-link-text:hover, .project__links-link-text:focus, a:hover > .project__links-link-text, a:focus > .project__links-link-text, button:focus > .project__links-link-text, button:focus > .project__links-link-text {
   box-shadow: inset 0 -0.375rem 0 0 currentColor;
 }
 .project__links-link:focus-visible .project__links-link-text {
@@ -592,7 +601,6 @@ body.page--inactive .main {
   letter-spacing: 1px;
   font-family: "Neuton";
   color: #ffffff;
-  margin-right: 1.25rem;
 }
 .project__close:focus-visible .project__close-text {
   outline: 2px solid #ffffff;
@@ -600,7 +608,7 @@ body.page--inactive .main {
 }
 .project__close-caret {
   position: absolute;
-  left: calc(50% - 1rem - 6px);
+  left: calc(50% - 0.625rem);
   padding: 0.5rem;
   border: solid currentColor;
   border-width: 0 3px 3px 0;
@@ -613,4 +621,210 @@ body.page--inactive .main {
 }
 .project__close:hover .project__close-caret, .project__close:focus-visible .project__close-caret {
   translate: 0 1rem;
+}
+
+.experience {
+  height: calc(100vh - 4rem);
+  padding-bottom: 4rem;
+}
+.experience__print {
+  max-width: 65rem;
+  margin: 0 auto;
+  text-align: right;
+}
+.experience__print-button {
+  font-size: 1.75rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  font-family: "Neuton";
+  color: #ffffff;
+}
+.experience__print-button:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 0.5rem;
+}
+.experience__print-button {
+  padding-bottom: 0.625rem;
+  transition: box-shadow 500ms, translate 500ms;
+}
+.experience__print-button:active {
+  translate: 0 0.5rem;
+}
+.experience__print-button {
+  box-shadow: inset 0 0 0 0 currentColor;
+}
+.experience__print-button:hover, .experience__print-button:focus, a:hover > .experience__print-button, a:focus > .experience__print-button, button:focus > .experience__print-button, button:focus > .experience__print-button {
+  box-shadow: inset 0 -0.375rem 0 0 currentColor;
+}
+.experience__print-button {
+  position: relative;
+  z-index: 61;
+  margin-right: 1rem;
+}
+.experience__close::before {
+  content: "";
+  position: absolute;
+  bottom: 1.5rem;
+  left: calc(50% - 2.25rem);
+  padding: 2.25rem;
+  border-radius: 100%;
+  background: #111128;
+  transition: bottom 1000ms;
+}
+.experience__close:hover::before, .experience__close:focus::before {
+  bottom: 0.5rem;
+}
+
+.cv {
+  max-width: 59rem;
+  padding: 3rem 3rem 4rem;
+  margin: 3rem auto 1rem;
+  line-height: 1.25em;
+  font-family: "Roboto", sans-serif;
+  font-size: 0.875rem;
+  color: #f0f0f0;
+  background: #21232d;
+}
+.cv a:hover {
+  text-decoration: underline;
+}
+.cv__header {
+  text-align: center;
+}
+.cv__header-title {
+  font-size: 2.625rem;
+  margin-bottom: 1.25rem;
+  font-weight: 400;
+}
+.cv__header-title--thin {
+  font-weight: 100;
+}
+.cv__header-subtitle {
+  margin: 0.25rem 0 0.5rem;
+  color: #4ebed4;
+  font-size: 1.125rem;
+  font-weight: 600;
+  font-family: "Quattrocento", serif;
+}
+.cv__header-link {
+  font-weight: 300;
+}
+.cv__header-link-icon {
+  padding: 0 0.25rem 0 0.675rem;
+}
+.cv__section-sub {
+  display: flex;
+  flex-wrap: wrap;
+  padding-bottom: 1rem;
+}
+.cv__section-title {
+  margin: 1rem 0 0.375rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #4ebed4;
+  font-family: "Quattrocento", serif;
+}
+.cv__section-subhead, .cv__section-aside {
+  width: 50%;
+}
+.cv__section-aside {
+  padding-top: 0.25rem;
+  text-align: right;
+  font-style: italic;
+}
+.cv__section-aside-location {
+  display: block;
+  color: #4ebed4;
+}
+.cv__section-aside-date {
+  display: block;
+}
+.cv__section-subhead-title {
+  margin: 0.25rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: "Quattrocento", serif;
+}
+.cv__section-subhead-subtitle {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-family: "Quattrocento", serif;
+  letter-spacing: 0.25px;
+  text-transform: uppercase;
+}
+.cv__section-subhead-subtitle:first-letter {
+  font-size: 0.9375rem;
+}
+.cv__section-line {
+  position: relative;
+  width: 100%;
+  padding-left: 0.875rem;
+  margin: 0.375rem 0 0;
+}
+.cv__section-line:after {
+  content: "";
+  position: absolute;
+  left: 0.25rem;
+  top: 0.5rem;
+  background-color: #f0f0f0;
+  border-radius: 100%;
+  padding: 0.125rem;
+}
+.cv__section-table th {
+  text-align: right;
+  white-space: nowrap;
+  font-weight: bold;
+  font-family: "Quattrocento", serif;
+}
+.cv__section-table th, .cv__section-table td {
+  vertical-align: top;
+  padding: 0.125rem 0.5rem;
+}
+.cv__section-table--sub {
+  margin: 0.5rem 4rem 0.5rem 2rem;
+}
+.cv__section-table--sub th {
+  font-family: "Roboto", sans-serif;
+}
+
+@media print {
+  @page {
+    margin: 0cm !important;
+  }
+  html:has(.experience:not(.page--inactive)) {
+    width: 100%;
+    background: #21232d;
+  }
+  html:has(.experience:not(.page--inactive)) body {
+    height: auto;
+  }
+  html:has(.experience:not(.page--inactive)) *::-webkit-scrollbar {
+    width: 0;
+  }
+  html:has(.experience:not(.page--inactive)) .page,
+  html:has(.experience:not(.page--inactive)) .canvas__sky,
+  html:has(.experience:not(.page--inactive)) .canvas__sea,
+  html:has(.experience:not(.page--inactive)) #DEBUG {
+    display: none;
+  }
+  html:has(.experience:not(.page--inactive)) .cv,
+  html:has(.experience:not(.page--inactive)) .experience {
+    max-width: unset;
+    padding: 0;
+    margin: 0;
+  }
+  html:has(.experience:not(.page--inactive)) .experience {
+    position: relative;
+    display: block;
+    height: auto;
+    zoom: 75%;
+    -webkit-print-color-adjust: exact !important;
+  }
+  html:has(.experience:not(.page--inactive)) .experience__close, html:has(.experience:not(.page--inactive)) .experience__print {
+    display: none;
+  }
+  html:has(.experience:not(.page--inactive)) .cv {
+    min-height: calc(100% - 4rem);
+    padding: 3rem 2rem 1rem;
+  }
 }

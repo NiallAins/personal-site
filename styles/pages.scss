@@ -10,7 +10,7 @@
     right: 0;
     z-index: $z-page;
     height: 100vh;
-    overflow: visible;
+    overflow-y: auto;
     transition:
         opacity $dur-lg,
         bottom $dur-lg;

@@ -12,6 +12,8 @@ const
         el: document.createElement('div')
     };
 
+LOG_DT.el.id = 'DEBUG';
+
 export function _DEBUG_logDt(dT: number) {
     if (PROD) {
         return;

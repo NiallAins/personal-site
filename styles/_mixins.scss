@@ -72,6 +72,7 @@
 @mixin button-no-underline {
     @include focus-outline;
     
+    padding-bottom: 0.625rem;
     transition:
         box-shadow $dur-sh,
         translate $dur-sh;
@@ -87,28 +88,18 @@
     box-shadow: inset 0 0 0 0 currentColor;
 
     &:hover,
-    &:focus {
-        box-shadow: inset 0 #{ $w-stroke-underline * -1 } 0 0 currentColor;
-    }
-
-}
-
-@mixin link-underline {
-    @include button-no-underline;
-    box-shadow: inset 0 0 0 0 currentColor;
-    padding-bottom: 0.5rem;
-
-    &:hover,
     &:focus,
     a:hover > &,
-    a:focus > & {
+    a:focus > &,
+    button:focus > &,
+    button:focus > &{
         box-shadow: inset 0 #{ $w-stroke-underline * -1 } 0 0 currentColor;
     }
 }
 
 @mixin -caret-down($width, $w-border) {
     position: absolute;
-    left: calc(50% - #{ $width } - #{ 2 * $w-border });
+    left: calc(50% - #{ $width * 0.625 });
     padding: $width * 0.5;
     border: solid currentColor;
     border-width: 0 $w-border $w-border 0;
