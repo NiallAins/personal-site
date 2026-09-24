@@ -4,16 +4,10 @@
 @use "vars" as *;
 
 .project {
+    position: relative;
     display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding-top: 3rem;
-    align-items: start;
-
-    &__close {
-        @include body-title;
-        @include link-underline;
-    }
+    align-items: center;
+    height: calc(#{ 100vh - $h-min-sea } - 2rem);
 
     &__body {
         display: flex;
@@ -23,6 +17,7 @@
         &-content {
             display: flex;
             flex-direction: column;
+            align-items: start;
             gap: 2rem;
         }
     }
@@ -34,10 +29,24 @@
         aspect-ratio: 1;
         padding: $w-img-pad;
         border: 2px solid $c-text-l;
-        margin-top: 1.5rem;
+        margin-top: 5rem;
+        transition: transform $dur-lg;
+        transform-style: preserve-3d;
+        transform:
+            perspective(10cm)
+            rotateY(-18deg)
+            translate3d(-2rem, 0, -4rem);
         background:
             var(--bg-url) center no-repeat,
             $c-bg-l;
+    }
+
+    &:has(&__image:hover, &__links:hover, &__links-link:focus-visible) &__image {
+        transition: transform $dur-lg;
+        transform:
+            perspective(10cm)
+            rotateY(0)
+            translate3d(1rem, 0, 0);
     }
 
     &__title {
@@ -47,6 +56,7 @@
     &__tags {
         display: flex;
         gap: 1rem;
+        margin-bottom: 1rem;
 
         &-tag {
             font-family: $f-fam-body;
@@ -64,19 +74,77 @@
 
     &__desc {
         @include body-text;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        background-color: $c-bg-l;
+        padding: 1rem;
+        margin: -1rem;
     }
-
+    
     &__links {
         display: flex;
         gap: 3rem;
+        margin-top: 1.5rem;
 
         &-link {
-            @include body-title;
-            @include link-underline;
+            $w-svg: 3rem;
+
+            display: flex;
+            gap: 1rem;
+            align-items: center;
 
             &.#{ $cl-project-link-missing } {
                 display: none;
             }
+
+            &-text {
+                @include body-title;
+                @include link-underline;
+            }
+
+            &:focus-visible &-text {
+                @include outline;
+            }
+
+            &-svg {
+                width: $w-svg;
+                height: $w-svg;
+            }
+        }
+    }
+
+     &__close {
+        display: flex;
+        justify-content: center;
+        align-items: start;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom:  0;
+        z-index: $z-page-close;
+        height: $h-min-sea;
+        text-align: center;
+
+        &-text {
+            @include body-title;
+            margin-right: 1.25rem;
+        }
+
+        &:focus-visible &-text {
+            @include outline;
+        }
+        
+        &-caret {
+            @include caret-down-sm;
+
+            color: $c-text-l;
+            top: 3.25rem;
+        }
+
+        &:hover &-caret,
+        &:focus-visible &-caret {   
+            @include caret-down-hover;
         }
     }
 }

@@ -28,6 +28,17 @@ body {
     margin: 0 auto;
 }
 
+a, button {
+    &:focus-visible {
+        outline: none;
+    }
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
 button {
     padding: 0;
     background: none;

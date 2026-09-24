@@ -74,6 +74,7 @@ export function initPages() {
                             block-layout__item-label
                             ${
                                 project.title
+                                    .replace(/([a-z])([A-Z])/g, '$1 $2')
                                     .match(/[^ ]+/g)!
                                     .sort((a, b) => b.length - a.length)
                                     [0].length > 8
@@ -81,7 +82,7 @@ export function initPages() {
                                 : ''
                             }
                         ">
-                            ${ project.title }
+                            ${ project.title.replace(/([a-z])([A-Z])/g, '$1&ZeroWidthSpace;$2') }
                         </h3>
                     </button>
                 </div>
@@ -177,7 +178,7 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
         case ePages.Topic:
             if (initialLoadOnProject) {
                 initialLoadOnProject = false;
-                openPage(ePages.Main);
+                openPage(ePages.Main, -1, -1, isInitial);
                 return;
             } else {
                 EL_PAGE_TOPIC.innerHTML = '';
@@ -197,9 +198,12 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
             const PROJECT = PAGE_DATA[topicIndex].items[projectIndex];
 
             EL_PROJECT_TITLE.innerHTML = PROJECT.title;
-            EL_PROJECT_DESC.innerHTML = PROJECT.desc;
+            EL_PROJECT_DESC.innerHTML = PROJECT.desc
+                .map(d => `<p class="project__desc-item">${ d }</p>`)
+                .join('\n');
             EL_PROJECT_IMAGE.style.setProperty('--bg-url', `url(assets/${ toCamelCase(PROJECT.title) }.md.png)`);
             // EL_PROJECT_IMAGE.style.setProperty('--bg-color', DATA_BG[toCamelCase(PROJECT.title)] || COLOR_BG_L);
+            currentOpenTopic = topicIndex;
 
             if (PROJECT.linkLive) {
                 EL_PROJECT_LINK_LIVE.href = PROJECT.linkLive || '#';

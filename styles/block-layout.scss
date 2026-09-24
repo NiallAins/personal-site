@@ -74,7 +74,7 @@ $row-overlap: 18vh;
         &-image {
             z-index: 1;
             background: 
-                var(--bg-url) center / calc(100% - 3rem) no-repeat,
+                var(--bg-url) center / calc(100% - 2rem) no-repeat,
                 var(--bg-color, #{ $c-bg-l });
         }
 
@@ -95,6 +95,7 @@ $row-overlap: 18vh;
 
             &--xs {
                 font-size: 1.5rem;
+                line-height: 1.25;
             }
         }
     }

@@ -66,7 +66,7 @@ export type tHTMLTemplateVar = tHTMLTemplateValue | tHTMLTemplateResult;
 export type tPageDataItem = {
     title: string,
     year: number,
-    desc: string,
+    desc: string[],
     linkLive?: string,
     linkCode?: string,
     tags?: ePageTag[]

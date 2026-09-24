@@ -74,9 +74,11 @@
                     bottom: -2rem;
                 }
 
+                &:focus::after,
                 &:hover::after {
                     @include caret-down-hover;
                 }
+
             }
         }
     }

@@ -195,18 +195,7 @@
         class="page page--sub page-width-container"
     >
         <div class="project">
-            <button
-                id="project_close"
-                class="project__close"
-            >
-                More projects
-            </button>
             <div class="project__body">
-                <div
-                    id="project_image"
-                    class="project__image"
-                    aria-label="screenshot from project"
-                ></div>
                 <div class="project__body-content">
                     <h2
                         id="project_title"
@@ -225,17 +214,55 @@
                             id="project_linkLive"
                             class="project__links-link"
                         >
-                            Open project
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="-2 -2 4 4"
+                                aria-hidden="true"
+                                class="project__links-link-svg"
+                            >
+                                <path d="M0 -2 2 -1 2 1 0 2 -2 1 -2 -1" fill="#4dd2c788"></path>
+                                <path d="M-2 -1 0 0 0 2 -2 1Z" fill="#0008"></path>
+                                <path d="M0 0 2 -1 2 1 0 2Z" fill="#0005"></path>
+                            </svg>
+                            <span class="project__links-link-text">
+                                Open project
+                            </span>
                         </a>
                         <a
                             id="project_linkCode"
                             class="project__links-link"
                         >
-                            View code
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="-2 -2 4 4"
+                                aria-hidden="true"
+                                class="project__links-link-svg"
+                            >
+                                <path d="M0 -2 2 -1 2 1 0 2 -2 1 -2 -1" fill="#816816"></path>
+                                <path d="M-2 -1 0 0 0 2 -2 1Z" fill="#0008"></path>
+                                <path d="M0 0 2 -1 2 1 0 2Z" fill="#0005"></path>
+                            </svg>
+                            <span class="project__links-link-text">
+                                View code
+                            </span>
                         </a>
                     </div>
                 </div>
+                <div
+                    id="project_image"
+                    class="project__image"
+                    aria-label="screenshot from project"
+                ></div>
             </div>
+            <button
+                id="project_close"
+                class="project__close"
+            >
+                <span class="project__close-text">
+                    More projects
+                </span>
+                <span class="project__close-caret"></span>
+            </button>
         </div>
     </section>
 

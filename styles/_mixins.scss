@@ -38,7 +38,6 @@
 }
 
 @mixin body-title {
-    margin: 0 0 2rem;
     font-size: $f-size-h4;
     font-weight: $f-weight-demi;
     letter-spacing: 1px;
@@ -71,6 +70,8 @@
 }
 
 @mixin button-no-underline {
+    @include focus-outline;
+    
     transition:
         box-shadow $dur-sh,
         translate $dur-sh;
@@ -82,18 +83,27 @@
 
 @mixin button-underline {
     @include button-no-underline;
+
     box-shadow: inset 0 0 0 0 currentColor;
 
     &:hover,
     &:focus {
         box-shadow: inset 0 #{ $w-stroke-underline * -1 } 0 0 currentColor;
     }
+
 }
 
 @mixin link-underline {
-    @include button-underline;
-    text-decoration: none;
+    @include button-no-underline;
+    box-shadow: inset 0 0 0 0 currentColor;
     padding-bottom: 0.5rem;
+
+    &:hover,
+    &:focus,
+    a:hover > &,
+    a:focus > & {
+        box-shadow: inset 0 #{ $w-stroke-underline * -1 } 0 0 currentColor;
+    }
 }
 
 @mixin -caret-down($width, $w-border) {
