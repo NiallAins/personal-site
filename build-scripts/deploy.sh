@@ -11,7 +11,9 @@ if [ "$1" ]; then
     git commit -m "$1";
 
     # Confirm push after commit outputs
-    read -p $'\nComplete deploy? (y) ' resp;
+    echo -e -n "\n${CB}Complete deploy? (y)${CW} " &&
+    read resp;
+    echo '';
     if [ "$resp" = "y" ]; then
         git push origin main &&
 
