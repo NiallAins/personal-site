@@ -198,7 +198,8 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
 
             EL_PROJECT_TITLE.innerHTML = PROJECT.title;
             EL_PROJECT_DESC.innerHTML = PROJECT.desc;
-            EL_PROJECT_IMAGE.src = `assets/${ toCamelCase(PROJECT.title) }.sm.png`;
+            EL_PROJECT_IMAGE.style.setProperty('--bg-url', `url(assets/${ toCamelCase(PROJECT.title) }.md.png)`);
+            // EL_PROJECT_IMAGE.style.setProperty('--bg-color', DATA_BG[toCamelCase(PROJECT.title)] || COLOR_BG_L);
 
             if (PROJECT.linkLive) {
                 EL_PROJECT_LINK_LIVE.href = PROJECT.linkLive || '#';

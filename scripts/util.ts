@@ -67,7 +67,7 @@ export class Rand {
 
 export function toCamelCase(text: string): string {
     return text
-        .replace(/[^a-z-]/gi, '')
+        .replace(/[^a-z ]/gi, ' ')
         .replace(/([a-z])([A-Z])/g, '$1 $2')
         .toLowerCase()
         .replace(/ +/g, '-');

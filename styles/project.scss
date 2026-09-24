@@ -28,10 +28,16 @@
     }
 
     &__image {
-        padding: 0.5rem;
-        background-color: $c-bg-d;
-        border: 1px solid $c-text-l;
+        $w-img-pad: 0.5rem;
+
+        flex: 0 0 calc(#{ $w-img-md } + #{ $w-img-pad });
+        aspect-ratio: 1;
+        padding: $w-img-pad;
+        border: 2px solid $c-text-l;
         margin-top: 1.5rem;
+        background:
+            var(--bg-url) center no-repeat,
+            $c-bg-l;
     }
 
     &__title {

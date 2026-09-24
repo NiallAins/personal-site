@@ -1,21 +1,36 @@
 const
     FS = require('fs'),
-    SASS = require('sass'),
     sharp = require('sharp'),
     { createCanvas, loadImage } = require('canvas');
 
 const
     DIR_FROM = 'images',
     DIR_TO = 'dist/assets',
+    DIR_STYLE_VARS = 'styles/_vars.scss',
     PATH_TO_TS = 'scripts/data/images.json.ts',
-    WIDTH_SM = 12,
-    WIDTH_MD = 200,
+    WIDTH_XS = getStyleVarPxValue('w-img-xs'),
+    WIDTH_SM = getStyleVarPxValue('w-img-sm'),
+    WIDTH_MD = getStyleVarPxValue('w-img-md'),
+    CAN_XS = createCanvas(WIDTH_XS, WIDTH_XS),
     CAN_SM = createCanvas(WIDTH_SM, WIDTH_SM),
-    CAN_MD = createCanvas(WIDTH_MD, WIDTH_MD),
+    CTX_XS = CAN_XS.getContext('2d'),
     CTX_SM = CAN_SM.getContext('2d');
-    CTX_MD = CAN_MD.getContext('2d');
 
 CTX_SM.imageSmoothingEnabled = false;
+
+
+//
+// Get requried image sizes from SCSS vars file
+//
+
+function getStyleVarPxValue(name) {
+    return parseInt(
+        FS
+            .readFileSync(DIR_STYLE_VARS)
+            .toString('utf8')
+            .match(new RegExp(name + '\\s*:\\s*([0-9]+)px'))[1]
+    );
+}
 
 
 //
@@ -26,16 +41,19 @@ FS.readdir(DIR_FROM, (_, files) => {
     files
         .filter(f => f.match(/\.png$/))
         .forEach(f => {
-            const
-                PATH_FROM = DIR_FROM + '/' + f;
-                PATH_TO = DIR_TO + '/' + f.replace('.png', '.sm.png');
-            sharp(PATH_FROM)
-                .resize(WIDTH_MD, WIDTH_MD, {
-                    kernel: sharp.kernel.mks2021,
-                    fit: 'cover',
-                    position: 'center'
-                })
-                .toFile(PATH_TO)
+            const PATH_FROM = DIR_FROM + '/' + f;
+            [
+                [WIDTH_SM, DIR_TO + '/' + f.replace('.png', '.sm.png')],
+                [WIDTH_MD, DIR_TO + '/' + f.replace('.png', '.md.png')]
+            ].forEach(size => {
+                sharp(PATH_FROM)
+                    .resize(size[0], size[0], {
+                        kernel: sharp.kernel.mks2021,
+                        fit: 'cover',
+                        position: 'center'
+                    })
+                    .toFile(size[1]);
+            });
         });
 });
 
@@ -78,28 +96,28 @@ async function parseImages(files) {
             FILE = files[i],
             IMG = await loadImage(DIR_FROM + '/' + FILE);
 
+        CTX_XS.drawImage(IMG, 0, 0, WIDTH_XS, WIDTH_XS);
         CTX_SM.drawImage(IMG, 0, 0, WIDTH_SM, WIDTH_SM);
-        CTX_MD.drawImage(IMG, 0, 0, WIDTH_MD, WIDTH_MD);
         
         const
-            IMG_DATA_SM = CTX_SM.getImageData(0, 0, WIDTH_SM, WIDTH_SM)
+            IMG_DATA_XS = CTX_XS.getImageData(0, 0, WIDTH_XS, WIDTH_XS)
                 .data
                 .filter((_, i) => i % 4 !== 3),
-            IMG_DATA_MD = CTX_MD.getImageData(0, 0, WIDTH_MD, WIDTH_MD)
+            IMG_DATA_SM = CTX_SM.getImageData(0, 0, WIDTH_SM, WIDTH_SM)
                 .data
                 .filter((_, i) => i % 4 !== 3),
             BG = {};
 
         // Get most common edge color to use as background
-        for (let y = 0; y < WIDTH_MD; y++) {
-            for (let x = 0; x < WIDTH_MD; x++) {
-                if (y === 0 || y === WIDTH_MD - 1 || x === 0 || x === WIDTH_MD - 1) {
+        for (let y = 0; y < WIDTH_SM; y++) {
+            for (let x = 0; x < WIDTH_SM; x++) {
+                if (y === 0 || y === WIDTH_SM - 1 || x === 0 || x === WIDTH_SM - 1) {
                     const
-                        I = ((y * WIDTH_MD) + x) * 3,
+                        I = ((y * WIDTH_SM) + x) * 3,
                         C = [
-                            IMG_DATA_MD[I],
-                            IMG_DATA_MD[I + 1],
-                            IMG_DATA_MD[I + 2]
+                            IMG_DATA_SM[I],
+                            IMG_DATA_SM[I + 1],
+                            IMG_DATA_SM[I + 2]
                         ].join();
                     BG[C] = BG[C] ? BG[C] + 1 : 1;
                 }
@@ -107,7 +125,7 @@ async function parseImages(files) {
         }
         DATA.push([
             FILE.replace(/\.png/, ''),
-            IMG_DATA_SM,
+            IMG_DATA_XS,
             Object
                 .entries(BG)
                 .sort((a, b) => b[1] - a[1])[0][0]

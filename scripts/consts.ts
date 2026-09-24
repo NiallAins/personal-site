@@ -51,12 +51,12 @@ export const
     EL_PAGE_TOPIC                  = getEl('#pages_topic'),
     EL_PAGE_PROJECT                = getEl('#pages_project'),
     EL_PROJECT_CLOSE               = getEl('#project_close'),
+    EL_PROJECT_IMAGE               = getEl('#project_image'),
     EL_PROJECT_TITLE               = getEl('#project_title'),
     EL_PROJECT_TAGS                = getEl('#project_tags'),
     EL_PROJECT_DESC                = getEl('#project_desc'),
     EL_PROJECT_LINK_LIVE           = getEl<HTMLAnchorElement>('#project_linkLive'),
-    EL_PROJECT_LINK_CODE           = getEl<HTMLAnchorElement>('#project_linkCode'),
-    EL_PROJECT_IMAGE               = getEl<HTMLImageElement>('#project_image');
+    EL_PROJECT_LINK_CODE           = getEl<HTMLAnchorElement>('#project_linkCode');
 
 
 //
