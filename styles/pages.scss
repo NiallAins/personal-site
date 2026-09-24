@@ -15,21 +15,33 @@
         opacity $dur-lg,
         bottom $dur-lg;
 
-    &.#{ $cl-transition-closing } {
+    &.#{ $cl-page-closing } {
         opacity: 0;
         bottom: 100vh;
     }
 
-    &--sub.#{ $cl-transition-closing } {
+    &--sub.#{ $cl-page-closing } {
         bottom: 0;
     }
 
-    &.#{ $cl-transition-sub-opening } {
+    &.#{ $cl-page-sub-opening } {
         opacity: 0;
     }
 
-    &.#{ $cl-transition-inactive } {
+    &.#{ $cl-page-inactive } {
         display: none;
+    }
+
+    &--main {
+        opacity: 0;
+
+        &.#{ $cl-page-post-fouc } {
+            opacity: 1;
+        }
+
+        &.#{ $cl-page-inactive } {
+            overflow: hidden;
+        }
     }
 
     &__close {
@@ -68,7 +80,7 @@
         }
     }
 
-    &.#{ $cl-transition-closing } &__close {
+    &.#{ $cl-page-closing } &__close {
         opacity: 0;
     }
 }

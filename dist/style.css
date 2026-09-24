@@ -24,9 +24,6 @@ body {
   font-family: "Neuton";
   height: 550vh;
 }
-body.transition--inactive {
-  overflow: hidden;
-}
 
 .page-width-container {
   max-width: 70rem;
@@ -158,12 +155,12 @@ h1, h2, h3, h4, h5, h6, p {
 .block-layout__item-label--xs {
   font-size: 1.5rem;
 }
-.page.transition--sub-opening .block-layout__item:focus {
+.page.page--sub-opening .block-layout__item:focus {
   scale: 2;
   opacity: 0;
   z-index: 20;
 }
-.page.transition--sub-opening .block-layout__item:not(:focus) {
+.page.page--sub-opening .block-layout__item:not(:focus) {
   translate: -200vw -100vw;
 }
 
@@ -180,7 +177,7 @@ h1, h2, h3, h4, h5, h6, p {
   z-index: 30;
   transition: top ease-out 1000ms;
 }
-body.transition--closing .canvas__sea {
+body.page--closing .canvas__sea {
   top: 100vh;
   pointer-events: none;
 }
@@ -193,11 +190,11 @@ body.transition--closing .canvas__sea {
   padding-top: 14vh;
   transition: translate 1000ms, opacity 1000ms;
 }
-body.transition--closing .header {
+body.page--closing .header {
   translate: 0 75vh;
   opacity: 0;
 }
-body.transition--inactive .header {
+body.page--inactive .header {
   display: none;
 }
 .header__title {
@@ -297,7 +294,7 @@ body.transition--inactive .header {
   flex-direction: column;
   align-items: start;
 }
-body.transition--inactive .main {
+body.page--inactive .main {
   display: none;
 }
 .main__section {
@@ -363,18 +360,27 @@ body.transition--inactive .main {
   overflow: hidden;
   transition: opacity 1000ms, bottom 1000ms;
 }
-.page.transition--closing {
+.page.page--closing {
   opacity: 0;
   bottom: 100vh;
 }
-.page--sub.transition--closing {
+.page--sub.page--closing {
   bottom: 0;
 }
-.page.transition--sub-opening {
+.page.page--sub-opening {
   opacity: 0;
 }
-.page.transition--inactive {
+.page.page--inactive {
   display: none;
+}
+.page--main {
+  opacity: 0;
+}
+.page--main.page--post-fouc {
+  opacity: 1;
+}
+.page--main.page--inactive {
+  overflow: hidden;
 }
 .page__close {
   position: fixed;
@@ -413,7 +419,7 @@ body.transition--inactive .main {
   inset: -1rem;
   rotate: 45deg;
 }
-.page.transition--closing .page__close {
+.page.page--closing .page__close {
   opacity: 0;
 }
 
@@ -508,6 +514,7 @@ body.transition--inactive .main {
   font-weight: 400;
   font-family: "Roboto", san-serif;
   color: #ffffff;
+  line-height: 1.5;
 }
 .project__links {
   display: flex;
@@ -534,4 +541,7 @@ body.transition--inactive .main {
 .project__links-link {
   text-decoration: none;
   padding-bottom: 0.5rem;
+}
+.project__links-link.project__link--missing {
+  display: none;
 }

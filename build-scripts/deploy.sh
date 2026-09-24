@@ -28,7 +28,7 @@ if [ "$1" ]; then
         echo $'\nDeploy successful' &&
         exit 1;
     else
-        echo $'\nDeploy failed: Canceled' &&
+        echo $'\nDeploy failed: Cancelled' &&
         exit 1;
     fi
 

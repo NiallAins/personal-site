@@ -13,13 +13,14 @@ export enum ePages {
 };
 
 export enum ePageTag {
-    Incomplete,
-    Vue,
+    VueJS,
     Javascipt,
     Typescript,
     Canvas,
     NodeJS,
-    Bash
+    Bash,
+    Stripe,
+    PHP
 };
 
 export enum eEaseType {
@@ -64,6 +65,7 @@ export type tHTMLTemplateVar = tHTMLTemplateValue | tHTMLTemplateResult;
 
 export type tPageDataItem = {
     title: string,
+    year: number,
     desc: string,
     linkLive?: string,
     linkCode?: string,

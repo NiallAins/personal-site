@@ -82,7 +82,9 @@ $dur-lg:               1000ms;
 $dur-page-open:        $dur-lg;
 $dur-page-open-delay:  $dur-sh * 0.5;
 
-$cl-transition-inactive:          "transition--inactive";
-$cl-transition-closing:           "transition--closing";
-$cl-transition-sub-opening:       "transition--sub-opening";
+$cl-page-post-fouc:         "page--post-fouc";
+$cl-page-inactive:          "page--inactive";
+$cl-page-closing:           "page--closing";
+$cl-page-sub-opening:       "page--sub-opening";
+$cl-project-link-missing:   "project__link--missing";
 $cl-main-section-button-disabled: "main__section-button--disabled";

@@ -99,13 +99,13 @@ $row-overlap: 18vh;
         }
     }
 
-    .page.#{ $cl-transition-sub-opening } &__item:focus {
+    .page.#{ $cl-page-sub-opening } &__item:focus {
         scale: 2;
         opacity: 0;
         z-index: $z-box-top;
     }
 
-    .page.#{ $cl-transition-sub-opening } &__item:not(:focus) {
+    .page.#{ $cl-page-sub-opening } &__item:not(:focus) {
         translate: -200vw -100vw;
     }
 }

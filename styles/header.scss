@@ -11,12 +11,12 @@
         translate $dur-page-open,
         opacity $dur-page-open;
 
-    body.#{ $cl-transition-closing } & {
+    body.#{ $cl-page-closing } & {
         translate: 0 75vh;
         opacity: 0;
     }
 
-    body.#{ $cl-transition-inactive } & {
+    body.#{ $cl-page-inactive } & {
         display: none;
     }
 

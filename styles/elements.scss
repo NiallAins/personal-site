@@ -20,10 +20,6 @@ body {
     margin: 0;
     font-family: $f-fam-title;
     height: 100vh + $h-main-section-gap + (6 * ($h-main-section + $h-main-section-gap));
-
-    &.#{ $cl-transition-inactive } {
-        overflow: hidden;
-    }
 }
 
 .page-width-container {

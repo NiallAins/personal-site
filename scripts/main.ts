@@ -1,4 +1,8 @@
 import {
+    CLASS_PAGE_POST_FOUC,
+    DURATION_PAGE_OPEN,
+    DURATION_SH,
+    EL_BODY,
     EL_HEADER_NAV_MORE,
     FONT_FAM_TITLE, FONT_FAM_TITLE_SRC,
     PAGE_HEIGHT_MAX, PAGE_WIDTH_MAX,
@@ -43,6 +47,12 @@ async function init() {
 
     window.onhashchange = () => openPageFromUrl();
     openPageFromUrl();
+
+    // Hide FOUC
+    document.body.onload = () => setTimeout(
+        () => EL_BODY.classList.add(CLASS_PAGE_POST_FOUC),
+        DURATION_SH
+    );
 }
 
 init();

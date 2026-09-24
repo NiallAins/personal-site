@@ -18,7 +18,7 @@
         z-index: $z-canvas-fg;
         transition: top ease-out $dur-page-open;
 
-        body.#{ $cl-transition-closing } & {
+        body.#{ $cl-page-closing } & {
             top: 100vh;
             pointer-events: none;
         }

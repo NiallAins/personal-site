@@ -67,6 +67,10 @@
         &-link {
             @include body-title;
             @include link-underline;
+
+            &.#{ $cl-project-link-missing } {
+                display: none;
+            }
         }
     }
 }

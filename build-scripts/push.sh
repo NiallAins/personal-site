@@ -12,7 +12,7 @@ if [ "$1" ]; then
         echo $'\nPush successful' &&
         exit 1;
     else
-        echo $'\nPush failed: Canceled' &&
+        echo $'\nPush failed: Cancelled' &&
         exit 1;
     fi
 

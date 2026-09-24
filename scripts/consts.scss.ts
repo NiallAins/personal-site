@@ -59,7 +59,9 @@ export const
     DURATION_LG: number = 1000,
     DURATION_PAGE_OPEN: number = 1000,
     DURATION_PAGE_OPEN_DELAY: number = 250,
-    CLASS_TRANSITION_INACTIVE: string = 'transition--inactive',
-    CLASS_TRANSITION_CLOSING: string = 'transition--closing',
-    CLASS_TRANSITION_SUB_OPENING: string = 'transition--sub-opening',
+    CLASS_PAGE_POST_FOUC: string = 'page--post-fouc',
+    CLASS_PAGE_INACTIVE: string = 'page--inactive',
+    CLASS_PAGE_CLOSING: string = 'page--closing',
+    CLASS_PAGE_SUB_OPENING: string = 'page--sub-opening',
+    CLASS_PROJECT_LINK_MISSING: string = 'project__link--missing',
     CLASS_MAIN_SECTION_BUTTON_DISABLED: string = 'main__section-button--disabled';

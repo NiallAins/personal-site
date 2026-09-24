@@ -12,13 +12,18 @@ It is curently running live at [niall.design](http://niall.design) or [niallains
 
 [Install Node](https://nodejs.org/en/download)
 
-Download code and install dev packages:
+Download code and install dev packages using Node v22:
 ```bash
   git clone https://github.com/NiallAins/personal-site.git;
   cd personal-site;
+  nvm use 22;
   npm ci;
 ```
 
+Config npm to use git bash for build scripts:
+```bash
+  npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"
+```
 
 ### Start development
 

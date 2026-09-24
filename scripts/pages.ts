@@ -1,5 +1,5 @@
 import {
-    CLASS_TRANSITION_INACTIVE, CLASS_TRANSITION_CLOSING, CLASS_TRANSITION_SUB_OPENING,
+    CLASS_PAGE_INACTIVE, CLASS_PAGE_CLOSING, CLASS_PAGE_SUB_OPENING,
     DURATION_PAGE_OPEN,
     COLOR_BG_L,
     EL_BODY, EL_HEADER_NAV_LINKS_CONTACT, EL_HEADER_NAV_LINKS_EXPERIENCE, EL_MAIN,
@@ -8,7 +8,8 @@ import {
     EL_PROJECT_IMAGE, EL_PROJECT_LINK_CODE, EL_PROJECT_LINK_LIVE,
     EL_PROJECT_TAGS, EL_PROJECT_TITLE, EL_PAGE_TOPIC,
     ROUTES,
-    DURATION_PAGE_OPEN_DELAY
+    DURATION_PAGE_OPEN_DELAY,
+    CLASS_PROJECT_LINK_MISSING
 } from "./consts";
 import { PAGE_DATA } from "./data/pages.json";
 import { toggleSectionOpen as toggleGraphicsSectionOpen } from "./graphics/main";
@@ -198,8 +199,21 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
             EL_PROJECT_TITLE.innerHTML = PROJECT.title;
             EL_PROJECT_DESC.innerHTML = PROJECT.desc;
             EL_PROJECT_IMAGE.src = `assets/${ toCamelCase(PROJECT.title) }.sm.png`;
-            EL_PROJECT_LINK_LIVE.href = PROJECT.linkLive || '#';
-            EL_PROJECT_LINK_CODE.href = PROJECT.linkCode || '#';
+
+            if (PROJECT.linkLive) {
+                EL_PROJECT_LINK_LIVE.href = PROJECT.linkLive || '#';
+                EL_PROJECT_LINK_LIVE.classList.remove(CLASS_PROJECT_LINK_MISSING);
+            } else {
+                EL_PROJECT_LINK_LIVE.classList.add(CLASS_PROJECT_LINK_MISSING);
+            }
+
+            if (PROJECT.linkCode) {
+                EL_PROJECT_LINK_CODE.href = PROJECT.linkCode || '#';
+                EL_PROJECT_LINK_CODE.classList.remove(CLASS_PROJECT_LINK_MISSING);
+            } else {
+                EL_PROJECT_LINK_CODE.classList.add(CLASS_PROJECT_LINK_MISSING);
+            }
+
             EL_PROJECT_TAGS.innerHTML = (PROJECT.tags || [])
                 .map(t => `<span class="project__tags-tag project__tags-tag--${ t }">${ ePageTag[t] }</span>`)
                 .join('');
@@ -226,8 +240,8 @@ function transitionPage(pageTo: ePages, delay: number = 0, delayTo: number = 0) 
     Object
         .values(PAGE_ELS)
         .forEach(p => {
-            p.classList.add(CLASS_TRANSITION_CLOSING, CLASS_TRANSITION_INACTIVE);
-            p.classList.remove(CLASS_TRANSITION_SUB_OPENING);
+            p.classList.add(CLASS_PAGE_CLOSING, CLASS_PAGE_INACTIVE);
+            p.classList.remove(CLASS_PAGE_SUB_OPENING);
         });
 
     const
@@ -239,15 +253,15 @@ function transitionPage(pageTo: ePages, delay: number = 0, delayTo: number = 0) 
 
     // Initial page load
     if (!EL_FROM) {
-        EL_TO.classList.remove(CLASS_TRANSITION_CLOSING, CLASS_TRANSITION_INACTIVE);
+        EL_TO.classList.remove(CLASS_PAGE_CLOSING, CLASS_PAGE_INACTIVE);
     }
 
     // Transition between pages
     else {
-        EL_FROM.classList.remove(CLASS_TRANSITION_INACTIVE, CLASS_TRANSITION_CLOSING);
+        EL_FROM.classList.remove(CLASS_PAGE_INACTIVE, CLASS_PAGE_CLOSING);
         if (FROM_SUB_PAGE) {
-            EL_TO.classList.remove(CLASS_TRANSITION_CLOSING);
-            EL_TO.classList.add(CLASS_TRANSITION_SUB_OPENING);
+            EL_TO.classList.remove(CLASS_PAGE_CLOSING);
+            EL_TO.classList.add(CLASS_PAGE_SUB_OPENING);
         }
 
         // Transition order
@@ -258,18 +272,18 @@ function transitionPage(pageTo: ePages, delay: number = 0, delayTo: number = 0) 
         //   toPage remove inactive
         //   toPage opening animation
         //   fromPage add inactive
-        EL_TO.classList.remove(CLASS_TRANSITION_INACTIVE);
+        EL_TO.classList.remove(CLASS_PAGE_INACTIVE);
         transitionDelayTimeout = setTimeout(() => {
             EL_FROM.classList.add(
                 TO_SUB_PAGE
-                    ? CLASS_TRANSITION_SUB_OPENING
-                    : CLASS_TRANSITION_CLOSING
+                    ? CLASS_PAGE_SUB_OPENING
+                    : CLASS_PAGE_CLOSING
             );
             transitionDelayToTimeout = setTimeout(() => {
-                EL_TO.classList.remove(CLASS_TRANSITION_CLOSING, CLASS_TRANSITION_SUB_OPENING);
+                EL_TO.classList.remove(CLASS_PAGE_CLOSING, CLASS_PAGE_SUB_OPENING);
             }, Math.max(delayTo, 100));
             transitionDurationTimeout = setTimeout(() => {
-                EL_FROM.classList.add(CLASS_TRANSITION_INACTIVE);
+                EL_FROM.classList.add(CLASS_PAGE_INACTIVE);
             }, DURATION_PAGE_OPEN);
         }, delay);
     }

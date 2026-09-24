@@ -21,16 +21,16 @@
     "license": "ISC",
     "homepage": "https://github.com/NiallAins/personal-site#readme",
     "devDependencies": {
+        "@img/sharp-win32-x64": "^0.35.1",
         "canvas": "^3.2.3",
         "concurrently": "^9.2.1",
         "http-server": "^14.1.1",
         "onchange": "^7.1.0",
         "sass": "^1.100.0",
+        "sharp": "^0.35.1",
         "ts-loader": "^9.5.7",
         "typescript": "^6.0.3",
         "webpack": "^5.107.2",
-        "webpack-cli": "^7.0.2",
-        "@img/sharp-win32-x64": "^0.35.1",
-        "sharp": "^0.35.1"
+        "webpack-cli": "^7.0.2"
     }
 }
