@@ -3,6 +3,7 @@
 # Output colors
 CR='\033[0;31m';
 CG='\033[0;32m';
+CB='\033[0;36m';
 CW='\033[0m';
 
 if [ "$1" ]; then
@@ -11,7 +12,7 @@ if [ "$1" ]; then
     git commit -m "$1";
 
     # Confirm push after commit outputs
-    read -p $'\nComplete push? (y) ' complete;
+    read -p -e "\n${CB}Complete push? (y)${CW} " complete;
     if [ "$complete" = "y" ]; then
         git push origin main &&
         echo -e "\n${CG}Push successful${CW}\n" &&
