@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Output colors
+CR='\033[0;31m';
+CG='\033[0;32m';
+CW='\033[0m';
+
 if [ "$1" ]; then
     # Push to main
     git add . &&
@@ -9,14 +14,14 @@ if [ "$1" ]; then
     read -p $'\nComplete push? (y) ' complete;
     if [ "$complete" = "y" ]; then
         git push origin main &&
-        echo $'\nPush successful' &&
+        echo -e "\n${CG}Push successful${CW}\n" &&
         exit 1;
     else
-        echo $'\nPush failed: Cancelled' &&
+        echo -e "\n${CR}Push failed: Cancelled${CW}\n" &&
         exit 1;
     fi
 
-    echo $'\nPush failed: Command failed';
+    echo -e "\n${CR}Push failed: Command failed${CW}\n";
 else
-    echo $'Push failed: Missing commit message';
+    echo -e "\n${CR}Push failed: Missing commit message${CW}\n";
 fi
