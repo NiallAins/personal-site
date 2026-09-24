@@ -12,7 +12,7 @@ if [ "$1" ]; then
     git commit -m "$1";
 
     # Confirm push after commit outputs
-    echo -e "\n${CB}Complete push? (y)${CW} " &&
+    echo -e -n "\n${CB}Complete push? (y)${CW} " &&
     read complete;
     if [ "$complete" = "y" ]; then
         git push origin main &&
