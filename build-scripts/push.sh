@@ -7,15 +7,17 @@ CB='\033[0;36m';
 CW='\033[0m';
 
 output() {
-    local C=${2:CW};
-    echo -e -n "\n${C}$1${CW} ";
+    echo 'hi';
+    # local C=${2:CW};
+    # echo -e -n "\n${C}$1${CW} ";
 
-    if [ "$3" != "n" ]; then
-        echo '';
-    fi
+    # if [ "$3" != "n" ]; then
+    #     echo '';
+    # fi
 }
 
-output test CR
+output test CR;
+exitl
 
 
 if [ "$1" ]; then
