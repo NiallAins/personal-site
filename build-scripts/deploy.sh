@@ -31,7 +31,7 @@ if [ "$1" ]; then
         git commit -m "Auto-deploy";
         git push origin prod -f &&
 
-        # # Return to main
+        # Return to main
         git checkout main &&
         echo -e "\n${CG}Deploy successful${CW}\n" &&
         exit 1;
