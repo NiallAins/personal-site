@@ -54,7 +54,7 @@ export const PAGE_DATA: tPageData[] = [
         ]
     },
     {
-        "label": "Music / Visuals",
+        "label": "Music & Visuals",
         "items": [
             {
                 "title": "TinyTone",
@@ -139,7 +139,7 @@ export const PAGE_DATA: tPageData[] = [
         ]
     },
     {
-        "label": "Maths / Space",
+        "label": "Maths & Space",
         "items": [
             {
                 "title": "The Big Number Namer",

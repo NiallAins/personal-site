@@ -95,9 +95,7 @@ export function initPages() {
                     <button
                         class="page__close"
                         onclick="${ openPage.bind(null, ePages.Main, -1, -1, false) }"
-                    >
-                        <span class="page__close-caret"></span>
-                    </button>
+                    ></button>
                 </div>
             `;
 

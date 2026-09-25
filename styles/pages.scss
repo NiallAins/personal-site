@@ -45,38 +45,7 @@
     }
 
     &__close {
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom:  0;
-        z-index: $z-page-close;
-        height: $h-min-sea;
-        text-align: center;
-        transition: opacity $dur-lg ease $dur-sh;
-        
-        &-caret {
-            @include caret-down-lg;
-
-            color: $c-text-l;
-            top: 3.25rem;
-        }
-
-        &:hover &-caret,
-        &:focus-visible &-caret {   
-            @include caret-down-hover;
-        }
-
-        &:focus-visible &-caret::after {
-            @include outline;
-
-            content: '';
-            position: absolute;
-            inset: -1rem;
-            rotate: 45deg;
-        }
-    }
-
-    &.#{ $cl-page-closing } &__close {
-        opacity: 0;
+        @include caret-button-empty;
+        color: $c-text-l;
     }
 }

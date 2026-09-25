@@ -53,32 +53,15 @@
         }
 
         &-more {
+            @include caret-button-text;
+            @include header-3;
+
             position: relative;
-            z-index: $z-buttons;
-            text-align: center;
-            pointer-events: none;
-            margin: auto 0 10vh;
-
-            &-button {
-                @include header-3;
-                @include button-no-underline;
-
-                color: $c-bg-l;
-                font-weight: $f-weight-bold;
-                pointer-events: all;
-
-                &::after {
-                    @include caret-down-sm;
-                    content: '';
-                    bottom: -2rem;
-                }
-
-                &:focus::after,
-                &:hover::after {
-                    @include caret-down-hover;
-                }
-
-            }
+            left: 0;
+            margin: auto 0 2rem;
+            font-weight: $f-weight-bold;
+            letter-spacing: 3px;
+            color: $c-bg-l;
         }
     }
 }

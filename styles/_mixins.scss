@@ -55,12 +55,12 @@
 
 
 //
-// Buttons and links
+// Focus outlines
 //
 
-@mixin outline {
+@mixin outline($offset: 0.5rem) {
     outline: 2px solid $c-text-l;
-    outline-offset: 0.5rem;
+    outline-offset: $offset;
 }
 
 @mixin focus-outline {
@@ -68,6 +68,11 @@
         @include outline;
     }
 }
+
+
+//
+// Buttons and links
+//
 
 @mixin button-no-underline {
     @include focus-outline;
@@ -97,25 +102,98 @@
     }
 }
 
-@mixin -caret-down($width, $w-border) {
-    position: absolute;
-    left: calc(50% - #{ $width * 0.625 });
-    padding: $width * 0.5;
-    border: solid currentColor;
-    border-width: 0 $w-border $w-border 0;
-    border-bottom-right-radius: 0.25rem;
-    rotate: 45deg;
-    translate: 0 0;
-    transition: translate $dur-lg;
+
+//
+// Back buttons
+//
+
+@mixin -caret-button($w-caret, $w-border) {
+    $w-max: 30rem;
+
+    width: 100%;
+    max-width: $w-max;
+    position: fixed;
+    bottom: 0;
+    left: calc(50vw - #{ $w-max * 0.5 });
+    z-index: $z-page-close;
+    transition: opacity $dur-lg #{ $dur-page-open * 0.5 };
+
+    @media (max-width: $w-max) {
+        left: 0;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: calc(50% - #{ $w-caret } - #{ $w-border * 0.5 });
+        padding: $w-caret;
+        border: solid currentColor;
+        border-width: 0 $w-border $w-border 0;
+        border-bottom-right-radius: 0.25rem;
+        rotate: 45deg;
+        transition: translate $dur-lg;
+        translate: 0 0;
+    }
+
+    &:hover::after,
+    &:focus-visible::after {
+        translate: 0 1rem;
+    }
+
+    .page.#{ $cl-page-closing } & {
+        opacity: 0;
+        transition: opacity $dur-sh;
+    }
 }
-@mixin caret-down-sm {
-    @include -caret-down(1rem, 3px);
+
+@mixin caret-button-empty {
+    $w-caret: 1rem;
+    $w-bg: $w-caret + 1.25rem;
+
+    @include -caret-button($w-caret, 4px);
+    height: 5rem;
+
+    &::before {
+        content: '';
+        position: absolute;
+        bottom: 1.5rem;
+        left: calc(50% - #{ $w-bg });
+        padding: $w-bg;
+        border-radius: 100%;
+        background-color: $c-bg-l;
+        transition: translate $dur-lg;
+        translate: 0 0;
+    }
+
+    &::after {
+        bottom: 3.125rem;
+    }
+
+    &:hover::before,
+    &:focus-visible::before {
+        translate: 0 1rem;
+    }
+
+    &:focus-visible::before {
+        @include outline(0);
+    }
 }
-@mixin caret-down-lg {
-    @include -caret-down(1.5rem, 4px);
-}
-@mixin caret-down-hover {
-    translate: 0 1rem;
+
+@mixin caret-button-text {
+    @include -caret-button(0.5rem, 3px);
+
+    display: flex;
+    flex-direction: column;
+    height: 7.5rem;
+    text-align: center;
+
+    &::after {
+        bottom: 2.5rem;
+    }
+
+    &:focus-visible > span {
+        @include outline;
+    }
 }
 
 

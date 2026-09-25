@@ -115,35 +115,10 @@
     }
 
      &__close {
-        display: flex;
-        justify-content: center;
-        align-items: start;
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom:  0;
-        z-index: $z-page-close;
-        height: $h-min-sea;
-        text-align: center;
+        @include caret-button-text;
+        @include body-title;
 
-        &-text {
-            @include body-title;
-        }
-
-        &:focus-visible &-text {
-            @include outline;
-        }
-        
-        &-caret {
-            @include caret-down-sm;
-
-            color: $c-text-l;
-            top: 3.25rem;
-        }
-
-        &:hover &-caret,
-        &:focus-visible &-caret {   
-            @include caret-down-hover;
-        }
+        letter-spacing: 3px;
+        color: $c-text-l;
     }
 }

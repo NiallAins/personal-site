@@ -40,7 +40,7 @@ export class Label {
         this.EL.innerText = this.EL.innerText.replace(/ /g, '');
 
         const LAST_LINE = this.EL.innerText
-            .match(/(^|\/)([^\/]+)$/)![2]
+            .match(/(^|&)([^&]+)$/)![2]
             .length;
         this.LETTERS = this.EL.innerText
             .split('')
@@ -50,12 +50,12 @@ export class Label {
                 l,
                 li === lArr.length - LAST_LINE ? LAST_LINE : 0
             ));
-        this.EL.innerText = this.EL.innerText.replace('/', '/ ');
+        this.EL.innerText = this.EL.innerText.replace('&', '& ');
     }
 
     public setPosition(pageWidth: number, pageHeight: number) {
         const
-            BREAK = this.LETTERS.findIndex(l => l.LETTER === '/'),
+            BREAK = this.LETTERS.findIndex(l => l.LETTER === '&'),
             LINE_0_LENGTH = BREAK === -1 ? this.LETTERS.length - 1 : BREAK,
             LINE_1_LENGTH = this.LETTERS.length - LINE_0_LENGTH,
             LINE_0_WIDTH = (LINE_0_LENGTH * LABEL_LETTER_WIDTH),
