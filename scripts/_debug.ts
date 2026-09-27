@@ -5,7 +5,7 @@ import { renderSingleIso } from "./graphics/terrain";
 import { tTerrain } from "./types";
 
 const
-    PROD = false,
+    PROD = true,
     LOG_DT = {
         t: 0,
         dtSum: 0,
