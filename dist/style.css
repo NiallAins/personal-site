@@ -3,7 +3,7 @@
 html {
   overflow-y: scroll;
   font-size: 16px;
-  background: linear-gradient(#111111 0, #111128 75vh, #111128), #111128;
+  background: linear-gradient(#111111 0, #111128 75dvh, #111128), #111128;
 }
 
 body::-webkit-scrollbar {
@@ -23,7 +23,7 @@ body {
   overflow-x: hidden;
   margin: 0;
   font-family: "Neuton", "Georgia", serif;
-  height: 550vh;
+  height: 550dvh;
 }
 
 .page-width-container {
@@ -117,7 +117,7 @@ h1, h2, h3, h4, h5, h6, p {
   }
   .block-layout__slot {
     width: calc(min(100vw, 52.5rem) / 2);
-    height: calc((100vh - 5.5rem) / 2 - min(100vw, 52.5rem) / 16);
+    height: calc((100dvh - 5.5rem) / 2 - min(100vw, 52.5rem) / 16);
   }
   .block-layout:has(:nth-child(5)) {
     display: flex;
@@ -137,7 +137,7 @@ h1, h2, h3, h4, h5, h6, p {
   }
   .block-layout__slot {
     width: calc(min(100vw, 52.5rem) / 2);
-    height: calc((100vh - 5.5rem) / 2 - min(100vw, 52.5rem) / 16);
+    height: calc((100dvh - 5.5rem) / 2 - min(100vw, 52.5rem) / 16);
   }
   .block-layout:has(:nth-child(5)) {
     display: grid;
@@ -146,7 +146,7 @@ h1, h2, h3, h4, h5, h6, p {
   }
   .block-layout:has(:nth-child(5)) .block-layout__slot {
     width: calc(min(100vw, 70rem) / 3);
-    height: calc((100vh - 5.5rem) / 3 - min(100vw, 70rem) / 24);
+    height: calc((100dvh - 5.5rem) / 3 - min(100vw, 70rem) / 24);
   }
 }
 .block-layout__slot:has(.block-layout__item:focus-visible) {
@@ -255,7 +255,7 @@ h1, h2, h3, h4, h5, h6, p {
   transition: top ease-out 1000ms;
 }
 body.page--closing .canvas__sea {
-  top: 100vh;
+  top: 100dvh;
   pointer-events: none;
 }
 
@@ -263,12 +263,12 @@ body.page--closing .canvas__sea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: calc(100vh - 14vh);
-  padding-top: 14vh;
+  height: calc(100dvh - 14dvh);
+  padding-top: 14dvh;
   transition: translate 1000ms, opacity 1000ms;
 }
 body.page--closing .header {
-  translate: 0 75vh;
+  translate: 0 75dvh;
   opacity: 0;
 }
 body.page--inactive .header {
@@ -311,7 +311,7 @@ body.page--inactive .header {
   gap: 3rem;
   width: 100%;
   max-width: 28.5rem;
-  margin: 14vh auto 0;
+  margin: 14dvh auto 0;
   justify-content: space-between;
   pointer-events: none;
 }
@@ -420,7 +420,7 @@ body.page--inactive .header {
 }
 @media (max-width: calc(36rem - 1px)) {
   .header {
-    padding-top: 15vh;
+    padding-top: 15dvh;
   }
   .header__title--primary, .header__title--secondary {
     display: flex;
@@ -447,8 +447,8 @@ body.page--inactive .main {
 }
 .main__section {
   width: 50%;
-  height: 40vh;
-  margin-top: 30vh;
+  height: 40dvh;
+  margin-top: 30dvh;
   text-align: center;
 }
 .main__section:nth-child(2n) {
@@ -504,13 +504,13 @@ body.page--inactive .main {
   left: 0;
   right: 0;
   z-index: 50;
-  height: 100vh;
+  height: 100dvh;
   overflow-y: auto;
   transition: opacity 1000ms, bottom 1000ms;
 }
 .page.page--closing {
   opacity: 0;
-  bottom: 100vh;
+  bottom: 100dvh;
 }
 .page--sub.page--closing {
   bottom: 0;
@@ -595,7 +595,7 @@ body.page--inactive .main {
   position: relative;
   display: flex;
   align-items: center;
-  height: calc(86vh - 2rem);
+  height: calc(86dvh - 2rem);
 }
 .project__body {
   display: grid;
@@ -840,7 +840,7 @@ body.page--inactive .main {
 }
 
 .experience {
-  height: calc(100vh - 4rem);
+  height: calc(100dvh - 4rem);
   padding-bottom: 4rem;
 }
 .experience__print {
@@ -983,7 +983,6 @@ body.page--inactive .main {
 .cv__section-line {
   grid-column: span 2;
   position: relative;
-  width: 100%;
   padding-left: 0.875rem;
   margin: 0.375rem 0 0;
 }
@@ -1013,10 +1012,10 @@ body.page--inactive .main {
 .cv__section-table td {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.25rem;
 }
 .cv__section-table td > span {
-  margin-right: 0.5rem;
+  margin-right: 0.75rem;
 }
 .cv__section-table td :nth-child(1) {
   width: 4rem;
@@ -1034,7 +1033,10 @@ body.page--inactive .main {
   font-family: "Roboto", "Helvetica", san-serif;
 }
 
-@media (max-width: 48rem) {
+@media (max-width: calc(48rem - 1px)) {
+  .experience {
+    padding-bottom: 6rem;
+  }
   .cv {
     width: calc(100% - 5rem);
     max-width: 59rem;

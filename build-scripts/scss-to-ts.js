@@ -108,7 +108,7 @@ function convertValue(value, rem) {
             ? `'${ value.replace(/"^(.*)$"/, '$1') }'`
             : VALUE_SUFFIX === 'rem'
             ? VALUE_NUM * rem
-            : VALUE_SUFFIX === '%' || VALUE_SUFFIX === 'vh' || VALUE_SUFFIX === 'vw'
+            : VALUE_SUFFIX === '%' || VALUE_SUFFIX.match(/^[sld]?v[wh]$/)
             ? VALUE_NUM / 100
             : VALUE_NUM;
     

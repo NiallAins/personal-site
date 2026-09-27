@@ -1,5 +1,4 @@
 import {
-    WIDTH_ISO_SCALE,
     COLOR_HSL_TERRAIN_LAND_1, COLOR_HSL_TERRAIN_LAND_2, COLOR_HSL_TERRAIN_LAND_3, COLOR_HSL_TERRAIN_LAND_4,
     COLOR_HSL_TERRAIN_SEA,
     LABEL_LETTER_SPACE, LABEL_LINE_HEIGHT
@@ -68,7 +67,8 @@ export const
     SKY_HEIGHT_RATIO: number = 0.75,
     MAX_SEA_ISO_DEPTH: number = 2,
     MIN_LAND_ISO_Z: number = -3,
-    ISO_SCALE: number = WIDTH_ISO_SCALE,
+    ISO_SCALE: number = 14,
+    ISO_SCALE_SM: number = 10,
     X_UNIT: number = 4 * ISO_SCALE,
     Y_UNIT: number = 2 * ISO_SCALE,
     Z_UNIT: number = 2 * ISO_SCALE,

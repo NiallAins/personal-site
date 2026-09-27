@@ -1,4 +1,4 @@
-import { SKY_HEIGHT_RATIO, DURATION_SH, DURATION_PAGE_OPEN, DURATION_PAGE_OPEN_DELAY } from "../consts";
+import { SKY_HEIGHT_RATIO, DURATION_SH, DURATION_PAGE_OPEN, DURATION_PAGE_OPEN_DELAY, BREAKPOINT_W_MD } from "../consts";
 import { Canvas } from "./Canvas";
 import { Splash } from "./Splash";
 import { Label } from "./Label";
@@ -24,6 +24,9 @@ export const
     LABELS: Label[] = [],
     CUBLETS: Cublet[][] = PROJECT_DATA
         .map((p, pi) => p.projects.map(i => new Cublet(pi, i.title)));
+
+export let
+    viewportSmall = false;
 
 
 //
@@ -69,14 +72,24 @@ export function init() {
         fades.push(new Ease(DURATION_SH, eEaseType.EaseOut, true));
     });
     LABELS.forEach(l => l.preRender());
+    console.log(LABELS[0]);
     initTerrain();
 
     window.requestAnimationFrame(() => animate());
 }
 
 export function setCanvasSize(pageWidth: number, pageHeight: number) {
+    viewportSmall = pageWidth < BREAKPOINT_W_MD;
+
+    const SCALE = viewportSmall  ? 0.75 : 1;
+    CAN_SEA.setSize(
+        pageWidth / SCALE,
+        pageHeight / SCALE
+    );
+    CAN_SEA.CAN.style.scale = SCALE.toString();
+
     CAN_SKY.setSize(pageWidth, pageHeight * SKY_HEIGHT_RATIO);
-    CAN_SEA.setSize(pageWidth, pageHeight);
+
     LABELS.forEach(l => l.setPosition(pageWidth, pageHeight));
     renderSky(CAN_SKY);
     resizeTerrain(pageWidth, pageHeight);

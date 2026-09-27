@@ -28,7 +28,6 @@ export const
     WIDTH_PAGE_PAD: number = 16,
     WIDTH_PAGE_MAX: number = 1120,
     WIDTH_PAGE_BG_MAX: number = 1800,
-    WIDTH_ISO_SCALE: number = 14,
     HEIGHT_MAIN_SECTION: number = 0.4,
     HEIGHT_MAIN_SECTION_GAP: number = 0.3,
     HEIGHT_MIN_SEA: number = 0.14,
