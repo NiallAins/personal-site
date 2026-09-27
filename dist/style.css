@@ -440,7 +440,6 @@ body.page--inactive .header {
 .main {
   display: flex;
   flex-direction: column;
-  align-items: start;
 }
 body.page--inactive .main {
   display: none;
@@ -448,11 +447,8 @@ body.page--inactive .main {
 .main__section {
   width: 50%;
   height: 40dvh;
-  margin-top: 30dvh;
+  margin-top: 29.1dvh;
   text-align: center;
-}
-.main__section:nth-child(2n) {
-  align-self: end;
 }
 .main__section-button:focus-visible {
   outline: 2px solid #ffffff;
@@ -483,6 +479,22 @@ body.page--inactive .main {
 }
 .main__section-button.main__section-button--disabled::selection {
   background-color: transparent;
+}
+@media (max-width: calc(48rem - 1px)) {
+  .main {
+    align-items: center;
+  }
+  .main__section {
+    width: 100%;
+  }
+}
+@media (min-width: 48rem) {
+  .main {
+    align-items: start;
+  }
+  .main__section:nth-child(2n) {
+    align-self: end;
+  }
 }
 
 .page::-webkit-scrollbar {

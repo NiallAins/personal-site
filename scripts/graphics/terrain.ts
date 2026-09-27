@@ -153,7 +153,7 @@ export function resize(width: number, height: number) {
     }
 }
 
-export function render(can: Canvas, fades: number[], t: number, dT: number) {
+export function render(can: Canvas, fades: number[], t: number, dT: number, isViewportSmall: boolean) {
     // _DEBUG_updateTerrainControls(SECTION_TERRAIN);
 
     const C = can.CTX;
@@ -163,7 +163,10 @@ export function render(can: Canvas, fades: number[], t: number, dT: number) {
     C.save();
         // Calculate viewport
         const
-            MIN_Y_SEA = Math.max(can.height * 0.75, window.scrollY - OVERSHOOT_MIN_SEA),
+            MIN_Y_SEA = Math.max(
+                can.height * (isViewportSmall ? 0.6 : 0.75),
+                window.scrollY - OVERSHOOT_MIN_SEA
+            ),
             MIN_Y_LAND = MIN_Y_SEA - OVERSHOOT_MIN_LAND,
             MIN_Y_OBJ = MIN_Y_SEA - OVERSHOOT_MIN_OBJ,
             MAX_Y_SEA = can.height + window.scrollY + OVERSHOOT_MAX_SEA,

@@ -25,8 +25,8 @@ export const
     CUBLETS: Cublet[][] = PROJECT_DATA
         .map((p, pi) => p.projects.map(i => new Cublet(pi, i.title)));
 
-export let
-    viewportSmall = false;
+let
+    isViewportSmall = false;
 
 
 //
@@ -72,22 +72,22 @@ export function init() {
         fades.push(new Ease(DURATION_SH, eEaseType.EaseOut, true));
     });
     LABELS.forEach(l => l.preRender());
-    console.log(LABELS[0]);
     initTerrain();
 
     window.requestAnimationFrame(() => animate());
 }
 
 export function setCanvasSize(pageWidth: number, pageHeight: number) {
-    viewportSmall = pageWidth < BREAKPOINT_W_MD;
+    isViewportSmall = pageWidth < BREAKPOINT_W_MD;
 
     CAN_SKY.setSize(pageWidth, pageHeight * SKY_HEIGHT_RATIO);
     renderSky(CAN_SKY);
 
-    const SCALE = viewportSmall  ? 0.75 : 1;
+    const SCALE = isViewportSmall  ? 0.75 : 1;
     CAN_SEA.setSize(
         pageWidth / SCALE,
-        pageHeight / SCALE
+        pageHeight / SCALE,
+        isViewportSmall
     );
     CAN_SEA.CAN.style.scale = SCALE.toString();
 
@@ -104,7 +104,7 @@ function animate(t: number = 0, dT: number = 1) {
     if (!paused) {
         Ease.step(dT);
 
-        renderTerrain(CAN_SEA, fades.map(f => f.value), t, dT);
+        renderTerrain(CAN_SEA, fades.map(f => f.value), t, dT, isViewportSmall);
         t = (t + (0.00075 * dT)) % 1;
     }
 

@@ -1,4 +1,5 @@
 import {
+    BREAKPOINT_W_MD,
     CLASS_MAIN_SECTION_BUTTON_DISABLED,
     COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE, COLOR_TEXT_SHADOW,
     DURATION_SH,
@@ -71,9 +72,14 @@ export class Label {
             SECTION_WIDTH = Math.min(pageWidth, WIDTH_PAGE_MAX) * 0.5,
             SECTION_HEIGHT = pageHeight * HEIGHT_MAIN_SECTION,
             SECTION_GAP = pageHeight * HEIGHT_MAIN_SECTION_GAP,
+            ALIGN_X = pageWidth < BREAKPOINT_W_MD
+                ? 0.33
+                : IS_LEFT
+                ? -0.5
+                : 0.5,
             SECTION_OFFSET_X =
                 (pageWidth * 0.5) +
-                (SECTION_WIDTH * (IS_LEFT ? -0.5 : 0.5)) -
+                (SECTION_WIDTH * ALIGN_X) -
                 (LABEL_LETTER_WIDTH * 0.5),
             SECTION_OFFSET_Y =
                 pageHeight +
