@@ -6,7 +6,7 @@ import { init as initTerrain, render as renderTerrain, resize as resizeTerrain }
 import { requestFrameScaled } from "../util";
 import { EL_TOPIC_BUTTONS } from "../pages";
 import { Cublet } from "./Cublet";
-import { PAGE_DATA } from "../data/pages.json";
+import { PROJECT_DATA } from "../data/projects.json";
 import { Ease } from "./Ease";
 import { _DEBUG_logDt } from "../_debug";
 import { eEaseState, eEaseType } from "../types";
@@ -22,8 +22,8 @@ const
 
 export const
     LABELS: Label[] = [],
-    CUBLETS: Cublet[][] = PAGE_DATA
-        .map((p, pi) => p.items.map(i => new Cublet(pi, i.title)));
+    CUBLETS: Cublet[][] = PROJECT_DATA
+        .map((p, pi) => p.projects.map(i => new Cublet(pi, i.title)));
 
 
 //

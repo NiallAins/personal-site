@@ -37,8 +37,11 @@
 
         &-links {
             display: flex;
-            margin: $h-min-sea auto;
-            width: 28.5rem;
+            flex-wrap: wrap;
+            gap: 3rem;
+            width: 100%;
+            max-width: 28.5rem;
+            margin: $h-min-sea auto 0;
             justify-content: space-between;
             pointer-events: none;
 
@@ -62,6 +65,31 @@
             font-weight: $f-weight-bold;
             letter-spacing: 3px;
             color: $c-bg-l;
+        }
+    }
+
+    @include viewport(0, sm) {
+        padding-top: 15vh;
+
+        &__title {
+            &--primary,
+            &--secondary {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                max-width: 22.5rem;
+            }
+
+            &--secondary {
+                margin: 1.5rem 0 2.5rem;
+            }
+        }
+
+        &__nav {
+            &-links {
+                margin-top: 2rem;
+                justify-content: space-around;
+            }
         }
     }
 }

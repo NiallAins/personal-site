@@ -4,40 +4,89 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Neuton:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
+
+//
+// Fonts
+//
+
 $f-fam-title-src:      url(https://fonts.gstatic.com/s/neuton/v24/UMBQrPtMoH62xUZKAKkvcwr4Pro.woff2);
-$f-fam-title:          "Neuton";
-$f-fam-body:           "Roboto", san-serif;
+$f-fam-title-primary:  "Neuton";
+$f-fam-body-primary:   "Roboto";
+$f-fam-title:          $f-fam-title-primary, "Georgia", serif;
+$f-fam-body:           $f-fam-body-primary,  "Helvetica", san-serif;
+
 $f-size-base:          16px;
 $f-size-h1:            4.5rem;
+$f-size-h1-vp-sm:      3.5rem;
 $f-size-h2:            3.25rem;
+$f-size-h2-vp-sm:      2.5rem;
 $f-size-h3:            2.375rem;
+$f-size-h3-vp-sm:      1.875rem;
 $f-size-h4:            1.75rem;
+$f-size-h4-sm:         1.625rem;
 $f-size-bm:            1.125rem;
 $f-size-bs:            0.875rem;
 $f-size-section:       2.75rem;
+
 $f-weight-norm:        400;
 $f-weight-demi:        500;
 $f-weight-bold:        600;
 $f-weight-section:     $f-weight-demi;
+
+$label-letter-space:   3rem;
+$label-line-height:    $f-size-section * 1.5;
+$label-angle:          -0.488rad;
+
+
+//
+// Widths, heights, strokes
+//
 
 $-w-page-max-total:    1152px;
 $w-page-pad:           1rem;
 $w-page-max:           div($-w-page-max-total, $f-size-base) - (2 * $w-page-pad);
 $w-page-bg-max:        1800px;
 $w-iso-scale:          0.875rem;
-$w-stroke-underline:   0.375rem;
-$w-stroke-outline:     2px;
+
 $h-main-section:       40vh;
 $h-main-section-gap:   30vh;
 $h-min-sea:            14vh;
+
+$w-stroke-underline:   0.375rem;
+$w-stroke-outline:     2px;
 
 $w-img-xs:             12px;
 $w-img-sm:             200px;
 $w-img-md:             400px;
 
-$label-letter-space:   3rem;
-$label-line-height:    $f-size-section * 1.5;
-$label-angle:          -0.488rad;
+
+//
+// Z-indices
+//
+
+$z-canvas-bg:          next-z();
+$z-box-top:            next-z();
+$z-canvas-fg:          next-z();
+$z-buttons:            next-z();
+$z-page:               next-z();
+$z-page-close:         next-z();
+$z-focus-visible:      next-z();
+
+
+//
+// Breakpoints
+//
+
+$bp-w-lg:              $-w-page-max-total; // 1152px
+$bp-w-md:              48rem; // 768px
+$bp-w-sm:              36rem; // 608px
+$bp-w-xs:              24rem; // 384px
+$bp-h-sm:              36rem; // 608px
+
+
+//
+// Colors
+//
 
 $c-hsl-terrain-sea:    (174, 53, 40, 0.475);
 $c-terrain-sea:        list-to-hsl($c-hsl-terrain-sea);
@@ -73,22 +122,24 @@ $c-text-link:          #4848c8;
 $c-bg-select:          change($c-text-link, $alpha: 50%);
 $c-text-select:        $c-text-l;
 
-$z-canvas-bg:          next-z();
-$z-box-top:            next-z();
-$z-canvas-fg:          next-z();
-$z-buttons:            next-z();
-$z-page:               next-z();
-$z-page-close:         next-z();
-$z-focus-visible:      next-z();
+
+//
+// Animation durations
+//
 
 $dur-sh:               500ms;
 $dur-lg:               1000ms;
 $dur-page-open:        $dur-lg;
 $dur-page-open-delay:  $dur-sh * 0.5;
 
-$cl-page-post-fouc:         "page--post-fouc";
-$cl-page-inactive:          "page--inactive";
-$cl-page-closing:           "page--closing";
-$cl-page-sub-opening:       "page--sub-opening";
-$cl-project-link-missing:   "project__link--missing";
+
+//
+// Dynamic classes
+//
+
+$cl-page-post-fouc:               "page--post-fouc";
+$cl-page-inactive:                "page--inactive";
+$cl-page-closing:                 "page--closing";
+$cl-page-sub-opening:             "page--sub-opening";
+$cl-project-link-missing:         "project__link--missing";
 $cl-main-section-button-disabled: "main__section-button--disabled";

@@ -20,7 +20,8 @@ export enum ePageTag {
     NodeJS,
     Bash,
     Stripe,
-    PHP
+    PHP,
+    WebAudio
 };
 
 export enum eEaseType {
@@ -63,18 +64,19 @@ export type tHTMLTemplateValue = string | number | tHTMLEvent;
 export type tHTMLTemplateResult = HTMLElement[];
 export type tHTMLTemplateVar = tHTMLTemplateValue | tHTMLTemplateResult;
 
-export type tPageDataItem = {
+export type tProjectData = {
     title: string,
     year: number,
     desc: string[],
     linkLive?: string,
     linkCode?: string,
-    tags?: ePageTag[]
+    tags?: ePageTag[],
+    hide?: boolean
 };
 
-export type tPageData = {
-    label: string,
-    items: tPageDataItem[]
+export type tTopicData = {
+    title: string,
+    projects: tProjectData[]
 };
 
 export type tPoint2 = [

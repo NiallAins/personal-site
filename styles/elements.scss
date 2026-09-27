@@ -23,6 +23,7 @@ body {
 }
 
 .page-width-container {
+    width: calc(100% - #{ $w-page-pad * 2 });
     max-width: $w-page-max;
     padding: $w-page-pad;
     margin: 0 auto;

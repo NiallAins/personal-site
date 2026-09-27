@@ -4,7 +4,7 @@ import {
     DURATION_SH,
     EL_BODY,
     EL_HEADER_NAV_MORE,
-    FONT_FAM_TITLE, FONT_FAM_TITLE_SRC,
+    FONT_FAM_TITLE, FONT_FAM_TITLE_PRIMARY, FONT_FAM_TITLE_SRC,
     PAGE_HEIGHT_MAX, PAGE_WIDTH_MAX,
     WINDOW_RESIZE_DEBOUNCE
 } from './consts';
@@ -38,7 +38,7 @@ async function init() {
 
     initPages();
     await loadFont(
-        FONT_FAM_TITLE,
+        FONT_FAM_TITLE_PRIMARY,
         FONT_FAM_TITLE_SRC,
     );
 

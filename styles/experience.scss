@@ -3,13 +3,13 @@
 
 @import url('https://fonts.googleapis.com/css?family=Quattrocento:400,700');
 
-$cv-f-primary: 'Roboto', sans-serif;
+$cv-f-primary: $f-fam-body;
 $cv-f-secondary: 'Quattrocento', serif;
-$cv-f-sub-sub-head: 0.6875rem;
-$cv-f-sub-head: 1rem;
-$cv-f-body: 0.875rem;
-$cv-f-head: 1.125rem;
 $cv-f-title: 2.625rem;
+$cv-f-head: 1.125rem;
+$cv-f-sub-head: 1rem;
+$cv-f-sub-sub-head: 0.6875rem;
+$cv-f-body: 0.875rem;
 
 $cv-c-primary: #4ebed4;
 $cv-c-font: #f0f0f0;
@@ -58,10 +58,12 @@ $cv-max: 65rem;
 }
 
 .cv {
+    $cv-page-pad: 3rem;
+
+    width: calc(100% - #{ ($w-page-pad + $cv-page-pad) * 2 });
     max-width: $cv-max - 6rem;
-    padding: 3rem 3rem 4rem;
+    padding: $cv-page-pad $cv-page-pad #{ $cv-page-pad + 1 };
     margin: 3rem auto 1rem;
-    line-height: 1.25em;
     font-family: $cv-f-primary;
     font-size: $cv-f-body;
     color: $cv-c-font;
@@ -75,9 +77,10 @@ $cv-max: 65rem;
         text-align: center;
         
         &-title {
+            margin-bottom: 0.25rem;
             font-size: $cv-f-title;
-            margin-bottom: 1.25rem;
             font-weight: 400;
+            line-height: 0.875;
             
             &--thin {
                 font-weight: 100;
@@ -85,27 +88,41 @@ $cv-max: 65rem;
         }
         
         &-subtitle {
-            margin: 0.25rem 0 0.5rem;
             color: $cv-c-primary;
             font-size: $cv-f-head;
             font-weight: 600;
             font-family: $cv-f-secondary;
+            line-height: 1.5;
         }
-        
-        &-link {
-            font-weight: 300;
 
-            &-icon {
-                padding: 0 0.25rem 0 0.675rem;
+        &-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.875rem;
+            justify-content: center;
+            margin-top: 0.25rem;
+
+            &-link {
+                position: relative;
+                padding-left: 1.125rem;
+
+                font-weight: 300;
+
+                &-icon {
+                    position: absolute;
+                    top: 1px;
+                    right: calc(100% - 0.75rem);
+                }
             }
         }
     }
 
     &__section {
         &-sub {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: auto auto;
             padding-bottom: 1rem;
+            align-items: center;
         }
 
         &-title {
@@ -114,26 +131,6 @@ $cv-max: 65rem;
             font-weight: 600;
             color: $cv-c-primary;
             font-family: $cv-f-secondary;
-        }
-
-        &-subhead,
-        &-aside {
-            width: 50%;
-        }
-        
-        &-aside {
-            padding-top: 0.25rem;
-            text-align: right;
-            font-style: italic;
-            
-            &-location {
-                display: block;
-                color: $cv-c-primary;
-            }
-            
-            &-date {
-                display: block;
-            }
         }
         
         &-subhead-title {
@@ -154,8 +151,23 @@ $cv-max: 65rem;
                 font-size: $cv-f-sub-sub-head + 0.25rem;
             }
         }
+
+        &-aside {
+            text-align: right;
+            font-style: italic;
+            
+            &-location {
+                display: block;
+                color: $cv-c-primary;
+            }
+            
+            &-date {
+                display: block;
+            }
+        }
         
         &-line {
+            grid-column: span 2;
             position: relative;
             width: 100%;
             padding-left: 0.875rem;
@@ -173,6 +185,9 @@ $cv-max: 65rem;
         }
         
         &-table {
+            grid-column: span 2;
+            justify-self: start;
+
             th {
                 text-align: right;
                 white-space: nowrap;
@@ -184,12 +199,61 @@ $cv-max: 65rem;
                 vertical-align: top;
                 padding: 0.125rem 0.5rem;
             }
+
+            td {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+
+                & > span {
+                    margin-right: 0.5rem;
+                }
+
+                :nth-child(1) {
+                    width: 4rem;
+                }
+                :nth-child(2) {
+                    width: 4rem;
+                }
+                :nth-child(3) {
+                    width: 3rem;
+                }
+            }
             
             &--sub {
                 margin: 0.5rem 4rem 0.5rem 2rem;
                 
                 th {
                     font-family: $cv-f-primary;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 48rem) {
+    .cv {
+        $cv-page-pad: 1.5rem;
+    
+        width: calc(100% - #{ ($w-page-pad + $cv-page-pad) * 2 });
+        max-width: $cv-max - 6rem;
+        padding: 3rem $cv-page-pad;
+
+        &__header {
+            &-links {
+                margin: 1rem 0 2rem;
+            }
+        }
+
+        &__section {
+            &-subhead,
+            &-aside {
+                margin-bottom: 0.75rem;
+            }
+
+            &-table {
+                &--sub {
+                    margin: 0.5rem 1rem 0.5rem 0;
                 }
             }
         }

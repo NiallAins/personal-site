@@ -35,10 +35,12 @@
     <div class="header page-width-container">
         <header class="header__title">
             <h1 class="header__title--primary">
-                Niall Ainsworth
+                <span>Niall</span>
+                <span>Ainsworth</span>
             </h1>
             <span class="header__title--secondary">
-                Design / Development
+                <span>Design /</span>
+                <span>Development</span>
             </span>
         </header>
 
@@ -105,31 +107,43 @@
                 </h2>
                 <div class="cv__header-links">
                     <a
-                        class="cv__header-link"
+                        class="cv__header-links-link"
                         href="https://nialldesign.dev"
                     >
-                        <i class="cv__header-link-icon fa fa-home"></i>
+                        <span class="
+                            cv__header-links-link-icon
+                            fa fa-home
+                        "></span>
                         nialldesign.dev
                     </a>
                     <a
-                        class="cv__header-link"
+                        class="cv__header-links-link"
                         href="mailto:niallainsworth@gmail.com"
                     >
-                        <i class="cv__header-link-icon fa fa-envelope-o"></i>
+                        <span class="
+                            cv__header-links-link-icon
+                            fa fa-envelope-o
+                        "></span>
                         niallainsworth@gmail.com
                     </a>
                     <a
-                        class="cv__header-link"
+                        class="cv__header-links-link"
                         href="https://github.com/NiallAins"
                     >
-                        <i class="cv__header-link-icon fa fa-github"></i>
+                        <span class="
+                            cv__header-links-link-icon
+                            fa fa-github
+                        "></span>
                         github.com/NiallAins
                     </a>
                     <a
-                        class="cv__header-link"
+                        class="cv__header-links-link"
                         href="https://codepen.io/niallains"
                     >
-                        <i class="cv__header-link-icon fa fa-codepen"></i>
+                        <span class="
+                            cv__header-links-link-icon
+                            fa fa-codepen
+                        "></span>
                         codepen.io/NiallAins
                     </a>
                 </div>
@@ -161,24 +175,29 @@
                 <div class="cv__section-sub">
                     <table class="cv__section-table">
                         <tr>
-                            <th>Frontend</th>
-                            <td>JavaScript</td>
-                            <td>TypeScript</td>
-                            <td>Angular</td>
-                            <td>Vue</td>
-                            <td>SCSS</td>
-                            <td>ARIA</td>
-                            <td>Canvas</td>
+                            <th scope="row">Frontend</th>
+                            <td>
+                                <span>JavaScript</span>
+                                <span>TypeScript</span>
+                                <span>Angular</span>
+                                <span>Vue</span>
+                                <span>SCSS</span>
+                                <span>ARIA</span>
+                                <span>Canvas</span>
+                                <span>WebAudio</span>
+                            </td>
                         </tr>
                         <tr>
-                            <th>Backend</th>
-                            <td>Node</td>
-                            <td>Bash</td>
-                            <td>PHP</td>
-                            <td>SQL</td>
+                            <th scope="row">Backend</th>
+                            <td>
+                                <span>Node</span>
+                                <span>Bash</span>
+                                <span>PHP</span>
+                                <span>SQL</span>
+                            </td>
                         </tr>
                         <tr>
-                            <th>Design</th>
+                            <th scope="row">Design</th>
                             <td>Figma</td>
                         </tr>
                     </table>
@@ -240,20 +259,20 @@
                     </p>
                     <table class="cv__section-table cv__section-table--sub">
                         <tr>
-                            <th> Technical Expert </th>
+                            <th scope="row"> Technical Expert </th>
                             <td>
                                 I had to quickly acquire domain expertise as I became the main point of contact for all internal and external queries on my product.
                             </td>
                         </tr>
                         <tr>
-                            <th> Data Analyst </th>
+                            <th scope="row"> Data Analyst </th>
                             <td>
                                 I calculated revenue predictions in order to prioritise publishers.
                                 I also analysed our product's performance as it was continually pushed live.
                             </td>
                         </tr>
                         <tr>
-                            <th> Developer</th>
+                            <th scope="row"> Developer</th>
                             <td>
                                 I developed custom templates according to each publisher's requirements.
                                 I also assisted external developers with live implementations and internal developers with bug reports and feature requests.
@@ -290,25 +309,25 @@
                     </p>
                     <table class="cv__section-table cv__section-table--sub">
                         <tr>
-                            <th> Analytics </th>
+                            <th scope="row"> Analytics </th>
                             <td>
                                 Integrating Google Analytics and event tracking.
                             </td>
                         </tr>
                         <tr>
-                            <th> Device size </th>
+                            <th scope="row"> Device size </th>
                             <td>
                                 Scaling from HDTVs to tablets and mobile.
                             </td>
                         </tr>
                         <tr>
-                            <th> Accessibility </th>
+                            <th scope="row"> Accessibility </th>
                             <td>
                                 Accounting for users with visual and physical limitations.
                             </td>
                         </tr>
                         <tr>
-                            <th> Internationalisation </th>
+                            <th scope="row"> Internationalisation </th>
                             <td>
                                 Ensuring apps are open for translation and localisation.
                             </td>
@@ -390,8 +409,8 @@
                         class="block-layout__item-image"
                         style="--bg-url: url('assets/email-logo.svg')"
                     ></div>
-                    <div class="block-layout__item-label block-layout__item-label--xs">
-                        niallainsworth&ZeroWidthSpace;@gmail.com
+                    <div class="block-layout__item-label block-layout__item-label--sm">
+                        niall&ZeroWidthSpace;ainsworth&ZeroWidthSpace;@gmail.com
                     </div>
                 </a>
             </div>
@@ -465,63 +484,61 @@
     >
         <div class="project">
             <div class="project__body">
-                <div class="project__body-content">
-                    <h2
-                        id="project_title"
-                        class="project__title"
-                    ></h2>
-                    <div
-                        id="project_tags"
-                        class="project__tags"
-                    ></div>
-                    <p
-                        id="project_desc"
-                        class="project__desc"
-                    ></p>
-                    <div class="project__links">
-                        <a
-                            id="project_linkLive"
-                            class="project__links-link"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="-2 -2 4 4"
-                                aria-hidden="true"
-                                class="project__links-link-svg"
-                            >
-                                <path d="M0 -2 2 -1 2 1 0 2 -2 1 -2 -1" fill="#4dd2c788"></path>
-                                <path d="M-2 -1 0 0 0 2 -2 1Z" fill="#0008"></path>
-                                <path d="M0 0 2 -1 2 1 0 2Z" fill="#0005"></path>
-                            </svg>
-                            <span class="project__links-link-text">
-                                Open project
-                            </span>
-                        </a>
-                        <a
-                            id="project_linkCode"
-                            class="project__links-link"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="-2 -2 4 4"
-                                aria-hidden="true"
-                                class="project__links-link-svg"
-                            >
-                                <path d="M0 -2 2 -1 2 1 0 2 -2 1 -2 -1" fill="#816816"></path>
-                                <path d="M-2 -1 0 0 0 2 -2 1Z" fill="#0008"></path>
-                                <path d="M0 0 2 -1 2 1 0 2Z" fill="#0005"></path>
-                            </svg>
-                            <span class="project__links-link-text">
-                                View code
-                            </span>
-                        </a>
-                    </div>
-                </div>
+                <h2
+                    id="project_title"
+                    class="project__title"
+                ></h2>
+                <div
+                    id="project_tags"
+                    class="project__tags"
+                ></div>
                 <div
                     id="project_image"
                     class="project__image"
                     aria-label="screenshot from project"
                 ></div>
+                <p
+                    id="project_desc"
+                    class="project__desc"
+                ></p>
+                <div class="project__links">
+                    <a
+                        id="project_linkLive"
+                        class="project__links-link"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="-2 -2 4 4"
+                            aria-hidden="true"
+                            class="project__links-link-svg"
+                        >
+                            <path d="M0 -2 2 -1 2 1 0 2 -2 1 -2 -1" fill="#4dd2c788"></path>
+                            <path d="M-2 -1 0 0 0 2 -2 1Z" fill="#0008"></path>
+                            <path d="M0 0 2 -1 2 1 0 2Z" fill="#0005"></path>
+                        </svg>
+                        <span class="project__links-link-text">
+                            Open project
+                        </span>
+                    </a>
+                    <a
+                        id="project_linkCode"
+                        class="project__links-link"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="-2 -2 4 4"
+                            aria-hidden="true"
+                            class="project__links-link-svg"
+                        >
+                            <path d="M0 -2 2 -1 2 1 0 2 -2 1 -2 -1" fill="#816816"></path>
+                            <path d="M-2 -1 0 0 0 2 -2 1Z" fill="#0008"></path>
+                            <path d="M0 0 2 -1 2 1 0 2Z" fill="#0005"></path>
+                        </svg>
+                        <span class="project__links-link-text">
+                            View code
+                        </span>
+                    </a>
+                </div>
             </div>
             <button
                 id="project_close"

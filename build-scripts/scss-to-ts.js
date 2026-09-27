@@ -57,6 +57,7 @@ FS.readFile(
                         .replace(/^w/,   'WIDTH')
                         .replace(/^h/,   'HEIGHT')
                         .replace(/^dur/, 'DURATION')
+                        .replace(/^bp/,  'BREAKPOINT')
                         .toUpperCase(),
                     [VALUE, TYPE] = convertValue(v.value, REM);
                 return {

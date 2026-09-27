@@ -37,7 +37,7 @@ VSCode extension "Live Server" can be used to auto-refresh browser on file chang
 
 ### Add a project
 
-- Add project details to `scripts/pages.json.ts`
+- Add project details to `scripts/projects.json.ts`
 - Add project image to `dist/images` as `project-label-kebab-case.png`
 - Run `npm run prep-images` to update image icons used by cublets
 

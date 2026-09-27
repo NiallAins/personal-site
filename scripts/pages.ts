@@ -11,7 +11,7 @@ import {
     DURATION_PAGE_OPEN_DELAY,
     CLASS_PROJECT_LINK_MISSING
 } from "./consts";
-import { PAGE_DATA } from "./data/pages.json";
+import { PROJECT_DATA } from "./data/projects.json";
 import { toggleSectionOpen as toggleGraphicsSectionOpen } from "./graphics/main";
 import { html, toCamelCase } from "./util";
 import { DATA_BG } from "./data/images.json";
@@ -43,7 +43,7 @@ let
 export function initPages() {
 
     // Topic pages
-    PAGE_DATA.forEach((topic, ti) => {
+    PROJECT_DATA.forEach((topic, ti) => {
         // Add topic button
         const [EL_TOPIC, EL_TOPIC_BUTTON] = html`
             <div class="main__section">
@@ -51,15 +51,16 @@ export function initPages() {
                     class="main__section-button"
                     onclick="${ openPage.bind(null, ePages.Topic, ti, -1, false) }"
                 >
-                    ${ topic.label }
+                    ${ topic.title }
                 </button>
             </div>
         `;
         EL_MAIN.appendChild(EL_TOPIC);
         EL_TOPIC_BUTTONS.push(EL_TOPIC_BUTTON as HTMLButtonElement);
 
-        const
-            PROJECT_BLOCKS = topic.items.map((project, pi) => html`
+        const PROJECT_BLOCKS = topic.projects
+            .filter(project => !project.hide)
+            .map((project, pi) => html`
                 <div class="block-layout__slot">
                     <button
                         class="block-layout__item"
@@ -86,24 +87,25 @@ export function initPages() {
                         </h3>
                     </button>
                 </div>
-            `),
-            TOPIC_PAGE = html`
-                <div>
-                    <div class="block-layout">
-                        ${ PROJECT_BLOCKS }
-                    </div>
-                    <button
-                        class="page__close"
-                        onclick="${ openPage.bind(null, ePages.Main, -1, -1, false) }"
-                    ></button>
+            `);
+
+        const TOPIC_PAGE = html`
+            <div>
+                <div class="block-layout">
+                    ${ PROJECT_BLOCKS }
                 </div>
-            `;
+                <button
+                    class="page__close"
+                    onclick="${ openPage.bind(null, ePages.Main, -1, -1, false) }"
+                ></button>
+            </div>
+        `;
 
         TOPIC_PAGES_CONTENT.push(TOPIC_PAGE[0]);
         TOPIC_PAGES_IMAGES.push(
             PROJECT_BLOCKS.map((b, bi) => ({
                 el: b[1] as HTMLDivElement,
-                url: `url(assets/${ toCamelCase(topic.items[bi].title) }.sm.png)`
+                url: `url(assets/${ toCamelCase(topic.projects[bi].title) }.sm.png)`
             }))
         );
     });
@@ -134,12 +136,12 @@ export function openPageFromUrl() {
 
     if (page === -1) {
         page = ePages.Topic;
-        topic = PAGE_DATA.findIndex(t => toCamelCase(t.label) === HASH);
+        topic = PROJECT_DATA.findIndex(t => toCamelCase(t.title) === HASH);
 
         if (topic === -1) {
             page = ePages.Project;
-            topic = PAGE_DATA.findIndex(t => t.items.some(p => toCamelCase(p.title) === HASH));
-            project = topic > -1 ? PAGE_DATA[topic].items.findIndex(p => toCamelCase(p.title) === HASH) : -1;
+            topic = PROJECT_DATA.findIndex(t => t.projects.some(p => toCamelCase(p.title) === HASH));
+            project = topic > -1 ? PROJECT_DATA[topic].projects.findIndex(p => toCamelCase(p.title) === HASH) : -1;
 
             if (project === -1) {
                 page = ePages.Main;
@@ -159,6 +161,10 @@ export function openPageFromUrl() {
 //
 
 function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = -1, isInitial: boolean = false) {
+    if (page === currentOpenPage) {
+        return;
+    }
+
     switch (page) {
         case ePages.Main:
             toggleGraphicsSectionOpen(false, currentOpenTopic);
@@ -188,19 +194,18 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
 
                 toggleGraphicsSectionOpen(true, topicIndex);
                 transitionPage(page, currentOpenPage === ePages.Main ? DURATION_PAGE_OPEN_DELAY : 0);
-                setUrl(PAGE_DATA[topicIndex].label, isInitial);
+                setUrl(PROJECT_DATA[topicIndex].title, isInitial);
             }
         break;
 
         case ePages.Project:
-            const PROJECT = PAGE_DATA[topicIndex].items[projectIndex];
+            const PROJECT = PROJECT_DATA[topicIndex].projects[projectIndex];
 
             EL_PROJECT_TITLE.innerHTML = PROJECT.title;
             EL_PROJECT_DESC.innerHTML = PROJECT.desc
                 .map(d => `<p class="project__desc-item">${ d }</p>`)
                 .join('\n');
             EL_PROJECT_IMAGE.style.setProperty('--bg-url', `url(assets/${ toCamelCase(PROJECT.title) }.md.png)`);
-            // EL_PROJECT_IMAGE.style.setProperty('--bg-color', DATA_BG[toCamelCase(PROJECT.title)] || COLOR_BG_L);
             currentOpenTopic = topicIndex;
 
             if (PROJECT.linkLive) {
@@ -217,7 +222,8 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
                 EL_PROJECT_LINK_CODE.classList.add(CLASS_PROJECT_LINK_MISSING);
             }
 
-            EL_PROJECT_TAGS.innerHTML = (PROJECT.tags || [])
+            EL_PROJECT_TAGS.innerHTML = `<span class="project__tags-tag project__tags-tag--year">${ PROJECT.year }</span>`; 
+            EL_PROJECT_TAGS.innerHTML += (PROJECT.tags || [])
                 .map(t => `<span class="project__tags-tag project__tags-tag--${ t }">${ ePageTag[t] }</span>`)
                 .join('');
 
@@ -234,6 +240,18 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
 //
 // Handle animation classes and timing for page transitions
 //
+// Transition order
+//   clear any in progress transitions
+//   set all pages to inactive
+//   if inital load
+//     remove toPage inactive, exit
+//   else
+//      initial delay
+//      fromPage closing animation
+//      toPage opening delay
+//      toPage remove inactive
+//      toPage opening animation
+//      fromPage add inactive
 
 function transitionPage(pageTo: ePages, delay: number = 0, delayTo: number = 0) {
     // Reset all pages
@@ -267,14 +285,6 @@ function transitionPage(pageTo: ePages, delay: number = 0, delayTo: number = 0) 
             EL_TO.classList.add(CLASS_PAGE_SUB_OPENING);
         }
 
-        // Transition order
-        //   set currentPageOpen
-        //   initial delay
-        //   fromPage closing animation
-        //   toPage opening delay
-        //   toPage remove inactive
-        //   toPage opening animation
-        //   fromPage add inactive
         EL_TO.classList.remove(CLASS_PAGE_INACTIVE);
         transitionDelayTimeout = setTimeout(() => {
             EL_FROM.classList.add(
@@ -290,8 +300,6 @@ function transitionPage(pageTo: ePages, delay: number = 0, delayTo: number = 0) 
             }, DURATION_PAGE_OPEN);
         }, delay);
     }
-
-    currentOpenPage = pageTo;
 }
 
 

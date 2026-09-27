@@ -1,6 +1,42 @@
+@use 'sass:map' as *;
 @use 'sass:color' as *;
 @use 'vars' as *;
 @use 'util' as *;
+
+
+//
+// Breakpoints
+//
+
+$breakpoints: (
+    'xs': $bp-w-xs,
+    'sm': $bp-w-sm,
+    'md': $bp-w-md,
+    'lg': $bp-w-lg,
+    'height-sm': $bp-h-sm
+);
+@mixin viewport($from, $to: null) {
+    $dir: iif($from == 'height-sm' or $to == 'height-sm', 'height', 'width');
+    $from: iif($from == 0, 0, get($breakpoints, $from));
+
+    @if ($to == null) {
+        @media (min-#{ $dir }: $from) {
+            @content;
+        }
+    } @else {
+        $to: get($breakpoints, $to);
+
+        @if ($from == 0) {
+            @media (max-#{ $dir }: calc(#{ $to } - 1px)) {
+                @content;
+            }
+        } @else {
+            @media (min-#{ $dir }: $from) and (max-#{ $dir }: calc(#{ $to } - 1px)) {
+                @content;
+            }
+        }
+    }
+}
 
 
 //
@@ -13,6 +49,11 @@
     letter-spacing: 2px;
     font-family: $f-fam-title;
     color: $c-text-l;
+    line-height: 1;
+
+    @include viewport(0, sm) {
+        font-size: $f-size-h1-vp-sm;
+    }
 }
 
 @mixin header-2 {
@@ -21,6 +62,10 @@
     letter-spacing: 1px;
     font-family: $f-fam-title;
     color: $c-text-l;
+
+    @include viewport(0, sm) {
+        font-size: $f-size-h2-vp-sm;
+    }
 }
 
 @mixin header-3 {
@@ -30,11 +75,10 @@
     letter-spacing: 3px;
     font-family: $f-fam-title;
     color: $c-text-l;
-}
 
-@mixin header-3--sm {
-    font-size: $f-size-h3 - 0.375rem;
-    letter-spacing: 2px;
+    @include viewport(0, sm) {
+        font-size: $f-size-h3-vp-sm;
+    }
 }
 
 @mixin body-title {
@@ -147,7 +191,7 @@
 }
 
 @mixin caret-button-empty {
-    $w-caret: 1rem;
+    $w-caret: 0.75rem;
     $w-bg: $w-caret + 1.25rem;
 
     @include -caret-button($w-caret, 4px);
@@ -193,6 +237,7 @@
 
     &:focus-visible > span {
         @include outline;
+        white-space: nowrap;
     }
 }
 

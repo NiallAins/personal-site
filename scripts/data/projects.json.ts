@@ -1,9 +1,9 @@
-import { tPageData, ePageTag } from "../types";
+import { tTopicData, ePageTag } from "../types";
 
-export const PAGE_DATA: tPageData[] = [
+export const PROJECT_DATA: tTopicData[] = [
     {
-        "label": "Sites",
-        "items": [
+        "title": "Sites",
+        "projects": [
             {
                 "title": "Johnny Cigarette",
                 "year": 2022,
@@ -14,7 +14,9 @@ export const PAGE_DATA: tPageData[] = [
                 ],
                 "linkLive": "https://johnnycigarette.ie/",
                 "linkCode": "https://github.com/NiallAins/Johnny-Cigarette",
-                "tags": [ePageTag.VueJS]
+                "tags": [
+                    ePageTag.VueJS
+                ]
             },
             {
                 "title": "Clever Keys",
@@ -26,7 +28,11 @@ export const PAGE_DATA: tPageData[] = [
                 ],
                 "linkLive": "https://niallains.github.io/cleverkeys-demo/dist",
                 "linkCode": "https://github.com/NiallAins/cleverkeys-demo",
-                "tags": [ePageTag.VueJS, ePageTag.Stripe, ePageTag.PHP]
+                "tags": [
+                    ePageTag.VueJS,
+                    ePageTag.Stripe,
+                    ePageTag.PHP
+                ]
             },
             {
                 "title": "PaperWon",
@@ -37,11 +43,14 @@ export const PAGE_DATA: tPageData[] = [
                     "The site is built using VueJS with many small custom interacive components.",
                 ],
                 "linkLive": "https://niallains.github.io/PaperWon/dist/",
-                "linkCode": "https://github.com/NiallAins/PaperWon/tree/master",
-                "tags": [ePageTag.VueJS]
+                "linkCode": "https://github.com/niallAins/PaperWon/tree/master",
+                "tags": [
+                    ePageTag.VueJS,
+                    ePageTag.Canvas
+                ]
             },
             {
-                "title": "Niall.Design",
+                "title": "NiallDesign.Dev",
                 "year": 2026,
                 "desc": [
                     "This very site!",
@@ -49,42 +58,62 @@ export const PAGE_DATA: tPageData[] = [
                     "The visuals of this site were built using HTML Canvas, running a repurposed isometic graphics engine I created for a previous project. Further animations are acheived using a mixture of JavaSCript and SCSS transitions. Bash scripts are used to keep design variables in-sync across Canvas, Typescript, and SCSS files - as well as to simplify development and deployment.",
                 ],
                 "linkCode": "https://github.com/NiallAins/personal-site",
-                "tags": [ePageTag.Typescript, ePageTag.Canvas, ePageTag.NodeJS]
+                "tags": [
+                    ePageTag.Typescript,
+                    ePageTag.Canvas,
+                    ePageTag.NodeJS,
+                    ePageTag.Bash
+                ]
             },
         ]
     },
     {
-        "label": "Music & Visuals",
-        "items": [
+        "title": "Music / Visuals",
+        "projects": [
             {
                 "title": "TinyTone",
-                "year": 2020,
+                "year": 2025,
                 "desc": [
-                    "",
+                    "TinyTone is a web app and small library built on JavaScript's Web Audio API. The app allows you to create audio tones by combining audio textures, envelopes, and effects, then export them to use in your projects along with a library to control them",
+                    "I created TinyTone so I could have a dynamic audio library to create effects for other projects - as well as an excuse to dive into modular synths and audio production.",
+                    "The app has a complex node-and-plug interface implemented in HTML Canvas, as well as several custom range input component to allow user input across multiple effects modules."
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://niallains.github.io/tinytone",
+                "linkCode": "https://github.com/niallains/tinytone",
+                "tags": [
+                    ePageTag.Typescript,
+                    ePageTag.Canvas,
+                    ePageTag.WebAudio
+                ]
             },
             {
                 "title": "Musical scale generator",
-                "year": 2020,
+                "year": 2025,
                 "desc": [
-                    "",
+                    "I created this Musical Scale Generator to visually explain how musical scales are derived. The app allows you to change the inital parameters of the standard western scale to show how this creates new scales.",
+                    "This app contains a custom circular range inputs, and a playable piano which changes layout to match whatever scales you create.",
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://niallains.github.io/generate-scales/",
+                "linkCode": "https://github.com/NiallAins/generate-scales",
+                "tags": [
+                    ePageTag.Javascipt,
+                    ePageTag.Canvas,
+                    ePageTag.WebAudio
+                ]
             },
             {
-                "title": "The Carnegie Hall chart",
-                "year": 2020,
+                "title": "Carnegie Hall chart",
+                "year": 2026,
                 "desc": [
-                    "A recreation of the 1941 ",
+                    "The Carnegie Hall chart was created in 1941 by E.J. Quimby. As the original only exists online in very low quality, difficult to read images - I decided to recreate it in vector form.",
+                    "I kept the orignal layout of the chart, while adding some additional information and redesigning elements to improve readability. As it is built as a HTML page, one functional improvement is the ability to copy values directly form the chart",
+                    "The chart is designed to be printed out as an A2 wall chart, but can also be viewed online as a vector graphic, or downloaded as a PNG"
                 ],
                 "linkLive": "",
                 "linkCode": "",
-                "tags": []
+                "tags": [
+                    ePageTag.Javascipt
+                ]
             },
             {
                 "title": "Every Guitar Chord Voiced",
@@ -108,23 +137,32 @@ export const PAGE_DATA: tPageData[] = [
             },
             {
                 "title": "Tiny Painter",
-                "year": 2020,
+                "year": 2019,
                 "desc": [
-                    "",
+                    "Tiny Painter is a tiny app for tiny paintings.",
+                    "I made this little app over two days as part of a coding challenge to \"Create an app no larger than 100px &times; 50px\"",
+                    "It allows you to change colours and brush sizes, and save, copy, and download your masterpieces."
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://codepen.io/niallains/full/LYPzbVv",
+                "linkCode": "https://codepen.io/niallains/pen/LYPzbVv",
+                "tags": [
+                    ePageTag.Javascipt,
+                    ePageTag.Canvas
+                ]
             },
             {
                 "title": "Tartan Generator",
-                "year": 2020,
+                "year": 2022,
                 "desc": [
-                    "",
+                    "My Tartan Generator generates genuine tartan cloth patterns using CSS backgrounds.",
+                    "It can also use a string as a random number seed, allowing it to create a unique tartan for any name.",
+                    "Created for St. Andrew's day."
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://codepen.io/niallains/full/ExEOmdJ",
+                "linkCode": "https://codepen.io/niallains/pen/ExEOmdJ",
+                "tags": [
+                    ePageTag.Javascipt
+                ]
             },
             {
                 "title": "Name That Colour",
@@ -139,8 +177,8 @@ export const PAGE_DATA: tPageData[] = [
         ]
     },
     {
-        "label": "Maths & Space",
-        "items": [
+        "title": "Maths / Space",
+        "projects": [
             {
                 "title": "The Big Number Namer",
                 "year": 2020,
@@ -169,7 +207,8 @@ export const PAGE_DATA: tPageData[] = [
                 ],
                 "linkLive": "",
                 "linkCode": "",
-                "tags": []
+                "tags": [],
+                "hide": true
             },
             {
                 "title": "How Daylight Hours Work",
@@ -224,8 +263,8 @@ export const PAGE_DATA: tPageData[] = [
         ]
     },
     {
-        "label": "Games",
-        "items": [
+        "title": "Games",
+        "projects": [
             {
                 "title": "Mage Hand",
                 "year": 2020,
@@ -237,7 +276,7 @@ export const PAGE_DATA: tPageData[] = [
                 "tags": []
             },
             {
-                "title": "Buck n Sons",
+                "title": "Buck N Sons",
                 "year": 2020,
                 "desc": [
                     "",
@@ -284,7 +323,8 @@ export const PAGE_DATA: tPageData[] = [
                 ],
                 "linkLive": "",
                 "linkCode": "",
-                "tags": []
+                "tags": [],
+                "hide": true
             },
             {
                 "title": "Marathon: The Game",
@@ -294,7 +334,8 @@ export const PAGE_DATA: tPageData[] = [
                 ],
                 "linkLive": "",
                 "linkCode": "",
-                "tags": []
+                "tags": [],
+                "hide": true
             },
             {
                 "title": "Glade",
@@ -304,13 +345,14 @@ export const PAGE_DATA: tPageData[] = [
                 ],
                 "linkLive": "",
                 "linkCode": "",
-                "tags": []
+                "tags": [],
+                "hide": true
             }
         ]
     },
     {
-        "label": "Sport",
-        "items": [
+        "title": "Sport",
+        "projects": [
             {
                 "title": "Snooker Score UI",
                 "year": 2020,
@@ -384,10 +426,20 @@ export const PAGE_DATA: tPageData[] = [
         ]
     },
     {
-        "label": "Dev",
-        "items": [
+        "title": "Dev",
+        "projects": [
             {
                 "title": "Z-Buffer Visualised",
+                "year": 2020,
+                "desc": [
+                    "",
+                ],
+                "linkLive": "",
+                "linkCode": "",
+                "tags": []
+            },
+            {
+                "title": "Camera Colour Picker",
                 "year": 2020,
                 "desc": [
                     "",
@@ -464,7 +516,8 @@ export const PAGE_DATA: tPageData[] = [
                 ],
                 "linkLive": "",
                 "linkCode": "",
-                "tags": []
+                "tags": [],
+                "hide": true
             },
             {
                 "title": "Gridiron",
@@ -474,7 +527,8 @@ export const PAGE_DATA: tPageData[] = [
                 ],
                 "linkLive": "",
                 "linkCode": "",
-                "tags": []
+                "tags": [],
+                "hide": true
             }
         ]
     }
