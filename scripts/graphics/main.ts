@@ -81,6 +81,9 @@ export function init() {
 export function setCanvasSize(pageWidth: number, pageHeight: number) {
     viewportSmall = pageWidth < BREAKPOINT_W_MD;
 
+    CAN_SKY.setSize(pageWidth, pageHeight * SKY_HEIGHT_RATIO);
+    renderSky(CAN_SKY);
+
     const SCALE = viewportSmall  ? 0.75 : 1;
     CAN_SEA.setSize(
         pageWidth / SCALE,
@@ -88,10 +91,7 @@ export function setCanvasSize(pageWidth: number, pageHeight: number) {
     );
     CAN_SEA.CAN.style.scale = SCALE.toString();
 
-    CAN_SKY.setSize(pageWidth, pageHeight * SKY_HEIGHT_RATIO);
-
     LABELS.forEach(l => l.setPosition(pageWidth, pageHeight));
-    renderSky(CAN_SKY);
     resizeTerrain(pageWidth, pageHeight);
 }
 
