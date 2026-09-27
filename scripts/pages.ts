@@ -234,6 +234,9 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
     }
 
     currentOpenPage = page;
+    if (page !== ePages.Main) {
+        PAGE_ELS[page].scrollTo(0, 0);
+    }
 }
 
 
