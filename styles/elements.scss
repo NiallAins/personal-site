@@ -3,15 +3,9 @@
 
 
 html {
+    @include page-background;
     overflow-y: scroll;
     font-size: $f-size-base;
-    background:
-        linear-gradient(
-            $c-bg-d 0,
-            $c-bg-l 75dvh,
-            $c-bg-l
-        ),
-        $c-bg-l;
 }
 
 body {

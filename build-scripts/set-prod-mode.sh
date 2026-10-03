@@ -1,1 +1,3 @@
+#!/usr/bin/env bash
+
 sed -i -e 's/PROD = false/PROD = true/' ./scripts/_debug.ts 

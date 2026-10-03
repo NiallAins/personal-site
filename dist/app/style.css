@@ -1,0 +1,52 @@
+@import url("https://fonts.googleapis.com/css2?family=Neuton:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+html,
+body {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.app__header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: end;
+  justify-content: start;
+  gap: 1rem;
+  padding: 2rem;
+}
+.app__header-icon {
+  width: 2rem;
+  height: 2rem;
+}
+.app__header-link:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 0.5rem;
+}
+.app__header-link {
+  padding-bottom: 0.625rem;
+  transition: box-shadow 500ms, translate 500ms;
+}
+.app__header-link:active {
+  translate: 0 0.5rem;
+}
+.app__header-link {
+  box-shadow: inset 0 0 0 0 currentColor;
+}
+.app__header-link:hover, .app__header-link:focus-visible, a:hover > .app__header-link, a:focus-visible > .app__header-link, button:hover > .app__header-link, button:focus-visible > .app__header-link {
+  box-shadow: inset 0 -0.25rem 0 0 currentColor;
+}
+.app__header-link {
+  font-size: 1.125rem;
+  font-family: "Neuton", "Georgia", serif;
+  color: #ffffff;
+  text-decoration: none;
+}
+.app__frame {
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  border: none;
+  margin: 0;
+}

@@ -131,7 +131,7 @@ $breakpoints: (
     }
 }
 
-@mixin button-underline {
+@mixin -button-underline($w-stroke) {
     @include button-no-underline;
 
     box-shadow: inset 0 0 0 0 currentColor;
@@ -142,8 +142,16 @@ $breakpoints: (
     a:focus-visible > &,
     button:hover > &,
     button:focus-visible > &{
-        box-shadow: inset 0 #{ $w-stroke-underline * -1 } 0 0 currentColor;
+        box-shadow: inset 0 #{ $w-stroke * -1 } 0 0 currentColor;
     }
+}
+
+@mixin button-underline {
+    @include -button-underline($w-stroke-underline);
+}
+
+@mixin button-underline-sm {
+    @include -button-underline(0.25rem);
 }
 
 
@@ -245,6 +253,15 @@ $breakpoints: (
 //
 // Containers
 //
+
+@mixin page-background {
+    background: linear-gradient(
+            $c-bg-d 0,
+            $c-bg-l 75dvh,
+            $c-bg-l
+        ),
+        $c-bg-l;
+}
 
 @mixin scrollbar {
     $w-scroll: 1rem;
