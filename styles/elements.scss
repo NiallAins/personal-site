@@ -13,7 +13,7 @@ body {
     overflow-x: hidden;
     margin: 0;
     font-family: $f-fam-title;
-    height: 100lvh + $h-main-section-gap + (6 * ($h-main-section + $h-main-section-gap));
+    height: 100svh + $h-main-section-gap + (6 * ($h-main-section + $h-main-section-gap));
 }
 
 .page-width-container {

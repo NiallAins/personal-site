@@ -9,7 +9,7 @@
     left: 0;
     right: 0;
     z-index: $z-page;
-    height: 100lvh;
+    height: 100svh;
     overflow-y: auto;
     transition:
         opacity $dur-lg,
@@ -17,7 +17,7 @@
 
     &.#{ $cl-page-closing } {
         opacity: 0;
-        bottom: 100lvh;
+        bottom: 100svh;
     }
 
     &--sub.#{ $cl-page-closing } {

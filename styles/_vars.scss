@@ -47,9 +47,9 @@ $w-page-pad:           1rem;
 $w-page-max:           div($-w-page-max-total, $f-size-base) - (2 * $w-page-pad);
 $w-page-bg-max:        1800px;
 
-$h-main-section:       40lvh;
-$h-main-section-gap:   30lvh;
-$h-min-sea:            14lvh;
+$h-main-section:       40svh;
+$h-main-section-gap:   30svh;
+$h-min-sea:            14svh;
 
 $w-stroke-underline:   0.375rem;
 $w-stroke-outline:     2px;
