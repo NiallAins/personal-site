@@ -93,7 +93,7 @@ export function setCanvasSize(pageWidth: number, pageHeight: number) {
 
     LABELS.forEach(l => l.setPosition(pageWidth, pageHeight));
     resizeTerrain(pageWidth, pageHeight);
-    _DEBUG_log('resize: ' + new Date().getMinutes().toString());
+    _DEBUG_log('resize: ' + new Date().getSeconds().toString());
 }
 
 

@@ -31,11 +31,6 @@ function onResize() {
     }
 }
 function resize() {
-    _DEBUG_log(
-        window.innerWidth + ', ' + window.innerHeight +
-        '<br/>' +
-        (window.visualViewport?.width || '-') + ', ' + (window.visualViewport?.height || '-')
-    );
     setCanvasSize(
         Math.min(PAGE_WIDTH_MAX, window.innerWidth),
         Math.min(PAGE_HEIGHT_MAX, window.innerHeight)
