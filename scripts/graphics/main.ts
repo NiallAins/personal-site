@@ -108,7 +108,6 @@ function animate(t: number = 0, dT: number = 1) {
         t = (t + (0.00075 * dT)) % 1;
     }
 
-    _DEBUG_logDt(dT);
     requestFrameScaled(animate.bind(null, t));
 }
 

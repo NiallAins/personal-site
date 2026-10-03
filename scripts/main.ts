@@ -10,6 +10,7 @@ import {
 import { loadFont } from './util';
 import { init as initGraphics, setCanvasSize } from './graphics/main';
 import { initPages, openPageFromUrl } from './pages';
+import { _DEBUG_log } from './_debug';
 
 let
     resizeDebounce: number = 0,
@@ -25,6 +26,7 @@ function onResize() {
     }
 }
 function resize() {
+    _DEBUG_log(window.innerWidth + ', ' + window.innerHeight);
     setCanvasSize(
         Math.min(PAGE_WIDTH_MAX, window.innerWidth),
         Math.min(PAGE_HEIGHT_MAX, window.innerHeight)

@@ -14,9 +14,9 @@ const
 
 LOG_DT.el.id = 'DEBUG';
 
-export function _DEBUG_logDt(dT: number) {
+export function _DEBUG_log(str: string) {
     if (PROD) {
-        return;
+        // return;
     }
 
     if (!LOG_DT.el.parentElement) {
@@ -31,13 +31,24 @@ export function _DEBUG_logDt(dT: number) {
         LOG_DT.el.innerHTML = '0';
     }
 
+    LOG_DT.el.innerHTML = str;
+}
+
+export function _DEBUG_logDt(dT: number) {
+    if (PROD) {
+        return;
+    }
+
     LOG_DT.t += 1;
     LOG_DT.dtSum += dT;
 
     if (LOG_DT.t > TARGET_FPS * 0.5) {
-        LOG_DT.el.innerHTML = (LOG_DT.dtSum / LOG_DT.t).toFixed(2)
         LOG_DT.t = 0;
         LOG_DT.dtSum = 0;
+
+        _DEBUG_log(
+            LOG_DT.el.innerHTML = (LOG_DT.dtSum / LOG_DT.t).toFixed(2)
+        );
     }
 }
 

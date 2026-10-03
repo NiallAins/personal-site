@@ -13,11 +13,12 @@ body::-webkit-scrollbar-track {
   background: transparent;
 }
 body::-webkit-scrollbar-thumb {
-  border: 4px solid #111111;
+  border: 3px solid #111111;
+  border-radius: 0.5rem;
   background: rgba(255, 255, 255, 0.4);
 }
 body::-webkit-scrollbar-thumb:hover {
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.8);
 }
 body {
   overflow-x: hidden;
@@ -504,11 +505,12 @@ body.page--inactive .main {
   background: transparent;
 }
 .page::-webkit-scrollbar-thumb {
-  border: 4px solid #111111;
+  border: 3px solid #111111;
+  border-radius: 0.5rem;
   background: rgba(255, 255, 255, 0.4);
 }
 .page::-webkit-scrollbar-thumb:hover {
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.8);
 }
 .page {
   position: fixed;
