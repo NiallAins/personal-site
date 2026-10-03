@@ -17,6 +17,11 @@ let
     prevWindowWidth: number = 0,
     prevWindowHeight: number = 0;
 function onResize() {
+    // Prevent mobile browser nav hide/show trigger re-render
+    if (Math.abs(window.innerHeight - prevWindowHeight) < prevWindowHeight * 0.1) {
+        prevWindowHeight = window.innerHeight
+    }
+
     if (
         window.innerWidth !== prevWindowWidth ||
         window.innerHeight !== prevWindowHeight
