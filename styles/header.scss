@@ -5,14 +5,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: calc(100dvh - #{ $h-min-sea });
+    height: calc(100lvh - #{ $h-min-sea });
     padding-top: $h-min-sea;
     transition:
         translate $dur-page-open,
         opacity $dur-page-open;
 
     body.#{ $cl-page-closing } & {
-        translate: 0 75dvh;
+        translate: 0 75lvh;
         opacity: 0;
     }
 
@@ -69,7 +69,7 @@
     }
 
     @include viewport(0, sm) {
-        padding-top: 15dvh;
+        padding-top: 15lvh;
 
         &__title {
             &--primary,

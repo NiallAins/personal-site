@@ -19,7 +19,7 @@
         transition: top ease-out $dur-page-open;
 
         body.#{ $cl-page-closing } & {
-            top: 100dvh;
+            top: 100lvh;
             pointer-events: none;
         }
     }

@@ -14,18 +14,9 @@ import { _DEBUG_log } from './_debug';
 
 let
     resizeDebounce: number = 0,
-    prevWindowWidth: number = 0,
-    prevWindowHeight: number = 0;
+    prevWindowWidth: number = 0;
 function onResize() {
-    // Prevent mobile browser nav hide/show trigger re-render
-    if (Math.abs(window.innerHeight - prevWindowHeight) < prevWindowHeight * 0.1) {
-        prevWindowHeight = window.innerHeight
-    }
-
-    if (
-        window.innerWidth !== prevWindowWidth ||
-        window.innerHeight !== prevWindowHeight
-    ) {
+    if (window.innerWidth !== prevWindowWidth) {
         window.clearTimeout(resizeDebounce);
         resizeDebounce = window.setTimeout(resize, WINDOW_RESIZE_DEBOUNCE);
     }
@@ -36,7 +27,6 @@ function resize() {
         Math.min(PAGE_HEIGHT_MAX, window.innerHeight)
     );
     prevWindowWidth = window.innerWidth;
-    prevWindowHeight = window.innerHeight;
 }
 
 function moreClick() {

@@ -26,7 +26,7 @@ $w-layout-pad-bottom: 4.5rem;
 @mixin slot-2-col {
     width: calc(Min(100vw, #{ $w-layout-sm }) / #{ $w-layout-grid-size-sm });
     height: calc(
-        ((100dvh - #{ $w-layout-pad-top + $w-layout-pad-bottom }) / #{ $w-layout-grid-size-sm }) -
+        ((100lvh - #{ $w-layout-pad-top + $w-layout-pad-bottom }) / #{ $w-layout-grid-size-sm }) -
         (Min(100vw, #{ $w-layout-sm }) / #{ $w-layout-grid-size-sm * 8 })
     );
 }
@@ -39,7 +39,7 @@ $w-layout-pad-bottom: 4.5rem;
 @mixin slot-3-col {
     width: calc(Min(100vw, #{ $w-layout-lg }) / #{ $w-layout-grid-size-lg });
     height: calc(
-        ((100dvh - #{ $w-layout-pad-top + $w-layout-pad-bottom }) / #{ $w-layout-grid-size-lg }) -
+        ((100lvh - #{ $w-layout-pad-top + $w-layout-pad-bottom }) / #{ $w-layout-grid-size-lg }) -
         (Min(100vw, #{ $w-layout-lg }) / #{ $w-layout-grid-size-lg * 8 })
     );
 }
