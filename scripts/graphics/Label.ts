@@ -1,6 +1,6 @@
 import {
     BREAKPOINT_W_MD,
-    CLASS_MAIN_SECTION_BUTTON_DISABLED,
+    CLASS_TOPIC_BUTTON_DISABLED,
     COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE, COLOR_TEXT_SHADOW,
     DURATION_SH,
     FONT_FAM_TITLE, FONT_SIZE_SECTION, FONT_WEIGHT_SECTION,
@@ -110,7 +110,7 @@ export class Label {
 
     public setY(y: number) {
         this.EL.style.top = y + 24 + 'px';
-        this.EL.classList.toggle(CLASS_MAIN_SECTION_BUTTON_DISABLED, y > 100);
+        this.EL.classList.toggle(CLASS_TOPIC_BUTTON_DISABLED, y > 100);
     }
 }
 
