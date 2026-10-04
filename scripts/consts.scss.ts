@@ -28,6 +28,7 @@ export const
     WIDTH_PAGE_PAD: number = 16,
     WIDTH_PAGE_MAX: number = 1120,
     WIDTH_PAGE_BG_MAX: number = 1800,
+    WIDTH_SCROLLBAR: number = 16,
     HEIGHT_MAIN_SECTION: number = 0.4,
     HEIGHT_MAIN_SECTION_GAP: number = 0.3,
     HEIGHT_MIN_SEA: number = 0.14,
@@ -77,4 +78,4 @@ export const
     CLASS_PAGE_CLOSING: string = 'page--closing',
     CLASS_PAGE_SUB_OPENING: string = 'page--sub-opening',
     CLASS_PROJECT_LINK_MISSING: string = 'project__link--missing',
-    CLASS_MAIN_SECTION_BUTTON_DISABLED: string = 'main__section-button--disabled';
+    CLASS_TOPIC_BUTTON_DISABLED: string = 'topic__section-button--disabled';

@@ -46,6 +46,7 @@ $-w-page-max-total:    1152px;
 $w-page-pad:           1rem;
 $w-page-max:           div($-w-page-max-total, $f-size-base) - (2 * $w-page-pad);
 $w-page-bg-max:        1800px;
+$w-scrollbar:          1rem;
 
 $h-main-section:       40svh;
 $h-main-section-gap:   30svh;
@@ -136,9 +137,9 @@ $dur-page-open-delay:  $dur-sh * 0.5;
 // Dynamic classes
 //
 
-$cl-page-post-fouc:               "page--post-fouc";
-$cl-page-inactive:                "page--inactive";
-$cl-page-closing:                 "page--closing";
-$cl-page-sub-opening:             "page--sub-opening";
-$cl-project-link-missing:         "project__link--missing";
-$cl-main-section-button-disabled: "main__section-button--disabled";
+$cl-page-post-fouc:        "page--post-fouc";
+$cl-page-inactive:         "page--inactive";
+$cl-page-closing:          "page--closing";
+$cl-page-sub-opening:      "page--sub-opening";
+$cl-project-link-missing:  "project__link--missing";
+$cl-topic-button-disabled: "topic__section-button--disabled";

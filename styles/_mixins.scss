@@ -264,19 +264,17 @@ $breakpoints: (
 }
 
 @mixin scrollbar {
-    $w-scroll: 1rem;
-
     &::-webkit-scrollbar {
-        width: $w-scroll;
+        width: $w-scrollbar;
     }
     
     &::-webkit-scrollbar-track {
-        background: transparent;
+        background: $c-bg-l;
     }
     
     &::-webkit-scrollbar-thumb {
         border: 3px solid $c-bg-d;
-        border-radius: $w-scroll * 0.5;
+        border-radius: $w-scrollbar * 0.5;
         background: change($c-text-l, $alpha: 0.4);
 
         &:hover {

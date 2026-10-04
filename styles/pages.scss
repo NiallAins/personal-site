@@ -3,25 +3,27 @@
 
 .page {
     @include scrollbar;
-    
+
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    inset: 0;
     z-index: $z-page;
-    height: 100svh;
     overflow-y: auto;
     transition:
         opacity $dur-lg,
-        bottom $dur-lg;
+        translate $dur-lg;
 
     &.#{ $cl-page-closing } {
         opacity: 0;
-        bottom: 100svh;
+        translate: 0 -100svh;
+        overflow: hidden;
     }
 
     &--sub.#{ $cl-page-closing } {
-        bottom: 0;
+        translate: 0 0;
+    }
+
+    &--long.#{ $cl-page-closing } {
+        margin-left: -1 * $w-scrollbar;
     }
 
     &.#{ $cl-page-sub-opening } {
@@ -32,7 +34,14 @@
         display: none;
     }
 
+    &__close {
+        @include caret-button-empty;
+        color: $c-text-l;
+    }
+
     &--main {
+        @include page-background;
+        height: 100svh + $h-main-section-gap + (6 * ($h-main-section + $h-main-section-gap));
         opacity: 0;
 
         &.#{ $cl-page-post-fouc } {
@@ -40,12 +49,16 @@
         }
 
         &.#{ $cl-page-inactive } {
+            display: block;
+
+            & > header,
+            & > topics {
+                display: none;
+            }
+        }
+
+        html:has(&.#{ $cl-page-closing }) {
             overflow: hidden;
         }
-    }
-
-    &__close {
-        @include caret-button-empty;
-        color: $c-text-l;
     }
 }

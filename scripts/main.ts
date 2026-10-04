@@ -1,7 +1,7 @@
 import {
     CLASS_PAGE_POST_FOUC,
     DURATION_SH,
-    EL_BODY,
+    EL_PAGE_MAIN,
     EL_HEADER_NAV_MORE,
     FONT_FAM_TITLE_PRIMARY, FONT_FAM_TITLE_SRC,
     PAGE_HEIGHT_MAX, PAGE_WIDTH_MAX,
@@ -55,7 +55,7 @@ async function init() {
 
     // Hide FOUC
     document.body.onload = () => setTimeout(
-        () => EL_BODY.classList.add(CLASS_PAGE_POST_FOUC),
+        () => EL_PAGE_MAIN.classList.add(CLASS_PAGE_POST_FOUC),
         DURATION_SH
     );
 }

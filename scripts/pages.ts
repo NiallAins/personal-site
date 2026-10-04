@@ -2,7 +2,7 @@ import {
     CLASS_PAGE_INACTIVE, CLASS_PAGE_CLOSING, CLASS_PAGE_SUB_OPENING,
     DURATION_PAGE_OPEN,
     COLOR_BG_L,
-    EL_BODY, EL_HEADER_NAV_LINKS_CONTACT, EL_HEADER_NAV_LINKS_EXPERIENCE, EL_MAIN,
+    EL_PAGE_MAIN, EL_HEADER_NAV_LINKS_CONTACT, EL_HEADER_NAV_LINKS_EXPERIENCE, EL_TOPICS,
     EL_PAGE_CLOSES,
     EL_PAGE_CONTACT, EL_PAGE_EXPERIENCE, EL_PAGE_PROJECT, EL_PROJECT_CLOSE, EL_PROJECT_DESC,
     EL_PROJECT_IMAGE, EL_PROJECT_LINK_CODE, EL_PROJECT_LINK_LIVE,
@@ -19,7 +19,7 @@ import { ePageTag, ePages } from "./types";
 
 const
     PAGE_ELS: { [key in ePages]: HTMLElement } = {
-        [ePages.Main]: EL_BODY,
+        [ePages.Main]: EL_PAGE_MAIN,
         [ePages.Contact]: EL_PAGE_CONTACT,
         [ePages.Experience]: EL_PAGE_EXPERIENCE,
         [ePages.Topic]: EL_PAGE_TOPIC,
@@ -46,16 +46,16 @@ export function initPages() {
     PROJECT_DATA.forEach((topic, ti) => {
         // Add topic button
         const [EL_TOPIC, EL_TOPIC_BUTTON] = html`
-            <div class="main__section">
+            <div class="topics__section">
                 <#button
-                    class="main__section-button"
+                    class="topics__section-button"
                     onclick="${ openPage.bind(null, ePages.Topic, ti, -1, false) }"
                 >
                     ${ topic.title }
                 </button>
             </div>
         `;
-        EL_MAIN.appendChild(EL_TOPIC);
+        EL_TOPICS.appendChild(EL_TOPIC);
         EL_TOPIC_BUTTONS.push(EL_TOPIC_BUTTON as HTMLButtonElement);
 
         const PROJECT_BLOCKS = topic.projects

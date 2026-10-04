@@ -18,9 +18,10 @@
         z-index: $z-canvas-fg;
         transition: top ease-out $dur-page-open;
 
-        body.#{ $cl-page-closing } & {
+        .#{ $cl-page-closing } > & {
             top: 100svh;
             pointer-events: none;
+            translate: calc(-50% - 0.5rem) 0;
         }
     }
 }
