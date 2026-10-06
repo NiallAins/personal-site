@@ -152,8 +152,8 @@ export class LabelLetter {
             OFF_X = (isViewportSmall ? LABEL_LETTER_WIDTH_SM : LABEL_LETTER_WIDTH) * 0.55,
             OFF_Y = (isViewportSmall ? LABEL_LETTER_HEIGHT_SM : LABEL_LETTER_HEIGHT) * 0.4;
 
-        this.CAN_FG.setSize(CAN_W, CAN_H);
-        this.CAN_BG.setSize(CAN_W, CAN_H);
+        this.CAN_FG.setSize(CAN_W, CAN_H, true);
+        this.CAN_BG.setSize(CAN_W, CAN_H, true);
 
         CTX_FG.strokeStyle = COLOR_TEXT_L_OUTLINE;
         CTX_FG.fillStyle = COLOR_TEXT_L;
