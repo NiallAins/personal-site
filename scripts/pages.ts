@@ -127,7 +127,7 @@ export function initPages() {
 export function openPageFromUrl() {
     const HASH = window.location.hash
         .toLowerCase()
-        .replace('#', '');
+        .replace(/#?(.*?)(\?.*|$|\/.*)/, '$1');
 
     let
         page = parseInt((Object.entries(ROUTES).find(r => r[1].toLowerCase() === HASH) || ['-1'])[0]),
