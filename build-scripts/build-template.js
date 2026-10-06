@@ -3,6 +3,9 @@ const
     util = require('../scripts/util-js.js');
 
 const
+    IS_PROD         = process.argv[2] === 'prod',
+    BASE_PROD       = 'https://niallains.github.io/personal-site/dist/',
+    BASE_DEV        = 'http://localhost:5500/dist/',
     PATH_DIST       = 'dist',
     PATH_FROM_HEAD  = 'templates/_head.html',
     PATH_FROM_INDEX = 'templates/index.html',
@@ -11,23 +14,36 @@ const
     PATH_TO_INDEX   = PATH_DIST + '/index.html',
     PATH_TO_APP     = PATH_DIST + '/{{ title }}/index.html';
 
+// Before creating project folders, all other folders are removed, excluding KEEP_DIRs
 const
     KEEP_DIR = ['assets'];
 
 async function buildTemplates() {
     // Get template files and project data
-    const
-        HEAD_HTML  = await FS.readFile(PATH_FROM_HEAD,  'utf8', (_, data) => data),
-        INDEX_HTML = await FS.readFile(PATH_FROM_INDEX, 'utf8', (_, data) => data),
-        APP_HTML   = await FS.readFile(PATH_FROM_APP,   'utf8', (_, data) => data),
-        PROJS_TS   = await FS.readFile(PATH_FROM_PROJS, 'utf8', (_, data) => data);
+    let
+        headHtml  = await FS.readFile(PATH_FROM_HEAD,  'utf8', (_, data) => data),
+        appHtml   = await FS.readFile(PATH_FROM_APP,   'utf8', (_, data) => data),
+        indexHtml = await FS.readFile(PATH_FROM_INDEX, 'utf8', (_, data) => data);
+        projects  = await FS.readFile(PATH_FROM_PROJS, 'utf8', (_, data) => data);
+
+    headHtml = headHtml
+        .replace('{{ base }}', IS_PROD ? BASE_PROD : BASE_DEV);
+    appHtml = appHtml
+        .replace(/ *{{ head }}/, headHtml);
+    indexHtml = indexHtml
+        .replace(/ *{{ head }}/, headHtml)
+        .replace('{{ title }}', '');
+    projects = projects
+        .replace(/import .*/, '')
+        .replace(/export .* =/, '')
+        .replace(/ePageTag.*/g, '')
+        .replace(/,[\s\n]*\]/g, ']')
+        .replace(/];/g, ']');
 
     // Create index.html
     FS.writeFile(
         PATH_TO_INDEX,
-        INDEX_HTML
-            .replace('{{ head }}', HEAD_HTML)
-            .replace('{{ title }}', ''),
+        indexHtml,
         'utf8',
         () => {}
     );
@@ -48,14 +64,7 @@ async function buildTemplates() {
 
     // Parse project data, then create project iframe files
     JSON
-        .parse(
-            PROJS_TS
-                .replace(/import .*/, '')
-                .replace(/export .* =/, '')
-                .replace(/ePageTag.*/g, '')
-                .replace(/,[\s\n]*\]/g, ']')
-                .replace(/];/g, ']')
-        )
+        .parse(projects)
         .map(topic => topic.projects)
         .flat()
         .filter(p => !p.hide && p.linkLive)
@@ -68,8 +77,7 @@ async function buildTemplates() {
                 )
                 .then(() => FS.writeFile(
                     PATH,
-                    APP_HTML
-                        .replace('{{ head }}', HEAD_HTML)
+                    appHtml
                         .replace('{{ title }}', '| ' + p.title)
                         .replace('{{ url }}', p.linkLive),
                     'utf8',

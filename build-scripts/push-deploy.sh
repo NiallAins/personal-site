@@ -25,7 +25,7 @@ if [ "$1" == "prod" ]; then
             git reset origin/main --hard &&
 
             # Build in prod mode
-            npm run build-prod
+            npm run build-prod;
 
             # Push to prod
             git add *;
