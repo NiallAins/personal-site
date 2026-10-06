@@ -7,13 +7,11 @@ CB='\033[0;36m';
 CW='\033[0m';
 
 # Push and deploy
-echo $1;
-echo $2;
-if [ "$1" == "--prod" ]; then
+if [ "$1" == "prod" ]; then
     if [ "$2" ]; then
         # Deploy to main
-        # git add .;
-        # git commit -m "$2";
+        git add .;
+        git commit -m "$2";
 
         # Confirm Deploy after commit outputs
         echo -e -n "\n${CB}Complete deploy? (y)${CW} " &&
@@ -22,20 +20,20 @@ if [ "$1" == "--prod" ]; then
         if [ "$resp" = "y" ]; then
             git push origin main &&
 
-            # # Copy to prod
-            # git checkout prod &&
-            # git reset origin/main --hard &&
+            # Copy to prod
+            git checkout prod &&
+            git reset origin/main --hard &&
 
-            # # Build in prod mode
-            # npm run build-prod
+            # Build in prod mode
+            npm run build-prod
 
-            # # Push to prod
-            # git add *;
-            # git commit -m "Auto-deploy";
-            # git push origin prod -f &&
+            # Push to prod
+            git add *;
+            git commit -m "Auto-deploy";
+            git push origin prod -f &&
 
-            # # Return to main
-            # git checkout main &&
+            # Return to main
+            git checkout main &&
             echo -e "\n${CG}Deploy successful${CW}\n" &&
             exit 1;
         else
