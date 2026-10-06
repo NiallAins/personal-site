@@ -14,13 +14,17 @@ body {
     $w-header-pad: 0.75rem;
     $h-header-outer: $h-header-inner + (2 * $w-header-pad); 
 
-    &--hide-header &__header {
+    &.#{ $cl-page-closing } &__header {
         margin-top: -1 * $h-header-outer;
         pointer-events: none;
         transition: margin-top $dur-sh;
     }
 
-    &--hide-header &__frame {
+    &.#{ $cl-page-inactive } &__header {
+        display: none
+    }
+
+    &.#{ $cl-page-closing } &__frame {
         height: 100vh;
     }
 

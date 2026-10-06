@@ -1,7 +1,6 @@
 import {
     COLOR_HSL_TERRAIN_LAND_1, COLOR_HSL_TERRAIN_LAND_2, COLOR_HSL_TERRAIN_LAND_3, COLOR_HSL_TERRAIN_LAND_4,
-    COLOR_HSL_TERRAIN_SEA,
-    LABEL_LETTER_SPACE, LABEL_LINE_HEIGHT
+    COLOR_HSL_TERRAIN_SEA
 } from "./consts.scss";
 import { ePages, tColor, tTerrainParams } from "./types";
 import { getEl, getEls } from "./util";
@@ -129,3 +128,11 @@ export const
     LABEL_LETTER_SHADOW_BLUR: number = 4,
     LABEL_Z_SCALE: number = 3,
     LABEL_DEPRESS_Z_SCALE: number = 1;
+
+//
+// Local storage tokens
+//
+
+export const
+    TOKEN_PREVIOUS_VISIT = 'hasPreviousVisit',
+    TOKEN_PREVIOUS_VISIT_SET = 'true';

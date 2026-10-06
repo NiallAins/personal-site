@@ -7,12 +7,15 @@ body {
   overflow: hidden;
 }
 
-.app--hide-header .app__header {
+.app.page--closing .app__header {
   margin-top: -3.5rem;
   pointer-events: none;
   transition: margin-top 500ms;
 }
-.app--hide-header .app__frame {
+.app.page--inactive .app__header {
+  display: none;
+}
+.app.page--closing .app__frame {
   height: 100vh;
 }
 .app__header {

@@ -9,7 +9,9 @@ import {
     EL_PROJECT_TAGS, EL_PROJECT_TITLE, EL_PAGE_TOPIC,
     ROUTES,
     DURATION_PAGE_OPEN_DELAY,
-    CLASS_PROJECT_LINK_MISSING
+    CLASS_PROJECT_LINK_MISSING,
+    TOKEN_PREVIOUS_VISIT,
+    TOKEN_PREVIOUS_VISIT_SET
 } from "./consts";
 import { PROJECT_DATA } from "../data/projects.json";
 import { toggleSectionOpen as toggleGraphicsSectionOpen } from "./graphics/main";
@@ -146,8 +148,9 @@ export function openPageFromUrl() {
             if (project === -1) {
                 page = ePages.Main;
                 topic = -1;
-            } else if (window.location.href.indexOf('?back') === -1) {
+            } else if (!window.sessionStorage.getItem(TOKEN_PREVIOUS_VISIT)) {
                 initialLoadOnProject = true;
+                window.scrollY = 0;
             }
         }
     }
@@ -170,6 +173,7 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
             toggleGraphicsSectionOpen(false, currentOpenTopic);
             transitionPage(page);
             setUrl(ROUTES[page]!, isInitial);
+            window.sessionStorage.setItem(TOKEN_PREVIOUS_VISIT, TOKEN_PREVIOUS_VISIT_SET);
         break;
 
         case ePages.Experience:
@@ -211,7 +215,7 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
             currentOpenTopic = topicIndex;
 
             if (PROJECT.linkLive) {
-                EL_PROJECT_LINK_LIVE.href = './' + TITLE_KEBAB + '?back';
+                EL_PROJECT_LINK_LIVE.href = './' + TITLE_KEBAB;
                 EL_PROJECT_LINK_LIVE.classList.remove(CLASS_PROJECT_LINK_MISSING);
             } else {
                 EL_PROJECT_LINK_LIVE.classList.add(CLASS_PROJECT_LINK_MISSING);

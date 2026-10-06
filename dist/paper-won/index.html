@@ -22,12 +22,13 @@
             class="app__header-icon"
         />
         <a
-            id="backLink"
+            id="app_headerLink"
             class="app__header-link"
         ></a>
         <button
+            id="app_headerClose"
             class="app__header-close"
-            onclick="document.body.classList.add('app--hide-header')"
+            onclick="hideBar()"
             aria-label="hide more projects bar"
         >
             &times;
@@ -35,13 +36,9 @@
     </header>
 
     <script>
-        console.log(window.location);
-        const
-            EL_LINK = document.getElementById('backLink'),
-            HAS_BACK = window.location.href.indexOf('?back') !== -1;
-        EL_LINK.innerText = HAS_BACK ? 'Back to projects' : 'More projects';
-        EL_LINK.href = HAS_BACK ? './#paper-won?back' : '.';
+        const TITLE_KEBAB = "paper-won";
     </script>
+    <script src="app-script.js"></script>
 
     <iframe
         class="app__frame"
