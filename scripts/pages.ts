@@ -211,7 +211,7 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
             currentOpenTopic = topicIndex;
 
             if (PROJECT.linkLive) {
-                EL_PROJECT_LINK_LIVE.href = './' + TITLE_KEBAB + '?test=true';
+                EL_PROJECT_LINK_LIVE.href = './' + TITLE_KEBAB + '?back';
                 EL_PROJECT_LINK_LIVE.classList.remove(CLASS_PROJECT_LINK_MISSING);
             } else {
                 EL_PROJECT_LINK_LIVE.classList.add(CLASS_PROJECT_LINK_MISSING);
