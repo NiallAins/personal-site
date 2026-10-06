@@ -56,6 +56,15 @@
 
         &__section {
             width: 100%;
+            margin-top: 0;
+            margin-bottom: $h-main-section-gap * 0.98;
+
+
+            &-button {
+                font-size: $f-size-section-sm;
+                letter-spacing: $label-letter-space-sm;
+                line-height: $label-line-height-sm;
+            }
         }
     }
 

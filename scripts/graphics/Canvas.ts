@@ -6,7 +6,7 @@ export class Canvas {
     public width: number = 300;
     public height: number = 150;
 
-    constructor(id: string, width?: number, height?: number, preventScale?: boolean) {
+    constructor(id: string = '', width?: number, height?: number, preventScale?: boolean) {
         this.CAN = id
             ? document.getElementById(id) as HTMLCanvasElement
             : document.createElement('canvas');

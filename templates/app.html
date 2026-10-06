@@ -1,0 +1,38 @@
+<html>
+
+<head>
+    {{ head }}
+
+    <link rel="stylesheet" href="app-style.css" />
+</head>
+
+<body class="app">
+    <header class="app__header">
+        <img
+            src="assets/favicon-32x32.png"
+            class="app__header-icon"
+        />
+        <a
+            class="app__header-link"
+            href="."
+        >
+            More projects
+        </a>
+        <button
+            class="app__header-close"
+            onclick="document.body.classList.add('app--hide-header')"
+            aria-label="hide more projects bar"
+        >
+            &times;
+        </button>
+    </header>
+
+    <iframe
+        class="app__frame"
+        src="{{ url }}"
+        allowfullscreen
+        credentialless
+    ></iframe>
+</body>
+
+</html>

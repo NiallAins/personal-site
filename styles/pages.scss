@@ -2,63 +2,57 @@
 @use 'mixins' as *;
 
 .page {
-    @include scrollbar;
-
-    position: fixed;
-    inset: 0;
-    z-index: $z-page;
-    overflow-y: auto;
-    transition:
-        opacity $dur-lg,
-        translate $dur-lg;
-
-    &.#{ $cl-page-closing } {
-        opacity: 0;
-        translate: 0 -100svh;
+    &--main {
+        height: 100svh + $h-main-section-gap + (6 * ($h-main-section + $h-main-section-gap));
         overflow: hidden;
+
+        html:has(&.#{ $cl-page-closing }) {
+            overflow: hidden;
+        }
+
+        &.#{ $cl-page-closing } {
+            padding-right: $w-scrollbar;
+        }
     }
 
-    &--sub.#{ $cl-page-closing } {
-        translate: 0 0;
+    &--topic,
+    &--project {
+        @include scrollbar;
+
+        position: fixed;
+        inset: 0;
+        z-index: $z-page;
+        overflow: auto;
+        transition:
+            opacity $dur-lg,
+            translate $dur-lg;
+
+        &.#{ $cl-page-closing },
+        &.#{ $cl-page-sub-opening } {
+            opacity: 0;
+            overflow: hidden;
+        }
+
+        &.#{ $cl-page-inactive } {
+            display: none;
+        }
     }
 
-    &--long.#{ $cl-page-closing } {
-        margin-left: -1 * $w-scrollbar;
+    &--long {
+        &.#{ $cl-page-closing },
+        &.#{ $cl-page-sub-opening } {
+            padding-right: $w-scrollbar;
+        }
     }
 
-    &.#{ $cl-page-sub-opening } {
-        opacity: 0;
-    }
-
-    &.#{ $cl-page-inactive } {
-        display: none;
+    &--topic {
+        &.#{ $cl-page-closing } {
+            translate: 0 -100svh;
+        }
     }
 
     &__close {
         @include caret-button-empty;
         color: $c-text-l;
-    }
-
-    &--main {
-        @include page-background;
-        height: 100svh + $h-main-section-gap + (6 * ($h-main-section + $h-main-section-gap));
-        opacity: 0;
-
-        &.#{ $cl-page-post-fouc } {
-            opacity: 1;
-        }
-
-        &.#{ $cl-page-inactive } {
-            display: block;
-
-            & > header,
-            & > topics {
-                display: none;
-            }
-        }
-
-        html:has(&.#{ $cl-page-closing }) {
-            overflow: hidden;
-        }
     }
 }

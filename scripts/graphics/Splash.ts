@@ -1,23 +1,26 @@
-import { ISO_SCALE, SPLASH_FADE_DIST, SPLASH_FADE_TIME, SPLASH_MAX_DIST } from "../consts";
+import { SPLASH_FADE_DIST, SPLASH_FADE_TIME, SPLASH_MAX_DIST } from "../consts";
+import { isoScale as ISO_SCALE } from "./main";
 
 export class Splash {
     public static splashes: Splash[] = [];
 
     public x: number = 0;
     public y: number = 0;
-
+    
+    private size: number = 0;
     private age: number = 0;
     private fading: boolean = false;
     private period: number = 0;
 
-    constructor(x: number, y: number) {
+    constructor(x: number, y: number, isLarge: boolean) {
         this.x = x;
         this.y = y;
+        this.size = isLarge ? 10 : 1;
     }
 
-    static createSplash(x: number, y: number) {
-        if (!Splash.splashes.find(s => Math.abs(y - s.y) + Math.abs(x - s.x) < ISO_SCALE * 2)) {
-            Splash.splashes.push(new Splash(x, y));
+    static createSplash(x: number, y: number, isLarge: boolean = false) {
+        if (isLarge || !Splash.splashes.find(s => Math.abs(y - s.y) + Math.abs(x - s.x) < ISO_SCALE * 2)) {
+            Splash.splashes.push(new Splash(x, y, isLarge));
         }
     }
 
@@ -28,6 +31,7 @@ export class Splash {
 
         return DIST < SPLASH_MAX_DIST
             ?  Math.cos((DIST / SPLASH_FADE_DIST) - this.period + 3.14) *
+                this.size *
                 // Time fade
                 this.age * SPLASH_FADE_TIME *
                 // Distance fade

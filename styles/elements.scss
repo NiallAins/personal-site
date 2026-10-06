@@ -3,14 +3,24 @@
 
 
 html {
+    @include page-background;
     @include scrollbar;
+
     font-size: $f-size-base;
+    overflow-x: hidden;
 }
 
 body {
-    overflow-x: hidden;
+    position: relative;
     margin: 0;
     font-family: $f-fam-title;
+    overflow-x: hidden;
+    opacity: 0;
+    transition: opacity $dur-lg;
+
+    &.#{ $cl-page-post-fouc } {
+        opacity: 1;
+    }
 }
 
 .page-width-container {

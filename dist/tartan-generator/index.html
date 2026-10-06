@@ -1,0 +1,47 @@
+<html>
+
+<head>
+        <title>
+        Niall – Design / Dev | Tartan Generator
+    </title>
+
+    <base href="http://localhost:5500/dist/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png" />
+
+    <link rel="stylesheet" href="app-style.css" />
+</head>
+
+<body class="app">
+    <header class="app__header">
+        <img
+            src="assets/favicon-32x32.png"
+            class="app__header-icon"
+        />
+        <a
+            class="app__header-link"
+            href="."
+        >
+            More projects
+        </a>
+        <button
+            class="app__header-close"
+            onclick="document.body.classList.add('app--hide-header')"
+            aria-label="hide more projects bar"
+        >
+            &times;
+        </button>
+    </header>
+
+    <iframe
+        class="app__frame"
+        src="https://codepen.io/niallains/full/ExEOmdJ"
+        allowfullscreen
+        credentialless
+    ></iframe>
+</body>
+
+</html>

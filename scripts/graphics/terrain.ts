@@ -1,14 +1,13 @@
-import { 
-    ISO_SCALE, LABEL_ISO_Z, X_UNIT, Y_UNIT, Z_UNIT,
+import {
     LABEL_LETTER_HEIGHT, LABEL_LETTER_WIDTH,
-    MAX_SEA_ISO_DEPTH, MIN_LAND_ISO_Z, ROW_HEIGHT,
+    MAX_SEA_ISO_DEPTH, MIN_LAND_ISO_Z,
     TERRAIN_COLOR_SEA,
     COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE,
     WIDTH_STROKE_OUTLINE, WIDTH_STROKE_UNDERLINE,
-    LABEL_DEPRESS_Z,
     HEIGHT_MAIN_SECTION, HEIGHT_MAIN_SECTION_GAP,
     TERRAIN_TYPES, TERRAIN_COLOR_LAND, TERRAIN_SEA_NOISE,
-    WIDTH_PAGE_BG_MAX
+    WIDTH_PAGE_BG_MAX,
+    BREAKPOINT_W_MD
 } from "../consts";
 import { Canvas } from "./Canvas";
 import { LabelLetter } from "./Label";
@@ -17,7 +16,15 @@ import { Splash } from "./Splash";
 import { Cublet } from "./Cublet";
 import { tColorLayers, tTerrain } from "../types";
 import { LABELS } from "./main";
-import { _DEBUG_renderBaseIso, _DEBUG_showPreRenderTerrain, _DEBUG_showTerrainControls, _DEBUG_updateTerrainControls } from "../_debug";
+import {
+    isoScale as ISO_SCALE,
+    xUnit as X_UNIT,
+    yUnit as Y_UNIT,
+    zUnit as Z_UNIT,
+    rowHeight as ROW_HEIGHT,
+    labelIsoZ as LABEL_ISO_Z,
+    labelDepressZ as LABEL_DEPRESS_Z
+} from "./main";
 
 
 //
@@ -27,24 +34,23 @@ import { _DEBUG_renderBaseIso, _DEBUG_showPreRenderTerrain, _DEBUG_showTerrainCo
 const
     NOISE_SEA = new Noise(...TERRAIN_SEA_NOISE),
     SECTION_TERRAIN: tTerrain[] = [],
-    OVERSHOOT_MIN_SEA  = -3 * ROW_HEIGHT,
-    OVERSHOOT_MIN_LAND = 19 * ROW_HEIGHT,
-    OVERSHOOT_MIN_OBJ  = 19 * ROW_HEIGHT,
-    OVERSHOOT_MAX_SEA  =  9 * ROW_HEIGHT,
-    OVERSHOOT_MAX_OBJ  =  7 * ROW_HEIGHT,
-    LETTER_Z = LABEL_ISO_Z * Z_UNIT,
-    CAN_SEA_PRE_RENDER = new Canvas('', X_UNIT, (MAX_SEA_ISO_DEPTH + 1) * Z_UNIT, true),
+    OVERSHOOT_MIN_SEA_ISO = -3,
+    OVERSHOOT_MIN_LAND_ISO = 19,
+    OVERSHOOT_MIN_OBJ_ISO = 19,
+    OVERSHOOT_MAX_SEA_ISO = 9,
+    OVERSHOOT_MAX_OBJ_ISO = 9,
     LAND_PRE_RENDER_Q = 10,
     LAND_PRE_RENDER_DEPTH_ISO = 4,
-    LAND_PRE_RENDER_DEPTH = (LAND_PRE_RENDER_DEPTH_ISO * Z_UNIT) + (Y_UNIT),
-    CAN_LAND_PRE_RENDER = new Canvas(
-        '',
-        X_UNIT * LAND_PRE_RENDER_Q,
-        LAND_PRE_RENDER_DEPTH * TERRAIN_TYPES.length,
-        true
-    );
+    CAN_SEA_PRE_RENDER = new Canvas(),
+    CAN_LAND_PRE_RENDER = new Canvas();
 
 let
+    overshootMinSea: number,
+    overshootMinLand: number,
+    overshootMinObj: number,
+    overshootMaxSea: number,
+    overshootMaxObj: number,
+    landPreRenderDepth: number,
     terrainLayout_sectionFullHeight: number,
     terrainLayout_offsetY: number;
 
@@ -71,9 +77,61 @@ export function init() {
             ) as tColorLayers
         })
     });
+}
 
-    // _DEBUG_showTerrainControls();
-    // _DEBUG_showPreRenderTerrain(CAN_LAND_PRE_RENDE);
+export function resize(width: number, height: number, rePreRender: boolean) {
+    overshootMinSea = OVERSHOOT_MIN_SEA_ISO * ISO_SCALE;
+    overshootMaxSea = OVERSHOOT_MAX_SEA_ISO * ISO_SCALE;
+    overshootMinObj = OVERSHOOT_MIN_OBJ_ISO * ISO_SCALE;
+    overshootMaxObj = OVERSHOOT_MAX_OBJ_ISO * ISO_SCALE;
+    overshootMinLand = OVERSHOOT_MIN_LAND_ISO * ISO_SCALE;
+    landPreRenderDepth = (LAND_PRE_RENDER_DEPTH_ISO * Z_UNIT) + (Y_UNIT);
+
+    if (rePreRender) {
+        preRenderTerrain();
+    }
+
+    const
+        TERRAIN_WIDTH = Math.min(width, WIDTH_PAGE_BG_MAX),
+        IS_SMALL_VIEWPORT = width < BREAKPOINT_W_MD;
+    terrainLayout_sectionFullHeight = (HEIGHT_MAIN_SECTION + HEIGHT_MAIN_SECTION_GAP) * height;
+    terrainLayout_offsetY = (1 + HEIGHT_MAIN_SECTION_GAP) * height;
+
+    SECTION_TERRAIN.forEach((t, ti) => {
+        t.x = (width * 0.5) + (IS_SMALL_VIEWPORT ? 0 : (TERRAIN_WIDTH * (ti % 2 ? -0.25 : 0.25)));
+        t.y = terrainLayout_offsetY + (ti * terrainLayout_sectionFullHeight) + (HEIGHT_MAIN_SECTION * height * 0.5);
+        t.dist = ((t.distBase * TERRAIN_WIDTH) ** 2) * (IS_SMALL_VIEWPORT ? 2 : 1);
+        t.noise.width = t.noiseWidthBase * (TERRAIN_WIDTH / WIDTH_PAGE_BG_MAX);
+
+        Cublet.CUBLETS
+            .filter(c => c.sectionI === ti)
+            .forEach(c => {
+                c.x = t.x + ((c.RAND_X - 0.5) * TERRAIN_WIDTH * 0.25);
+                c.y = t.y + ((TERRAIN_WIDTH * 0.07) + ((c.RAND_Y - 0.5) * TERRAIN_WIDTH * 0.15));
+                [c.isoX, c.isoY] = ptFromScreen(
+                    c.x,
+                    c.y
+                ),
+                c.setAngle();
+
+                const LAND_Z = getLandZ(c.x, c.y)[0];
+                c.inSea = LAND_Z < -1.5;
+                c.setAngle(c.inSea);
+            });
+    });
+}
+
+export function preRenderTerrain() {
+    CAN_SEA_PRE_RENDER.setSize(
+        X_UNIT,
+        (MAX_SEA_ISO_DEPTH + 1) * Z_UNIT,
+        true
+    );
+    CAN_LAND_PRE_RENDER.setSize(
+        X_UNIT * LAND_PRE_RENDER_Q,
+        landPreRenderDepth * TERRAIN_TYPES.length,
+        true
+    );
 
     const CL = CAN_LAND_PRE_RENDER.CTX;
     CL.translate(X_UNIT * 0.5, Y_UNIT);
@@ -89,7 +147,7 @@ export function init() {
                 CL.translate(X_UNIT, 0);
             }
         CL.restore();
-        CL.translate(0, LAND_PRE_RENDER_DEPTH);
+        CL.translate(0, landPreRenderDepth);
     });
 
     const CS = CAN_SEA_PRE_RENDER.CTX;
@@ -102,61 +160,8 @@ export function init() {
     );
 }
 
-export function resize(width: number, height: number) {
-    const TERRAIN_WIDTH = Math.min(width, WIDTH_PAGE_BG_MAX);
-    terrainLayout_sectionFullHeight = (HEIGHT_MAIN_SECTION + HEIGHT_MAIN_SECTION_GAP) * height;
-    terrainLayout_offsetY = (1 + HEIGHT_MAIN_SECTION_GAP) * height;
-
-    SECTION_TERRAIN.forEach((t, ti) => {
-        t.x = (width * 0.5) + (TERRAIN_WIDTH * (ti % 2 ? -0.25 : 0.25));
-        t.y = terrainLayout_offsetY + (ti * terrainLayout_sectionFullHeight) + (HEIGHT_MAIN_SECTION * height * 0.5);
-        t.dist = (t.distBase * TERRAIN_WIDTH) ** 2;
-        t.noise.width = t.noiseWidthBase * (TERRAIN_WIDTH / WIDTH_PAGE_BG_MAX);
-
-        Cublet.CUBLETS
-            .filter(c => c.sectionI === ti)
-            .forEach(c => {
-                c.x = t.x + ((c.RAND_X - 0.5) * TERRAIN_WIDTH * 0.25);
-                c.y = t.y + ((TERRAIN_WIDTH * 0.07) + ((c.RAND_Y - 0.5) * TERRAIN_WIDTH * 0.15));
-
-                c.setAngle();
-            });
-    });
-
-    // Align cublets with grid
-    const
-        MIN_Y = height * 0.75,
-        MAX_Y = Math.max(...Cublet.CUBLETS.map(c => c.y));
-
-    let offsetRow = false;
-    for (let y = MIN_Y; y < MAX_Y; y += ROW_HEIGHT) {
-        offsetRow = !offsetRow;
-
-        for (let x = 0; x < width + X_UNIT; x += X_UNIT) {
-            const
-                ISO_PT = ptFromScreen(
-                    x + (offsetRow ? X_UNIT * 0.5 : 0),
-                    y
-                ),
-                LAND_Z = getLandZ(x, y)[0],
-                CUBE = Cublet.CUBLETS.find(c => c.isoX === undefined && c.y <= y && c.x <= x);
-
-            if (CUBE) {
-                CUBE.isoX = ISO_PT[0];
-                CUBE.isoY = ISO_PT[1];
-                if (LAND_Z < -1.5) {
-                    CUBE.inSea = true;
-                    CUBE.setAngle(true);
-                }
-            };
-        }
-    }
-}
-
 export function render(can: Canvas, fades: number[], t: number, dT: number, isViewportSmall: boolean) {
-    // _DEBUG_updateTerrainControls(SECTION_TERRAIN);
-
-    const C = can.CTX;
+    const C = can.CTX;;
 
     C.clearRect(0, 0, can.width, can.height);
 
@@ -164,13 +169,13 @@ export function render(can: Canvas, fades: number[], t: number, dT: number, isVi
         // Calculate viewport
         const
             MIN_Y_SEA = Math.max(
-                can.height * (isViewportSmall ? 0.6 : 0.75),
-                window.scrollY - OVERSHOOT_MIN_SEA
+                isViewportSmall ? can.height - 175 : can.height * 0.75,
+                window.scrollY - overshootMinSea
             ),
-            MIN_Y_LAND = MIN_Y_SEA - OVERSHOOT_MIN_LAND,
-            MIN_Y_OBJ = MIN_Y_SEA - OVERSHOOT_MIN_OBJ,
-            MAX_Y_SEA = can.height + window.scrollY + OVERSHOOT_MAX_SEA,
-            MAX_Y_OBJ = MAX_Y_SEA + OVERSHOOT_MAX_OBJ;
+            MIN_Y_LAND = MIN_Y_SEA - overshootMinLand,
+            MIN_Y_OBJ = MIN_Y_SEA - overshootMinObj,
+            MAX_Y_SEA = can.height + window.scrollY + overshootMaxSea,
+            MAX_Y_OBJ = MAX_Y_SEA + overshootMaxObj;
             
         // Find visible objects
         const
@@ -258,11 +263,11 @@ function renderTerrainIso(
         can.CTX.drawImage(
             CAN_LAND_PRE_RENDER.CAN,
             X_UNIT * Math.floor(LAND_PRE_RENDER_Q * Math.min(1, Math.max(0, ((landZ + horizonIsoZ) + 3) / 8))),
-            (sectionI % TERRAIN_TYPES.length) * LAND_PRE_RENDER_DEPTH,
-            X_UNIT, LAND_PRE_RENDER_DEPTH,
+            (sectionI % TERRAIN_TYPES.length) * landPreRenderDepth,
+            X_UNIT, landPreRenderDepth,
             x - (X_UNIT * 0.5),
             y - (landZ * Z_UNIT) - Y_UNIT + window.scrollY,
-            X_UNIT, LAND_PRE_RENDER_DEPTH
+            X_UNIT, landPreRenderDepth
         );
     }
 
@@ -348,8 +353,6 @@ function renderLetter(
         )[2] * Z_UNIT;
     
     c.save();
-        // _DEBUG_renderBaseIso(c, ...ptFromScreen(letter.x, letter.y))
-
         c.globalAlpha = Math.max(0, 1 - fade);
 
         c.translate(
@@ -371,7 +374,7 @@ function renderLetter(
                 );
                 c.scale(SHADOW_SIZE, SHADOW_SIZE);
                 c.drawImage(
-                    letter.CAN_BG,
+                    letter.CAN_BG.CAN,
                     HALF_CAN_W * -1,
                     HALF_CAN_H * -1
                 );
@@ -380,12 +383,12 @@ function renderLetter(
             // Letter
             c.translate(
                 letter.x,
-                letter.y + HORIZON_Z_LETTER - LETTER_Z + LABEL_DEPRESS
+                letter.y + HORIZON_Z_LETTER - LABEL_ISO_Z + LABEL_DEPRESS
             );
             let scale = 1 - (HORIZON_Z / 6);
             c.scale(1, scale);
             c.drawImage(
-                letter.CAN_FG,
+                letter.CAN_FG.CAN,
                 0, 0
             );
 

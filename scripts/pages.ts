@@ -11,10 +11,10 @@ import {
     DURATION_PAGE_OPEN_DELAY,
     CLASS_PROJECT_LINK_MISSING
 } from "./consts";
-import { PROJECT_DATA } from "./data/projects.json";
+import { PROJECT_DATA } from "../data/projects.json";
 import { toggleSectionOpen as toggleGraphicsSectionOpen } from "./graphics/main";
-import { html, toCamelCase } from "./util";
-import { DATA_BG } from "./data/images.json";
+import { html, toKebabCase } from "./util";
+import { DATA_BG } from "../data/images.json";
 import { ePageTag, ePages } from "./types";
 
 const
@@ -69,7 +69,7 @@ export function initPages() {
                         <div></div>
                         <#div
                             class="block-layout__item-image"
-                            style="--bg-color: ${ DATA_BG[toCamelCase(project.title)] || COLOR_BG_L }"
+                            style="--bg-color: ${ DATA_BG[toKebabCase(project.title)] || COLOR_BG_L }"
                         ></div>
                         <h3 class="
                             block-layout__item-label
@@ -105,7 +105,7 @@ export function initPages() {
         TOPIC_PAGES_IMAGES.push(
             PROJECT_BLOCKS.map((b, bi) => ({
                 el: b[1] as HTMLDivElement,
-                url: `url(assets/${ toCamelCase(topic.projects[bi].title) }.sm.png)`
+                url: `url(assets/${ toKebabCase(topic.projects[bi].title) }.sm.png)`
             }))
         );
     });
@@ -136,12 +136,12 @@ export function openPageFromUrl() {
 
     if (page === -1) {
         page = ePages.Topic;
-        topic = PROJECT_DATA.findIndex(t => toCamelCase(t.title) === HASH);
+        topic = PROJECT_DATA.findIndex(t => toKebabCase(t.title) === HASH);
 
         if (topic === -1) {
             page = ePages.Project;
-            topic = PROJECT_DATA.findIndex(t => t.projects.some(p => toCamelCase(p.title) === HASH));
-            project = topic > -1 ? PROJECT_DATA[topic].projects.findIndex(p => toCamelCase(p.title) === HASH) : -1;
+            topic = PROJECT_DATA.findIndex(t => t.projects.some(p => toKebabCase(p.title) === HASH));
+            project = topic > -1 ? PROJECT_DATA[topic].projects.findIndex(p => toKebabCase(p.title) === HASH) : -1;
 
             if (project === -1) {
                 page = ePages.Main;
@@ -199,17 +199,19 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
         break;
 
         case ePages.Project:
-            const PROJECT = PROJECT_DATA[topicIndex].projects[projectIndex];
+            const
+                PROJECT = PROJECT_DATA[topicIndex].projects[projectIndex],
+                TITLE_KEBAB = toKebabCase(PROJECT.title);
 
             EL_PROJECT_TITLE.innerHTML = PROJECT.title;
             EL_PROJECT_DESC.innerHTML = PROJECT.desc
                 .map(d => `<p class="project__desc-item">${ d }</p>`)
                 .join('\n');
-            EL_PROJECT_IMAGE.style.setProperty('--bg-url', `url(assets/${ toCamelCase(PROJECT.title) }.md.png)`);
+            EL_PROJECT_IMAGE.style.setProperty('--bg-url', `url(assets/${ TITLE_KEBAB }.md.png)`);
             currentOpenTopic = topicIndex;
 
             if (PROJECT.linkLive) {
-                EL_PROJECT_LINK_LIVE.href = PROJECT.linkLive || '#';
+                EL_PROJECT_LINK_LIVE.href = './' + TITLE_KEBAB;
                 EL_PROJECT_LINK_LIVE.classList.remove(CLASS_PROJECT_LINK_MISSING);
             } else {
                 EL_PROJECT_LINK_LIVE.classList.add(CLASS_PROJECT_LINK_MISSING);
@@ -311,7 +313,7 @@ function transitionPage(pageTo: ePages, delay: number = 0, delayTo: number = 0) 
 //
 
 function setUrl(title: string, isInitial: boolean) {
-    const HREF = window.location.href.replace(/(#.*)?$/, title ? '#' + toCamelCase(title) : '');
+    const HREF = window.location.href.replace(/(#.*)?$/, title ? '#' + toKebabCase(title) : '');
     document.title = document.title.replace(/( \| .*)?$/, title ? ' | ' + title : '');
     if (!isInitial && HREF != window.location.href) {
         window.history.pushState({}, '', new URL(HREF));

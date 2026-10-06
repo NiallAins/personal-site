@@ -1,27 +1,39 @@
 @import url("https://fonts.googleapis.com/css2?family=Neuton:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Quattrocento:400,700");
-html::-webkit-scrollbar {
-  width: 1rem;
+html {
+  background: linear-gradient(#111111 0, #111128 75svh, #111128), #111128;
 }
-html::-webkit-scrollbar-track {
-  background: #111128;
-}
-html::-webkit-scrollbar-thumb {
-  border: 3px solid #111111;
-  border-radius: 0.5rem;
-  background: rgba(255, 255, 255, 0.4);
-}
-html::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.8);
+@media (min-width: 48rem) {
+  html::-webkit-scrollbar {
+    width: 1rem;
+  }
+  html::-webkit-scrollbar-track {
+    background: #111128;
+  }
+  html::-webkit-scrollbar-thumb {
+    border: 3px solid #111111;
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.4);
+  }
+  html::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.8);
+  }
 }
 html {
   font-size: 16px;
+  overflow-x: hidden;
 }
 
 body {
-  overflow-x: hidden;
+  position: relative;
   margin: 0;
   font-family: "Neuton", "Georgia", serif;
+  overflow-x: hidden;
+  opacity: 0;
+  transition: opacity 1000ms;
+}
+body.page--post-fouc {
+  opacity: 1;
 }
 
 .page-width-container {
@@ -485,6 +497,13 @@ h1, h2, h3, h4, h5, h6, p {
   }
   .topics__section {
     width: 100%;
+    margin-top: 0;
+    margin-bottom: 29.4svh;
+  }
+  .topics__section-button {
+    font-size: 2rem;
+    letter-spacing: 2.25rem;
+    line-height: 3.09375rem;
   }
 }
 @media (min-width: 48rem) {
@@ -496,43 +515,51 @@ h1, h2, h3, h4, h5, h6, p {
   }
 }
 
-.page::-webkit-scrollbar {
-  width: 1rem;
+.page--main {
+  height: 550svh;
+  overflow: hidden;
 }
-.page::-webkit-scrollbar-track {
-  background: #111128;
+html:has(.page--main.page--closing) {
+  overflow: hidden;
 }
-.page::-webkit-scrollbar-thumb {
-  border: 3px solid #111111;
-  border-radius: 0.5rem;
-  background: rgba(255, 255, 255, 0.4);
+.page--main.page--closing {
+  padding-right: 1rem;
 }
-.page::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.8);
+@media (min-width: 48rem) {
+  .page--topic::-webkit-scrollbar, .page--project::-webkit-scrollbar {
+    width: 1rem;
+  }
+  .page--topic::-webkit-scrollbar-track, .page--project::-webkit-scrollbar-track {
+    background: #111128;
+  }
+  .page--topic::-webkit-scrollbar-thumb, .page--project::-webkit-scrollbar-thumb {
+    border: 3px solid #111111;
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.4);
+  }
+  .page--topic::-webkit-scrollbar-thumb:hover, .page--project::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.8);
+  }
 }
-.page {
+.page--topic, .page--project {
   position: fixed;
   inset: 0;
   z-index: 50;
-  overflow-y: auto;
+  overflow: auto;
   transition: opacity 1000ms, translate 1000ms;
 }
-.page.page--closing {
+.page--topic.page--closing, .page--topic.page--sub-opening, .page--project.page--closing, .page--project.page--sub-opening {
   opacity: 0;
-  translate: 0 -100svh;
   overflow: hidden;
 }
-.page--sub.page--closing {
-  translate: 0 0;
-}
-.page--long.page--closing {
-  margin-left: -1rem;
-}
-.page.page--sub-opening {
-  opacity: 0;
-}
-.page.page--inactive {
+.page--topic.page--inactive, .page--project.page--inactive {
   display: none;
+}
+.page--long.page--closing, .page--long.page--sub-opening {
+  padding-right: 1rem;
+}
+.page--topic.page--closing {
+  translate: 0 -100svh;
 }
 .page__close {
   width: 100%;
@@ -593,23 +620,6 @@ h1, h2, h3, h4, h5, h6, p {
 }
 .page__close {
   color: #ffffff;
-}
-.page--main {
-  background: linear-gradient(#111111 0, #111128 75svh, #111128), #111128;
-  height: 550svh;
-  opacity: 0;
-}
-.page--main.page--post-fouc {
-  opacity: 1;
-}
-.page--main.page--inactive {
-  display: block;
-}
-.page--main.page--inactive > header, .page--main.page--inactive > topics {
-  display: none;
-}
-html:has(.page--main.page--closing) {
-  overflow: hidden;
 }
 
 .project {
@@ -861,7 +871,6 @@ html:has(.page--main.page--closing) {
 }
 
 .experience {
-  height: calc(100svh - 4rem);
   padding-bottom: 4rem;
 }
 .experience__print {

@@ -1,4 +1,4 @@
-import { tTopicData, ePageTag } from "../types";
+import { tTopicData, ePageTag } from "../scripts/types";
 
 export const PROJECT_DATA: tTopicData[] = [
     {
@@ -140,7 +140,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "year": 2019,
                 "desc": [
                     "Tiny Painter is a tiny app for tiny paintings.",
-                    "I made this little app over two days as part of a coding challenge to \"Create an app no larger than 100px &times; 50px\"",
+                    "I made this little app over two days as part of a coding challenge to &quot;Create an app no larger than 100px &times; 50px&quot;",
                     "It allows you to change colours and brush sizes, and save, copy, and download your masterpieces."
                 ],
                 "linkLive": "https://codepen.io/niallains/full/LYPzbVv",

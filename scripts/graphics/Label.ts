@@ -3,18 +3,19 @@ import {
     CLASS_TOPIC_BUTTON_DISABLED,
     COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE, COLOR_TEXT_SHADOW,
     DURATION_SH,
-    FONT_FAM_TITLE, FONT_SIZE_SECTION, FONT_WEIGHT_SECTION,
     HEIGHT_MAIN_SECTION,
     HEIGHT_MAIN_SECTION_GAP,
-    ISO_SCALE, LABEL_ANGLE, LABEL_ISO_Z, LABEL_LETTER_HEIGHT, LABEL_LETTER_SHADOW_BLUR, LABEL_LETTER_WIDTH,
-    LABEL_LINE_HEIGHT,
+    FONT_FAM_TITLE, FONT_WEIGHT_SECTION,
+    LABEL_ANGLE, LABEL_LETTER_SHADOW_BLUR, 
+    LABEL_LETTER_HEIGHT, LABEL_LETTER_WIDTH, LABEL_LINE_HEIGHT, FONT_SIZE_SECTION,
+    LABEL_LETTER_HEIGHT_SM, LABEL_LETTER_WIDTH_SM, LABEL_LINE_HEIGHT_SM, FONT_SIZE_SECTION_SM,
     WIDTH_PAGE_MAX,
     WIDTH_STROKE_OUTLINE,
-    Z_UNIT
 } from "../consts";
 import { eEaseState, eEaseType } from "../types";
 import { Canvas } from "./Canvas";
 import { Ease } from "./Ease";
+import { isoScale as ISO_SCALE, labelIsoZ as LABEL_ISO_Z } from "./main";
 
 export class Label {
     private EL: HTMLButtonElement;
@@ -57,44 +58,51 @@ export class Label {
 
     public setPosition(pageWidth: number, pageHeight: number) {
         const
+            VIEWPORT_SM = pageWidth < BREAKPOINT_W_MD,
+            LETTER_WIDTH = VIEWPORT_SM ? LABEL_LETTER_WIDTH_SM : LABEL_LETTER_WIDTH,
+            LETTER_HEIGHT = VIEWPORT_SM ? LABEL_LETTER_HEIGHT_SM : LABEL_LETTER_HEIGHT,
+            LINE_HEIGHT = VIEWPORT_SM ? LABEL_LINE_HEIGHT_SM : LABEL_LINE_HEIGHT;
+
+        const
             BREAK = this.LETTERS.findIndex(l => l.LETTER === this.BREAK_CHAR),
             LINE_0_LENGTH = BREAK === -1 ? this.LETTERS.length - 1 : BREAK,
             LINE_1_LENGTH = this.LETTERS.length - LINE_0_LENGTH,
-            LINE_0_WIDTH = (LINE_0_LENGTH * LABEL_LETTER_WIDTH),
-            LINE_1_WIDTH = (LINE_1_LENGTH * LABEL_LETTER_WIDTH),
-            LINE_0_OFF_X = (LINE_0_WIDTH * -0.5) + (LABEL_LETTER_WIDTH * 0.5),
-            LINE_1_OFF_X = (LINE_1_WIDTH * -0.5) + (LABEL_LETTER_WIDTH * 0.5),
-            LINE_0_OFF_Y = LABEL_LETTER_HEIGHT * -0.5,
-            LINE_1_OFF_Y = LINE_0_OFF_Y + LABEL_LINE_HEIGHT;
+            LINE_0_WIDTH = (LINE_0_LENGTH * LETTER_WIDTH),
+            LINE_1_WIDTH = (LINE_1_LENGTH * LETTER_WIDTH),
+            LINE_0_OFF_X = (LINE_0_WIDTH * -0.5) + (LETTER_WIDTH * 0.5),
+            LINE_1_OFF_X = (LINE_1_WIDTH * -0.5) + (LETTER_WIDTH * 0.5),
+            LINE_0_OFF_Y = LETTER_HEIGHT * -0.5,
+            LINE_1_OFF_Y = LINE_0_OFF_Y + LINE_HEIGHT;
 
         const
             IS_LEFT = this.INDEX % 2 === 0,
             SECTION_WIDTH = Math.min(pageWidth, WIDTH_PAGE_MAX) * 0.5,
             SECTION_HEIGHT = pageHeight * HEIGHT_MAIN_SECTION,
             SECTION_GAP = pageHeight * HEIGHT_MAIN_SECTION_GAP,
-            ALIGN_X = pageWidth < BREAKPOINT_W_MD
-                ? 0.33
+            ALIGN_X = VIEWPORT_SM
+                ? 0
                 : IS_LEFT
                 ? -0.5
                 : 0.5,
             SECTION_OFFSET_X =
                 (pageWidth * 0.5) +
                 (SECTION_WIDTH * ALIGN_X) -
-                (LABEL_LETTER_WIDTH * 0.5),
+                (LETTER_WIDTH * 0.5),
             SECTION_OFFSET_Y =
                 pageHeight +
                 SECTION_GAP +
                 (this.INDEX * (SECTION_HEIGHT + SECTION_GAP)) +
+                (VIEWPORT_SM ? (SECTION_HEIGHT * -0.75) : 0) +
                 (SECTION_HEIGHT * 0.5) +
-                (LABEL_LETTER_HEIGHT * 0.25) +
-                (Z_UNIT * LABEL_ISO_Z);
+                (LETTER_HEIGHT * 0.25) +
+                LABEL_ISO_Z;
 
         this.LETTERS.forEach((l, li) => {
             const
                 LINE_1 = li > LINE_0_LENGTH,
                 X =
                     (LINE_1 ? LINE_1_OFF_X : LINE_0_OFF_X) +
-                    ((LINE_1 ? li - LINE_0_LENGTH : li) * LABEL_LETTER_WIDTH),
+                    ((LINE_1 ? li - LINE_0_LENGTH : li) * LETTER_WIDTH),
                 Y = LINE_1 ? LINE_1_OFF_Y : LINE_0_OFF_Y,
                 MAG = Math.sqrt(X**2 + Y**2),
                 ANG = Math.atan2(Y, X) + LABEL_ANGLE;
@@ -104,8 +112,8 @@ export class Label {
         });
     }
 
-    public preRender() {
-        this.LETTERS.forEach(l => l.preRender());
+    public preRender(isSmallViewport: boolean) {
+        this.LETTERS.forEach(l => l.preRender(isSmallViewport));
     }
 
     public setY(y: number) {
@@ -116,16 +124,13 @@ export class Label {
 
 export class LabelLetter {
     public static readonly LETTERS: LabelLetter[] = [];
-
-    private readonly CTX_FG: CanvasRenderingContext2D;
-    private readonly CTX_BG: CanvasRenderingContext2D;
     
     public x: number = 0;
     public y: number = 0;
     public drawen: boolean = false;
     public readonly LETTER: string;
-    public readonly CAN_FG: HTMLCanvasElement;
-    public readonly CAN_BG: HTMLCanvasElement;
+    public readonly CAN_FG: Canvas = new Canvas();
+    public readonly CAN_BG: Canvas = new Canvas();
     public readonly LAST_LINE: number;
     public readonly LABEL: Label;
 
@@ -134,37 +139,42 @@ export class LabelLetter {
         this.LETTER = letter;
         this.LAST_LINE = lastLine;
 
-        const
-            CAN_FG = new Canvas('', LABEL_LETTER_WIDTH, LABEL_LETTER_HEIGHT, true),
-            CAN_BG = new Canvas('', LABEL_LETTER_WIDTH, LABEL_LETTER_HEIGHT, true);
-
-        this.CTX_FG = CAN_FG.CTX;
-        this.CTX_BG = CAN_BG.CTX;
-        this.CAN_FG = CAN_FG.CAN;
-        this.CAN_BG = CAN_BG.CAN;
-
         LabelLetter.LETTERS.push(this);
     }
 
-    public preRender() {
-        this.CTX_FG.strokeStyle = COLOR_TEXT_L_OUTLINE;
-        this.CTX_FG.fillStyle = COLOR_TEXT_L;
+    public preRender(isViewportSmall: boolean) {
+        const
+            CTX_FG = this.CAN_FG.CTX,
+            CTX_BG = this.CAN_BG.CTX,
+            CAN_W = isViewportSmall ? LABEL_LETTER_WIDTH_SM : LABEL_LETTER_WIDTH, 
+            CAN_H = isViewportSmall ? LABEL_LETTER_WIDTH_SM : LABEL_LETTER_WIDTH,
+            FONT_SIZE = (isViewportSmall ? FONT_SIZE_SECTION_SM : FONT_SIZE_SECTION) / ISO_SCALE,
+            OFF_X = (isViewportSmall ? LABEL_LETTER_WIDTH_SM : LABEL_LETTER_WIDTH) * 0.55,
+            OFF_Y = (isViewportSmall ? LABEL_LETTER_HEIGHT_SM : LABEL_LETTER_HEIGHT) * 0.4;
+
+        this.CAN_FG.setSize(CAN_W, CAN_H);
+        this.CAN_BG.setSize(CAN_W, CAN_H);
+
+        CTX_FG.strokeStyle = COLOR_TEXT_L_OUTLINE;
+        CTX_FG.fillStyle = COLOR_TEXT_L;
         
-        this.CTX_BG.strokeStyle = '#0000';
-        this.CTX_BG.fillStyle = COLOR_TEXT_SHADOW;
-        this.CTX_BG.filter = `blur(${ LABEL_LETTER_SHADOW_BLUR }px)`;
+        CTX_BG.strokeStyle = '#0000';
+        CTX_BG.fillStyle = COLOR_TEXT_SHADOW;
+        CTX_BG.filter = `blur(${ LABEL_LETTER_SHADOW_BLUR }px)`;
 
-        [this.CTX_FG, this.CTX_BG].forEach(c => {
-            c.font = `${ FONT_WEIGHT_SECTION } ${ FONT_SIZE_SECTION / ISO_SCALE }px "${ FONT_FAM_TITLE }"`;
-            c.textAlign = 'center';
-            c.textBaseline = 'middle';
-            c.lineWidth = (WIDTH_STROKE_OUTLINE * 2) / ISO_SCALE;
+        [CTX_FG, CTX_BG].forEach(c => {
+            c.save();
+                c.font = `${ FONT_WEIGHT_SECTION } ${ FONT_SIZE }px "${ FONT_FAM_TITLE }"`;
+                c.textAlign = 'center';
+                c.textBaseline = 'middle';
+                c.lineWidth = (WIDTH_STROKE_OUTLINE * 2) / ISO_SCALE;
 
-            c.translate(LABEL_LETTER_WIDTH * 0.55, LABEL_LETTER_HEIGHT * 0.4);
-            c.scale(1.25 * ISO_SCALE, 0.75 * ISO_SCALE);
-            c.rotate(-0.7);
-            c.strokeText(this.LETTER, 0, 0);
-            c.fillText(this.LETTER, 0, 0);
+                c.translate(OFF_X, OFF_Y);
+                c.scale(1.25 * ISO_SCALE, 0.75 * ISO_SCALE);
+                c.rotate(-0.7);
+                c.strokeText(this.LETTER, 0, 0);
+                c.fillText(this.LETTER, 0, 0);
+            c.restore();
         });
     }
 }

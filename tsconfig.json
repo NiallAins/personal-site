@@ -3,8 +3,9 @@
         "target": "es2017",
         "module": "commonjs",
         "lib": ["es2019", "dom", "dom.iterable"],
-        "rootDir": "./scripts",
+        "allowJs": true,
         "strict": true,
-        "noImplicitReturns": true
-    }
+        "noImplicitReturns": true,
+    },
+    "include": ["./scripts/**.ts" ]
 }

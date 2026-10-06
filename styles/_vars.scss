@@ -9,98 +9,101 @@
 // Fonts
 //
 
-$f-fam-title-src:      url(https://fonts.gstatic.com/s/neuton/v24/UMBQrPtMoH62xUZKAKkvcwr4Pro.woff2);
-$f-fam-title-primary:  "Neuton";
-$f-fam-body-primary:   "Roboto";
-$f-fam-title:          $f-fam-title-primary, "Georgia", serif;
-$f-fam-body:           $f-fam-body-primary,  "Helvetica", san-serif;
+$f-fam-title-src:       url(https://fonts.gstatic.com/s/neuton/v24/UMBQrPtMoH62xUZKAKkvcwr4Pro.woff2);
+$f-fam-title-primary:   "Neuton";
+$f-fam-body-primary:    "Roboto";
+$f-fam-title:           $f-fam-title-primary, "Georgia", serif;
+$f-fam-body:            $f-fam-body-primary,  "Helvetica", san-serif;
 
-$f-size-base:          16px;
-$f-size-h1:            4.5rem;
-$f-size-h1-vp-sm:      3.5rem;
-$f-size-h2:            3.25rem;
-$f-size-h2-vp-sm:      2.5rem;
-$f-size-h3:            2.375rem;
-$f-size-h3-vp-sm:      1.875rem;
-$f-size-h4:            1.75rem;
-$f-size-h4-sm:         1.625rem;
-$f-size-bm:            1.125rem;
-$f-size-bs:            0.875rem;
-$f-size-section:       2.75rem;
+$f-size-base:           16px;
+$f-size-h1:             4.5rem;
+$f-size-h1-vp-sm:       3.5rem;
+$f-size-h2:             3.25rem;
+$f-size-h2-vp-sm:       2.5rem;
+$f-size-h3:             2.375rem;
+$f-size-h3-vp-sm:       1.875rem;
+$f-size-h4:             1.75rem;
+$f-size-h4-sm:          1.625rem;
+$f-size-bm:             1.125rem;
+$f-size-bs:             0.875rem;
+$f-size-section:        2.75rem;
+$f-size-section-sm:     2rem;
 
-$f-weight-norm:        400;
-$f-weight-demi:        500;
-$f-weight-bold:        600;
-$f-weight-section:     $f-weight-demi;
+$f-weight-norm:         400;
+$f-weight-demi:         500;
+$f-weight-bold:         600;
+$f-weight-section:      $f-weight-demi;
 
-$label-letter-space:   3rem;
-$label-line-height:    $f-size-section * 1.5;
-$label-angle:          -0.488rad;
+$label-letter-space:    3rem;
+$label-letter-space-sm: 2.25rem;
+$label-line-height:     $f-size-section * 1.5;
+$label-line-height-sm:  $f-size-section * 1.125;
+$label-angle:           -0.488rad;
 
 
 //
 // Widths, heights, strokes
 //
 
-$-w-page-max-total:    1152px;
-$w-page-pad:           1rem;
-$w-page-max:           div($-w-page-max-total, $f-size-base) - (2 * $w-page-pad);
-$w-page-bg-max:        1800px;
-$w-scrollbar:          1rem;
+$-w-page-max-total:     1152px;
+$w-page-pad:            1rem;
+$w-page-max:            div($-w-page-max-total, $f-size-base) - (2 * $w-page-pad);
+$w-page-bg-max:         1800px;
+$w-scrollbar:           1rem;
 
-$h-main-section:       40svh;
-$h-main-section-gap:   30svh;
-$h-min-sea:            14svh;
+$h-main-section:        40svh;
+$h-main-section-gap:    30svh;
+$h-min-sea:             14svh;
 
-$w-stroke-underline:   0.375rem;
-$w-stroke-outline:     2px;
+$w-stroke-underline:    0.375rem;
+$w-stroke-outline:      2px;
 
-$w-img-xs:             12px;
-$w-img-sm:             200px;
-$w-img-md:             400px;
+$w-img-xs:              12px;
+$w-img-sm:              200px;
+$w-img-md:              400px;
 
 
 //
 // Z-indices
 //
 
-$z-canvas-bg:          next-z();
-$z-box-top:            next-z();
-$z-canvas-fg:          next-z();
-$z-buttons:            next-z();
-$z-page:               next-z();
-$z-page-close:         next-z();
-$z-focus-visible:      next-z();
+$z-canvas-bg:           next-z();
+$z-box-top:             next-z();
+$z-canvas-fg:           next-z();
+$z-buttons:             next-z();
+$z-page:                next-z();
+$z-page-close:          next-z();
+$z-focus-visible:       next-z();
 
 
 //
 // Breakpoints
 //
 
-$bp-w-lg:              $-w-page-max-total; // 1152px
-$bp-w-md:              48rem; // 768px
-$bp-w-sm:              36rem; // 608px
-$bp-w-xs:              24rem; // 384px
-$bp-h-sm:              36rem; // 608px
+$bp-w-lg:               $-w-page-max-total; // 1152px
+$bp-w-md:               48rem; // 768px
+$bp-w-sm:               36rem; // 608px
+$bp-w-xs:               24rem; // 384px
+$bp-h-sm:               36rem; // 608px
 
 
 //
 // Colors
 //
 
-$c-hsl-terrain-sea:    (174, 53, 40, 0.475);
-$c-terrain-sea:        list-to-hsl($c-hsl-terrain-sea);
-$c-hsl-terrain-land-1: ( 18, 70, 20, 1);
-$c-terrain-land-1:     list-to-hsl($c-hsl-terrain-land-1);
-$c-hsl-terrain-land-2: ( 38,  7, 20, 1);
-$c-terrain-land-2:     list-to-hsl($c-hsl-terrain-land-2);
-$c-hsl-terrain-land-3: ( 62, 82, 35, 1);
-$c-terrain-land-3:     list-to-hsl($c-hsl-terrain-land-3);
-$c-hsl-terrain-land-4: (106, 80, 15, 1);
-$c-terrain-land-4:     list-to-hsl($c-hsl-terrain-land-4);
+$c-hsl-terrain-sea:     (174, 53, 40, 0.475);
+$c-terrain-sea:         list-to-hsl($c-hsl-terrain-sea);
+$c-hsl-terrain-land-1:  ( 18, 70, 20, 1);
+$c-terrain-land-1:      list-to-hsl($c-hsl-terrain-land-1);
+$c-hsl-terrain-land-2:  ( 38,  7, 20, 1);
+$c-terrain-land-2:      list-to-hsl($c-hsl-terrain-land-2);
+$c-hsl-terrain-land-3:  ( 62, 82, 35, 1);
+$c-terrain-land-3:      list-to-hsl($c-hsl-terrain-land-3);
+$c-hsl-terrain-land-4:  (106, 80, 15, 1);
+$c-terrain-land-4:      list-to-hsl($c-hsl-terrain-land-4);
 
-$-c-tag-s:             53;
-$-c-tag-l:             50;
+$-c-tag-s:              53;
+$-c-tag-l:              50;
 $c-tags: (
     list-to-hsl((  0, $-c-tag-s, $-c-tag-l)),
     list-to-hsl((180, $-c-tag-s, $-c-tag-l)),
@@ -112,25 +115,25 @@ $c-tags: (
     list-to-hsl((315, $-c-tag-s, $-c-tag-l))
 );
 
-$c-bg-d:               #111111;
-$c-bg-l:               #111128;
-$c-text-l:             #ffffff;
-$c-text-d:             $c-bg-l;
-$c-text-l-outline:     scale($c-terrain-sea, $lightness: -50%, $alpha: 100%);
-$c-text-shadow:        #11111188;
-$c-text-link:          #4848c8;
-$c-bg-select:          change($c-text-link, $alpha: 50%);
-$c-text-select:        $c-text-l;
+$c-bg-d:                #111111;
+$c-bg-l:                #111128;
+$c-text-l:              #ffffff;
+$c-text-d:              $c-bg-l;
+$c-text-l-outline:      scale($c-terrain-sea, $lightness: -50%, $alpha: 100%);
+$c-text-shadow:         #11111188;
+$c-text-link:           #4848c8;
+$c-bg-select:           change($c-text-link, $alpha: 50%);
+$c-text-select:         $c-text-l;
 
 
 //
 // Animation durations
 //
 
-$dur-sh:               500ms;
-$dur-lg:               1000ms;
-$dur-page-open:        $dur-lg;
-$dur-page-open-delay:  $dur-sh * 0.5;
+$dur-sh:                500ms;
+$dur-lg:                1000ms;
+$dur-page-open:         $dur-lg;
+$dur-page-open-delay:   $dur-sh * 0.5;
 
 
 //

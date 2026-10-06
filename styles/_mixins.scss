@@ -264,21 +264,23 @@ $breakpoints: (
 }
 
 @mixin scrollbar {
-    &::-webkit-scrollbar {
-        width: $w-scrollbar;
-    }
-    
-    &::-webkit-scrollbar-track {
-        background: $c-bg-l;
-    }
-    
-    &::-webkit-scrollbar-thumb {
-        border: 3px solid $c-bg-d;
-        border-radius: $w-scrollbar * 0.5;
-        background: change($c-text-l, $alpha: 0.4);
+    @include viewport(md) {
+        &::-webkit-scrollbar {
+            width: $w-scrollbar;
+        }
+        
+        &::-webkit-scrollbar-track {
+            background: $c-bg-l;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            border: 3px solid $c-bg-d;
+            border-radius: $w-scrollbar * 0.5;
+            background: change($c-text-l, $alpha: 0.4);
 
-        &:hover {
-            background: change($c-text-l, $alpha: 0.8);
+            &:hover {
+                background: change($c-text-l, $alpha: 0.8);
+            }
         }
     }
 }

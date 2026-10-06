@@ -1,4 +1,10 @@
-import { SKY_HEIGHT_RATIO, DURATION_SH, DURATION_PAGE_OPEN, DURATION_PAGE_OPEN_DELAY, BREAKPOINT_W_MD } from "../consts";
+import {
+    SKY_HEIGHT_RATIO,
+    DURATION_SH, DURATION_PAGE_OPEN, DURATION_PAGE_OPEN_DELAY,
+    BREAKPOINT_W_MD,
+    ISO_SCALE_LG, ISO_SCALE_SM,
+    X_UNIT_SCALE, Y_UNIT_SCALE, Z_UNIT_SCALE, ROW_HEIGHT_SCALE, LABEL_DEPRESS_Z_SCALE, LABEL_LETTER_HEIGHT, LABEL_LINE_HEIGHT, LABEL_Z_SCALE
+} from "../consts";
 import { Canvas } from "./Canvas";
 import { Splash } from "./Splash";
 import { Label } from "./Label";
@@ -6,7 +12,7 @@ import { init as initTerrain, render as renderTerrain, resize as resizeTerrain }
 import { requestFrameScaled } from "../util";
 import { EL_TOPIC_BUTTONS } from "../pages";
 import { Cublet } from "./Cublet";
-import { PROJECT_DATA } from "../data/projects.json";
+import { PROJECT_DATA } from "../../data/projects.json";
 import { Ease } from "./Ease";
 import { _DEBUG_log, _DEBUG_logDt } from "../_debug";
 import { eEaseState, eEaseType } from "../types";
@@ -25,18 +31,28 @@ export const
     CUBLETS: Cublet[][] = PROJECT_DATA
         .map((p, pi) => p.projects.map(i => new Cublet(pi, i.title)));
 
-let
-    isViewportSmall = false;
-
 
 //
-// State
+// Properties
 //
 
 let
+    isViewportSmall: boolean = false,
     paused: boolean = false,
     fades: Ease[] = [],
     sectionOpenTimeout: number = -1;
+
+export let
+    isoScale: number = 1,
+    xUnit: number = 1,
+    yUnit: number = 1,
+    zUnit: number = 1,
+    rowHeight: number = 1,
+    labelIsoZ: number = 1,
+    labelDepressZ: number = 1,
+    labelLetterSpaceIso: number = 1,
+    labelLineHeighteIso: number = 1;
+    
 
 export function toggleSectionOpen(open: boolean, sectionI: number = -1) {
     clearTimeout(sectionOpenTimeout);
@@ -67,32 +83,43 @@ export function toggleSectionOpen(open: boolean, sectionI: number = -1) {
 
 export function init() {
     CAN_SEA.CAN.onmousemove = e => Splash.createSplash(e.clientX, e.clientY);
+    CAN_SEA.CAN.onclick = e => Splash.createSplash(e.clientX, e.clientY, true);
     EL_TOPIC_BUTTONS.forEach((el, i) => {
         LABELS.push(new Label(el, i));
         fades.push(new Ease(DURATION_SH, eEaseType.EaseOut, true));
     });
-    LABELS.forEach(l => l.preRender());
     initTerrain();
 
     window.requestAnimationFrame(() => animate());
 }
 
-export function setCanvasSize(pageWidth: number, pageHeight: number) {
-    isViewportSmall = pageWidth < BREAKPOINT_W_MD;
+export function setCanvasSize(pageWidth: number, pageHeight: number, isInitial: boolean) {
+    const
+        VIEWPORT_SMALL = pageWidth < BREAKPOINT_W_MD,
+        BREAKPOINT_HIT = VIEWPORT_SMALL !== isViewportSmall;
+
+    if (BREAKPOINT_HIT || isInitial) {
+        isViewportSmall = VIEWPORT_SMALL;
+
+        isoScale            = isViewportSmall ? ISO_SCALE_SM : ISO_SCALE_LG;
+        xUnit               = X_UNIT_SCALE * isoScale;
+        yUnit               = Y_UNIT_SCALE * isoScale;
+        zUnit               = Z_UNIT_SCALE * isoScale;
+        rowHeight           = ROW_HEIGHT_SCALE * isoScale;
+        labelIsoZ           = LABEL_Z_SCALE * zUnit;
+        labelDepressZ       = LABEL_DEPRESS_Z_SCALE * zUnit;
+        labelLetterSpaceIso = LABEL_LETTER_HEIGHT / isoScale;
+        labelLineHeighteIso = LABEL_LINE_HEIGHT / isoScale;
+
+        LABELS.forEach(l => l.preRender(VIEWPORT_SMALL));
+    }
 
     CAN_SKY.setSize(pageWidth, pageHeight * SKY_HEIGHT_RATIO);
     renderSky(CAN_SKY);
-
-    const SCALE = isViewportSmall  ? 0.75 : 1;
-    CAN_SEA.setSize(
-        pageWidth / SCALE,
-        pageHeight / SCALE,
-        isViewportSmall
-    );
-    CAN_SEA.CAN.style.scale = SCALE.toString();
+    CAN_SEA.setSize(pageWidth, pageHeight);
 
     LABELS.forEach(l => l.setPosition(pageWidth, pageHeight));
-    resizeTerrain(pageWidth, pageHeight);
+    resizeTerrain(pageWidth, pageHeight, BREAKPOINT_HIT || isInitial);
 }
 
 

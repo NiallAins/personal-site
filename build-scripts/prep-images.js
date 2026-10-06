@@ -7,7 +7,7 @@ const
     DIR_FROM = 'images',
     DIR_TO = 'dist/assets',
     DIR_STYLE_VARS = 'styles/_vars.scss',
-    PATH_TO_TS = 'scripts/data/images.json.ts',
+    PATH_TO_TS = 'data/images.json.ts',
     WIDTH_XS = getStyleVarPxValue('w-img-xs'),
     WIDTH_SM = getStyleVarPxValue('w-img-sm'),
     WIDTH_MD = getStyleVarPxValue('w-img-md'),

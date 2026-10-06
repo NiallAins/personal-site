@@ -3,14 +3,12 @@
     "main": "main.js",
     "scripts": {
         "dev": "npm run build && bash ./build-scripts/watch.sh",
-        "build": "npm run build-style && npm run build-script",
-        "build-style": "node ./build-scripts/scss-to-ts && sass ./styles/index.scss > ./dist/style.css && sass ./styles/app.scss > ./dist/app/style.css",
-        "build-script": "webpack --config ./build-scripts/webpack.config.js --mode development",
-        "build-script-prod": "bash ./build-scripts/set-prod-mode.sh && webpack --config ./build-scripts/webpack.config.js --mode production",
+        "watch": "bash ./build-scripts/watch.sh",
+        "build": "bash ./build-scripts/build-style.sh && bash ./build-scripts/build-script.sh && node ./build-scripts/build-template.js",
+        "build-prod": "bash ./build-scripts/build-script.sh --prod",
         "prep-images": "node ./build-scripts/prep-images.js",
-        "set-base-url": "bash ./build-scripts/set-base-url.sh",
         "push": "bash ./build-scripts/push.sh",
-        "deploy": "bash ./build-scripts/deploy.sh"
+        "deploy": "bash ./build-scripts/deploy.sh --prod"
     },
     "repository": {
         "type": "git",

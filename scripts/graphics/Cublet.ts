@@ -1,13 +1,14 @@
-import { CUBLET_SEEDS, ISO_SCALE } from "../consts";
+import { CUBLET_SEEDS } from "../consts";
 import { tPoint2, tPoint3 } from "../types";
-import { Rand, toCamelCase } from "../util";
-import { DATA as CUBLET_PIXELS } from "../data/images.json";
+import { Rand, toKebabCase } from "../util";
+import { DATA as CUBLET_PIXELS } from "../../data/images.json";
+import { isoScale as ISO_SCALE } from "./main";
 
 export class Cublet {
     public static readonly CUBLETS: Cublet[] = [];
     public static readonly RANDS: Rand[] = [];
 
-    private readonly _WIDTH: number = ISO_SCALE * 1.5;
+    private readonly _WIDTH: number = 1.5;
     private _PTS: tPoint3[] = [];
     private _PIXELS: number[] | undefined;
     private _X_ANG: number = 0;
@@ -24,7 +25,7 @@ export class Cublet {
 
     constructor(sectionI: number, title: string) {
         this.sectionI = sectionI;
-        this._PIXELS = CUBLET_PIXELS[toCamelCase(title)];
+        this._PIXELS = CUBLET_PIXELS[toKebabCase(title)];
 
         let rand = Cublet.RANDS[sectionI];
         if (!rand) {
@@ -38,9 +39,8 @@ export class Cublet {
         Cublet.CUBLETS.push(this);
     }
 
-    public setAngle(rand: boolean = false) {
-        this._X_ANG = rand ? this.RAND_X * Math.PI * 2 : 0.615;
-        this._Y_ANG = rand ? this.RAND_Y * Math.PI * 2 : 0.785 - (this.RAND_Y > 0.5 ? 1.57 : 0);
+    public rotate(dAng: number) {
+        this._Y_ANG += dAng;
 
         this._PTS = [
             [ 1,  1,  1],
@@ -52,8 +52,14 @@ export class Cublet {
             [-1, -1, -1],
             [-1,  1, -1]
         ]
-            .map(p => p.map(v => v * this._WIDTH * 0.5))
+            .map(p => p.map(v => v * this._WIDTH * ISO_SCALE * 0.5))
             .map(p => this._rotatePoint(p as tPoint3));
+    }
+
+    public setAngle(rand: boolean = false) {
+        this._X_ANG = rand ? this.RAND_X * Math.PI * 2 : 0.615;
+        this._Y_ANG = rand ? this.RAND_Y * Math.PI * 2 : 0.785 - (this.RAND_Y > 0.5 ? 1.57 : 0);
+        this.rotate(0);
     }
 
     private _rotatePoint(p: tPoint3): tPoint3 {
@@ -88,13 +94,13 @@ export class Cublet {
             c.stroke();
             if (this._PIXELS) {
                 const
-                    HALF_W = this._WIDTH * 0.5,
+                    HALF_W = this._WIDTH * ISO_SCALE * 0.5,
                     PIX_W = (this._PIXELS.length / 3)**0.5;
                 for (let y = -HALF_W + 2; y < HALF_W - 2; y++) {
                     for (let x = -HALF_W + 2; x < HALF_W - 2; x++) {
                         const
-                            PIX_X = Math.floor(((y + HALF_W) / this._WIDTH) * PIX_W),
-                            PIX_Y = Math.floor(((x + HALF_W) / this._WIDTH) * PIX_W),
+                            PIX_X = Math.floor(((y + HALF_W) / (this._WIDTH * ISO_SCALE)) * PIX_W),
+                            PIX_Y = Math.floor(((x + HALF_W) / (this._WIDTH * ISO_SCALE)) * PIX_W),
                             PIX_I = ((PIX_Y * PIX_W) + PIX_X) * 3,
                             [ROT_X, ROT_Y] = this._rotatePoint([x, y, -HALF_W]);
                         c.fillStyle = `rgb(${ this._PIXELS[PIX_I] }, ${ this._PIXELS[PIX_I + 1] }, ${ this._PIXELS[PIX_I + 2] })`;

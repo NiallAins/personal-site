@@ -18,13 +18,14 @@ let
 function onResize() {
     if (window.innerWidth !== prevWindowWidth) {
         window.clearTimeout(resizeDebounce);
-        resizeDebounce = window.setTimeout(resize, WINDOW_RESIZE_DEBOUNCE);
+        resizeDebounce = setTimeout(resize, WINDOW_RESIZE_DEBOUNCE);
     }
 }
-function resize() {
+function resize(isInitial: boolean) {
     setCanvasSize(
         Math.min(PAGE_WIDTH_MAX, window.innerWidth),
-        Math.min(PAGE_HEIGHT_MAX, window.innerHeight)
+        Math.min(PAGE_HEIGHT_MAX, window.innerHeight),
+        isInitial
     );
     prevWindowWidth = window.innerWidth;
 }
@@ -38,7 +39,6 @@ function moreClick() {
 
 async function init() {
     window.onresize = () => onResize();
-
     EL_HEADER_NAV_MORE.onclick = () => moreClick();
 
     initPages();
@@ -48,15 +48,14 @@ async function init() {
     );
 
     initGraphics();
-    resize();
+    resize(true);
 
     window.onhashchange = () => openPageFromUrl();
     openPageFromUrl();
-
+    
     // Hide FOUC
     document.body.onload = () => setTimeout(
-        () => EL_PAGE_MAIN.classList.add(CLASS_PAGE_POST_FOUC),
-        DURATION_SH
+        () => document.body.classList.add(CLASS_PAGE_POST_FOUC)
     );
 }
 

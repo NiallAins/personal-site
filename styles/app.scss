@@ -6,22 +6,34 @@ body {
     padding: 0;
     margin: 0;
     overflow: hidden;
+    overflow: hidden;
 }
 
 .app {
+    $h-header: 2rem;
+    $w-header-pad: 0.75rem;
+
+    &--hide-header &__header {
+        display: none;
+    }
+
+    &--hide-header &__frame {
+        height: 100vh;
+    }
+
     &__header {
-        position: absolute;
-        top: 0;
-        left: 0;
+        @include page-background;
+
+        height: $h-header;
         display: flex;
         align-items: end;
-        justify-content: start;
+        justify-content: end;
         gap: 1rem;
-        padding: 2rem;
+        padding: $w-header-pad 1rem;
 
         &-icon {
-            width: 2rem;
-            height: 2rem;
+            width: $h-header;
+            height: $h-header;
         }
 
         &-link {
@@ -31,12 +43,35 @@ body {
             font-family: $f-fam-title;
             color: $c-text-l;
             text-decoration: none;
+
+            &:focus-visible {
+                outline-offset: 0.25rem;
+            }
+        }
+        
+        &-close {
+            @include focus-outline;
+
+            width: $h-header;
+            height: $h-header;
+            padding: 0;
+            border: none;
+            border-radius: 100%;
+            margin-left: auto;
+            color: $c-text-l;
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: unset;
+            
+            &:focus-visible {
+                outline-offset: 0.25rem;
+            }
         }
     }
 
     &__frame {
         width: 100vw;
-        height: 100vh;
+        height: calc(100vh - #{ $h-header + (2 * $w-header-pad) });
         padding: 0;
         border: none;
         margin: 0;
