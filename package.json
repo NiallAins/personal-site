@@ -5,10 +5,10 @@
         "dev": "npm run build && bash ./build-scripts/watch.sh",
         "watch": "bash ./build-scripts/watch.sh",
         "build": "bash ./build-scripts/build-style.sh && bash ./build-scripts/build-script.sh && node ./build-scripts/build-template.js",
-        "build-prod": "bash ./build-scripts/build-script.sh --prod",
+        "build-prod": "bash ./build-scripts/build-script.sh prod",
         "prep-images": "node ./build-scripts/prep-images.js",
         "push": "bash ./build-scripts/push.sh",
-        "deploy": "bash ./build-scripts/deploy.sh --prod"
+        "push-deploy": "bash ./build-scripts/push.sh prod"
     },
     "repository": {
         "type": "git",
