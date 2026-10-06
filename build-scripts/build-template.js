@@ -69,7 +69,9 @@ async function buildTemplates() {
         .flat()
         .filter(p => !p.hide && p.linkLive)
         .forEach(p => {
-            const PATH = PATH_TO_APP.replace('{{ title }}', util.toKebabCase(p.title));
+            const
+                TITLE_KEBAB = util.toKebabCase(p.title),
+                PATH = PATH_TO_APP.replace('{{ title }}', TITLE_KEBAB);
             FS
                 .mkdir(
                     PATH.replace(/\/[^\/]*$/, ''),
@@ -79,6 +81,7 @@ async function buildTemplates() {
                     PATH,
                     appHtml
                         .replace('{{ title }}', '| ' + p.title)
+                        .replace('{{ title-kebab }}', TITLE_KEBAB)
                         .replace('{{ url }}', p.linkLive),
                     'utf8',
                     () => {}

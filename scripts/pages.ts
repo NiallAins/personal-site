@@ -146,7 +146,7 @@ export function openPageFromUrl() {
             if (project === -1) {
                 page = ePages.Main;
                 topic = -1;
-            } else {
+            } else if (window.location.href.indexOf('?back') === -1) {
                 initialLoadOnProject = true;
             }
         }
@@ -211,7 +211,7 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
             currentOpenTopic = topicIndex;
 
             if (PROJECT.linkLive) {
-                EL_PROJECT_LINK_LIVE.href = './' + TITLE_KEBAB;
+                EL_PROJECT_LINK_LIVE.href = './' + TITLE_KEBAB + '?test=true';
                 EL_PROJECT_LINK_LIVE.classList.remove(CLASS_PROJECT_LINK_MISSING);
             } else {
                 EL_PROJECT_LINK_LIVE.classList.add(CLASS_PROJECT_LINK_MISSING);

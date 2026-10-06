@@ -152,6 +152,10 @@ $breakpoints: (
 
 @mixin button-underline-sm {
     @include -button-underline(0.25rem);
+
+    &:active {
+        translate: 0 0.25rem;
+    }
 }
 
 

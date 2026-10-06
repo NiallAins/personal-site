@@ -8,7 +8,9 @@ body {
 }
 
 .app--hide-header .app__header {
-  display: none;
+  margin-top: -3.5rem;
+  pointer-events: none;
+  transition: margin-top 500ms;
 }
 .app--hide-header .app__frame {
   height: 100vh;
@@ -43,11 +45,18 @@ body {
 .app__header-link:hover, .app__header-link:focus-visible, a:hover > .app__header-link, a:focus-visible > .app__header-link, button:hover > .app__header-link, button:focus-visible > .app__header-link {
   box-shadow: inset 0 -0.25rem 0 0 currentColor;
 }
+.app__header-link:active {
+  translate: 0 0.25rem;
+}
 .app__header-link {
   font-size: 1.125rem;
   font-family: "Neuton", "Georgia", serif;
   color: #ffffff;
   text-decoration: none;
+  translate: 0 0.25rem;
+}
+.app__header-link:hover:not(:active) {
+  translate: 0 0;
 }
 .app__header-link:focus-visible {
   outline-offset: 0.25rem;
@@ -77,4 +86,5 @@ body {
   padding: 0;
   border: none;
   margin: 0;
+  transition: height 500ms;
 }

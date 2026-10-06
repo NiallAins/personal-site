@@ -13,11 +13,9 @@
             class="app__header-icon"
         />
         <a
+            id="backLink"
             class="app__header-link"
-            href="."
-        >
-            More projects
-        </a>
+        ></a>
         <button
             class="app__header-close"
             onclick="document.body.classList.add('app--hide-header')"
@@ -26,6 +24,15 @@
             &times;
         </button>
     </header>
+
+    <script>
+        console.log(window.location);
+        const
+            EL_LINK = document.getElementById('backLink'),
+            HAS_BACK = window.location.href.indexOf('?back') !== -1;
+        EL_LINK.innerText = HAS_BACK ? 'Back to projects' : 'More projects';
+        EL_LINK.href = HAS_BACK ? './#{{ title-kebab }}?back' : '.';
+    </script>
 
     <iframe
         class="app__frame"

@@ -10,11 +10,14 @@ body {
 }
 
 .app {
-    $h-header: 2rem;
+    $h-header-inner: 2rem;
     $w-header-pad: 0.75rem;
+    $h-header-outer: $h-header-inner + (2 * $w-header-pad); 
 
     &--hide-header &__header {
-        display: none;
+        margin-top: -1 * $h-header-outer;
+        pointer-events: none;
+        transition: margin-top $dur-sh;
     }
 
     &--hide-header &__frame {
@@ -24,7 +27,7 @@ body {
     &__header {
         @include page-background;
 
-        height: $h-header;
+        height: $h-header-inner;
         display: flex;
         align-items: end;
         justify-content: end;
@@ -32,8 +35,8 @@ body {
         padding: $w-header-pad 1rem;
 
         &-icon {
-            width: $h-header;
-            height: $h-header;
+            width: $h-header-inner;
+            height: $h-header-inner;
         }
 
         &-link {
@@ -43,6 +46,11 @@ body {
             font-family: $f-fam-title;
             color: $c-text-l;
             text-decoration: none;
+            translate: 0 0.25rem;
+
+            &:hover:not(:active) {
+                translate: 0 0;
+            }
 
             &:focus-visible {
                 outline-offset: 0.25rem;
@@ -52,8 +60,8 @@ body {
         &-close {
             @include focus-outline;
 
-            width: $h-header;
-            height: $h-header;
+            width: $h-header-inner;
+            height: $h-header-inner;
             padding: 0;
             border: none;
             border-radius: 100%;
@@ -71,9 +79,10 @@ body {
 
     &__frame {
         width: 100vw;
-        height: calc(100vh - #{ $h-header + (2 * $w-header-pad) });
+        height: calc(100vh - #{ $h-header-outer });
         padding: 0;
         border: none;
         margin: 0;
+        transition: height $dur-sh;
     }
 }

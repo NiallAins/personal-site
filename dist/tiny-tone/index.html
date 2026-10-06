@@ -5,7 +5,7 @@
         Niall – Design / Dev | TinyTone
     </title>
 
-    <base href="https://niallains.github.io/personal-site/dist/" />
+    <base href="http://localhost:5500/dist/" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
@@ -22,11 +22,9 @@
             class="app__header-icon"
         />
         <a
+            id="backLink"
             class="app__header-link"
-            href="."
-        >
-            More projects
-        </a>
+        ></a>
         <button
             class="app__header-close"
             onclick="document.body.classList.add('app--hide-header')"
@@ -35,6 +33,15 @@
             &times;
         </button>
     </header>
+
+    <script>
+        console.log(window.location);
+        const
+            EL_LINK = document.getElementById('backLink'),
+            HAS_BACK = window.location.href.indexOf('?back') !== -1;
+        EL_LINK.innerText = HAS_BACK ? 'Back to projects' : 'More projects';
+        EL_LINK.href = HAS_BACK ? './#tiny-tone?back' : '.';
+    </script>
 
     <iframe
         class="app__frame"
