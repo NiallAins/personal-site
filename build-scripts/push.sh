@@ -7,11 +7,13 @@ CB='\033[0;36m';
 CW='\033[0m';
 
 # Push and deploy
-if [ "$1" == "--prod"]; then
+echo $1;
+echo $2;
+if [ "$1" == "--prod" ]; then
     if [ "$2" ]; then
         # Deploy to main
-        git add .;
-        git commit -m "$2";
+        # git add .;
+        # git commit -m "$2";
 
         # Confirm Deploy after commit outputs
         echo -e -n "\n${CB}Complete deploy? (y)${CW} " &&
