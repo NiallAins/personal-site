@@ -150,7 +150,7 @@ export function openPageFromUrl() {
                 topic = -1;
             } else if (!window.sessionStorage.getItem(TOKEN_PREVIOUS_VISIT)) {
                 initialLoadOnProject = true;
-                window.scrollY = 0;
+                window.scrollTo(0, 0);
             }
         }
     }

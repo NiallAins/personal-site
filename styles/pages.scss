@@ -9,10 +9,6 @@
         html:has(&.#{ $cl-page-closing }) {
             overflow: hidden;
         }
-
-        &.#{ $cl-page-closing } {
-            padding-right: $w-scrollbar;
-        }
     }
 
     &--topic,
@@ -38,13 +34,6 @@
         }
     }
 
-    &--long {
-        &.#{ $cl-page-closing },
-        &.#{ $cl-page-sub-opening } {
-            padding-right: $w-scrollbar;
-        }
-    }
-
     &--topic {
         &.#{ $cl-page-closing } {
             translate: 0 -100svh;
@@ -54,5 +43,14 @@
     &__close {
         @include caret-button-empty;
         color: $c-text-l;
+    }
+
+    // Prevent content shift on scrollbar hide
+    @include viewport(md) {
+        &--main.#{ $cl-page-closing },
+        &--long.#{ $cl-page-closing },
+        &--long.#{ $cl-page-sub-opening } {
+            padding-right: $w-scrollbar;
+        }
     }
 }
