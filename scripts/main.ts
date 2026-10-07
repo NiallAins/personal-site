@@ -52,7 +52,15 @@ async function init() {
     openPageFromUrl();
     
     // Hide FOUC
-    window.onload = () => setTimeout(() => document.body.classList.add(CLASS_PAGE_POST_FOUC));
+    window.addEventListener(
+        'load',
+        () => setTimeout(() => document.body.classList.add(CLASS_PAGE_POST_FOUC))
+    );
+    // Show page if onload not triggered with 2000ms
+    setTimeout(
+        () =>  document.body.classList.add(CLASS_PAGE_POST_FOUC),
+        2000
+    );
 }
 
 init();
