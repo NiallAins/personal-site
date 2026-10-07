@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Neuton:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Quattrocento:400,700");
 html {
-  background: linear-gradient(#111111 0, #111128 75lvh, #111128), #111128;
+  background: linear-gradient(#111111 0, #111128 75vh, #111128), #111128;
 }
 @media (min-width: 48rem) {
   html::-webkit-scrollbar {
@@ -127,7 +127,7 @@ h1, h2, h3, h4, h5, h6, p {
   }
   .block-layout__slot {
     width: calc(min(100vw, 52.5rem) / 2);
-    height: calc((100lvh - 5.5rem) / 2 - min(100vw, 52.5rem) / 16);
+    height: calc((100vh - 5.5rem) / 2 - min(100vw, 52.5rem) / 16);
   }
   .block-layout:has(:nth-child(5)) {
     display: flex;
@@ -147,7 +147,7 @@ h1, h2, h3, h4, h5, h6, p {
   }
   .block-layout__slot {
     width: calc(min(100vw, 52.5rem) / 2);
-    height: calc((100lvh - 5.5rem) / 2 - min(100vw, 52.5rem) / 16);
+    height: calc((100vh - 5.5rem) / 2 - min(100vw, 52.5rem) / 16);
   }
   .block-layout:has(:nth-child(5)) {
     display: grid;
@@ -156,7 +156,7 @@ h1, h2, h3, h4, h5, h6, p {
   }
   .block-layout:has(:nth-child(5)) .block-layout__slot {
     width: calc(min(100vw, 70rem) / 3);
-    height: calc((100lvh - 5.5rem) / 3 - min(100vw, 70rem) / 24);
+    height: calc((100vh - 5.5rem) / 3 - min(100vw, 70rem) / 24);
   }
 }
 .block-layout__slot:has(.block-layout__item:focus-visible) {
@@ -253,19 +253,20 @@ h1, h2, h3, h4, h5, h6, p {
 
 .canvas__sky, .canvas__sea {
   position: fixed;
-  top: 0;
   left: 50%;
   translate: -50% 0;
 }
 .canvas__sky {
+  bottom: 25vh;
   z-index: 10;
 }
 .canvas__sea {
+  bottom: 0;
   z-index: 30;
   transition: top ease-out 1000ms;
 }
 .page--closing > .canvas__sea {
-  top: 100lvh;
+  top: 100vh;
   pointer-events: none;
   translate: calc(-50% - 0.5rem) 0;
 }
@@ -274,12 +275,12 @@ h1, h2, h3, h4, h5, h6, p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: calc(100lvh - 14lvh);
-  padding-top: 14lvh;
+  height: calc(100vh - 14vh);
+  padding-top: 14vh;
   transition: translate 1000ms, opacity 1000ms;
 }
 .page--closing > .header {
-  translate: 0 75lvh;
+  translate: 0 75vh;
   opacity: 0;
 }
 .page--inactive > .header {
@@ -322,7 +323,7 @@ h1, h2, h3, h4, h5, h6, p {
   gap: 3rem;
   width: 100%;
   max-width: 28.5rem;
-  margin: 14lvh auto 0;
+  margin: 14vh auto 0;
   justify-content: space-between;
   pointer-events: none;
 }
@@ -431,7 +432,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 @media (max-width: calc(36rem - 1px)) {
   .header {
-    padding-top: 15lvh;
+    padding-top: 15vh;
   }
   .header__title--primary, .header__title--secondary {
     display: flex;
@@ -457,8 +458,8 @@ h1, h2, h3, h4, h5, h6, p {
 }
 .topics__section {
   width: 50%;
-  height: 40lvh;
-  margin-top: 29.1lvh;
+  height: 40vh;
+  margin-top: 29.1vh;
   text-align: center;
 }
 .topics__section-button:focus-visible {
@@ -497,8 +498,6 @@ h1, h2, h3, h4, h5, h6, p {
   }
   .topics__section {
     width: 100%;
-    margin-top: 0;
-    margin-bottom: 29.4lvh;
   }
   .topics__section-button {
     font-size: 1.75rem;
@@ -516,7 +515,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .page--main {
-  height: 550lvh;
+  height: 550vh;
   overflow: hidden;
 }
 html:has(.page--main.page--closing) {
@@ -553,7 +552,7 @@ html:has(.page--main.page--closing) {
   display: none;
 }
 .page--topic.page--closing {
-  translate: 0 -100lvh;
+  translate: 0 -100vh;
 }
 .page__close {
   width: 100%;
@@ -625,7 +624,7 @@ html:has(.page--main.page--closing) {
   position: relative;
   display: flex;
   align-items: center;
-  height: calc(86lvh - 2rem);
+  height: calc(86vh - 2rem);
 }
 .project__body {
   display: grid;

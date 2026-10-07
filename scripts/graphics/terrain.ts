@@ -7,7 +7,8 @@ import {
     HEIGHT_MAIN_SECTION, HEIGHT_MAIN_SECTION_GAP,
     TERRAIN_TYPES, TERRAIN_COLOR_LAND, TERRAIN_SEA_NOISE,
     WIDTH_PAGE_BG_MAX,
-    BREAKPOINT_W_MD
+    BREAKPOINT_W_MD,
+    FONT_SIZE_SECTION_SM
 } from "../consts";
 import { Canvas } from "./Canvas";
 import { LabelLetter } from "./Label";
@@ -100,18 +101,29 @@ export function resize(width: number, height: number, rePreRender: boolean) {
 
     const TERRAIN_WIDTH = Math.min(width, WIDTH_PAGE_BG_MAX);
     terrainLayout_sectionFullHeight = (HEIGHT_MAIN_SECTION + HEIGHT_MAIN_SECTION_GAP) * height;
-    terrainLayout_offsetY = (1 + HEIGHT_MAIN_SECTION_GAP) * height;
+    terrainLayout_offsetY = ((1 + HEIGHT_MAIN_SECTION_GAP) * height) - (IS_SMALL_VIEWPORT ? FONT_SIZE_SECTION_SM * 8 : 0);
 
     SECTION_TERRAIN.forEach((t, ti) => {
-        t.x = (width * 0.5) + (IS_SMALL_VIEWPORT ? 0 : (TERRAIN_WIDTH * (ti % 2 ? -0.25 : 0.25)));
-        t.y = terrainLayout_offsetY + (ti * terrainLayout_sectionFullHeight) + (HEIGHT_MAIN_SECTION * height * 0.5);
-        t.dist = ((t.distBase * TERRAIN_WIDTH) ** 2) * (IS_SMALL_VIEWPORT ? 2 : 1);
-        t.noise.width = t.noiseWidthBase * (TERRAIN_WIDTH / WIDTH_PAGE_BG_MAX);
+        t.x =
+            (width * 0.5) +
+            (TERRAIN_WIDTH * (
+                IS_SMALL_VIEWPORT
+                    ? -0.2
+                    : (ti % 2 ? -0.25 : 0.25)
+            ));
+        t.y =
+            terrainLayout_offsetY +
+            (ti * terrainLayout_sectionFullHeight) +
+            (HEIGHT_MAIN_SECTION * height * 0.5);
+        t.dist = ((t.distBase * TERRAIN_WIDTH) ** 2) * (IS_SMALL_VIEWPORT ? 3 : 1);
+        t.noise.width = t.noiseWidthBase * (TERRAIN_WIDTH / WIDTH_PAGE_BG_MAX) * (IS_SMALL_VIEWPORT ? 2 : 1);
 
         Cublet.CUBLETS
             .filter(c => c.sectionI === ti)
             .forEach(c => {
-                c.x = t.x + ((c.RAND_X - 0.5) * TERRAIN_WIDTH * 0.25);
+                c.x = IS_SMALL_VIEWPORT
+                    ? c.RAND_X * TERRAIN_WIDTH
+                    : t.x + ((c.RAND_X - 0.5) * TERRAIN_WIDTH * 0.25);
                 c.y = t.y + ((TERRAIN_WIDTH * 0.07) + ((c.RAND_Y - 0.5) * TERRAIN_WIDTH * 0.15));
                 [c.isoX, c.isoY] = ptFromScreen(
                     c.x,
@@ -390,7 +402,7 @@ function renderLetter(
                 letter.x,
                 letter.y + HORIZON_Z_LETTER - LABEL_ISO_Z + LABEL_DEPRESS
             );
-            let scale = 1 - (HORIZON_Z / 6);
+            let scale = Math.max(-1, 1 - (HORIZON_Z / 6));
             c.scale(1, scale);
             c.drawImage(
                 letter.CAN_FG.CAN,

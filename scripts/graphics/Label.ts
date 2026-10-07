@@ -92,7 +92,6 @@ export class Label {
                 pageHeight +
                 SECTION_GAP +
                 (this.INDEX * (SECTION_HEIGHT + SECTION_GAP)) +
-                (VIEWPORT_SM ? (SECTION_HEIGHT * -0.75) : 0) +
                 (SECTION_HEIGHT * 0.5) +
                 (LETTER_HEIGHT * 0.25) +
                 LABEL_ISO_Z;

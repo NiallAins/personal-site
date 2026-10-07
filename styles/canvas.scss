@@ -5,16 +5,17 @@
     &__sky,
     &__sea {
         position: fixed;
-        bottom: 0;
         left: 50%;
         translate: -50% 0;
     }
-
+    
     &__sky {
+        bottom: 25vh;
         z-index: $z-canvas-bg;
     }
-
+    
     &__sea {
+        bottom: 0;
         z-index: $z-canvas-fg;
         transition: top ease-out $dur-page-open;
 
