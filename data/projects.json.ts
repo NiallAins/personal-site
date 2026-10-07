@@ -121,7 +121,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "desc": [
                     "Every Chord is an app for exploring musical chords, and chord voicings, for string instruments. Chords can either be generated from a scale, or input as text - a heuristics algothim will then find the best fingerings available based on the specific instrument and tuning system provided.",
                     "The app also allows chords sheets to be bookmarked and printed off as education resources.",
-                    "This project slowly evolved from several other algorthims and visualisations I had created while studing chords and music theory in genreal. I was also able to use my other project <b><i>TinyTone</i></b> to create WebAudio tones for playing each chord in the app. The codebase remains a frankenstein mash up of these pieces, but stumbles along for now.",
+                    "This project slowly evolved from several other algorthims and visualisations I had created while studing chords and music theory in genreal. I was also able to use my other project <b><i>TinyTone</i></b> to create WebAudio tones for playing each chord in the app. The codebase remains a frankenstein mash up of these pieces, but stumbles along for now."
                 ],
                 "linkLive": "https://niallains.github.io/every-chord/",
                 "linkCode": "https://github.com/NiallAins/every-chord",
