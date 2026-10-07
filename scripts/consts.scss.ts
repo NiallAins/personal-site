@@ -18,7 +18,7 @@ export const
     FONT_SIZE_BM: number = 18,
     FONT_SIZE_BS: number = 14,
     FONT_SIZE_SECTION: number = 44,
-    FONT_SIZE_SECTION_SM: number = 32,
+    FONT_SIZE_SECTION_SM: number = 28,
     FONT_WEIGHT_NORM: number = 400,
     FONT_WEIGHT_DEMI: number = 500,
     FONT_WEIGHT_BOLD: number = 600,

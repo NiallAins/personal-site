@@ -12,7 +12,7 @@
     position: relative;
     display: flex;
     align-items: center;
-    height: calc(#{ 100svh - $h-min-sea } - 2rem);
+    height: calc(#{ 100lvh - $h-min-sea } - 2rem);
 
     &__body {
         display: grid;

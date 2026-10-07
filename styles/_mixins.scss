@@ -261,7 +261,7 @@ $breakpoints: (
 @mixin page-background {
     background: linear-gradient(
             $c-bg-d 0,
-            $c-bg-l 75svh,
+            $c-bg-l 75lvh,
             $c-bg-l
         ),
         $c-bg-l;

@@ -27,7 +27,7 @@ $f-size-h4-sm:          1.625rem;
 $f-size-bm:             1.125rem;
 $f-size-bs:             0.875rem;
 $f-size-section:        2.75rem;
-$f-size-section-sm:     2rem;
+$f-size-section-sm:     1.75rem;
 
 $f-weight-norm:         400;
 $f-weight-demi:         500;
@@ -51,9 +51,9 @@ $w-page-max:            div($-w-page-max-total, $f-size-base) - (2 * $w-page-pad
 $w-page-bg-max:         1800px;
 $w-scrollbar:           1rem;
 
-$h-main-section:        40svh;
-$h-main-section-gap:    30svh;
-$h-min-sea:             14svh;
+$h-main-section:        40lvh;
+$h-main-section-gap:    30lvh;
+$h-min-sea:             14lvh;
 
 $w-stroke-underline:    0.375rem;
 $w-stroke-outline:      2px;

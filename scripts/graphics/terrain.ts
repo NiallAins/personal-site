@@ -34,11 +34,16 @@ import {
 const
     NOISE_SEA = new Noise(...TERRAIN_SEA_NOISE),
     SECTION_TERRAIN: tTerrain[] = [],
-    OVERSHOOT_MIN_SEA_ISO = -3,
-    OVERSHOOT_MIN_LAND_ISO = 19,
-    OVERSHOOT_MIN_OBJ_ISO = 19,
-    OVERSHOOT_MAX_SEA_ISO = 9,
-    OVERSHOOT_MAX_OBJ_ISO = 9,
+    OVERSHOOT_MIN_SEA_ISO_LG = -3,
+    OVERSHOOT_MIN_LAND_ISO_LG = 19,
+    OVERSHOOT_MIN_OBJ_ISO_LG = 19,
+    OVERSHOOT_MAX_SEA_ISO_LG = 9,
+    OVERSHOOT_MAX_OBJ_ISO_LG = 9,
+    OVERSHOOT_MIN_SEA_ISO_SM = 12,
+    OVERSHOOT_MIN_LAND_ISO_SM = 22,
+    OVERSHOOT_MIN_OBJ_ISO_SM = 19,
+    OVERSHOOT_MAX_SEA_ISO_SM = 9,
+    OVERSHOOT_MAX_OBJ_ISO_SM = 9,
     LAND_PRE_RENDER_Q = 10,
     LAND_PRE_RENDER_DEPTH_ISO = 4,
     CAN_SEA_PRE_RENDER = new Canvas(),
@@ -80,20 +85,20 @@ export function init() {
 }
 
 export function resize(width: number, height: number, rePreRender: boolean) {
-    overshootMinSea = OVERSHOOT_MIN_SEA_ISO * ISO_SCALE;
-    overshootMaxSea = OVERSHOOT_MAX_SEA_ISO * ISO_SCALE;
-    overshootMinObj = OVERSHOOT_MIN_OBJ_ISO * ISO_SCALE;
-    overshootMaxObj = OVERSHOOT_MAX_OBJ_ISO * ISO_SCALE;
-    overshootMinLand = OVERSHOOT_MIN_LAND_ISO * ISO_SCALE;
+    const IS_SMALL_VIEWPORT = width < BREAKPOINT_W_MD;
+    
+    overshootMinSea = (IS_SMALL_VIEWPORT ? OVERSHOOT_MIN_SEA_ISO_SM : OVERSHOOT_MIN_SEA_ISO_LG) * ISO_SCALE;
+    overshootMaxSea = (IS_SMALL_VIEWPORT ? OVERSHOOT_MAX_SEA_ISO_SM : OVERSHOOT_MAX_SEA_ISO_LG) * ISO_SCALE;
+    overshootMinObj = (IS_SMALL_VIEWPORT ? OVERSHOOT_MIN_OBJ_ISO_SM : OVERSHOOT_MIN_OBJ_ISO_LG) * ISO_SCALE;
+    overshootMaxObj = (IS_SMALL_VIEWPORT ? OVERSHOOT_MAX_OBJ_ISO_SM : OVERSHOOT_MAX_OBJ_ISO_LG) * ISO_SCALE;
+    overshootMinLand = (IS_SMALL_VIEWPORT ? OVERSHOOT_MIN_LAND_ISO_SM : OVERSHOOT_MIN_LAND_ISO_LG) * ISO_SCALE;
     landPreRenderDepth = (LAND_PRE_RENDER_DEPTH_ISO * Z_UNIT) + (Y_UNIT);
 
     if (rePreRender) {
         preRenderTerrain();
     }
 
-    const
-        TERRAIN_WIDTH = Math.min(width, WIDTH_PAGE_BG_MAX),
-        IS_SMALL_VIEWPORT = width < BREAKPOINT_W_MD;
+    const TERRAIN_WIDTH = Math.min(width, WIDTH_PAGE_BG_MAX);
     terrainLayout_sectionFullHeight = (HEIGHT_MAIN_SECTION + HEIGHT_MAIN_SECTION_GAP) * height;
     terrainLayout_offsetY = (1 + HEIGHT_MAIN_SECTION_GAP) * height;
 

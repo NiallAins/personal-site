@@ -3,7 +3,7 @@
 
 .page {
     &--main {
-        height: 100svh + $h-main-section-gap + (6 * ($h-main-section + $h-main-section-gap));
+        height: 100lvh + $h-main-section-gap + (6 * ($h-main-section + $h-main-section-gap));
         overflow: hidden;
 
         html:has(&.#{ $cl-page-closing }) {
@@ -36,7 +36,7 @@
 
     &--topic {
         &.#{ $cl-page-closing } {
-            translate: 0 -100svh;
+            translate: 0 -100lvh;
         }
     }
 

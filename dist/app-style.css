@@ -19,7 +19,7 @@ body {
   height: 100vh;
 }
 .app__header {
-  background: linear-gradient(#111111 0, #111128 75svh, #111128), #111128;
+  background: linear-gradient(#111111 0, #111128 75lvh, #111128), #111128;
   height: 2rem;
   display: flex;
   align-items: end;
