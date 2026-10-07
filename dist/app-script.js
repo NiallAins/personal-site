@@ -16,7 +16,7 @@
   \************************/
 (__unused_webpack_module, exports, __webpack_require__) {
 
-eval("{\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst consts_1 = __webpack_require__(/*! ./consts */ \"./scripts/consts.ts\");\nconst EL_LINK = document.getElementById('app_headerLink'), EL_CLOSE = document.getElementById('app_headerClose'), HAS_BACK = window.localStorage.getItem(consts_1.TOKEN_PREVIOUS_VISIT) === consts_1.TOKEN_PREVIOUS_VISIT_SET;\nEL_LINK.innerText = HAS_BACK ? 'Back to projects' : 'More projects';\nEL_LINK.href = HAS_BACK ? './#' + TITLE_KEBAB : '.';\nEL_CLOSE.onclick = () => {\n    document.body.classList.add(consts_1.CLASS_PAGE_CLOSING);\n    setTimeout(() => document.body.classList.add(consts_1.CLASS_PAGE_INACTIVE), consts_1.DURATION_SH);\n};\n\n\n//# sourceURL=webpack://personalsite/./scripts/app.ts?\n}");
+eval("{\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst consts_1 = __webpack_require__(/*! ./consts */ \"./scripts/consts.ts\");\nconst EL_LINK = document.getElementById('app_headerLink'), EL_CLOSE = document.getElementById('app_headerClose'), HAS_BACK = window.sessionStorage.getItem(consts_1.TOKEN_PREVIOUS_VISIT) === consts_1.TOKEN_PREVIOUS_VISIT_SET;\nEL_LINK.innerText = HAS_BACK ? 'Back to projects' : 'More projects';\nEL_LINK.href = HAS_BACK ? './#' + TITLE_KEBAB : '.';\nEL_CLOSE.onclick = () => {\n    document.body.classList.add(consts_1.CLASS_PAGE_CLOSING);\n    setTimeout(() => document.body.classList.add(consts_1.CLASS_PAGE_INACTIVE), consts_1.DURATION_SH);\n};\n\n\n//# sourceURL=webpack://personalsite/./scripts/app.ts?\n}");
 
 /***/ },
 

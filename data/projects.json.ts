@@ -8,9 +8,9 @@ export const PROJECT_DATA: tTopicData[] = [
                 "title": "Johnny Cigarette",
                 "year": 2022,
                 "desc": [
-                    "JohnnyCigarette.ie is a small portfolio website made for the Irish animator known as Johnny Cigerette.",
-                    "The design was kept simple and minimalistic so as not to distract from the art it is showcasing.",
-                    "It is a static site made with VueJS, with content pulled from a JSON file which can is maintained and updated by the artist. The site features a video component which can generate a YouTube or Vimeo player when video urls are detected in the JSON.",
+                    "JohnnyCigarette.ie is a portfolio website made for the Irish animator known as Johnny Cigerette.",
+                    "I choose a simple and minimalistic design for this project, to keep the focus on the art being showcased",
+                    "The project is built as a static site with VueJS. Content is pulled from a JSON file that is maintained and updated by the artist. I also created a video component which can generate a YouTube or Vimeo player when video urls are detected in the JSON.",
                 ],
                 "linkLive": "https://johnnycigarette.ie/",
                 "linkCode": "https://github.com/NiallAins/Johnny-Cigarette",
@@ -22,9 +22,9 @@ export const PROJECT_DATA: tTopicData[] = [
                 "title": "Clever Keys",
                 "year": 2021,
                 "desc": [
-                    "Clever Keys is an interactive education website, created to accompany the Clever Keys childrens' music books. The site was designed to match the colours and style of the books' covers as designed by their author Kayleigh Hennessy.",
-                    "The site contains an integrated Stripe storefront, animated sections based on pages from the book, and an interactive piano to play along with lessons.",
-                    "The site is made using VueJS, with PHP in the backend to support the Stripe and email contact forms. The piano component supports a JSON input format which allows it o play any melody with accompaning lyrics.",
+                    "Clever Keys is an interactive education website, created to accompany the Clever Keys childrens' music books.",
+                    "I deisgned this site to align with the colours and style of the books' covers - as designed by their author Kayleigh Hennessy.",
+                    "The site is made using VueJS, with PHP in the backend. The site contains an integrated Stripe storefront, animated sections based on pages from the book, and an interactive piano to play along with lessons. I designed the piano component to accept a JSON format allowing it to play any melody with accompaning lyrics.",
                 ],
                 "linkLive": "https://niallains.github.io/cleverkeys-demo/dist",
                 "linkCode": "https://github.com/NiallAins/cleverkeys-demo",
@@ -38,9 +38,9 @@ export const PROJECT_DATA: tTopicData[] = [
                 "title": "PaperWon",
                 "year": 2020,
                 "desc": [
-                    "PaperWon was a proof of concept site created at the height of the pandemic to explore educational resources and tools for Irish Leaving cert maths studies.",
-                    "The site is targeted at visual and tactile learners - equation animations and interactive geometry components allow students to solve and understand and real state examination questions taken from past exam papers.",
-                    "The site is built using VueJS with many small custom interacive components.",
+                    "PaperWon was a proof of concept site create to explore educational resources and tools to help Irish Leaving Cert maths students.",
+                    "I created this project at the height of the pandemic, when schools were turning to online learning. I wanted to create learning tools targeted at visual and tactile learners, which could communicate abstract ideas though animation and interactive geometry components.",
+                    "The site and its component are built with VueJS, and pull data and questions from real state examination paper and curricula"
                 ],
                 "linkLive": "https://niallains.github.io/PaperWon/dist/",
                 "linkCode": "https://github.com/niallAins/PaperWon/tree/master",
@@ -54,8 +54,8 @@ export const PROJECT_DATA: tTopicData[] = [
                 "year": 2026,
                 "desc": [
                     "This very site!",
-                    "As a showcase for my digital projects, the design was based on an idea of a small world build of large pixels. The bulky nature of the pixels is contrasted with fluid animations to give life to these otherwise inanimate blocks.",
-                    "The visuals of this site were built using HTML Canvas, running a repurposed isometic graphics engine I created for a previous project. Further animations are acheived using a mixture of JavaSCript and SCSS transitions. Bash scripts are used to keep design variables in-sync across Canvas, Typescript, and SCSS files - as well as to simplify development and deployment.",
+                    "As a showcase for my digital projects, the design was based on an idea of a small world build of large pixels. The bulky nature of the pixels is contrasted with fluid animations to giving life to the otherwise inanimate blocks.",
+                    "I built the visuals of this site were built using HTML Canvas, running a repurposed isometic graphics engine I had created for a previous project. Further animations are acheived using a mixture of JavaSCript and SCSS transitions. Bash scripts are used to keep design variables in-sync across Canvas, Typescript, and SCSS files - as well as to simplify development and deployment.",
                 ],
                 "linkCode": "https://github.com/NiallAins/personal-site",
                 "tags": [
@@ -116,24 +116,30 @@ export const PROJECT_DATA: tTopicData[] = [
                 ]
             },
             {
-                "title": "Every Guitar Chord Voiced",
+                "title": "Every Chord",
                 "year": 2020,
                 "desc": [
                     "",
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://niallains.github.io/every-chord/",
+                "linkCode": "https://github.com/NiallAins/every-chord",
+                "tags": [
+                    ePageTag.Javascipt
+                ]
             },
             {
                 "title": "TinWhistler",
-                "year": 2020,
+                "year": 2023,
                 "desc": [
-                    "",
+                    "TinWhistler is an app that translate standard ABC music notation into whistle and flute specific notation.",
+                    "I designed this app to help both beginner music students, and music teacher who need to create printable classroom resoruces",
+                    "The app can translate any tune notated in the ABC standard, and transpose for any key of whistle or flute"
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://niallains.github.io/tin-whistler",
+                "linkCode": "https://github.com/NiallAins/tin-whistler",
+                "tags": [
+                    ePageTag.Javascipt
+                ]   
             },
             {
                 "title": "Tiny Painter",
@@ -165,14 +171,17 @@ export const PROJECT_DATA: tTopicData[] = [
                 ]
             },
             {
-                "title": "Name That Colour",
-                "year": 2020,
+                "title": "Name This Colour",
+                "year": 2019,
                 "desc": [
-                    "",
+                    "Name This Colour is a visualisation of the RGB colour cube, showing a point for each of 1500 named colours",
+                    "The app allows you to search for an RGB, HEX, or colour names within the cube and then find their closest matching colours"
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://niallains.github.io/NameThisColour/",
+                "linkCode": "https://github.com/NiallAins/NameThisColour",
+                "tags": [
+                    ePageTag.Javascipt
+                ]
             }
         ]
     },

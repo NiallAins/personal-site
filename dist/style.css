@@ -229,7 +229,7 @@ h1, h2, h3, h4, h5, h6, p {
   color: #ffffff;
   text-decoration: none;
   background-color: #111128;
-  line-height: 1.25;
+  line-height: 1;
 }
 .block-layout__item-label--sm {
   font-size: 1.625rem;
@@ -522,9 +522,6 @@ h1, h2, h3, h4, h5, h6, p {
 html:has(.page--main.page--closing) {
   overflow: hidden;
 }
-.page--main.page--closing {
-  padding-right: 1rem;
-}
 @media (min-width: 48rem) {
   .page--topic::-webkit-scrollbar, .page--project::-webkit-scrollbar {
     width: 1rem;
@@ -554,9 +551,6 @@ html:has(.page--main.page--closing) {
 }
 .page--topic.page--inactive, .page--project.page--inactive {
   display: none;
-}
-.page--long.page--closing, .page--long.page--sub-opening {
-  padding-right: 1rem;
 }
 .page--topic.page--closing {
   translate: 0 -100svh;
@@ -620,6 +614,11 @@ html:has(.page--main.page--closing) {
 }
 .page__close {
   color: #ffffff;
+}
+@media (min-width: 48rem) {
+  .page--main.page--closing, .page--long.page--closing, .page--long.page--sub-opening {
+    padding-right: 1rem;
+  }
 }
 
 .project {
