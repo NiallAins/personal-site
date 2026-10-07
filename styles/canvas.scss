@@ -5,7 +5,7 @@
     &__sky,
     &__sea {
         position: fixed;
-        top: 0;
+        bottom: 0;
         left: 50%;
         translate: -50% 0;
     }
@@ -19,7 +19,7 @@
         transition: top ease-out $dur-page-open;
 
         .#{ $cl-page-closing } > & {
-            top: 100lvh;
+            top: 100vh;
             pointer-events: none;
             translate: calc(-50% - 0.5rem) 0;
         }
