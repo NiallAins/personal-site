@@ -4,7 +4,7 @@ import {
     COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE, COLOR_TEXT_SHADOW,
     DURATION_SH,
     HEIGHT_MAIN_SECTION,
-    HEIGHT_MAIN_SECTION_GAP,
+    HEIGHT_MAIN_SECTION_GAP_VS, HEIGHT_MAIN_SECTION_GAP_VL,
     FONT_FAM_TITLE, FONT_WEIGHT_SECTION,
     LABEL_ANGLE, LABEL_LETTER_SHADOW_BLUR, 
     LABEL_LETTER_HEIGHT, LABEL_LETTER_WIDTH, LABEL_LINE_HEIGHT, FONT_SIZE_SECTION,
@@ -78,7 +78,7 @@ export class Label {
             IS_LEFT = this.INDEX % 2 === 0,
             SECTION_WIDTH = Math.min(pageWidth, WIDTH_PAGE_MAX) * 0.5,
             SECTION_HEIGHT = pageHeight * HEIGHT_MAIN_SECTION,
-            SECTION_GAP = pageHeight * HEIGHT_MAIN_SECTION_GAP,
+            SECTION_GAP = pageHeight * (VIEWPORT_SM ? HEIGHT_MAIN_SECTION_GAP_VS : HEIGHT_MAIN_SECTION_GAP_VL),
             ALIGN_X = VIEWPORT_SM
                 ? 0
                 : IS_LEFT
@@ -90,6 +90,7 @@ export class Label {
                 (LETTER_WIDTH * 0.5),
             SECTION_OFFSET_Y =
                 pageHeight +
+                (pageHeight * (VIEWPORT_SM ? 0.17 : 1)) +
                 SECTION_GAP +
                 (this.INDEX * (SECTION_HEIGHT + SECTION_GAP)) +
                 (SECTION_HEIGHT * 0.5) +

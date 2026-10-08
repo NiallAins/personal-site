@@ -92,14 +92,8 @@ export function initPages() {
             `);
 
         const TOPIC_PAGE = html`
-            <div>
-                <div class="block-layout">
-                    ${ PROJECT_BLOCKS }
-                </div>
-                <button
-                    class="page__close"
-                    onclick="${ openPage.bind(null, ePages.Main, -1, -1, false) }"
-                ></button>
+            <div class="block-layout">
+                ${ PROJECT_BLOCKS }
             </div>
         `;
 

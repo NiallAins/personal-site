@@ -4,7 +4,7 @@ import {
     TERRAIN_COLOR_SEA,
     COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE,
     WIDTH_STROKE_OUTLINE, WIDTH_STROKE_UNDERLINE,
-    HEIGHT_MAIN_SECTION, HEIGHT_MAIN_SECTION_GAP,
+    HEIGHT_MAIN_SECTION, HEIGHT_MAIN_SECTION_GAP_VS, HEIGHT_MAIN_SECTION_GAP_VL,
     TERRAIN_TYPES, TERRAIN_COLOR_LAND, TERRAIN_SEA_NOISE,
     WIDTH_PAGE_BG_MAX,
     BREAKPOINT_W_MD,
@@ -99,9 +99,11 @@ export function resize(width: number, height: number, rePreRender: boolean) {
         preRenderTerrain();
     }
 
-    const TERRAIN_WIDTH = Math.min(width, WIDTH_PAGE_BG_MAX);
-    terrainLayout_sectionFullHeight = (HEIGHT_MAIN_SECTION + HEIGHT_MAIN_SECTION_GAP) * height;
-    terrainLayout_offsetY = ((1 + HEIGHT_MAIN_SECTION_GAP) * height) - (IS_SMALL_VIEWPORT ? FONT_SIZE_SECTION_SM * 8 : 0);
+    const
+        TERRAIN_WIDTH = Math.min(width, WIDTH_PAGE_BG_MAX),
+        SECTION_GAP = IS_SMALL_VIEWPORT ? HEIGHT_MAIN_SECTION_GAP_VS : HEIGHT_MAIN_SECTION_GAP_VL;
+    terrainLayout_sectionFullHeight = (HEIGHT_MAIN_SECTION + SECTION_GAP) * height;
+    terrainLayout_offsetY = ((1 + SECTION_GAP) * height) - (IS_SMALL_VIEWPORT ? height * 0.17 : 0);
 
     SECTION_TERRAIN.forEach((t, ti) => {
         t.x =
@@ -111,11 +113,12 @@ export function resize(width: number, height: number, rePreRender: boolean) {
                     ? -0.2
                     : (ti % 2 ? -0.25 : 0.25)
             ));
+        t.dist = ((t.distBase * TERRAIN_WIDTH) ** 2) * (IS_SMALL_VIEWPORT ? 3 : 1);
         t.y =
             terrainLayout_offsetY +
             (ti * terrainLayout_sectionFullHeight) +
             (HEIGHT_MAIN_SECTION * height * 0.5);
-        t.dist = ((t.distBase * TERRAIN_WIDTH) ** 2) * (IS_SMALL_VIEWPORT ? 3 : 1);
+        
         t.noise.width = t.noiseWidthBase * (TERRAIN_WIDTH / WIDTH_PAGE_BG_MAX) * (IS_SMALL_VIEWPORT ? 2 : 1);
 
         Cublet.CUBLETS
@@ -124,7 +127,7 @@ export function resize(width: number, height: number, rePreRender: boolean) {
                 c.x = IS_SMALL_VIEWPORT
                     ? c.RAND_X * TERRAIN_WIDTH
                     : t.x + ((c.RAND_X - 0.5) * TERRAIN_WIDTH * 0.25);
-                c.y = t.y + ((TERRAIN_WIDTH * 0.07) + ((c.RAND_Y - 0.5) * TERRAIN_WIDTH * 0.15));
+                c.y = t.y + ((TERRAIN_WIDTH * 0.07) + ((c.RAND_Y - 0.5) * TERRAIN_WIDTH * (IS_SMALL_VIEWPORT ? 0.3 : 0.15)));
                 [c.isoX, c.isoY] = ptFromScreen(
                     c.x,
                     c.y

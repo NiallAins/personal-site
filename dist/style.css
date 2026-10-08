@@ -263,10 +263,10 @@ h1, h2, h3, h4, h5, h6, p {
 .canvas__sea {
   bottom: 0;
   z-index: 30;
-  transition: top ease-out 1000ms;
+  transition: bottom ease-out 1000ms;
 }
 .page--closing > .canvas__sea {
-  top: 100vh;
+  bottom: -100vh;
   pointer-events: none;
   translate: calc(-50% - 0.5rem) 0;
 }
@@ -391,9 +391,12 @@ h1, h2, h3, h4, h5, h6, p {
 .header__nav-more:hover::after, .header__nav-more:focus-visible::after {
   translate: 0 1rem;
 }
-.page.page--closing .header__nav-more {
+.page--closing + .header__nav-more, .page--sub-opening + .header__nav-more {
   opacity: 0;
   transition: opacity 500ms;
+}
+.page--inactive + .header__nav-more {
+  display: none;
 }
 .header__nav-more {
   display: flex;
@@ -462,6 +465,12 @@ h1, h2, h3, h4, h5, h6, p {
   margin-top: 29.1vh;
   text-align: center;
 }
+@media (max-width: calc(48rem - 1px)) {
+  .topics__section {
+    margin-top: calc(45vh + 15.3vh);
+    margin-bottom: -10.2vh;
+  }
+}
 .topics__section-button:focus-visible {
   outline: 2px solid #ffffff;
   outline-offset: 0.5rem;
@@ -479,6 +488,7 @@ h1, h2, h3, h4, h5, h6, p {
   color: transparent;
   background: none;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 .topics__section-button::selection {
   color: transparent;
@@ -517,6 +527,11 @@ h1, h2, h3, h4, h5, h6, p {
 .page--main {
   height: 550vh;
   overflow: hidden;
+}
+@media (max-width: calc(48rem - 1px)) {
+  .page--main {
+    height: 690vh;
+  }
 }
 html:has(.page--main.page--closing) {
   overflow: hidden;
@@ -583,9 +598,12 @@ html:has(.page--main.page--closing) {
 .page__close:hover::after, .page__close:focus-visible::after {
   translate: 0 1rem;
 }
-.page.page--closing .page__close {
+.page--closing + .page__close, .page--sub-opening + .page__close {
   opacity: 0;
   transition: opacity 500ms;
+}
+.page--inactive + .page__close {
+  display: none;
 }
 .page__close {
   height: 5rem;
@@ -804,9 +822,12 @@ html:has(.page--main.page--closing) {
 .project__close:hover::after, .project__close:focus-visible::after {
   translate: 0 1rem;
 }
-.page.page--closing .project__close {
+.page--closing + .project__close, .page--sub-opening + .project__close {
   opacity: 0;
   transition: opacity 500ms;
+}
+.page--inactive + .project__close {
+  display: none;
 }
 .project__close {
   display: flex;

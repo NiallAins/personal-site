@@ -13,8 +13,13 @@
     &__section {
         width: 50%;
         height: $h-main-section;
-        margin-top: $h-main-section-gap * 0.97;
+        margin-top: $h-main-section-gap-vl * 0.97;
         text-align: center;
+        
+        @include viewport(0, md) {
+            margin-top: calc(#{ $h-main-section-gap-vs * 0.9 } + #{ $h-main-item-offset-vs * 0.9 * 100vh });
+            margin-bottom: $h-main-item-offset-vs * 0.6 * -100vh
+        }
 
         // Invisible proxy buttons
         &-button {
@@ -32,6 +37,7 @@
             color: transparent;
             background: none;
             cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
 
             &::selection {
                 color: transparent;

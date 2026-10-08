@@ -17,10 +17,10 @@
     &__sea {
         bottom: 0;
         z-index: $z-canvas-fg;
-        transition: top ease-out $dur-page-open;
+        transition: bottom ease-out $dur-page-open;
 
         .#{ $cl-page-closing } > & {
-            top: 100vh;
+            bottom: -100vh;
             pointer-events: none;
             translate: calc(-50% - 0.5rem) 0;
         }

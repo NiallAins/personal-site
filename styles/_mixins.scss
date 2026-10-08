@@ -196,9 +196,14 @@ $breakpoints: (
         translate: 0 1rem;
     }
 
-    .page.#{ $cl-page-closing } & {
+    .#{ $cl-page-closing } + &,
+    .#{ $cl-page-sub-opening } + & {
         opacity: 0;
         transition: opacity $dur-sh;
+    }
+
+    .#{ $cl-page-inactive } + & {
+        display: none;
     }
 }
 

@@ -1,10 +1,18 @@
 @use 'vars' as *;
 @use 'mixins' as *;
 
+@mixin set-main-height($gap) {
+    height: 100vh + $gap + (6 * ($h-main-section + $gap));
+}
+
 .page {
     &--main {
-        height: 100vh + $h-main-section-gap + (6 * ($h-main-section + $h-main-section-gap));
+        @include set-main-height($h-main-section-gap-vl);
         overflow: hidden;
+        
+        @include viewport(0, md) {
+            @include set-main-height($h-main-section-gap-vs);
+        }
 
         html:has(&.#{ $cl-page-closing }) {
             overflow: hidden;
