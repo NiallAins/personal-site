@@ -1,4 +1,5 @@
 import {
+    BREAKPOINT_MOBILE,
     CLASS_PAGE_POST_FOUC,
     EL_HEADER_NAV_MORE,
     FONT_FAM_TITLE_PRIMARY, FONT_FAM_TITLE_SRC,
@@ -8,7 +9,7 @@ import {
 } from './consts';
 import { loadFont } from './util';
 import { init as initGraphics, setCanvasSize } from './graphics/main';
-import { initPages, openPageFromUrl } from './pages';
+import { initPages, resize as pageResize, openPageFromUrl } from './pages';
 import { _DEBUG_log } from './_debug';
 
 let
@@ -21,13 +22,19 @@ function onResize() {
     }
 }
 function resize(isInitial: boolean) {
+    const
+        HEIGHT = window.innerHeight,
+        WIDTH = window.innerWidth,
+        VIEWPORT_SM = WIDTH < BREAKPOINT_MOBILE;
     setCanvasSize(
-        Math.min(PAGE_WIDTH_MAX, window.innerWidth),
-        Math.min(PAGE_HEIGHT_MAX, window.innerHeight),
+        Math.min(PAGE_WIDTH_MAX, WIDTH),
+        Math.min(PAGE_HEIGHT_MAX, HEIGHT),
+        VIEWPORT_SM,
         isInitial
     );
+    pageResize(HEIGHT, VIEWPORT_SM);
     prevWindowWidth = window.innerWidth;
-    document.documentElement.style.setProperty(VAR_PAGE_HEIGHT, window.innerHeight + 'px');
+    document.documentElement.style.setProperty(VAR_PAGE_HEIGHT, HEIGHT + 'px');
 }
 
 function moreClick() {

@@ -1,5 +1,4 @@
 import {
-    BREAKPOINT_W_MD,
     CLASS_TOPIC_BUTTON_DISABLED,
     COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE, COLOR_TEXT_SHADOW,
     DURATION_SH,
@@ -10,7 +9,7 @@ import {
     LABEL_LETTER_HEIGHT, LABEL_LETTER_WIDTH, LABEL_LINE_HEIGHT, FONT_SIZE_SECTION,
     LABEL_LETTER_HEIGHT_SM, LABEL_LETTER_WIDTH_SM, LABEL_LINE_HEIGHT_SM, FONT_SIZE_SECTION_SM,
     WIDTH_PAGE_MAX,
-    WIDTH_STROKE_OUTLINE,
+    WIDTH_STROKE_OUTLINE
 } from "../consts";
 import { eEaseState, eEaseType } from "../types";
 import { Canvas } from "./Canvas";
@@ -31,18 +30,16 @@ export class Label {
         this.EL = el;
         this.INDEX = index;
 
+        // Touch down animate down
+        // Touch move animate up
+        // Touch click animate up
+
+        this.EL.onclick      = () => this.pressAni.play(eEaseState.ForwardReverse);
         this.EL.onmousedown  = () => this.pressAni.play(eEaseState.Forward);
-        this.EL.onmouseup    = () => this.pressAni.play(eEaseState.Backward);
         this.EL.onmouseenter = () => this.hoverAni.play(eEaseState.Forward);
+        this.EL.ontouchstart = () => this.pressAni.play(eEaseState.Forward);
+        this.EL.ontouchmove  = () => this.pressAni.play(eEaseState.Backward);
         this.EL.onmouseleave = () => {
-            this.pressAni.play(eEaseState.Backward);
-            this.hoverAni.play(eEaseState.Backward);
-        };
-        this.EL.ontouchstart  = () => {
-            this.pressAni.play(eEaseState.Forward);
-            this.hoverAni.play(eEaseState.Forward);
-        };
-        this.EL.ontouchend = () => {
             this.pressAni.play(eEaseState.Backward);
             this.hoverAni.play(eEaseState.Backward);
         };
@@ -64,12 +61,11 @@ export class Label {
         this.EL.innerText = this.EL.innerText.replace(this.BREAK_CHAR, this.BREAK_CHAR + ' ');
     }
 
-    public setPosition(pageWidth: number, pageHeight: number) {
+    public setPosition(pageWidth: number, pageHeight: number, viewportSm: boolean) {
         const
-            VIEWPORT_SM = pageWidth < BREAKPOINT_W_MD,
-            LETTER_WIDTH = VIEWPORT_SM ? LABEL_LETTER_WIDTH_SM : LABEL_LETTER_WIDTH,
-            LETTER_HEIGHT = VIEWPORT_SM ? LABEL_LETTER_HEIGHT_SM : LABEL_LETTER_HEIGHT,
-            LINE_HEIGHT = VIEWPORT_SM ? LABEL_LINE_HEIGHT_SM : LABEL_LINE_HEIGHT;
+            LETTER_WIDTH = viewportSm ? LABEL_LETTER_WIDTH_SM : LABEL_LETTER_WIDTH,
+            LETTER_HEIGHT = viewportSm ? LABEL_LETTER_HEIGHT_SM : LABEL_LETTER_HEIGHT,
+            LINE_HEIGHT = viewportSm ? LABEL_LINE_HEIGHT_SM : LABEL_LINE_HEIGHT;
 
         const
             BREAK = this.LETTERS.findIndex(l => l.LETTER === this.BREAK_CHAR),
@@ -86,14 +82,14 @@ export class Label {
             IS_LEFT = this.INDEX % 2 === 0,
             SECTION_WIDTH = Math.min(pageWidth, WIDTH_PAGE_MAX) * 0.5,
             SECTION_HEIGHT = pageHeight * HEIGHT_MAIN_SECTION,
-            SECTION_GAP = pageHeight * (VIEWPORT_SM ? HEIGHT_MAIN_SECTION_GAP_VS : HEIGHT_MAIN_SECTION_GAP_VL),
-            ALIGN_X = VIEWPORT_SM
+            SECTION_GAP = pageHeight * (viewportSm ? HEIGHT_MAIN_SECTION_GAP_VS : HEIGHT_MAIN_SECTION_GAP_VL),
+            ALIGN_X = viewportSm
                 ? 0
                 : IS_LEFT
                 ? -0.5
                 : 0.5,
             SECTION_OFFSET_X =
-                (pageWidth * (VIEWPORT_SM && this.LETTERS.length < 12 ? 0.6 : 0.5)) +
+                (pageWidth * (viewportSm && this.LETTERS.length < 12 ? 0.6 : 0.5)) +
                 (SECTION_WIDTH * ALIGN_X) -
                 (LETTER_WIDTH * 0.5),
             SECTION_OFFSET_Y =
@@ -101,7 +97,7 @@ export class Label {
                 SECTION_GAP +
                 (this.INDEX * (SECTION_HEIGHT + SECTION_GAP)) +
                 (SECTION_HEIGHT * 0.5) +
-                (VIEWPORT_SM ? pageHeight * 0.17 : 0) +
+                (viewportSm ? pageHeight * 0.17 : 0) +
                 (LETTER_HEIGHT * 0.25) +
                 LABEL_ISO_Z;
 

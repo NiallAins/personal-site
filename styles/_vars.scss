@@ -17,11 +17,11 @@ $f-fam-body:            $f-fam-body-primary,  "Helvetica", san-serif;
 
 $f-size-base:           16px;
 $f-size-h1:             4.5rem;
-$f-size-h1-vp-sm:       3.5rem;
+$f-size-h1-vs:          3.5rem;
 $f-size-h2:             3.25rem;
-$f-size-h2-vp-sm:       2.5rem;
+$f-size-h2-vs:          2.5rem;
 $f-size-h3:             2.375rem;
-$f-size-h3-vp-sm:       1.875rem;
+$f-size-h3-vs:          1.875rem;
 $f-size-h4:             1.75rem;
 $f-size-h4-sm:          1.625rem;
 $f-size-bm:             1.125rem;
@@ -89,6 +89,7 @@ $bp-w-md:               48rem; // 768px
 $bp-w-sm:               36rem; // 608px
 $bp-w-xs:               24rem; // 384px
 $bp-h-sm:               36rem; // 608px
+$bp-mobile:             $bp-w-md;
 
 
 //

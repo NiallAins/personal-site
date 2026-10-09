@@ -17,7 +17,7 @@
         margin-top: to-vh($h-main-section-gap-vl);
         text-align: center;
         
-        @include viewport(0, md) {
+        @include viewport(mobile) {
             margin-top: to-vh($h-main-section-gap-vs);
         }
 
@@ -37,6 +37,7 @@
             color: transparent;
             background: none;
             cursor: pointer;
+            user-select: none;
             -webkit-tap-highlight-color: transparent;
 
             &::selection {
@@ -58,7 +59,7 @@
         }
     }
 
-    @include viewport(0, md) {
+    @include viewport(mobile) {
         // Account for viewport height changes due to mobile browser sliding nav bar
         margin-top: calc(100dvh - var(#{ $var-page-height }));
         align-items: center;
@@ -76,7 +77,7 @@
         }
     }
 
-    @include viewport(md) {
+    @include viewport(desktop) {
         align-items: start;
 
         &__section {

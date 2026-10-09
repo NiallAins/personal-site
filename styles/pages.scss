@@ -11,7 +11,7 @@
         @include set-main-height($h-main-section-gap-vl);
         overflow: hidden;
         
-        @include viewport(0, md) {
+        @include viewport(mobile) {
             @include set-main-height($h-main-section-gap-vs);
         }
 
@@ -55,7 +55,7 @@
     }
 
     // Prevent content shift on scrollbar hide
-    @include viewport(md) {
+    @include viewport(desktop) {
         &--main.#{ $cl-page-closing },
         &--long.#{ $cl-page-closing },
         &--long.#{ $cl-page-sub-opening } {

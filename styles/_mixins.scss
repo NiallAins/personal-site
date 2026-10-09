@@ -16,16 +16,23 @@ $breakpoints: (
     'height-sm': $bp-h-sm
 );
 @mixin viewport($from, $to: null) {
+    @if ($from == 'mobile') {
+        $from: 0;
+        $to: $bp-mobile;
+    } @else if ($from == 'desktop') {
+        $from: $bp-mobile;
+        $to: null;
+    } @else {
+        $from: iif($from == 0, 0, get($breakpoints, $from));
+        $to: get($breakpoints, $to);
+    }
     $dir: iif($from == 'height-sm' or $to == 'height-sm', 'height', 'width');
-    $from: iif($from == 0, 0, get($breakpoints, $from));
 
     @if ($to == null) {
         @media (min-#{ $dir }: $from) {
             @content;
         }
     } @else {
-        $to: get($breakpoints, $to);
-
         @if ($from == 0) {
             @media (max-#{ $dir }: calc(#{ $to } - 1px)) {
                 @content;
@@ -52,7 +59,7 @@ $breakpoints: (
     line-height: 1;
 
     @include viewport(0, sm) {
-        font-size: $f-size-h1-vp-sm;
+        font-size: $f-size-h1-vs;
     }
 }
 
@@ -64,7 +71,7 @@ $breakpoints: (
     color: $c-text-l;
 
     @include viewport(0, sm) {
-        font-size: $f-size-h2-vp-sm;
+        font-size: $f-size-h2-vs;
     }
 }
 
@@ -77,7 +84,7 @@ $breakpoints: (
     color: $c-text-l;
 
     @include viewport(0, sm) {
-        font-size: $f-size-h3-vp-sm;
+        font-size: $f-size-h3-vs;
     }
 }
 
@@ -273,7 +280,7 @@ $breakpoints: (
 }
 
 @mixin scrollbar {
-    @include viewport(md) {
+    @include viewport(desktop) {
         &::-webkit-scrollbar {
             width: $w-scrollbar;
         }

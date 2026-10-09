@@ -6,32 +6,37 @@ import { tTerrain } from "./types";
 
 const
     PROD = false,
-    LOG_DT = {
+    LOG = {
         t: 0,
         dtSum: 0,
+        dtRecord: [] as number[],
+        dtRecordMax: 15,
         el: document.createElement('div')
     };
 
-LOG_DT.el.id = 'DEBUG';
+LOG.el.id = 'DEBUG';
 
-export function _DEBUG_log(str: string) {
+export function _DEBUG_log(...strs: string[]) {
+    const STR = strs.join('<br/>');
+
     if (PROD) {
-        // return;
+        return;
     }
 
-    if (!LOG_DT.el.parentElement) {
-        document.body.appendChild(LOG_DT.el);
-        LOG_DT.el.style.position = 'fixed';
-        LOG_DT.el.style.top = '0px';
-        LOG_DT.el.style.right = '0px';
-        LOG_DT.el.style.padding = '1rem';
-        LOG_DT.el.style.color = 'red';
-        LOG_DT.el.style.font = '16px "Courier New"';
-        LOG_DT.el.style.fontWeight = 'bold';
-        LOG_DT.el.innerHTML = '0';
+    if (!LOG.el.parentElement) {
+        document.body.appendChild(LOG.el);
+        LOG.el.style.position = 'fixed';
+        LOG.el.style.top = '0px';
+        LOG.el.style.right = '0px';
+        LOG.el.style.padding = '1rem';
+        LOG.el.style.color = 'red';
+        LOG.el.style.font = '16px "Courier New"';
+        LOG.el.style.fontWeight = 'bold';
+        LOG.el.style.textAlign = 'right';
+        LOG.el.innerHTML = '0';
     }
 
-    LOG_DT.el.innerHTML = str;
+    LOG.el.innerHTML = STR;
 }
 
 export function _DEBUG_logDt(dT: number) {
@@ -39,16 +44,21 @@ export function _DEBUG_logDt(dT: number) {
         return;
     }
 
-    LOG_DT.t += 1;
-    LOG_DT.dtSum += dT;
-
-    if (LOG_DT.t > TARGET_FPS * 0.5) {
-        LOG_DT.t = 0;
-        LOG_DT.dtSum = 0;
-
+    LOG.t += 1;
+    LOG.dtSum += dT;
+    
+    if (LOG.t > TARGET_FPS * 0.5) {
+        const DT = LOG.dtSum / LOG.t;
+        LOG.dtRecord.push(DT);
         _DEBUG_log(
-            LOG_DT.el.innerHTML = (LOG_DT.dtSum / LOG_DT.t).toFixed(2)
+            'dt ' + DT.toFixed(2),
+            'max ' + Math.max(...LOG.dtRecord).toFixed(2)
         );
+        LOG.t = 0;
+        LOG.dtSum = 0;
+        if (LOG.dtRecord.length > LOG.dtRecordMax) {
+            LOG.dtRecord.shift();
+        }
     }
 }
 

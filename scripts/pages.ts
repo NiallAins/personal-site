@@ -11,10 +11,13 @@ import {
     DURATION_PAGE_OPEN_DELAY,
     CLASS_PROJECT_LINK_MISSING,
     TOKEN_PREVIOUS_VISIT,
-    TOKEN_PREVIOUS_VISIT_SET
+    TOKEN_PREVIOUS_VISIT_SET,
+    HEIGHT_MAIN_SECTION,
+    HEIGHT_MAIN_SECTION_GAP_VL,
+    HEIGHT_MAIN_SECTION_GAP_VS
 } from "./consts";
 import { PROJECT_DATA } from "../data/projects.json";
-import { toggleSectionOpen as toggleGraphicsSectionOpen } from "./graphics/main";
+import { renderFrame, toggleSectionOpen as toggleGraphicsSectionOpen } from "./graphics/main";
 import { html, toKebabCase } from "./util";
 import { DATA_BG } from "../data/images.json";
 import { ePageTag, ePages } from "./types";
@@ -39,6 +42,8 @@ let
     transitionDelayTimeout: number = -1,
     transitionDelayToTimeout: number = -1,
     transitionDurationTimeout: number = -1,
+    sectionHeight: number = 0,
+    sectionHeightOffset: number = 0,
     // When user is linked direct to project page, back button should open main page
     initialLoadOnProject: boolean = false;
 
@@ -115,6 +120,11 @@ export function initPages() {
     EL_PROJECT_CLOSE.onclick = () => openPage(ePages.Topic, currentOpenTopic);
 }
 
+export function resize(pageHeight: number, viewportSm: boolean) {
+    sectionHeight = pageHeight * (HEIGHT_MAIN_SECTION + (viewportSm ? HEIGHT_MAIN_SECTION_GAP_VS : HEIGHT_MAIN_SECTION_GAP_VL));
+    sectionHeightOffset = pageHeight * (viewportSm ? 1.125 : 0.9);
+}
+
 
 //
 // Convert URL hash to page, then open
@@ -167,6 +177,13 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
             toggleGraphicsSectionOpen(false, currentOpenTopic);
             transitionPage(page);
             setUrl(ROUTES[page]!, isInitial);
+            if (currentOpenTopic > -1) {
+                window.scrollTo(
+                    0,
+                    sectionHeightOffset + (currentOpenTopic * sectionHeight)
+                );
+                renderFrame();
+            }
             window.sessionStorage.setItem(TOKEN_PREVIOUS_VISIT, TOKEN_PREVIOUS_VISIT_SET);
         break;
 

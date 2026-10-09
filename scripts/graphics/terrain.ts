@@ -7,8 +7,7 @@ import {
     HEIGHT_MAIN_SECTION, HEIGHT_MAIN_SECTION_GAP_VS, HEIGHT_MAIN_SECTION_GAP_VL,
     TERRAIN_TYPES, TERRAIN_COLOR_LAND, TERRAIN_SEA_NOISE,
     WIDTH_PAGE_BG_MAX,
-    BREAKPOINT_W_MD,
-    FONT_SIZE_SECTION_SM
+    BREAKPOINT_MOBILE
 } from "../consts";
 import { Canvas } from "./Canvas";
 import { LabelLetter } from "./Label";
@@ -35,16 +34,16 @@ import {
 const
     NOISE_SEA = new Noise(...TERRAIN_SEA_NOISE),
     SECTION_TERRAIN: tTerrain[] = [],
-    OVERSHOOT_MIN_SEA_ISO_LG = -3,
-    OVERSHOOT_MIN_LAND_ISO_LG = 19,
-    OVERSHOOT_MIN_OBJ_ISO_LG = 19,
-    OVERSHOOT_MAX_SEA_ISO_LG = 9,
-    OVERSHOOT_MAX_OBJ_ISO_LG = 9,
-    OVERSHOOT_MIN_SEA_ISO_SM = 12,
-    OVERSHOOT_MIN_LAND_ISO_SM = 22,
-    OVERSHOOT_MIN_OBJ_ISO_SM = 19,
-    OVERSHOOT_MAX_SEA_ISO_SM = 9,
-    OVERSHOOT_MAX_OBJ_ISO_SM = 9,
+    OVERSHOOT_MIN_SEA_ISO_VL = -3,
+    OVERSHOOT_MIN_LAND_ISO_VL = 19,
+    OVERSHOOT_MIN_OBJ_ISO_VL = 19,
+    OVERSHOOT_MAX_SEA_ISO_VL = 9,
+    OVERSHOOT_MAX_OBJ_ISO_VL = 9,
+    OVERSHOOT_MIN_SEA_ISO_VS = 12,
+    OVERSHOOT_MIN_LAND_ISO_VS = 22,
+    OVERSHOOT_MIN_OBJ_ISO_VS = 19,
+    OVERSHOOT_MAX_SEA_ISO_VS = 9,
+    OVERSHOOT_MAX_OBJ_ISO_VS = 9,
     LAND_PRE_RENDER_Q = 10,
     LAND_PRE_RENDER_DEPTH_ISO = 4,
     CAN_SEA_PRE_RENDER = new Canvas(),
@@ -85,14 +84,12 @@ export function init() {
     });
 }
 
-export function resize(width: number, height: number, rePreRender: boolean) {
-    const IS_SMALL_VIEWPORT = width < BREAKPOINT_W_MD;
-    
-    overshootMinSea = (IS_SMALL_VIEWPORT ? OVERSHOOT_MIN_SEA_ISO_SM : OVERSHOOT_MIN_SEA_ISO_LG) * ISO_SCALE;
-    overshootMaxSea = (IS_SMALL_VIEWPORT ? OVERSHOOT_MAX_SEA_ISO_SM : OVERSHOOT_MAX_SEA_ISO_LG) * ISO_SCALE;
-    overshootMinObj = (IS_SMALL_VIEWPORT ? OVERSHOOT_MIN_OBJ_ISO_SM : OVERSHOOT_MIN_OBJ_ISO_LG) * ISO_SCALE;
-    overshootMaxObj = (IS_SMALL_VIEWPORT ? OVERSHOOT_MAX_OBJ_ISO_SM : OVERSHOOT_MAX_OBJ_ISO_LG) * ISO_SCALE;
-    overshootMinLand = (IS_SMALL_VIEWPORT ? OVERSHOOT_MIN_LAND_ISO_SM : OVERSHOOT_MIN_LAND_ISO_LG) * ISO_SCALE;
+export function resize(width: number, height: number, viewportSm: boolean, rePreRender: boolean) {
+    overshootMinSea = (viewportSm ? OVERSHOOT_MIN_SEA_ISO_VS : OVERSHOOT_MIN_SEA_ISO_VL) * ISO_SCALE;
+    overshootMaxSea = (viewportSm ? OVERSHOOT_MAX_SEA_ISO_VS : OVERSHOOT_MAX_SEA_ISO_VL) * ISO_SCALE;
+    overshootMinObj = (viewportSm ? OVERSHOOT_MIN_OBJ_ISO_VS : OVERSHOOT_MIN_OBJ_ISO_VL) * ISO_SCALE;
+    overshootMaxObj = (viewportSm ? OVERSHOOT_MAX_OBJ_ISO_VS : OVERSHOOT_MAX_OBJ_ISO_VL) * ISO_SCALE;
+    overshootMinLand = (viewportSm ? OVERSHOOT_MIN_LAND_ISO_VS : OVERSHOOT_MIN_LAND_ISO_VL) * ISO_SCALE;
     landPreRenderDepth = (LAND_PRE_RENDER_DEPTH_ISO * Z_UNIT) + (Y_UNIT);
 
     if (rePreRender) {
@@ -101,33 +98,33 @@ export function resize(width: number, height: number, rePreRender: boolean) {
 
     const
         TERRAIN_WIDTH = Math.min(width, WIDTH_PAGE_BG_MAX),
-        SECTION_GAP = IS_SMALL_VIEWPORT ? HEIGHT_MAIN_SECTION_GAP_VS : HEIGHT_MAIN_SECTION_GAP_VL;
+        SECTION_GAP = viewportSm ? HEIGHT_MAIN_SECTION_GAP_VS : HEIGHT_MAIN_SECTION_GAP_VL;
     terrainLayout_sectionFullHeight = (HEIGHT_MAIN_SECTION + SECTION_GAP) * height;
-    terrainLayout_offsetY = ((1 + SECTION_GAP) * height) - (IS_SMALL_VIEWPORT ? height * 0.17 : 0);
+    terrainLayout_offsetY = ((1 + SECTION_GAP) * height) - (viewportSm ? height * 0.17 : 0);
 
     SECTION_TERRAIN.forEach((t, ti) => {
         t.x =
             (width * 0.5) +
             (TERRAIN_WIDTH * (
-                IS_SMALL_VIEWPORT
+                viewportSm
                     ? -0.2
                     : (ti % 2 ? -0.25 : 0.25)
             ));
-        t.dist = ((t.distBase * TERRAIN_WIDTH) ** 2) * (IS_SMALL_VIEWPORT ? 3 : 1);
+        t.dist = ((t.distBase * TERRAIN_WIDTH) ** 2) * (viewportSm ? 3 : 1);
         t.y =
             terrainLayout_offsetY +
             (ti * terrainLayout_sectionFullHeight) +
             (HEIGHT_MAIN_SECTION * height * 0.5);
         
-        t.noise.width = t.noiseWidthBase * (TERRAIN_WIDTH / WIDTH_PAGE_BG_MAX) * (IS_SMALL_VIEWPORT ? 2 : 1);
+        t.noise.width = t.noiseWidthBase * (TERRAIN_WIDTH / WIDTH_PAGE_BG_MAX) * (viewportSm ? 2 : 1);
 
         Cublet.CUBLETS
             .filter(c => c.sectionI === ti)
             .forEach(c => {
-                c.x = IS_SMALL_VIEWPORT
+                c.x = viewportSm
                     ? c.RAND_X * TERRAIN_WIDTH
                     : t.x + ((c.RAND_X - 0.5) * TERRAIN_WIDTH * 0.25);
-                c.y = t.y + ((TERRAIN_WIDTH * 0.07) + ((c.RAND_Y - 0.5) * TERRAIN_WIDTH * (IS_SMALL_VIEWPORT ? 0.3 : 0.15)));
+                c.y = t.y + ((TERRAIN_WIDTH * 0.07) + ((c.RAND_Y - 0.5) * TERRAIN_WIDTH * (viewportSm ? 0.3 : 0.15)));
                 [c.isoX, c.isoY] = ptFromScreen(
                     c.x,
                     c.y

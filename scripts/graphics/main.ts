@@ -1,16 +1,13 @@
 import {
     SKY_HEIGHT_RATIO,
     DURATION_SH, DURATION_PAGE_OPEN, DURATION_PAGE_OPEN_DELAY,
-    BREAKPOINT_W_MD,
     ISO_SCALE_LG, ISO_SCALE_SM,
-    X_UNIT_SCALE, Y_UNIT_SCALE, Z_UNIT_SCALE, ROW_HEIGHT_SCALE, LABEL_DEPRESS_Z_SCALE, LABEL_LETTER_HEIGHT, LABEL_LINE_HEIGHT, LABEL_Z_SCALE,
-    EL_PAGE_MAIN,
-    VAR_PAGE_HEIGHT
+    X_UNIT_SCALE, Y_UNIT_SCALE, Z_UNIT_SCALE, ROW_HEIGHT_SCALE, LABEL_DEPRESS_Z_SCALE, LABEL_LETTER_HEIGHT, LABEL_LINE_HEIGHT, LABEL_Z_SCALE
 } from "../consts";
 import { Canvas } from "./Canvas";
 import { Splash } from "./Splash";
 import { Label } from "./Label";
-import { init as initTerrain, render as renderTerrain, resize as resizeTerrain } from "./terrain";
+import { init as initTerrain, renderSingleIso, render as renderTerrain, resize as resizeTerrain } from "./terrain";
 import { requestFrameScaled } from "../util";
 import { EL_TOPIC_BUTTONS } from "../pages";
 import { Cublet } from "./Cublet";
@@ -41,6 +38,7 @@ export const
 let
     isViewportSmall: boolean = false,
     paused: boolean = false,
+    renderSingleFrame: boolean = false,
     fades: Ease[] = [],
     sectionOpenTimeout: number = -1;
 
@@ -65,13 +63,15 @@ export function toggleSectionOpen(open: boolean, sectionI: number = -1) {
         }
         sectionOpenTimeout = setTimeout(
             () => paused = true,
-            DURATION_PAGE_OPEN + DURATION_PAGE_OPEN_DELAY
+            DURATION_PAGE_OPEN_DELAY
         );
     } else {
-        paused = false;
         if (sectionI >= 0) {
             sectionOpenTimeout = setTimeout(
-                () => fades[sectionI].play(eEaseState.Backward),
+                () => { 
+                    paused = false;
+                    fades[sectionI].play(eEaseState.Backward)
+                },
                 DURATION_PAGE_OPEN
             );
         }
@@ -95,13 +95,11 @@ export function init() {
     window.requestAnimationFrame(() => animate());
 }
 
-export function setCanvasSize(pageWidth: number, pageHeight: number, isInitial: boolean) {
-    const
-        VIEWPORT_SMALL = pageWidth < BREAKPOINT_W_MD,
-        BREAKPOINT_HIT = VIEWPORT_SMALL !== isViewportSmall;
+export function setCanvasSize(pageWidth: number, pageHeight: number, viewportSm: boolean, isInitial: boolean) {
+    const BREAKPOINT_HIT = viewportSm !== isViewportSmall;
 
     if (BREAKPOINT_HIT || isInitial) {
-        isViewportSmall = VIEWPORT_SMALL;
+        isViewportSmall = viewportSm;
 
         isoScale            = isViewportSmall ? ISO_SCALE_SM : ISO_SCALE_LG;
         xUnit               = X_UNIT_SCALE * isoScale;
@@ -113,15 +111,19 @@ export function setCanvasSize(pageWidth: number, pageHeight: number, isInitial: 
         labelLetterSpaceIso = LABEL_LETTER_HEIGHT / isoScale;
         labelLineHeighteIso = LABEL_LINE_HEIGHT / isoScale;
 
-        LABELS.forEach(l => l.preRender(VIEWPORT_SMALL));
+        LABELS.forEach(l => l.preRender(viewportSm));
     }
 
     CAN_SKY.setSize(pageWidth, pageHeight * SKY_HEIGHT_RATIO);
     renderSky(CAN_SKY);
-    CAN_SEA.setSize(pageWidth, pageHeight);
+    CAN_SEA.setSize(pageWidth, pageHeight, viewportSm);
 
-    LABELS.forEach(l => l.setPosition(pageWidth, pageHeight));
-    resizeTerrain(pageWidth, pageHeight, BREAKPOINT_HIT || isInitial);
+    LABELS.forEach(l => l.setPosition(pageWidth, pageHeight, viewportSm));
+    resizeTerrain(pageWidth, pageHeight, viewportSm, BREAKPOINT_HIT || isInitial);
+}
+
+export function renderFrame() {
+    renderSingleFrame = true;
 }
 
 
@@ -130,11 +132,14 @@ export function setCanvasSize(pageWidth: number, pageHeight: number, isInitial: 
 //
 
 function animate(t: number = 0, dT: number = 1) {
-    if (!paused) {
+    if (!paused || renderSingleFrame) {
+        _DEBUG_logDt(dT);
+        
         Ease.step(dT);
 
         renderTerrain(CAN_SEA, fades.map(f => f.value), t, dT, isViewportSmall);
         t = (t + (0.00075 * dT)) % 1;
+        renderSingleFrame = false;
     }
 
     requestFrameScaled(animate.bind(null, t));

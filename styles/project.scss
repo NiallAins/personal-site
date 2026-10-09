@@ -145,7 +145,7 @@
         color: $c-text-l;
     }
 
-    @include viewport(0, md) {
+    @include viewport(mobile) {
         display: block;
         height: auto;
         padding-top: 4rem;

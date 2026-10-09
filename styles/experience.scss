@@ -229,7 +229,7 @@ $cv-max: 65rem;
     }
 }
 
-@include viewport(0, md) {
+@include viewport(mobile) {
     .experience {
         padding-bottom: 6rem;
     }

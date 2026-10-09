@@ -119,8 +119,8 @@ h1, h2, h3, h4, h5, h6, p {
     height: min(14rem, 56vw);
     text-align: center;
   }
-  .block-layout__slot:nth-child(4) {
-    transition: translate 500ms 500ms;
+  .block-layout__slot:nth-child(4), .block-layout__slot:nth-child(5) {
+    transition: opacity 500ms 750ms;
   }
   .block-layout__item {
     max-width: 18rem;
@@ -249,9 +249,11 @@ h1, h2, h3, h4, h5, h6, p {
     font-size: 1.375rem;
   }
 }
-.page--closing .block-layout__slot:nth-child(4) {
-  translate: 0 100vh;
-  transition: unset;
+@media (max-width: calc(48rem - 1px)) {
+  .page--closing .block-layout__slot:nth-child(4), .page--closing .block-layout__slot:nth-child(5) {
+    opacity: 0;
+    transition: unset;
+  }
 }
 .page--sub-opening .block-layout__item:focus {
   scale: 2;
@@ -501,6 +503,7 @@ h1, h2, h3, h4, h5, h6, p {
   color: transparent;
   background: none;
   cursor: pointer;
+  user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 .topics__section-button::selection {
