@@ -42,6 +42,7 @@ export const
     WIDTH_IMG_XS: number = 12,
     WIDTH_IMG_SM: number = 200,
     WIDTH_IMG_MD: number = 400,
+    VAR_PAGE_HEIGHT: string = '--h-page',
     Z_CANVAS_BG: number = 10,
     Z_BOX_TOP: number = 20,
     Z_CANVAS_FG: number = 30,

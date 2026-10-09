@@ -10,7 +10,7 @@
     }
     
     &__sky {
-        bottom: 25vh;
+        bottom: 25svh;
         z-index: $z-canvas-bg;
     }
     
@@ -20,7 +20,7 @@
         transition: bottom ease-out $dur-page-open;
 
         .#{ $cl-page-closing } > & {
-            bottom: -100vh;
+            bottom: -100svh;
             pointer-events: none;
             translate: calc(-50% - 0.5rem) 0;
         }

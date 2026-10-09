@@ -1,5 +1,6 @@
 @use 'sass:math' as *;
 @use 'vars' as *;
+@use 'util' as *;
 @use 'mixins' as *;
 
 .topics {
@@ -12,13 +13,12 @@
     
     &__section {
         width: 50%;
-        height: $h-main-section;
-        margin-top: $h-main-section-gap-vl * 0.97;
+        height: to-vh($h-main-section);
+        margin-top: to-vh($h-main-section-gap-vl);
         text-align: center;
         
         @include viewport(0, md) {
-            margin-top: calc(#{ $h-main-section-gap-vs * 0.9 } + #{ $h-main-item-offset-vs * 0.9 * 100vh });
-            margin-bottom: $h-main-item-offset-vs * 0.6 * -100vh
+            margin-top: to-vh($h-main-section-gap-vs);
         }
 
         // Invisible proxy buttons
@@ -35,6 +35,7 @@
             letter-spacing: $label-letter-space;
             line-height: $label-line-height;
             color: transparent;
+            color: red;
             background: none;
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
@@ -45,6 +46,7 @@
 
             &.#{ $cl-topic-button-disabled } {
                 pointer-events: none;
+                color: transparent;
 
                 &:focus-visible {
                     outline: 0px;
@@ -67,6 +69,7 @@
                 font-size: $f-size-section-sm;
                 letter-spacing: $label-letter-space-sm;
                 line-height: $label-line-height-sm;
+                margin-top: to-vh($h-main-item-offset-vs);
             }
         }
     }

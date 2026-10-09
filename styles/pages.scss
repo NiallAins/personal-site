@@ -1,8 +1,9 @@
 @use 'vars' as *;
+@use 'util' as *;
 @use 'mixins' as *;
 
 @mixin set-main-height($gap) {
-    height: 100vh + $gap + (6 * ($h-main-section + $gap));
+    height: to-vh(1 + $gap + (6 * ($h-main-section + $gap)));
 }
 
 .page {
@@ -44,7 +45,7 @@
 
     &--topic {
         &.#{ $cl-page-closing } {
-            translate: 0 -100vh;
+            translate: 0 -100svh;
         }
     }
 

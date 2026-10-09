@@ -3,6 +3,7 @@ import {
     EL_HEADER_NAV_MORE,
     FONT_FAM_TITLE_PRIMARY, FONT_FAM_TITLE_SRC,
     PAGE_HEIGHT_MAX, PAGE_WIDTH_MAX,
+    VAR_PAGE_HEIGHT,
     WINDOW_RESIZE_DEBOUNCE
 } from './consts';
 import { loadFont } from './util';
@@ -26,6 +27,7 @@ function resize(isInitial: boolean) {
         isInitial
     );
     prevWindowWidth = window.innerWidth;
+    document.documentElement.style.setProperty(VAR_PAGE_HEIGHT, window.innerHeight + 'px');
 }
 
 function moreClick() {

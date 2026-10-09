@@ -20,3 +20,8 @@ $-z: 0;
         @return $if-false;
     }
 }
+
+$util-var-page-height: '--h-page';
+@function to-vh($h) {
+    @return calc(var(#{ $util-var-page-height }) * $h);
+}

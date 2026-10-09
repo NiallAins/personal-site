@@ -85,15 +85,15 @@ export class Label {
                 ? -0.5
                 : 0.5,
             SECTION_OFFSET_X =
-                (pageWidth * 0.5) +
+                (pageWidth * (VIEWPORT_SM && this.LETTERS.length < 12 ? 0.6 : 0.5)) +
                 (SECTION_WIDTH * ALIGN_X) -
                 (LETTER_WIDTH * 0.5),
             SECTION_OFFSET_Y =
                 pageHeight +
-                (pageHeight * (VIEWPORT_SM ? 0.17 : 1)) +
                 SECTION_GAP +
                 (this.INDEX * (SECTION_HEIGHT + SECTION_GAP)) +
                 (SECTION_HEIGHT * 0.5) +
+                (VIEWPORT_SM ? pageHeight * 0.17 : 0) +
                 (LETTER_HEIGHT * 0.25) +
                 LABEL_ISO_Z;
 
