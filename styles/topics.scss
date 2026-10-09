@@ -35,7 +35,6 @@
             letter-spacing: $label-letter-space;
             line-height: $label-line-height;
             color: transparent;
-            color: pink;
             background: none;
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
@@ -72,6 +71,7 @@
                 letter-spacing: $label-letter-space-sm;
                 line-height: $label-line-height-sm;
                 margin-top: to-vh($h-main-item-offset-vs);
+                padding: 1.5rem;
             }
         }
     }

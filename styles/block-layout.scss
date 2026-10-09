@@ -54,7 +54,7 @@ $w-layout-pad-bottom: 4.5rem;
     margin: 0 auto;
     padding: $w-layout-pad-top 0 $w-layout-pad-bottom;
 
-    &__slot {
+    &__slot {        
         @for $i from 1 through pow($w-layout-grid-size-lg, 2) {
             &:nth-child(#{ $i }) {
                 z-index: $z-page - $i;
@@ -67,6 +67,15 @@ $w-layout-pad-bottom: 4.5rem;
 
         &__slot {
             @include slot-flex;
+            text-align: center;
+
+            &:nth-child(4) {
+                transition: translate $dur-sh $dur-sh;
+            }
+        }
+
+        &__item {
+            max-width: 18rem;
         }
     }
 
@@ -114,7 +123,7 @@ $w-layout-pad-bottom: 4.5rem;
         width: calc(100% - 1rem);
         transition:
             scale $dur-page-open,
-            opacity $dur-sh,
+            opacity $dur-sh $dur-lg,
             translate $dur-lg;
 
         &:hover,
@@ -161,13 +170,17 @@ $w-layout-pad-bottom: 4.5rem;
         }
     }
 
-    .page.#{ $cl-page-sub-opening } &__item:focus {
+    .#{ $cl-page-closing } &__slot:nth-child(4) {
+        translate: 0 100vh;
+        transition: unset;
+    }
+
+    .#{ $cl-page-sub-opening } &__item:focus {
         scale: 2;
-        opacity: 0;
         z-index: $z-box-top;
     }
 
-    .page.#{ $cl-page-sub-opening } &__item:not(:focus) {
+    .#{ $cl-page-sub-opening } &__item:not(:focus) {
         translate: -200vw -100vw;
     }
 }

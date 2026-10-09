@@ -78,7 +78,7 @@ export const
     DURATION_SH: number = 500,
     DURATION_LG: number = 1000,
     DURATION_PAGE_OPEN: number = 1000,
-    DURATION_PAGE_OPEN_DELAY: number = 250,
+    DURATION_PAGE_OPEN_DELAY: number = 500,
     CLASS_PAGE_POST_FOUC: string = 'page--post-fouc',
     CLASS_PAGE_INACTIVE: string = 'page--inactive',
     CLASS_PAGE_CLOSING: string = 'page--closing',

@@ -38,6 +38,14 @@ export class Label {
             this.pressAni.play(eEaseState.Backward);
             this.hoverAni.play(eEaseState.Backward);
         };
+        this.EL.ontouchstart  = () => {
+            this.pressAni.play(eEaseState.Forward);
+            this.hoverAni.play(eEaseState.Forward);
+        };
+        this.EL.ontouchend = () => {
+            this.pressAni.play(eEaseState.Backward);
+            this.hoverAni.play(eEaseState.Backward);
+        };
 
         this.EL.setAttribute('aria-label', this.EL.innerText);
         this.EL.innerText = this.EL.innerText.replace(/ /g, '');

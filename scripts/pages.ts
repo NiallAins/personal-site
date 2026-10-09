@@ -214,7 +214,7 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
             } else {
                 EL_PROJECT_LINK_LIVE.classList.add(CLASS_PROJECT_LINK_MISSING);
             }
-
+console.log('hey');
             if (PROJECT.linkCode) {
                 EL_PROJECT_LINK_CODE.href = PROJECT.linkCode || '#';
                 EL_PROJECT_LINK_CODE.classList.remove(CLASS_PROJECT_LINK_MISSING);
