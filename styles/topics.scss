@@ -69,7 +69,8 @@
                 font-size: $f-size-section-sm;
                 letter-spacing: $label-letter-space-sm;
                 line-height: $label-line-height-sm;
-                margin-top: to-vh($h-main-item-offset-vs);
+                // Account for viewport height changes due to mobile browser sliding nav bar
+                margin-top: calc(to-vh($h-main-item-offset-vs) + (100vh - var(#{ $var-page-height })));
             }
         }
     }
