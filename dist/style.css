@@ -509,6 +509,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 @media (max-width: calc(48rem - 1px)) {
   .topics {
+    margin-top: calc(100dvh - var(--h-page));
     align-items: center;
   }
   .topics__section {
@@ -518,7 +519,7 @@ h1, h2, h3, h4, h5, h6, p {
     font-size: 1.75rem;
     letter-spacing: 2.25rem;
     line-height: 3.09375rem;
-    margin-top: calc(var(--h-page) * 0.17 + 100vh - var(--h-page));
+    margin-top: calc(var(--h-page) * 0.17);
   }
 }
 @media (min-width: 48rem) {

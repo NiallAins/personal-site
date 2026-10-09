@@ -35,7 +35,7 @@
             letter-spacing: $label-letter-space;
             line-height: $label-line-height;
             color: transparent;
-            color: red;
+            color: pink;
             background: none;
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
@@ -60,6 +60,8 @@
     }
 
     @include viewport(0, md) {
+        // Account for viewport height changes due to mobile browser sliding nav bar
+        margin-top: calc(100dvh - var(#{ $var-page-height }));
         align-items: center;
 
         &__section {
@@ -69,8 +71,7 @@
                 font-size: $f-size-section-sm;
                 letter-spacing: $label-letter-space-sm;
                 line-height: $label-line-height-sm;
-                // Account for viewport height changes due to mobile browser sliding nav bar
-                margin-top: calc(to-vh($h-main-item-offset-vs) + (100vh - var(#{ $var-page-height })));
+                margin-top: to-vh($h-main-item-offset-vs);
             }
         }
     }
