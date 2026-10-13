@@ -7,7 +7,7 @@ import {
 import { Canvas } from "./Canvas";
 import { Splash } from "./Splash";
 import { Label } from "./Label";
-import { init as initTerrain, renderSingleIso, render as renderTerrain, resize as resizeTerrain } from "./terrain";
+import { init as initTerrain, render as renderTerrain, resize as resizeTerrain } from "./terrain";
 import { requestFrameScaled } from "../util";
 import { EL_TOPIC_BUTTONS } from "../pages";
 import { Cublet } from "./Cublet";
@@ -134,7 +134,7 @@ export function renderFrame() {
 function animate(t: number = 0, dT: number = 1) {
     if (!paused || renderSingleFrame) {
         _DEBUG_logDt(dT);
-        
+
         Ease.step(dT);
 
         renderTerrain(CAN_SEA, fades.map(f => f.value), t, dT, isViewportSmall);

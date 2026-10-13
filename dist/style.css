@@ -27,7 +27,7 @@ html {
 body {
   position: relative;
   margin: 0;
-  font-family: "Neuton", "Georgia", serif;
+  font-family: Neuton, Georgia, serif;
   overflow-x: hidden;
   opacity: 0;
   transition: opacity 1000ms;
@@ -219,7 +219,7 @@ h1, h2, h3, h4, h5, h6, p {
   line-height: 2.5rem;
   font-weight: 400;
   letter-spacing: 3px;
-  font-family: "Neuton", "Georgia", serif;
+  font-family: Neuton, Georgia, serif;
   color: #ffffff;
 }
 @media (max-width: calc(36rem - 1px)) {
@@ -305,7 +305,7 @@ h1, h2, h3, h4, h5, h6, p {
   font-size: 4.5rem;
   font-weight: 400;
   letter-spacing: 2px;
-  font-family: "Neuton", "Georgia", serif;
+  font-family: Neuton, Georgia, serif;
   color: #ffffff;
   line-height: 1;
 }
@@ -318,7 +318,7 @@ h1, h2, h3, h4, h5, h6, p {
   font-size: 3.25rem;
   font-weight: 400;
   letter-spacing: 1px;
-  font-family: "Neuton", "Georgia", serif;
+  font-family: Neuton, Georgia, serif;
   color: #ffffff;
 }
 @media (max-width: calc(36rem - 1px)) {
@@ -344,7 +344,7 @@ h1, h2, h3, h4, h5, h6, p {
   line-height: 2.5rem;
   font-weight: 400;
   letter-spacing: 3px;
-  font-family: "Neuton", "Georgia", serif;
+  font-family: Neuton, Georgia, serif;
   color: #ffffff;
 }
 @media (max-width: calc(36rem - 1px)) {
@@ -429,7 +429,7 @@ h1, h2, h3, h4, h5, h6, p {
   line-height: 2.5rem;
   font-weight: 400;
   letter-spacing: 3px;
-  font-family: "Neuton", "Georgia", serif;
+  font-family: Neuton, Georgia, serif;
   color: #ffffff;
 }
 @media (max-width: calc(36rem - 1px)) {
@@ -496,7 +496,7 @@ h1, h2, h3, h4, h5, h6, p {
   padding: 2rem 2rem 4rem;
   border: none;
   rotate: -0.488rad;
-  font-family: "Neuton", "Georgia", serif;
+  font-family: Neuton, Georgia, serif;
   font-size: 2.75rem;
   letter-spacing: 3rem;
   line-height: 4.125rem;
@@ -694,7 +694,7 @@ html:has(.page--main.page--closing) {
   font-size: 3.25rem;
   font-weight: 400;
   letter-spacing: 1px;
-  font-family: "Neuton", "Georgia", serif;
+  font-family: Neuton, Georgia, serif;
   color: #ffffff;
 }
 @media (max-width: calc(36rem - 1px)) {
@@ -714,7 +714,7 @@ html:has(.page--main.page--closing) {
   height: 1.5rem;
   line-height: 1.5rem;
   padding: 0.25rem 1rem 0.25rem;
-  font-family: "Roboto", "Helvetica", san-serif;
+  font-family: Roboto, Helvetica, san-serif;
 }
 .project__tags-tag:nth-child(2), .project__tags-tag--year {
   border-top-left-radius: 1rem;
@@ -756,7 +756,7 @@ html:has(.page--main.page--closing) {
 .project__desc {
   font-size: 1.125rem;
   font-weight: 400;
-  font-family: "Roboto", "Helvetica", san-serif;
+  font-family: Roboto, Helvetica, san-serif;
   color: #ffffff;
   line-height: 1.5;
   display: flex;
@@ -785,7 +785,7 @@ html:has(.page--main.page--closing) {
   font-size: 1.75rem;
   font-weight: 500;
   letter-spacing: 1px;
-  font-family: "Neuton", "Georgia", serif;
+  font-family: Neuton, Georgia, serif;
   color: #ffffff;
 }
 .project__links-link-text:focus-visible {
@@ -867,7 +867,7 @@ html:has(.page--main.page--closing) {
   font-size: 1.75rem;
   font-weight: 500;
   letter-spacing: 1px;
-  font-family: "Neuton", "Georgia", serif;
+  font-family: Neuton, Georgia, serif;
   color: #ffffff;
   letter-spacing: 3px;
   color: #ffffff;
@@ -921,7 +921,7 @@ html:has(.page--main.page--closing) {
   font-size: 1.75rem;
   font-weight: 500;
   letter-spacing: 1px;
-  font-family: "Neuton", "Georgia", serif;
+  font-family: Neuton, Georgia, serif;
   color: #ffffff;
 }
 .experience__print-button:focus-visible {
@@ -965,7 +965,7 @@ html:has(.page--main.page--closing) {
   max-width: 59rem;
   padding: 3rem 3rem 4rem;
   margin: 3rem auto 1rem;
-  font-family: "Roboto", "Helvetica", san-serif;
+  font-family: Roboto, Helvetica, san-serif;
   font-size: 0.875rem;
   color: #f0f0f0;
   background: #21232d;
@@ -1099,7 +1099,7 @@ html:has(.page--main.page--closing) {
   margin: 0.5rem 4rem 0.5rem 2rem;
 }
 .cv__section-table--sub th {
-  font-family: "Roboto", "Helvetica", san-serif;
+  font-family: Roboto, Helvetica, san-serif;
 }
 
 @media (max-width: calc(48rem - 1px)) {

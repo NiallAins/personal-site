@@ -6,8 +6,7 @@ import {
     WIDTH_STROKE_OUTLINE, WIDTH_STROKE_UNDERLINE,
     HEIGHT_MAIN_SECTION, HEIGHT_MAIN_SECTION_GAP_VS, HEIGHT_MAIN_SECTION_GAP_VL,
     TERRAIN_TYPES, TERRAIN_COLOR_LAND, TERRAIN_SEA_NOISE,
-    WIDTH_PAGE_BG_MAX,
-    BREAKPOINT_MOBILE
+    WIDTH_PAGE_BG_MAX
 } from "../consts";
 import { Canvas } from "./Canvas";
 import { LabelLetter } from "./Label";
@@ -100,7 +99,7 @@ export function resize(width: number, height: number, viewportSm: boolean, rePre
         TERRAIN_WIDTH = Math.min(width, WIDTH_PAGE_BG_MAX),
         SECTION_GAP = viewportSm ? HEIGHT_MAIN_SECTION_GAP_VS : HEIGHT_MAIN_SECTION_GAP_VL;
     terrainLayout_sectionFullHeight = (HEIGHT_MAIN_SECTION + SECTION_GAP) * height;
-    terrainLayout_offsetY = ((1 + SECTION_GAP) * height) - (viewportSm ? height * 0.17 : 0);
+    terrainLayout_offsetY = ((1 + SECTION_GAP) * height) - (viewportSm ? height * 0.17 : height * 0.05);
 
     SECTION_TERRAIN.forEach((t, ti) => {
         t.x =

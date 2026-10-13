@@ -53,7 +53,7 @@ body {
 }
 .app__header-link {
   font-size: 1.125rem;
-  font-family: "Neuton", "Georgia", serif;
+  font-family: Neuton, Georgia, serif;
   color: #ffffff;
   text-decoration: none;
   translate: 0 0.25rem;

@@ -27,6 +27,7 @@ export async function loadFont(name: string, src: string) {
     try {
         const F = await new FontFace(name, src).load();
         document.fonts.add(F);
+        document.fonts.check(`16px ${ name }`, 'test string');
     } catch (e) {
         console.warn('Font unavailable');
     }

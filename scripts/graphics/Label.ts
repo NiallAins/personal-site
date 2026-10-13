@@ -4,12 +4,14 @@ import {
     DURATION_SH,
     HEIGHT_MAIN_SECTION,
     HEIGHT_MAIN_SECTION_GAP_VS, HEIGHT_MAIN_SECTION_GAP_VL,
-    FONT_FAM_TITLE, FONT_WEIGHT_SECTION,
+    FONT_WEIGHT_SECTION,
     LABEL_ANGLE, LABEL_LETTER_SHADOW_BLUR, 
     LABEL_LETTER_HEIGHT, LABEL_LETTER_WIDTH, LABEL_LINE_HEIGHT, FONT_SIZE_SECTION,
     LABEL_LETTER_HEIGHT_SM, LABEL_LETTER_WIDTH_SM, LABEL_LINE_HEIGHT_SM, FONT_SIZE_SECTION_SM,
     WIDTH_PAGE_MAX,
-    WIDTH_STROKE_OUTLINE
+    WIDTH_STROKE_OUTLINE,
+    FONT_FAM_TITLE_PRIMARY,
+    FONT_FAM_TITLE_FALLBACK
 } from "../consts";
 import { eEaseState, eEaseType } from "../types";
 import { Canvas } from "./Canvas";
@@ -166,9 +168,15 @@ export class LabelLetter {
         CTX_BG.fillStyle = COLOR_TEXT_SHADOW;
         CTX_BG.filter = `blur(${ LABEL_LETTER_SHADOW_BLUR }px)`;
 
+        const FONT_PRE = `${ FONT_WEIGHT_SECTION } ${ FONT_SIZE }px`;
+        let font = `${ FONT_PRE } ${ FONT_FAM_TITLE_PRIMARY }`;
+        if (!document.fonts.check(font, this.LETTER)) {
+            font = `${ FONT_PRE } ${ FONT_FAM_TITLE_FALLBACK }`;
+        }
+
         [CTX_FG, CTX_BG].forEach(c => {
             c.save();
-                c.font = `${ FONT_WEIGHT_SECTION } ${ FONT_SIZE }px "${ FONT_FAM_TITLE }"`;
+                c.font = font;
                 c.textAlign = 'center';
                 c.textBaseline = 'middle';
                 c.lineWidth = (WIDTH_STROKE_OUTLINE * 2) / ISO_SCALE;

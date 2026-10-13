@@ -3,6 +3,7 @@
 export const
     FONT_FAM_TITLE_SRC: string = 'url(https://fonts.gstatic.com/s/neuton/v24/UMBQrPtMoH62xUZKAKkvcwr4Pro.woff2)',
     FONT_FAM_TITLE_PRIMARY: string = 'Neuton',
+    FONT_FAM_TITLE_FALLBACK: [string, string] = ['Georgia', ' serif'],
     FONT_FAM_BODY_PRIMARY: string = 'Roboto',
     FONT_FAM_TITLE: [string, string, string] = ['Neuton', ' Georgia', ' serif'],
     FONT_FAM_BODY: [string, string, string] = ['Roboto', ' Helvetica', ' san-serif'],

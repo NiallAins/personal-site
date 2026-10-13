@@ -9,7 +9,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "year": 2022,
                 "desc": [
                     "JohnnyCigarette.ie is a portfolio website made for the Irish animator known as Johnny Cigerette.",
-                    "I choose a simple and minimalistic design for this project, to keep the focus on the art being showcased",
+                    "I went with a simple and minimalistic design for this project, to keep the focus on the art on show.",
                     "The project is built as a static site with VueJS. Content is pulled from a JSON file that is maintained and updated by the artist. I also created a video component which can generate a YouTube or Vimeo player when video urls are detected in the JSON.",
                 ],
                 "linkLive": "https://johnnycigarette.ie/",
@@ -23,7 +23,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "year": 2021,
                 "desc": [
                     "Clever Keys is an interactive education website, created to accompany the Clever Keys childrens' music books.",
-                    "I deisgned this site to align with the colours and style of the books' covers - as designed by their author Kayleigh Hennessy.",
+                    "I deisgned this site to align with the colours and style of the books' covers &#x2014; as designed by their author Kayleigh Hennessy.",
                     "The site is made using VueJS, with PHP in the backend. The site contains an integrated Stripe storefront, animated sections based on pages from the book, and an interactive piano to play along with lessons. I designed the piano component to accept a JSON format allowing it to play any melody with accompaning lyrics.",
                 ],
                 "linkLive": "https://niallains.github.io/cleverkeys-demo/dist",
@@ -54,8 +54,8 @@ export const PROJECT_DATA: tTopicData[] = [
                 "year": 2026,
                 "desc": [
                     "This very site!",
-                    "As a showcase for my digital projects, the design was based on an idea of a small world build of large pixels. The bulky nature of the pixels is contrasted with fluid animations to giving life to the otherwise inanimate blocks.",
-                    "I built the visuals of this site were built using HTML Canvas, running a repurposed isometic graphics engine I had created for a previous project. Further animations are acheived using a mixture of JavaSCript and SCSS transitions. Bash scripts are used to keep design variables in-sync across Canvas, Typescript, and SCSS files - as well as to simplify development and deployment.",
+                    "As a showcase for my digital projects, the design was based on an idea of a small world built of large pixels. The bulky nature of the pixels is contrasted with fluid animations to giving life to the otherwise inanimate blocks.",
+                    "I built the visuals of this site were built using HTML Canvas, running a repurposed isometic graphics engine I had created for a previous project. Further animations are acheived using a mixture of JavaSCript and SCSS transitions. Bash scripts are used to keep design variables in-sync across Canvas, Typescript, and SCSS files &#x2014; as well as to simplify development and deployment.",
                 ],
                 "linkCode": "https://github.com/NiallAins/personal-site",
                 "tags": [
@@ -75,7 +75,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "year": 2025,
                 "desc": [
                     "TinyTone is a web app and small library built on JavaScript's Web Audio API. The app allows you to create audio tones by combining audio textures, envelopes, and effects, then export them to use in your projects along with a library to control them",
-                    "I created TinyTone so I could have a dynamic audio library to create effects for other projects - as well as an excuse to dive into modular synths and audio production.",
+                    "I created TinyTone so I could have a dynamic audio library to create effects for other projects &#x2014; as well as an excuse to dive into modular synths and audio production.",
                     "The app has a complex node-and-plug interface implemented in HTML Canvas, as well as several custom range input component to allow user input across multiple effects modules."
                 ],
                 "linkLive": "https://niallains.github.io/tinytone",
@@ -105,7 +105,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "title": "Carnegie Hall chart",
                 "year": 2026,
                 "desc": [
-                    "The Carnegie Hall chart was created in 1941 by E.J. Quimby. As the original only exists online in very low quality, difficult to read images - I decided to recreate it in vector form.",
+                    "The Carnegie Hall chart was created in 1941 by E.J. Quimby. As the original only exists online in very low quality, difficult to read images &#x2014; I decided to recreate it in vector form.",
                     "I kept the orignal layout of the chart, while adding some additional information and redesigning elements to improve readability. As it is built as a HTML page, one functional improvement is the ability to copy values directly form the chart",
                     "The chart is designed to be printed out as an A2 wall chart, but can also be viewed online as a vector graphic, or downloaded as a PNG"
                 ],
@@ -117,9 +117,9 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Every Chord",
-                "year": 2020,
+                "year": 2023,
                 "desc": [
-                    "Every Chord is an app for exploring musical chords, and chord voicings, for string instruments. Chords can either be generated from a scale, or input as text - a heuristics algothim will then find the best fingerings available based on the specific instrument and tuning system provided.",
+                    "Every Chord is an app for exploring musical chords, and chord voicings, for string instruments. Chords can either be generated from a scale, or input as text &#x2014; a heuristics algothim will then find the best fingerings available based on the specific instrument and tuning system provided.",
                     "The app also allows chords sheets to be bookmarked and printed off as education resources.",
                     "This project slowly evolved from several other algorthims and visualisations I had created while studing chords and music theory in genreal. I was also able to use my other project <b><i>TinyTone</i></b> to create WebAudio tones for playing each chord in the app. The codebase remains a frankenstein mash up of these pieces, but stumbles along for now."
                 ],
@@ -193,27 +193,34 @@ export const PROJECT_DATA: tTopicData[] = [
         "projects": [
             {
                 "title": "The Big Number Namer",
-                "year": 2020,
+                "year": 2025,
                 "desc": [
-                    "",
+                    "Have a big number? Need to name it? Oh boy are you in luck.",
+                    "This app will generate the correct mathamatical name for every number from 0&nbsp;(<em>Zero!</em>) to 12,345&times;10<sup>67,890</sup>&nbsp;(<em>one sepnonagintiquinticenti-duovigintimilillion, two hundred and thirty four sexnonagintiquinticenti-duovigintimilillion, five hundred quinnonagintiquinticenti-duovigintimilillion googol!</em>)... and beyond."
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://niallains.github.io/big-number-namer",
+                "linkCode": "https://github.com/NiallAins/big-number-namer",
+                "tags": [
+                    ePageTag.Javascipt
+                ]
             },
             {
-                "title": "One Googol Visualised",
-                "year": 2020,
+                "title": "One Googol Animated",
+                "year": 2025,
                 "desc": [
-                    "",
+                    "One Googol Animated in an interactive animation of stacking blocks &#x2014; from 1 to 10<sup>100</sup>.",
+                    "This app contains possibly the largest ranged slider input <em>on the internet</em> &#x2014; allowing you to smoothly slide between 100 orders of magnitude. 10<sup>20</sup> times more options than particles in the universe.",
+                    "This project lead in to my next &#x2014; The Big Number Namer."
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://niallains.github.io/one-googol-animated",
+                "linkCode": "https://github.com/NiallAins/one-googol-animated",
+                "tags": [
+                    ePageTag.Javascipt
+                ]
             },
             {
                 "title": "Venn Diagram Generator",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -224,7 +231,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "How Daylight Hours Work",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -234,7 +241,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "How Tides Work",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -244,7 +251,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "The Universal Unit Converter",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -254,7 +261,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Every Body in the Solar System",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -264,7 +271,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Irish Voting Charts",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -279,7 +286,7 @@ export const PROJECT_DATA: tTopicData[] = [
         "projects": [
             {
                 "title": "Mage Hand",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -289,7 +296,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Buck N Sons",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -299,7 +306,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "CrossCreator",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -309,7 +316,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Little Iso World",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -319,7 +326,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "The Gibberish Poem Generator",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -329,7 +336,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Agent RegX",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -340,7 +347,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Marathon: The Game",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -351,7 +358,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Glade",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -367,7 +374,7 @@ export const PROJECT_DATA: tTopicData[] = [
         "projects": [
             {
                 "title": "Snooker Score UI",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -377,7 +384,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Strava Heatmap",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -387,7 +394,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Your Strava: Graphed",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -397,7 +404,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Tour Strava: Poster",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -407,7 +414,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Run Plan Generator",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -417,7 +424,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Running Pace Calculator",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -427,7 +434,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "English Football Chart",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -442,7 +449,7 @@ export const PROJECT_DATA: tTopicData[] = [
         "projects": [
             {
                 "title": "Z-Buffer Visualised",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -452,7 +459,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Camera Colour Picker",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -462,7 +469,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Region Caching Visualised",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -472,7 +479,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Quaternions Visualised",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -482,7 +489,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Extended Range Inputs",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -492,7 +499,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Angle Calcs Visualised",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -502,7 +509,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Color Library",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -512,7 +519,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Colour Spaces Visualised",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -522,7 +529,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Extended SASS Themes",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],
@@ -533,7 +540,7 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Gridiron",
-                "year": 2020,
+                "year": 1986,
                 "desc": [
                     "",
                 ],

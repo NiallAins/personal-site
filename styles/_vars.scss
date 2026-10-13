@@ -10,10 +10,11 @@
 //
 
 $f-fam-title-src:       url(https://fonts.gstatic.com/s/neuton/v24/UMBQrPtMoH62xUZKAKkvcwr4Pro.woff2);
-$f-fam-title-primary:   "Neuton";
-$f-fam-body-primary:    "Roboto";
-$f-fam-title:           $f-fam-title-primary, "Georgia", serif;
-$f-fam-body:            $f-fam-body-primary,  "Helvetica", san-serif;
+$f-fam-title-primary:   Neuton;
+$f-fam-title-fallback:  Georgia, serif;
+$f-fam-body-primary:    Roboto;
+$f-fam-title:           $f-fam-title-primary, $f-fam-title-fallback;
+$f-fam-body:            $f-fam-body-primary, Helvetica, san-serif;
 
 $f-size-base:           16px;
 $f-size-h1:             4.5rem;
