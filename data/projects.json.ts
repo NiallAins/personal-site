@@ -12,7 +12,7 @@ export const PROJECT_DATA: tTopicData[] = [
                     "I went with a simple and minimalistic design for this project, to keep the focus on the art on show.",
                     "The project is built as a static site with VueJS. Content is pulled from a JSON file that is maintained and updated by the artist. I also created a video component which can generate a YouTube or Vimeo player when video urls are detected in the JSON.",
                 ],
-                "linkLive": "https://johnnycigarette.ie/",
+                "linkLive": "https://johnnycigarette.ie",
                 "linkCode": "https://github.com/NiallAins/Johnny-Cigarette",
                 "tags": [
                     ePageTag.VueJS
@@ -42,7 +42,7 @@ export const PROJECT_DATA: tTopicData[] = [
                     "I created this project at the height of the pandemic, when schools were turning to online learning. I wanted to create learning tools targeted at visual and tactile learners, which could communicate abstract ideas though animation and interactive geometry components.",
                     "The site and its component are built with VueJS, and pull data and questions from real state examination paper and curricula"
                 ],
-                "linkLive": "https://niallains.github.io/PaperWon/dist/",
+                "linkLive": "https://niallains.github.io/PaperWon/dist",
                 "linkCode": "https://github.com/niallAins/PaperWon/tree/master",
                 "tags": [
                     ePageTag.VueJS,
@@ -93,7 +93,7 @@ export const PROJECT_DATA: tTopicData[] = [
                     "I created this Musical Scale Generator to visually explain how musical scales are derived. The app allows you to change the inital parameters of the standard western scale to show how this creates new scales.",
                     "This app contains a custom circular range inputs, and a playable piano which changes layout to match whatever scales you create.",
                 ],
-                "linkLive": "https://niallains.github.io/generate-scales/",
+                "linkLive": "https://niallains.github.io/generate-scales",
                 "linkCode": "https://github.com/NiallAins/generate-scales",
                 "tags": [
                     ePageTag.Javascipt,
@@ -123,7 +123,7 @@ export const PROJECT_DATA: tTopicData[] = [
                     "The app also allows chords sheets to be bookmarked and printed off as education resources.",
                     "This project slowly evolved from several other algorthims and visualisations I had created while studing chords and music theory in genreal. I was also able to use my other project <b><i>TinyTone</i></b> to create WebAudio tones for playing each chord in the app. The codebase remains a frankenstein mash up of these pieces, but stumbles along for now."
                 ],
-                "linkLive": "https://niallains.github.io/every-chord/",
+                "linkLive": "https://niallains.github.io/every-chord",
                 "linkCode": "https://github.com/NiallAins/every-chord",
                 "tags": [
                     ePageTag.Javascipt,
@@ -152,8 +152,8 @@ export const PROJECT_DATA: tTopicData[] = [
                     "I made this little app over two days as part of a coding challenge to &quot;Create an app no larger than 100px &times; 50px&quot;",
                     "It allows you to change colours and brush sizes, and save, copy, and download your masterpieces."
                 ],
-                "linkLive": "https://codepen.io/niallains/full/LYPzbVv",
-                "linkCode": "https://codepen.io/niallains/pen/LYPzbVv",
+                "linkLive": "https://niallains.github.io/tiny-painter",
+                "linkCode": "https://github.com/NiallAins/tiny-painter",
                 "tags": [
                     ePageTag.Javascipt,
                     ePageTag.Canvas
@@ -167,8 +167,8 @@ export const PROJECT_DATA: tTopicData[] = [
                     "It can also use a string as a random number seed, allowing it to create a unique tartan for any name.",
                     "Created for St. Andrew's day."
                 ],
-                "linkLive": "https://codepen.io/niallains/full/ExEOmdJ",
-                "linkCode": "https://codepen.io/niallains/pen/ExEOmdJ",
+                "linkLive": "https://niallains.github.io/tartan-generator",
+                "linkCode": "https://github.com/NiallAins/tartan-generator",
                 "tags": [
                     ePageTag.Javascipt
                 ]
@@ -180,10 +180,11 @@ export const PROJECT_DATA: tTopicData[] = [
                     "Name This Colour is a visualisation of the RGB colour cube, showing a point for each of 1500 named colours",
                     "The app allows you to search for an RGB, HEX, or colour names within the cube and then find their closest matching colours"
                 ],
-                "linkLive": "https://niallains.github.io/NameThisColour/",
+                "linkLive": "https://niallains.github.io/NameThisColour",
                 "linkCode": "https://github.com/NiallAins/NameThisColour",
                 "tags": [
-                    ePageTag.Javascipt
+                    ePageTag.Javascipt,
+                    ePageTag.Canvas
                 ]
             }
         ]
@@ -215,7 +216,8 @@ export const PROJECT_DATA: tTopicData[] = [
                 "linkLive": "https://niallains.github.io/one-googol-animated",
                 "linkCode": "https://github.com/NiallAins/one-googol-animated",
                 "tags": [
-                    ePageTag.Javascipt
+                    ePageTag.Javascipt,
+                    ePageTag.Canvas
                 ]
             },
             {
@@ -230,24 +232,31 @@ export const PROJECT_DATA: tTopicData[] = [
                 "hide": true
             },
             {
-                "title": "How Daylight Hours Work",
-                "year": 1986,
+                "title": "Daylight Cycles Animated",
+                "year": 2021,
                 "desc": [
-                    "",
+                    "Daylight Cycles is an interactive animation demonstrating the astronomy behind changing daylight hours"
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://niallains.github.io/daylight-cycles-animated",
+                "linkCode": "https://github.com/NiallAins/daylight-cycles-animated",
+                "tags": [
+                    ePageTag.Canvas,
+                    ePageTag.Javascipt
+                ]
             },
             {
                 "title": "How Tides Work",
-                "year": 1986,
+                "year": 2020,
                 "desc": [
-                    "",
+                    "This interactive animation shows how the sun, the earth, and the moon interact to moves the tides throughout the year",
+                    "The animation is based on real data from Irish tides for the year 2020"
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://niallains.github.io/how-tides-work",
+                "linkCode": "https://github.com/NiallAins/how-tides-work",
+                "tags": [
+                    ePageTag.Canvas,
+                    ePageTag.Javascipt
+                ]
             },
             {
                 "title": "The Universal Unit Converter",
