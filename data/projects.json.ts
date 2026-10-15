@@ -64,7 +64,7 @@ export const PROJECT_DATA: tTopicData[] = [
                     ePageTag.NodeJS,
                     ePageTag.Bash
                 ]
-            },
+            }
         ]
     },
     {
@@ -221,17 +221,6 @@ export const PROJECT_DATA: tTopicData[] = [
                 ]
             },
             {
-                "title": "Venn Diagram Generator",
-                "year": 1986,
-                "desc": [
-                    "",
-                ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": [],
-                "hide": true
-            },
-            {
                 "title": "Daylight Cycles Animated",
                 "year": 2021,
                 "desc": [
@@ -287,7 +276,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "linkLive": "",
                 "linkCode": "",
                 "tags": []
-            },
+            }
         ]
     },
     {
@@ -342,39 +331,6 @@ export const PROJECT_DATA: tTopicData[] = [
                 "linkLive": "",
                 "linkCode": "",
                 "tags": []
-            },
-            {
-                "title": "Agent RegX",
-                "year": 1986,
-                "desc": [
-                    "",
-                ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": [],
-                "hide": true
-            },
-            {
-                "title": "Marathon: The Game",
-                "year": 1986,
-                "desc": [
-                    "",
-                ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": [],
-                "hide": true
-            },
-            {
-                "title": "Glade",
-                "year": 1986,
-                "desc": [
-                    "",
-                ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": [],
-                "hide": true
             }
         ]
     },
@@ -535,6 +491,52 @@ export const PROJECT_DATA: tTopicData[] = [
                 "linkLive": "",
                 "linkCode": "",
                 "tags": []
+            }
+        ]
+    },
+    {
+        "title": "",
+        "hide": true,
+        "projects": [
+            {
+                "title": "Venn Diagram Generator",
+                "year": 1986,
+                "desc": [
+                    "",
+                ],
+                "linkLive": "",
+                "linkCode": "",
+                "tags": []
+            },
+            {
+                "title": "Agent RegX",
+                "year": 1986,
+                "desc": [
+                    "",
+                ],
+                "linkLive": "",
+                "linkCode": "",
+                "tags": []
+            },
+            {
+                "title": "Marathon: The Game",
+                "year": 1986,
+                "desc": [
+                    "",
+                ],
+                "linkLive": "",
+                "linkCode": "",
+                "tags": []
+            },
+            {
+                "title": "Glade",
+                "year": 1986,
+                "desc": [
+                    "",
+                ],
+                "linkLive": "",
+                "linkCode": "",
+                "tags": []
             },
             {
                 "title": "Extended SASS Themes",
@@ -544,8 +546,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 ],
                 "linkLive": "",
                 "linkCode": "",
-                "tags": [],
-                "hide": true
+                "tags": []
             },
             {
                 "title": "Gridiron",
@@ -555,8 +556,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 ],
                 "linkLive": "",
                 "linkCode": "",
-                "tags": [],
-                "hide": true
+                "tags": []
             }
         ]
     }

@@ -28,7 +28,8 @@ const
 export const
     LABELS: Label[] = [],
     CUBLETS: Cublet[][] = PROJECT_DATA
-        .map((p, pi) => p.projects.map(i => new Cublet(pi, i.title)));
+        .filter(t => !t.hide)
+        .map((t, ti) => t.projects.map(p => new Cublet(ti, p.title)));
 
 
 //

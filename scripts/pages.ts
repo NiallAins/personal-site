@@ -50,66 +50,67 @@ let
 export function initPages() {
 
     // Topic pages
-    PROJECT_DATA.forEach((topic, ti) => {
-        // Add topic button
-        const [EL_TOPIC, EL_TOPIC_BUTTON] = html`
-            <div class="topics__section">
-                <#button
-                    class="topics__section-button"
-                    onclick="${ openPage.bind(null, ePages.Topic, ti, -1, false) }"
-                >
-                    ${ topic.title }
-                </button>
-            </div>
-        `;
-        EL_TOPICS.appendChild(EL_TOPIC);
-        EL_TOPIC_BUTTONS.push(EL_TOPIC_BUTTON as HTMLButtonElement);
-
-        const PROJECT_BLOCKS = topic.projects
-            .filter(project => !project.hide)
-            .map((project, pi) => html`
-                <div class="block-layout__slot">
-                    <button
-                        class="block-layout__item"
-                        onclick="${ openPage.bind(null, ePages.Project, ti, pi, false) }"
+    PROJECT_DATA
+        .filter(topic => !topic.hide)
+        .forEach((topic, ti) => {
+            // Add topic button
+            const [EL_TOPIC, EL_TOPIC_BUTTON] = html`
+                <div class="topics__section">
+                    <#button
+                        class="topics__section-button"
+                        onclick="${ openPage.bind(null, ePages.Topic, ti, -1, false) }"
                     >
-                        <div></div>
-                        <#div
-                            class="block-layout__item-image"
-                            style="--bg-color: ${ DATA_BG[toKebabCase(project.title)] || COLOR_BG_L }"
-                        ></div>
-                        <h3 class="
-                            block-layout__item-label
-                            ${
-                                project.title
-                                    .replace(/([a-z])([A-Z])/g, '$1 $2')
-                                    .match(/[^ ]+/g)!
-                                    .sort((a, b) => b.length - a.length)
-                                    [0].length > 8
-                                ? 'block-layout__item-label--sm'
-                                : ''
-                            }
-                        ">
-                            ${ project.title.replace(/([a-z])([A-Z])/g, '$1&ZeroWidthSpace;$2') }
-                        </h3>
+                        ${ topic.title }
                     </button>
                 </div>
-            `);
+            `;
+            EL_TOPICS.appendChild(EL_TOPIC);
+            EL_TOPIC_BUTTONS.push(EL_TOPIC_BUTTON as HTMLButtonElement);
 
-        const TOPIC_PAGE = html`
-            <div class="block-layout">
-                ${ PROJECT_BLOCKS }
-            </div>
-        `;
+            const PROJECT_BLOCKS = topic.projects
+                .map((project, pi) => html`
+                    <div class="block-layout__slot">
+                        <button
+                            class="block-layout__item"
+                            onclick="${ openPage.bind(null, ePages.Project, ti, pi, false) }"
+                        >
+                            <div></div>
+                            <#div
+                                class="block-layout__item-image"
+                                style="--bg-color: ${ DATA_BG[toKebabCase(project.title)] || COLOR_BG_L }"
+                            ></div>
+                            <h3 class="
+                                block-layout__item-label
+                                ${
+                                    project.title
+                                        .replace(/([a-z])([A-Z])/g, '$1 $2')
+                                        .match(/[^ ]+/g)!
+                                        .sort((a, b) => b.length - a.length)
+                                        [0].length > 8
+                                    ? 'block-layout__item-label--sm'
+                                    : ''
+                                }
+                            ">
+                                ${ project.title.replace(/([a-z])([A-Z])/g, '$1&ZeroWidthSpace;$2') }
+                            </h3>
+                        </button>
+                    </div>
+                `);
 
-        TOPIC_PAGES_CONTENT.push(TOPIC_PAGE[0]);
-        TOPIC_PAGES_IMAGES.push(
-            PROJECT_BLOCKS.map((b, bi) => ({
-                el: b[1] as HTMLDivElement,
-                url: `url(assets/${ toKebabCase(topic.projects[bi].title) }.sm.png)`
-            }))
-        );
-    });
+            const TOPIC_PAGE = html`
+                <div class="block-layout">
+                    ${ PROJECT_BLOCKS }
+                </div>
+            `;
+
+            TOPIC_PAGES_CONTENT.push(TOPIC_PAGE[0]);
+            TOPIC_PAGES_IMAGES.push(
+                PROJECT_BLOCKS.map((b, bi) => ({
+                    el: b[1] as HTMLDivElement,
+                    url: `url(assets/${ toKebabCase(topic.projects[bi].title) }.sm.png)`
+                }))
+            );
+        });
 
     // Nav pages
     EL_HEADER_NAV_LINKS_EXPERIENCE.onclick = () => openPage(ePages.Experience);
@@ -146,7 +147,9 @@ export function openPageFromUrl() {
 
         if (topic === -1) {
             page = ePages.Project;
-            topic = PROJECT_DATA.findIndex(t => t.projects.some(p => toKebabCase(p.title) === HASH));
+            topic = PROJECT_DATA
+                .filter(t => !t.hide)
+                .findIndex(t => t.projects.some(p => toKebabCase(p.title) === HASH));
             project = topic > -1 ? PROJECT_DATA[topic].projects.findIndex(p => toKebabCase(p.title) === HASH) : -1;
 
             if (project === -1) {

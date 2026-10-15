@@ -71,11 +71,11 @@ export type tProjectData = {
     linkLive?: string,
     linkCode?: string,
     tags?: ePageTag[],
-    hide?: boolean
 };
 
 export type tTopicData = {
     title: string,
+    hide?: boolean,
     projects: tProjectData[]
 };
 
