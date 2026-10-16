@@ -1,6 +1,7 @@
 {
     "name": "personalsite",
     "main": "main.js",
+    "version": "1.1.0",
     "scripts": {
         "dev": "npm run build && bash ./build-scripts/watch.sh",
         "watch": "bash ./build-scripts/watch.sh",

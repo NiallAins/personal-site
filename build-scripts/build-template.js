@@ -1,16 +1,16 @@
+import { BASE_PROD, BASE_DEV } from './base-url.js';
+
 const
     FS = require('node:fs/promises'),
     util = require('../scripts/util-js.js');
 
 const
     IS_PROD         = process.argv[2] === 'prod',
-    BASE_PROD       = 'https://niallains.github.io/personal-site/dist/',
-    BASE_DEV        = 'http://localhost:5500/dist/',
     PATH_DIST       = 'dist',
     PATH_FROM_HEAD  = 'templates/_head.html',
     PATH_FROM_INDEX = 'templates/index.html',
     PATH_FROM_APP   = 'templates/app.html',
-    PATH_FROM_PROJS = 'data/projects.json.ts',
+    PATH_FROM_PROJS = 'data/projects.ts',
     PATH_TO_INDEX   = PATH_DIST + '/index.html',
     PATH_TO_APP     = PATH_DIST + '/{{ title }}/index.html';
 

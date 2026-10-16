@@ -11,7 +11,7 @@ import { init as initTerrain, render as renderTerrain, resize as resizeTerrain }
 import { requestFrameScaled } from "../util";
 import { EL_TOPIC_BUTTONS } from "../pages";
 import { Cublet } from "./Cublet";
-import { PROJECT_DATA } from "../../data/projects.json";
+import { PROJECT_DATA } from "../../data/projects.";
 import { Ease } from "./Ease";
 import { _DEBUG_log, _DEBUG_logDt } from "../_debug";
 import { eEaseState, eEaseType } from "../types";

@@ -1,7 +1,7 @@
 import { CUBLET_SEEDS } from "../consts";
 import { tPoint2, tPoint3 } from "../types";
 import { Rand, toKebabCase } from "../util";
-import { DATA as CUBLET_PIXELS } from "../../data/images.json";
+import { DATA as CUBLET_PIXELS } from "../../data/images";
 import { isoScale as ISO_SCALE } from "./main";
 
 export class Cublet {

@@ -81,7 +81,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "linkLive": "https://niallains.github.io/tinytone",
                 "linkCode": "https://github.com/niallains/tinytone",
                 "tags": [
-                    ePageTag.Typescript,
+                    ePageTag.Javascipt,
                     ePageTag.Canvas,
                     ePageTag.WebAudio
                 ]
@@ -249,13 +249,16 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "The Universal Unit Converter",
-                "year": 1986,
+                "year": 2025,
                 "desc": [
-                    "",
+                    "A litre is equal to one cubic millimeter - but how many litres are in an A4 sheet of paper, or a fortnight? The Universal Unit Converter attempts to answer these ago old questions, with the ability to convert between almost 500 unit types",
+                    "Built as the frontend to a large spreadsheet of interesting units I had been curating, this app finally allowed me to start introducing terms such as Gigadessertspoons, and Megafoolscap into casual conversation."
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://nialains.github.io/universal-unit-converter",
+                "linkCode": "https://github.com/NiallAins/universal-unit-converter",
+                "tags": [
+                    ePageTag.Javascipt
+                ]
             },
             {
                 "title": "Every Body in the Solar System",

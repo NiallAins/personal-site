@@ -1,13 +1,14 @@
 const
     FS = require('fs'),
+    path = require('path'),
     sharp = require('sharp'),
     { createCanvas, loadImage } = require('canvas');
 
 const
     DIR_FROM = 'images',
-    DIR_TO = 'dist/assets',
+    DIR_TO = 'dist/assets/thumbnails',
     DIR_STYLE_VARS = 'styles/_vars.scss',
-    PATH_TO_TS = 'data/images.json.ts',
+    PATH_TO_TS = 'data/images.ts',
     WIDTH_XS = getStyleVarPxValue('w-img-xs'),
     WIDTH_SM = getStyleVarPxValue('w-img-sm'),
     WIDTH_MD = getStyleVarPxValue('w-img-md'),
@@ -37,6 +38,17 @@ function getStyleVarPxValue(name) {
 // Resizes all images to medium width squares for faster loading
 //
 
+// Remove old files
+FS.readdir(DIR_TO, (_, files) => {
+    for (const file of files) {
+        FS.unlink(
+            path.join(DIR_TO, file),
+            () => {}
+        );
+    }
+});
+
+// Write new files
 FS.readdir(DIR_FROM, (_, files) => {
     files
         .filter(f => f.match(/\.png$/))
