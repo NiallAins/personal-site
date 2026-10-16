@@ -16,7 +16,7 @@ import {
     HEIGHT_MAIN_SECTION_GAP_VL,
     HEIGHT_MAIN_SECTION_GAP_VS
 } from "./consts";
-import { PROJECT_DATA } from "../data/projects.";
+import { PROJECT_DATA } from "../data/projects";
 import { renderFrame, toggleSectionOpen as toggleGraphicsSectionOpen } from "./graphics/main";
 import { html, toKebabCase } from "./util";
 import { DATA_BG } from "../data/images";
@@ -107,7 +107,7 @@ export function initPages() {
             TOPIC_PAGES_IMAGES.push(
                 PROJECT_BLOCKS.map((b, bi) => ({
                     el: b[1] as HTMLDivElement,
-                    url: `url(assets/thumbnails/${ toKebabCase(topic.projects[bi].title) }.sm.png)`
+                    url: `url(assets/${ toKebabCase(topic.projects[bi].title) }.sm.png)`
                 }))
             );
         });
@@ -225,7 +225,7 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
             EL_PROJECT_DESC.innerHTML = PROJECT.desc
                 .map(d => `<p class="project__desc-item">${ d }</p>`)
                 .join('\n');
-            EL_PROJECT_IMAGE.style.setProperty('--bg-url', `url(assets/thumbnails/${ TITLE_KEBAB }.md.png)`);
+            EL_PROJECT_IMAGE.style.setProperty('--bg-url', `url(assets/${ TITLE_KEBAB }.md.png)`);
             currentOpenTopic = topicIndex;
 
             if (PROJECT.linkLive) {

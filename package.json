@@ -3,12 +3,10 @@
     "main": "main.js",
     "version": "1.1.0",
     "scripts": {
-        "dev": "npm run build && bash ./build-scripts/watch.sh",
-        "watch": "bash ./build-scripts/watch.sh",
-        "build": "bash ./build-scripts/build-style.sh && bash ./build-scripts/build-script.sh && node ./build-scripts/build-template.js",
-        "build-prod": "bash ./build-scripts/build-style.sh && bash ./build-scripts/build-script.sh prod && node ./build-scripts/build-template.js prod",
-        "prep-images": "node ./build-scripts/prep-images.js",
-        "push": "bash ./build-scripts/push-deploy.sh",
+        "dev":         "bash ./build-scripts/build.sh && bash ./build-scripts/watch.sh",
+        "build":       "bash ./build-scripts/build.sh",
+        "build-prod":  "bash ./build-scripts/build.sh prod",
+        "push":        "bash ./build-scripts/push-deploy.sh",
         "push-deploy": "bash ./build-scripts/push-deploy.sh prod"
     },
     "repository": {

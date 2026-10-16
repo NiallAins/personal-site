@@ -1,8 +1,7 @@
-import { BASE_PROD, BASE_DEV } from './base-url.js';
-
 const
     FS = require('node:fs/promises'),
-    util = require('../scripts/util-js.js');
+    util = require('../scripts/util-js.js'),
+    { BASE_PROD, BASE_DEV } = require('./base-urls.js');
 
 const
     IS_PROD         = process.argv[2] === 'prod',
@@ -13,10 +12,6 @@ const
     PATH_FROM_PROJS = 'data/projects.ts',
     PATH_TO_INDEX   = PATH_DIST + '/index.html',
     PATH_TO_APP     = PATH_DIST + '/{{ title }}/index.html';
-
-// Before creating project folders, all other folders are removed, excluding KEEP_DIRs
-const
-    KEEP_DIR = ['assets'];
 
 async function buildTemplates() {
     // Get template files and project data
@@ -47,20 +42,6 @@ async function buildTemplates() {
         'utf8',
         () => {}
     );
-
-    // Remove all project folders
-    const
-        DIR = await FS.readdir(PATH_DIST, { withFileTypes: true }),
-        DIR_NAMES = DIR
-            .filter(f => f.isDirectory() && !KEEP_DIR.includes(f.name))
-            .map(f => f.name);
-
-    for (let i = 0; i < DIR_NAMES.length; i++) {
-        await FS.rm(
-            PATH_DIST + '/' + DIR_NAMES[i],
-            { recursive:true }
-        );
-    }
 
     // Parse project data, then create project iframe files
     JSON
