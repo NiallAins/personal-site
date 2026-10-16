@@ -29,7 +29,7 @@ if [ "$1" == "prod" ]; then
 
             # Push to prod
             git add *;
-            git add ./dist/*;
+            git add -f ./dist/*;
             git commit -m "Auto-deploy";
             git push origin prod -f &&
 
