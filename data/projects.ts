@@ -292,7 +292,7 @@ export const PROJECT_DATA: tTopicData[] = [
                     "Mage Hand is a Dungeons & Dragons character app that can track your equipment, stats, and characer details. The app uses the DnD5e API to pull data for every weapon and object in the game, as well as supporting custom objects",
                     "The app is built with VueJS and is designed to be downloaded as a local webapp. It supports localstorage and data caching to allow offline usage."
                 ],
-                "linkLive": "niallains.github.io/MageHand/dist",
+                "linkLive": "https://niallains.github.io/MageHand/dist",
                 "linkCode": "https://github.com/NiallAins/MageHand",
                 "tags": [
                     ePageTag.VueJS
@@ -306,7 +306,7 @@ export const PROJECT_DATA: tTopicData[] = [
                     "The visual style of the game is based on the music video for their track Pancake Paradise, which also supplies the soundtrack",
                     "This was my first proect after graduating - I created the game engine from scratch, as well as drawing all the pixel art assets. I worked with the band to record voices and sound effects, and was finally able to showcase the game for the first time at the album launch party in Dublin"
                 ],
-                "linkLive": "niallains.github.io/BuckNSons",
+                "linkLive": "https://niallains.github.io/BuckNSons",
                 "linkCode": "https://github.com/NiallAins/BuckNSons",
                 "tags": [
                     ePageTag.Javascipt,
@@ -339,11 +339,11 @@ export const PROJECT_DATA: tTopicData[] = [
                 "year": 1986,
                 "desc": [
                     "A Gibberish poet writes poems in Gibberish... or are they?",
-                    "I created this small app to experiment with randomness and Zipfian distribution. The app generates random words - but in a cadence and distribution that matches natural language. This gives the illusion that the poems are undstandable if you were to just study them for long enough.",
+                    "I created this as an experiment with randomness and Zipfian distribution. The app generates random words - but in a cadence and distribution that matches natural language. This gives the illusion that the poems are undstandable if you were to just study them for long enough.",
                     "The words of each poem are all pronounceable, allowing you to read each poem aloud, feeling the impact of rhythim and punctuation devoid of any literal meaning",
                     "Each poem is generated with a seed that can be used to recreate or share."
                 ],
-                "linkLive": "niallains.github.io/gibberish-poet",
+                "linkLive": "https://niallains.github.io/gibberish-poet",
                 "linkCode": "https://github.com/NiallAins/gibberish-poet",
                 "tags": [
                     ePageTag.Javascipt
@@ -431,13 +431,18 @@ export const PROJECT_DATA: tTopicData[] = [
         "projects": [
             {
                 "title": "Z-Buffer Visualised",
-                "year": 1986,
+                "year": 2025,
                 "desc": [
-                    "",
+                    "An interacitve visualisation of how a z-buffering algorithim works in 3d graphics.",
+                    "When a triangle is rendered in 3d space, the z-position of eeach pixel needs to be calculated.",
+                    "I created this visualisation when learning about 3d graphics and building a basic 3d engine from first principles.",
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://niallains.github.io/z-buffer-visualised",
+                "linkCode": "https://github.com/NiallAins/z-buffer-visualised",
+                "tags": [
+                    ePageTag.Javascipt,
+                    ePageTag.Canvas
+                ]
             },
             {
                 "title": "Camera Colour Picker",
@@ -451,13 +456,18 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Region Caching Visualised",
-                "year": 1986,
+                "year": 2025,
                 "desc": [
-                    "",
+                    "An interactive visualisation of how a view region caching algorithim works.",
+                    "Region caching can pre-load background images, or game levels, based on the current view position.",
+                    "I created this visualisation when trying to implement my own algorithim for another project.",
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://niallains.github.io/view-region-caching",
+                "linkCode": "https://github.com/NiallAins/view-region-caching",
+                "tags": [
+                    ePageTag.Javascipt,
+                    ePageTag.Canvas
+                ]
             },
             {
                 "title": "Quaternions Visualised",
@@ -483,11 +493,15 @@ export const PROJECT_DATA: tTopicData[] = [
                 "title": "Angle Calcs Visualised",
                 "year": 1986,
                 "desc": [
-                    "",
+                    "An small visualisation of how angles are measured",
+                    "I have gotten stuck on so many projects when it comes to measuring relative angles beween lines. So I create a function which calculates every available angle between two given lines - and this visualisation tool to help you understand what angle you are actually looking for."
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://niallains.github.io/angle-functions-visualised",
+                "linkCode": "https://github.com/NiallAins/angle-functions-visualised",
+                "tags": [
+                    ePageTag.Canvas,
+                    ePageTag.Javascipt
+                ]
             },
             {
                 "title": "Color Library",
