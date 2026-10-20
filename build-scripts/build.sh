@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-rm -r ./dist
+rm -rf ./dist
 cp -r ./public ./dist
 node ./build-scripts/build-thumbnails.js
 

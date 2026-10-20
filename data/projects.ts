@@ -254,10 +254,10 @@ export const PROJECT_DATA: tTopicData[] = [
                     "A litre is equal to one cubic millimeter - but how many litres are in an A4 sheet of paper, or a fortnight? The Universal Unit Converter attempts to answer these ago old questions, with the ability to convert between almost 500 unit types",
                     "Built as the frontend to a large spreadsheet of interesting units I had been curating, this app finally allowed me to start introducing terms such as Gigadessertspoons, and Megafoolscap into casual conversation."
                 ],
-                "linkLive": "https://nialains.github.io/universal-unit-converter",
+                "linkLive": "https://niallains.github.io/universal-unit-converter",
                 "linkCode": "https://github.com/NiallAins/universal-unit-converter",
                 "tags": [
-                    ePageTag.Javascipt
+                    ePageTag.Typescript
                 ]
             },
             {
@@ -287,23 +287,32 @@ export const PROJECT_DATA: tTopicData[] = [
         "projects": [
             {
                 "title": "Mage Hand",
-                "year": 1986,
+                "year": 2019,
                 "desc": [
-                    "",
+                    "Mage Hand is a Dungeons & Dragons character app that can track your equipment, stats, and characer details. The app uses the DnD5e API to pull data for every weapon and object in the game, as well as supporting custom objects",
+                    "The app is built with VueJS and is designed to be downloaded as a local webapp. It supports localstorage and data caching to allow offline usage."
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "niallains.github.io/MageHand/dist",
+                "linkCode": "https://github.com/NiallAins/MageHand",
+                "tags": [
+                    ePageTag.VueJS
+                ]
             },
             {
                 "title": "Buck N Sons",
-                "year": 1986,
+                "year": 2016,
                 "desc": [
-                    "",
+                    "Buck N Sons is a retro-style aracade game created for the band Buck N Sons to be released alongside their first album.",
+                    "The visual style of the game is based on the music video for their track Pancake Paradise, which also supplies the soundtrack",
+                    "This was my first proect after graduating - I created the game engine from scratch, as well as drawing all the pixel art assets. I worked with the band to record voices and sound effects, and was finally able to showcase the game for the first time at the album launch party in Dublin"
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "niallains.github.io/BuckNSons",
+                "linkCode": "https://github.com/NiallAins/BuckNSons",
+                "tags": [
+                    ePageTag.Javascipt,
+                    ePageTag.Canvas,
+                    ePageTag.WebAudio
+                ]
             },
             {
                 "title": "CrossCreator",
@@ -326,14 +335,19 @@ export const PROJECT_DATA: tTopicData[] = [
                 "tags": []
             },
             {
-                "title": "The Gibberish Poem Generator",
+                "title": "The Gibberish Poet",
                 "year": 1986,
                 "desc": [
-                    "",
+                    "A Gibberish poet writes poems in Gibberish... or are they?",
+                    "I created this small app to experiment with randomness and Zipfian distribution. The app generates random words - but in a cadence and distribution that matches natural language. This gives the illusion that the poems are undstandable if you were to just study them for long enough.",
+                    "The words of each poem are all pronounceable, allowing you to read each poem aloud, feeling the impact of rhythim and punctuation devoid of any literal meaning",
+                    "Each poem is generated with a seed that can be used to recreate or share."
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "niallains.github.io/gibberish-poet",
+                "linkCode": "https://github.com/NiallAins/gibberish-poet",
+                "tags": [
+                    ePageTag.Javascipt
+                ]
             }
         ]
     },
