@@ -4,13 +4,15 @@ const
     { createCanvas, loadImage } = require('canvas');
 
 const
-    DIR_FROM = 'thumbnails',
-    DIR_TO = 'dist/assets',
+    DIR_FROM = 'dist/assets/thumbnails',
+    DIR_TO = 'dist/assets/thumbnails',
     DIR_STYLE_VARS = 'styles/_vars.scss',
     PATH_TO_TS = 'data/images.ts',
     WIDTH_XS = getStyleVarPxValue('w-img-xs'),
     WIDTH_SM = getStyleVarPxValue('w-img-sm'),
     WIDTH_MD = getStyleVarPxValue('w-img-md'),
+    EXT_SM = 'sm',
+    EXT_MD = 'md',
     CAN_XS = createCanvas(WIDTH_XS, WIDTH_XS),
     CAN_SM = createCanvas(WIDTH_SM, WIDTH_SM),
     CTX_XS = CAN_XS.getContext('2d'),
@@ -43,16 +45,17 @@ FS.readdir(DIR_FROM, (_, files) => {
         .forEach(f => {
             const PATH_FROM = DIR_FROM + '/' + f;
             [
-                [WIDTH_SM, DIR_TO + '/' + f.replace('.png', '.sm.png')],
-                [WIDTH_MD, DIR_TO + '/' + f.replace('.png', '.md.png')]
-            ].forEach(size => {
+                [EXT_SM, WIDTH_SM],
+                // ['md', WIDTH_MD]
+            ].forEach(([ext, size]) => {
+                const PATH_TO = DIR_TO + '/' + f.replace('.', `.${ ext }.`);
                 sharp(PATH_FROM)
-                    .resize(size[0], size[0], {
+                    .resize(size, size, {
                         kernel: sharp.kernel.mks2021,
                         fit: 'cover',
                         position: 'center'
                     })
-                    .toFile(size[1]);
+                    .toFile(PATH_TO);
             });
         });
 });

@@ -1,4 +1,4 @@
-import { tTopicData, ePageTag } from "../scripts/types";
+import { tTopicData, ePageTag, ePages } from "../scripts/types";
 
 export const PROJECT_DATA: tTopicData[] = [
     {
@@ -109,8 +109,8 @@ export const PROJECT_DATA: tTopicData[] = [
                     "I kept the orignal layout of the chart, while adding some additional information and redesigning elements to improve readability. As it is built as a HTML page, one functional improvement is the ability to copy values directly form the chart",
                     "The chart is designed to be printed out as an A2 wall chart, but can also be viewed online as a vector graphic, or downloaded as a PNG"
                 ],
-                "linkLive": "",
-                "linkCode": "",
+                "linkLive": "https://niallains.github.io/carnegie-hall-chart",
+                "linkCode": "https://github.com/NiallAins/carnegie-hall-chart",
                 "tags": [
                     ePageTag.Javascipt
                 ]
@@ -262,23 +262,27 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Every Body in the Solar System",
-                "year": 1986,
+                "year": 0,
                 "desc": [
                     "",
                 ],
-                "linkLive": "",
-                "linkCode": "",
+                "linkLive": "https://niallains.github.io/",
+                "linkCode": "https://github.com/NiallAins/",
                 "tags": []
             },
             {
-                "title": "Irish Voting Charts",
-                "year": 1986,
+                "title": "Voting Charts",
+                "year": 2024,
                 "desc": [
-                    "",
+                    "I created these charts during the 2024 Irish MEP elections, in an attempt to visualise how the Single Transferable Voting system in Ireland works",
+                    "The charts display each candidates, along with their approximate political alignment - then shows how the votes of each eliminated candiate are distribued"
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://niallains.github.io/mep-election-charts",
+                "linkCode": "https://github.com/NiallAins/mep-election-charts",
+                "tags": [
+                    ePageTag.Canvas,
+                    ePageTag.Javascipt
+                ]
             }
         ]
     },
@@ -316,27 +320,27 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "CrossCreator",
-                "year": 1986,
+                "year": 0,
                 "desc": [
                     "",
                 ],
-                "linkLive": "",
-                "linkCode": "",
+                "linkLive": "https://niallains.github.io/",
+                "linkCode": "https://github.com/NiallAins/",
                 "tags": []
             },
             {
                 "title": "Little Iso World",
-                "year": 1986,
+                "year": 0,
                 "desc": [
                     "",
                 ],
-                "linkLive": "",
-                "linkCode": "",
+                "linkLive": "https://niallains.github.io/",
+                "linkCode": "https://github.com/NiallAins/",
                 "tags": []
             },
             {
                 "title": "The Gibberish Poet",
-                "year": 1986,
+                "year": 2025,
                 "desc": [
                     "A Gibberish poet writes poems in Gibberish... or are they?",
                     "I created this as an experiment with randomness and Zipfian distribution. The app generates random words - but in a cadence and distribution that matches natural language. This gives the illusion that the poems are undstandable if you were to just study them for long enough.",
@@ -355,74 +359,111 @@ export const PROJECT_DATA: tTopicData[] = [
         "title": "Sport",
         "projects": [
             {
-                "title": "Snooker Score UI",
-                "year": 1986,
+                "title": "Every World Cup performance",
+                "year": 2026,
                 "desc": [
-                    "",
+                    "I created this chart during the 2026 FIFA World Cup to try and show the world cup journies of every nation - from qualifiers to finals.",
+                    "This chart is one in a series I have created that attempt to display large amount of dense information is an consumable and interesting way.",
+                    "One element that I felt was important to include in this chart, was data on the many journies of nations that have never made it to a finals."
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://niallains.github.io/every-world-cup",
+                "linkCode": "https://github.com/NiallAins/every-world-cup",
+                "tags": [
+                    ePageTag.Javascipt
+                ]
             },
             {
                 "title": "Strava Heatmap",
-                "year": 1986,
+                "year": 0,
                 "desc": [
                     "",
                 ],
-                "linkLive": "",
-                "linkCode": "",
+                "linkLive": "https://niallains.github.io/",
+                "linkCode": "https://github.com/NiallAins/",
+                "tags": []
+            },
+            {
+                "title": "Snooker Score UI",
+                "year": 2026,
+                "desc": [
+                    "My dream job would be to create television score tracking UIs for various sports boradcasts",
+                    "To manifest this reality, I created this snooker scoring UI while watching the World Snooker Championships",
+                    "This visual attempts to communicate the most captivating aspect of snooker - the race to, and the manipulation of, the elusive line of Snookers Required."
+                ],
+                "linkLive": "https://niallains.github.io/snooker-score-ui",
+                "linkCode": "https://github.com/NiallAins/snooker-score-ui",
+                "tags": [
+                    ePageTag.Javascipt
+                ]
+            },
+            {
+                "title": "Strava Heatmap",
+                "year": 0,
+                "desc": [
+                    "",
+                ],
+                "linkLive": "https://niallains.github.io/",
+                "linkCode": "https://github.com/NiallAins/",
                 "tags": []
             },
             {
                 "title": "Your Strava: Graphed",
-                "year": 1986,
+                "year": 0,
                 "desc": [
                     "",
                 ],
-                "linkLive": "",
-                "linkCode": "",
+                "linkLive": "https://niallains.github.io/",
+                "linkCode": "https://github.com/NiallAins/",
                 "tags": []
             },
             {
-                "title": "Tour Strava: Poster",
-                "year": 1986,
+                "title": "Your Strava: Poster",
+                "year": 0,
                 "desc": [
                     "",
                 ],
-                "linkLive": "",
-                "linkCode": "",
+                "linkLive": "https://niallains.github.io/",
+                "linkCode": "https://github.com/NiallAins/",
                 "tags": []
             },
             {
                 "title": "Run Plan Generator",
-                "year": 1986,
+                "year": 0,
                 "desc": [
                     "",
                 ],
-                "linkLive": "",
-                "linkCode": "",
+                "linkLive": "https://niallains.github.io/",
+                "linkCode": "https://github.com/NiallAins/",
                 "tags": []
             },
             {
                 "title": "Running Pace Calculator",
-                "year": 1986,
+                "year": 2020,
                 "desc": [
-                    "",
+                    "An app for calculating running distances, times, and paces - in both metres and miles.",
+                    "I built this for my own use, as every other pace calculator on the internet is shite.",
+                    "The app is designed to have maximum funtionality, with minimum elements."
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://niallains.github.io/running-pace-calculator",
+                "linkCode": "https://github.com/NiallAins/running-pace-calculator",
+                "tags": [
+                    ePageTag.Typescript
+                ]
             },
             {
                 "title": "English Football Chart",
-                "year": 1986,
+                "year": 2024,
                 "desc": [
-                    "",
+                    "This chart shows the relative movement of the 172 clubs who have taken part in the 5 national English football leagues, since the establishment of the Premier League in 1992 / 93",
+                    "Clubs are coloured according to their ranking at the end of that first season, to show how ranking has shuffled throughout the years, and any club can be highlighted to show its paths more clearly",
+                    "This chart is one in a series I have created that attempt to display large amount of dense information is an consumable and interesting way. This is definitly on the more... maximalist side of data vis."
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://niallains.github.io/",
+                "linkCode": "https://github.com/NiallAins/",
+                "tags": [
+                    ePageTag.Javascipt,
+                    ePageTag.Canvas
+                ]
             }
         ]
     },
@@ -446,12 +487,12 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Camera Colour Picker",
-                "year": 1986,
+                "year": 0,
                 "desc": [
                     "",
                 ],
-                "linkLive": "",
-                "linkCode": "",
+                "linkLive": "https://niallains.github.io/",
+                "linkCode": "https://github.com/NiallAins/",
                 "tags": []
             },
             {
@@ -471,30 +512,30 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "Quaternions Visualised",
-                "year": 1986,
+                "year": 0,
                 "desc": [
                     "",
                 ],
-                "linkLive": "",
-                "linkCode": "",
+                "linkLive": "https://niallains.github.io/",
+                "linkCode": "https://github.com/NiallAins/",
                 "tags": []
             },
             {
                 "title": "Extended Range Inputs",
-                "year": 1986,
+                "year": 0,
                 "desc": [
                     "",
                 ],
-                "linkLive": "",
-                "linkCode": "",
+                "linkLive": "https://niallains.github.io/",
+                "linkCode": "https://github.com/NiallAins/",
                 "tags": []
             },
             {
                 "title": "Angle Calcs Visualised",
-                "year": 1986,
+                "year": 2024,
                 "desc": [
                     "An small visualisation of how angles are measured",
-                    "I have gotten stuck on so many projects when it comes to measuring relative angles beween lines. So I create a function which calculates every available angle between two given lines - and this visualisation tool to help you understand what angle you are actually looking for."
+                    "I have been stuck on so many projects when it comes to measuring relative angles beween lines. So I create a function which calculates every available angle between two given lines - and this visualisation tool to help you understand what angle you are actually looking for."
                 ],
                 "linkLive": "https://niallains.github.io/angle-functions-visualised",
                 "linkCode": "https://github.com/NiallAins/angle-functions-visualised",
@@ -504,24 +545,29 @@ export const PROJECT_DATA: tTopicData[] = [
                 ]
             },
             {
-                "title": "Color Library",
-                "year": 1986,
+                "title": "Colour Library",
+                "year": 0,
                 "desc": [
                     "",
                 ],
-                "linkLive": "",
-                "linkCode": "",
+                "linkLive": "https://niallains.github.io/",
+                "linkCode": "https://github.com/NiallAins/",
                 "tags": []
             },
             {
-                "title": "Colour Spaces Visualised",
-                "year": 1986,
+                "title": "Colour Space Compare",
+                "year": 0,
                 "desc": [
-                    "",
+                    "Every colour on a screen exisits in a 3D space, and so many gamuts to choose from!",
+                    "I decided to make this small app after the introduction of the CSS color() function, and updated support for HD, printing, and non-sRGB spaces.",
+                    "The app allows you to select four spaces, visualsied as 3D cubes, and allows you to move around to see the relative movements across spaces."
                 ],
-                "linkLive": "",
-                "linkCode": "",
-                "tags": []
+                "linkLive": "https://niallains.github.io/color-space-compare",
+                "linkCode": "https://github.com/NiallAins/color-space-compare",
+                "tags": [
+                    ePageTag.Canvas,
+                    ePageTag.Javascipt
+                ]
             }
         ]
     },
@@ -531,62 +577,62 @@ export const PROJECT_DATA: tTopicData[] = [
         "projects": [
             {
                 "title": "Venn Diagram Generator",
-                "year": 1986,
+                "year": 0,
                 "desc": [
                     "",
                 ],
-                "linkLive": "",
-                "linkCode": "",
+                "linkLive": "https://niallains.github.io/",
+                "linkCode": "https://github.com/NiallAins/",
                 "tags": []
             },
             {
                 "title": "Agent RegX",
-                "year": 1986,
+                "year": 0,
                 "desc": [
                     "",
                 ],
-                "linkLive": "",
-                "linkCode": "",
+                "linkLive": "https://niallains.github.io/",
+                "linkCode": "https://github.com/NiallAins/",
                 "tags": []
             },
             {
                 "title": "Marathon: The Game",
-                "year": 1986,
+                "year": 0,
                 "desc": [
                     "",
                 ],
-                "linkLive": "",
-                "linkCode": "",
+                "linkLive": "https://niallains.github.io/",
+                "linkCode": "https://github.com/NiallAins/",
                 "tags": []
             },
             {
                 "title": "Glade",
-                "year": 1986,
+                "year": 0,
                 "desc": [
                     "",
                 ],
-                "linkLive": "",
-                "linkCode": "",
+                "linkLive": "https://niallains.github.io/",
+                "linkCode": "https://github.com/NiallAins/",
                 "tags": []
             },
             {
                 "title": "Extended SASS Themes",
-                "year": 1986,
+                "year": 0,
                 "desc": [
                     "",
                 ],
-                "linkLive": "",
-                "linkCode": "",
+                "linkLive": "https://niallains.github.io/",
+                "linkCode": "https://github.com/NiallAins/",
                 "tags": []
             },
             {
                 "title": "Gridiron",
-                "year": 1986,
+                "year": 0,
                 "desc": [
                     "",
                 ],
-                "linkLive": "",
-                "linkCode": "",
+                "linkLive": "https://niallains.github.io/",
+                "linkCode": "https://github.com/NiallAins/",
                 "tags": []
             }
         ]

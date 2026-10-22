@@ -225,7 +225,7 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
             EL_PROJECT_DESC.innerHTML = PROJECT.desc
                 .map(d => `<p class="project__desc-item">${ d }</p>`)
                 .join('\n');
-            EL_PROJECT_IMAGE.style.setProperty('--bg-url', `url(assets/${ TITLE_KEBAB }.md.png)`);
+            EL_PROJECT_IMAGE.style.setProperty('--bg-url', `url(assets/${ TITLE_KEBAB }.png)`);
             currentOpenTopic = topicIndex;
 
             if (PROJECT.linkLive) {

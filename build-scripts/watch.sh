@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+CB='\033[0;36m';
+CW='\033[0m';
+echo -e "\n${CB}> Watching for file changes...${CW}"
+
 concurrently \
     "onchange \"./scripts/**/*.ts\"  -e \"./scripts/consts.scss.ts\" -- bash ./build-scripts/build-script.sh watch"\
     "onchange \"./data/**/*.ts\"                                     -- bash ./build-scripts/build-script.sh watch"\
