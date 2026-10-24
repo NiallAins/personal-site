@@ -49,8 +49,10 @@ $label-angle:           -0.488rad;
 $-w-page-max-total:     1152px;
 $w-page-pad:            1rem;
 $w-page-max:            div($-w-page-max-total, $f-size-base) - (2 * $w-page-pad);
-$w-page-bg-max:         1800px;
 $w-scrollbar:           1rem;
+$w-page-bg-max:         1800px;
+$w-canvas-max:          2000px;
+$h-canvas-max:          1250px;
 
 $h-main-section:        0.4;
 $h-main-section-gap-vl: 0.3;

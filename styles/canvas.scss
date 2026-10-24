@@ -5,8 +5,11 @@
     &__sky,
     &__sea {
         position: fixed;
-        left: 50%;
-        translate: -50% 0;
+        left: 0;
+
+        @media (min-width: #{ $w-canvas-max }) {
+            left: calc(0.5 * (100vw - #{ $w-canvas-max }));
+        }
     }
     
     &__sky {
@@ -15,25 +18,18 @@
     }
     
     &__sea {
-        bottom: 0;
+        top: 0;
         z-index: $z-canvas-fg;
         transition: translate ease-out $dur-page-open;
         
         // Account for viewport height changes due to mobile browser sliding nav bar
         @include viewport(mobile) {
-            translate: calc(100dvh - var(#{ $var-page-height })) 0;
-
-            .#{ $cl-page-closing } > & {
-                translate: calc(
-                    (100dvh - var(#{ $var-page-height })) +
-                    100svh - 50% - 0.5rem
-                ) 0;
-            }
+            top: calc(100dvh - var(#{ $var-page-height }));
         }
 
         .#{ $cl-page-closing } > & {
             pointer-events: none;
-            translate: calc(100svh - 50% - 0.5rem) 0;
+            translate: 0 100vh;
         }
     }
 }

@@ -3,7 +3,7 @@ import {
     CLASS_PAGE_POST_FOUC,
     EL_HEADER_NAV_MORE,
     FONT_FAM_TITLE_PRIMARY, FONT_FAM_TITLE_SRC,
-    PAGE_HEIGHT_MAX, PAGE_WIDTH_MAX,
+    WIDTH_CANVAS_MAX, HEIGHT_CANVAS_MAX,
     VAR_PAGE_HEIGHT,
     WINDOW_RESIZE_DEBOUNCE
 } from './consts';
@@ -27,8 +27,8 @@ function resize(isInitial: boolean) {
         WIDTH = window.innerWidth,
         VIEWPORT_SM = WIDTH < BREAKPOINT_MOBILE;
     setCanvasSize(
-        Math.min(PAGE_WIDTH_MAX, WIDTH),
-        Math.min(PAGE_HEIGHT_MAX, HEIGHT),
+        Math.min(WIDTH_CANVAS_MAX, WIDTH),
+        Math.min(HEIGHT_CANVAS_MAX, HEIGHT),
         VIEWPORT_SM,
         isInitial
     );

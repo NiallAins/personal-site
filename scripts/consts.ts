@@ -28,8 +28,6 @@ export const ROUTES: { [key in ePages]?: string } = {
 //
 
 export const
-    PAGE_WIDTH_MAX: number = 2000,
-    PAGE_HEIGHT_MAX: number = 1250,
     WINDOW_RESIZE_DEBOUNCE: number = 200;
 
 
