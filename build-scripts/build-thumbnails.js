@@ -4,8 +4,8 @@ const
     { createCanvas, loadImage } = require('canvas');
 
 const
-    DIR_FROM = 'dist/assets/thumbnails',
-    DIR_TO = 'dist/assets/thumbnails',
+    DIR_FROM = 'dist/thumbnails',
+    DIR_TO = 'dist/thumbnails',
     DIR_STYLE_VARS = 'styles/_vars.scss',
     PATH_TO_TS = 'data/images.ts',
     WIDTH_XS = getStyleVarPxValue('w-img-xs'),

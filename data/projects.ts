@@ -359,7 +359,7 @@ export const PROJECT_DATA: tTopicData[] = [
         "title": "Sport",
         "projects": [
             {
-                "title": "Every World Cup performance",
+                "title": "Every World Cup Performance",
                 "year": 2026,
                 "desc": [
                     "I created this chart during the 2026 FIFA World Cup to try and show the world cup journies of every nation - from qualifiers to finals.",
@@ -458,8 +458,8 @@ export const PROJECT_DATA: tTopicData[] = [
                     "Clubs are coloured according to their ranking at the end of that first season, to show how ranking has shuffled throughout the years, and any club can be highlighted to show its paths more clearly",
                     "This chart is one in a series I have created that attempt to display large amount of dense information is an consumable and interesting way. This is definitly on the more... maximalist side of data vis."
                 ],
-                "linkLive": "https://niallains.github.io/",
-                "linkCode": "https://github.com/NiallAins/",
+                "linkLive": "https://niallains.github.io/english-club-football-chart",
+                "linkCode": "https://github.com/NiallAins/english-club-football-chart",
                 "tags": [
                     ePageTag.Javascipt,
                     ePageTag.Canvas
