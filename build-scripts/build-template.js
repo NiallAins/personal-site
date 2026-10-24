@@ -61,7 +61,7 @@ async function buildTemplates() {
                 .then(() => FS.writeFile(
                     PATH,
                     appHtml
-                        .replace('{{ title }}', '| ' + p.title)
+                        .replace('{{ title }}', p.title + ' |')
                         .replace('{{ title-kebab }}', TITLE_KEBAB)
                         .replace('{{ url }}', p.linkLive),
                     'utf8',

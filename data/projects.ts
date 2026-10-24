@@ -298,6 +298,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 ],
                 "linkLive": "https://niallains.github.io/MageHand/dist",
                 "linkCode": "https://github.com/NiallAins/MageHand",
+                "linkDirect": true,
                 "tags": [
                     ePageTag.VueJS
                 ]
@@ -320,13 +321,15 @@ export const PROJECT_DATA: tTopicData[] = [
             },
             {
                 "title": "CrossCreator",
-                "year": 0,
+                "year": 2019,
                 "desc": [
                     "",
                 ],
-                "linkLive": "https://niallains.github.io/",
-                "linkCode": "https://github.com/NiallAins/",
-                "tags": []
+                "linkLive": "https://niallains.github.io/CrossCreator",
+                "linkCode": "https://github.com/NiallAins/CrossCreator",
+                "tags": [
+                    ePageTag.Javascipt
+                ]
             },
             {
                 "title": "Little Iso World",
@@ -446,6 +449,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 ],
                 "linkLive": "https://niallains.github.io/running-pace-calculator",
                 "linkCode": "https://github.com/NiallAins/running-pace-calculator",
+                "linkDirect": true,
                 "tags": [
                     ePageTag.Typescript
                 ]

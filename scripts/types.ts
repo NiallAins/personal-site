@@ -70,7 +70,8 @@ export type tProjectData = {
     desc: string[],
     linkLive?: string,
     linkCode?: string,
-    tags?: ePageTag[],
+    linkDirect?: boolean,
+    tags?: ePageTag[]
 };
 
 export type tTopicData = {
