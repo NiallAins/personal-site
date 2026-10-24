@@ -1,14 +1,15 @@
 import {
     SKY_HEIGHT_RATIO,
-    DURATION_SH, DURATION_PAGE_OPEN, DURATION_PAGE_OPEN_DELAY,
+    DURATION_PAGE_OPEN, DURATION_MAIN_CLOSE_DELAY,
     ISO_SCALE_LG, ISO_SCALE_SM,
-    X_UNIT_SCALE, Y_UNIT_SCALE, Z_UNIT_SCALE, ROW_HEIGHT_SCALE, LABEL_DEPRESS_Z_SCALE, LABEL_LETTER_HEIGHT, LABEL_LINE_HEIGHT, LABEL_Z_SCALE
+    X_UNIT_SCALE, Y_UNIT_SCALE, Z_UNIT_SCALE, ROW_HEIGHT_SCALE, LABEL_DEPRESS_Z_SCALE, LABEL_LETTER_HEIGHT, LABEL_LINE_HEIGHT, LABEL_Z_SCALE,
+    DURATION_SH
 } from "../consts";
 import { Canvas } from "./Canvas";
 import { Splash } from "./Splash";
 import { Label } from "./Label";
 import { init as initTerrain, render as renderTerrain, resize as resizeTerrain } from "./terrain";
-import { requestFrameScaled } from "../util";
+import { Rand, requestFrameScaled } from "../util";
 import { EL_TOPIC_BUTTONS } from "../pages";
 import { Cublet } from "./Cublet";
 import { PROJECT_DATA } from "../../data/projects";
@@ -59,11 +60,11 @@ export function toggleSectionOpen(open: boolean, sectionI: number = -1) {
 
     if (open) {
         if (sectionI !== -1) {
-            fades[sectionI].play(eEaseState.Forward);
+            setTimeout(() => fades[sectionI].play(eEaseState.Forward), 100);
         }
         sectionOpenTimeout = setTimeout(
             () => paused = true,
-            DURATION_PAGE_OPEN_DELAY
+            DURATION_MAIN_CLOSE_DELAY
         );
     } else {
         sectionOpenTimeout = setTimeout(
@@ -88,7 +89,7 @@ export function init() {
     CAN_SEA.CAN.onclick = e => Splash.createSplash(e.clientX, e.clientY, true);
     EL_TOPIC_BUTTONS.forEach((el, i) => {
         LABELS.push(new Label(el, i));
-        fades.push(new Ease(DURATION_SH, eEaseType.EaseOut, true));
+        fades.push(new Ease([DURATION_MAIN_CLOSE_DELAY, DURATION_SH], eEaseType.EaseOut, true));
     });
     initTerrain();
 
@@ -151,15 +152,16 @@ function animate(t: number = 0, dT: number = 1) {
 //
 
 function renderSky(can: Canvas) {
+    const RAND = new Rand();
     for (let i = 0; i < 50; i++) {
         const
-            X = Math.random() * can.width,
-            Y = Math.random() * can.height;
-        can.CTX.fillStyle = `hsl(${Math.floor(Math.random() * 360)}deg, 100%, 90%)`
+            X = RAND.get() * can.width,
+            Y = RAND.get() * can.height;
+        can.CTX.fillStyle = `hsl(${ RAND.get(360, 0, true) }deg, 100%, 90%)`
         can.CTX.save();
             can.CTX.translate(X, Y);
             can.CTX.rotate(0.785);
-            const W = 1 + (Math.random() * 2);
+            const W = 1 + (RAND.get() * 2);
             can.CTX.fillRect(0, 0, W, W);
         can.CTX.restore();
     }

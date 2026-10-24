@@ -139,10 +139,12 @@ $c-text-select:         $c-text-l;
 // Animation durations
 //
 
-$dur-sh:                500ms;
-$dur-lg:                1000ms;
-$dur-page-open:         $dur-lg;
-$dur-page-open-delay:   $dur-sh;
+$dur-sh:                   500ms;
+$dur-lg:                  1000ms;
+$dur-page-open:           1000ms;
+$dur-main-close-delay:    1000ms;
+$dur-project-open-delay:   250ms;
+
 
 
 //

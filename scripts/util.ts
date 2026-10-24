@@ -50,11 +50,13 @@ export class Rand {
         }
     }
 
-    public get(max: number = 1, min: number = 0): number {
+    public get(max: number = 1, min: number = 0, int: boolean = false): number {
         this._RNG[3] = (this._RNG[1] * this._RNG[3] + this._RNG[2]) % this._RNG[0];
-        const R = this._RNG[3] / this._RNG[0];
+        const
+            FLOAT = this._RNG[3] / this._RNG[0],
+            SCALED = min + (FLOAT * (max - min));
 
-        return min + (R * (max - min));
+        return int ? Math.floor(SCALED) : SCALED;
     }
 
     get seed(): number {

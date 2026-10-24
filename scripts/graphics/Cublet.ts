@@ -29,7 +29,6 @@ export class Cublet {
 
         let rand = Cublet.RANDS[sectionI];
         if (!rand) {
-            // const SEED = Math.floor(Math.random()*10**10);
             rand = new Rand(CUBLET_SEEDS[sectionI]);
             Cublet.RANDS.push(rand);
         }

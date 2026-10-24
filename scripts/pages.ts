@@ -1,6 +1,6 @@
 import {
     CLASS_PAGE_INACTIVE, CLASS_PAGE_CLOSING, CLASS_PAGE_SUB_OPENING,
-    DURATION_PAGE_OPEN,
+    DURATION_PAGE_OPEN, DURATION_PROJECT_OPEN_DELAY,
     COLOR_BG_L,
     EL_PAGE_MAIN, EL_HEADER_NAV_LINKS_CONTACT, EL_HEADER_NAV_LINKS_EXPERIENCE, EL_TOPICS,
     EL_PAGE_CLOSES,
@@ -8,7 +8,7 @@ import {
     EL_PROJECT_IMAGE, EL_PROJECT_LINK_CODE, EL_PROJECT_LINK_LIVE,
     EL_PROJECT_TAGS, EL_PROJECT_TITLE, EL_PAGE_TOPIC,
     ROUTES,
-    DURATION_PAGE_OPEN_DELAY,
+    DURATION_MAIN_CLOSE_DELAY,
     CLASS_PROJECT_LINK_MISSING,
     TOKEN_PREVIOUS_VISIT,
     TOKEN_PREVIOUS_VISIT_SET,
@@ -212,7 +212,7 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
 
                 toggleGraphicsSectionOpen(true, topicIndex);
                 setLabelSizes(topicIndex);
-                transitionPage(page, currentOpenPage === ePages.Main ? DURATION_PAGE_OPEN_DELAY : 0);
+                transitionPage(page, currentOpenPage === ePages.Main ? DURATION_MAIN_CLOSE_DELAY : 0);
                 setUrl(PROJECT_DATA[topicIndex].title, isInitial);
             }
         break;
@@ -250,7 +250,7 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
                 .join('');
 
             toggleGraphicsSectionOpen(true, topicIndex);
-            transitionPage(page, 0, currentOpenPage == ePages.Topic ? DURATION_PAGE_OPEN_DELAY : 0);
+            transitionPage(page, 0, currentOpenPage == ePages.Topic ? DURATION_PROJECT_OPEN_DELAY : 0);
             setUrl(PROJECT.title, isInitial);
         break;
     }

@@ -1,7 +1,6 @@
 import {
     CLASS_TOPIC_BUTTON_DISABLED,
     COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE, COLOR_TEXT_SHADOW,
-    DURATION_SH,
     HEIGHT_MAIN_SECTION,
     HEIGHT_MAIN_SECTION_GAP_VS, HEIGHT_MAIN_SECTION_GAP_VL,
     FONT_WEIGHT_SECTION,
@@ -11,7 +10,8 @@ import {
     WIDTH_PAGE_MAX,
     WIDTH_STROKE_OUTLINE,
     FONT_FAM_TITLE_PRIMARY,
-    FONT_FAM_TITLE_FALLBACK
+    FONT_FAM_TITLE_FALLBACK,
+    DURATION_SH
 } from "../consts";
 import { eEaseState, eEaseType } from "../types";
 import { Canvas } from "./Canvas";

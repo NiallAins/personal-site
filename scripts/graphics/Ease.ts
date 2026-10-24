@@ -22,18 +22,22 @@ export class Ease {
     private _valueAbs: number = 0;
     private _state: eEaseState = eEaseState.Paused;
     private _prevState?: eEaseState;
-    private readonly _FRAMES: number;
+    private readonly _FRAMES_FORWARD: number;
+    private readonly _FRAMES_BACKWARD: number;
+    private readonly _FRAMES_DELAY: number;
     private readonly _EASE_FUNC: [
         forward: tEaseFunc,
         forward: tEaseFunc
     ];
 
     constructor(
-        duration: number = 1000,
+        duration: number | [number, number, number?] = 1000,
         easeType: eEaseType = eEaseType.Ease,
         reverseEase: boolean = false
     ) {
-        this._FRAMES = msToFrames(duration);
+        this._FRAMES_FORWARD = msToFrames(typeof duration === 'number' ? duration : duration[0]);
+        this._FRAMES_BACKWARD = msToFrames(typeof duration === 'number' ? duration : duration[1]);
+        this._FRAMES_DELAY = msToFrames(typeof duration === 'number' ? 0 : duration[2] || 0);
 
         const
             EASE = Ease.EASE_FUNCS[easeType],
@@ -64,8 +68,10 @@ export class Ease {
 
     protected step(dT: number) {
         if (this._state !== eEaseState.Paused) {
+             
             const IS_FORWARD = this._state > eEaseState.Paused;
-            this._valueAbs += (dT / this._FRAMES) * (IS_FORWARD ? 1 : -1);
+            this._valueAbs += dT / (IS_FORWARD ? this._FRAMES_FORWARD : this._FRAMES_BACKWARD * -1);
+            
             if (
                 (IS_FORWARD && this._valueAbs >= 1) ||
                 (!IS_FORWARD && this._valueAbs <= 0)
@@ -85,6 +91,14 @@ export class Ease {
                     [eEaseState.ForwardReverse]: eEaseState.Backward,
                     [eEaseState.ForwardReverseLoop]: eEaseState.BackwardReverseLoop
                 }[this._state]!;
+
+                if (
+                    // this._FRAMES_DELAY &&
+                    (this._state === eEaseState.Forward || this._state === eEaseState.Backward)
+                 ) {
+                    this.pause();
+                    setTimeout(() => this.play(), 100);
+                }
             }
             this._value = this._EASE_FUNC[IS_FORWARD ? 0 : 1](this._valueAbs);
         }

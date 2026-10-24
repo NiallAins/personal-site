@@ -358,7 +358,7 @@ function renderLetter(
         LABEL = letter.LABEL,
         LABEL_DEPRESS =
             (LABEL.pressAni.value * LABEL_DEPRESS_Z) +
-            fade * Z_UNIT * -20,
+            fade * Z_UNIT * -40,
         HORIZON_Z = getHorizonIsoZ(letter.y),
         HORIZON_Z_LETTER = HORIZON_Z * Z_UNIT * 1.25,
         TERRAIN_Z = getTerrainIsoZ(
@@ -418,7 +418,7 @@ function renderLetter(
             if (HOVER) {
                 const PTS: [number, number][] = LABEL.LETTERS
                     .slice(letter.LABEL.LETTERS.length - letter.LAST_LINE)
-                    .map((l, li) => [
+                    .map(l => [
                         l.x + (X_UNIT * 1.5),
                         l.y - Y_UNIT + LABEL_DEPRESS +
                         (getHorizonIsoZ(l.y) * Z_UNIT)
