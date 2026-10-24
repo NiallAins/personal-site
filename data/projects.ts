@@ -2,72 +2,6 @@ import { tTopicData, ePageTag, ePages } from "../scripts/types";
 
 export const PROJECT_DATA: tTopicData[] = [
     {
-        "title": "Sites",
-        "projects": [
-            {
-                "title": "Johnny Cigarette",
-                "year": 2022,
-                "desc": [
-                    "JohnnyCigarette.ie is a portfolio website made for the Irish animator known as Johnny Cigerette.",
-                    "I went with a simple and minimalistic design for this project, to keep the focus on the art on show.",
-                    "The project is built as a static site with VueJS. Content is pulled from a JSON file that is maintained and updated by the artist. I also created a video component which can generate a YouTube or Vimeo player when video urls are detected in the JSON.",
-                ],
-                "linkLive": "https://johnnycigarette.ie",
-                "linkCode": "https://github.com/NiallAins/Johnny-Cigarette",
-                "tags": [
-                    ePageTag.VueJS
-                ]
-            },
-            {
-                "title": "Clever Keys",
-                "year": 2021,
-                "desc": [
-                    "Clever Keys is an interactive education website, created to accompany the Clever Keys childrens' music books.",
-                    "I deisgned this site to align with the colours and style of the books' covers &#x2014; as designed by their author Kayleigh Hennessy.",
-                    "The site is made using VueJS, with PHP in the backend. The site contains an integrated Stripe storefront, animated sections based on pages from the book, and an interactive piano to play along with lessons. I designed the piano component to accept a JSON format allowing it to play any melody with accompaning lyrics.",
-                ],
-                "linkLive": "https://niallains.github.io/cleverkeys-demo/dist",
-                "linkCode": "https://github.com/NiallAins/cleverkeys-demo",
-                "tags": [
-                    ePageTag.VueJS,
-                    ePageTag.Stripe,
-                    ePageTag.PHP
-                ]
-            },
-            {
-                "title": "PaperWon",
-                "year": 2020,
-                "desc": [
-                    "PaperWon was a proof of concept site create to explore educational resources and tools to help Irish Leaving Cert maths students.",
-                    "I created this project at the height of the pandemic, when schools were turning to online learning. I wanted to create learning tools targeted at visual and tactile learners, which could communicate abstract ideas though animation and interactive geometry components.",
-                    "The site and its component are built with VueJS, and pull data and questions from real state examination paper and curricula"
-                ],
-                "linkLive": "https://niallains.github.io/PaperWon/dist",
-                "linkCode": "https://github.com/niallAins/PaperWon/tree/master",
-                "tags": [
-                    ePageTag.VueJS,
-                    ePageTag.Canvas
-                ]
-            },
-            {
-                "title": "NiallDesign.Dev",
-                "year": 2026,
-                "desc": [
-                    "This very site!",
-                    "As a showcase for my digital projects, the design was based on an idea of a small world built of large pixels. The bulky nature of the pixels is contrasted with fluid animations to giving life to the otherwise inanimate blocks.",
-                    "I built the visuals of this site were built using HTML Canvas, running a repurposed isometic graphics engine I had created for a previous project. Further animations are acheived using a mixture of JavaSCript and SCSS transitions. Bash scripts are used to keep design variables in-sync across Canvas, Typescript, and SCSS files &#x2014; as well as to simplify development and deployment.",
-                ],
-                "linkCode": "https://github.com/NiallAins/personal-site",
-                "tags": [
-                    ePageTag.Typescript,
-                    ePageTag.Canvas,
-                    ePageTag.NodeJS,
-                    ePageTag.Bash
-                ]
-            }
-        ]
-    },
-    {
         "title": "Music / Visuals",
         "projects": [
             {
@@ -190,6 +124,72 @@ export const PROJECT_DATA: tTopicData[] = [
         ]
     },
     {
+        "title": "Sites",
+        "projects": [
+            {
+                "title": "Johnny Cigarette",
+                "year": 2022,
+                "desc": [
+                    "JohnnyCigarette.ie is a portfolio website made for the Irish animator known as Johnny Cigerette.",
+                    "I went with a simple and minimalistic design for this project, to keep the focus on the art on show.",
+                    "The project is built as a static site with VueJS. Content is pulled from a JSON file that is maintained and updated by the artist. I also created a video component which can generate a YouTube or Vimeo player when video urls are detected in the JSON.",
+                ],
+                "linkLive": "https://johnnycigarette.ie",
+                "linkCode": "https://github.com/NiallAins/Johnny-Cigarette",
+                "tags": [
+                    ePageTag.VueJS
+                ]
+            },
+            {
+                "title": "Clever Keys",
+                "year": 2021,
+                "desc": [
+                    "Clever Keys is an interactive education website, created to accompany the Clever Keys childrens' music books.",
+                    "I deisgned this site to align with the colours and style of the books' covers &#x2014; as designed by their author Kayleigh Hennessy.",
+                    "The site is made using VueJS, with PHP in the backend. The site contains an integrated Stripe storefront, animated sections based on pages from the book, and an interactive piano to play along with lessons. I designed the piano component to accept a JSON format allowing it to play any melody with accompaning lyrics.",
+                ],
+                "linkLive": "https://niallains.github.io/cleverkeys-demo/dist",
+                "linkCode": "https://github.com/NiallAins/cleverkeys-demo",
+                "tags": [
+                    ePageTag.VueJS,
+                    ePageTag.Stripe,
+                    ePageTag.PHP
+                ]
+            },
+            {
+                "title": "PaperWon",
+                "year": 2020,
+                "desc": [
+                    "PaperWon was a proof of concept site create to explore educational resources and tools to help Irish Leaving Cert maths students.",
+                    "I created this project at the height of the pandemic, when schools were turning to online learning. I wanted to create learning tools targeted at visual and tactile learners, which could communicate abstract ideas though animation and interactive geometry components.",
+                    "The site and its component are built with VueJS, and pull data and questions from real state examination paper and curricula"
+                ],
+                "linkLive": "https://niallains.github.io/PaperWon/dist",
+                "linkCode": "https://github.com/niallAins/PaperWon/tree/master",
+                "tags": [
+                    ePageTag.VueJS,
+                    ePageTag.Canvas
+                ]
+            },
+            {
+                "title": "NiallDesign.Dev",
+                "year": 2026,
+                "desc": [
+                    "This very site!",
+                    "As a showcase for my digital projects, the design was based on an idea of a small world built of large pixels. The bulky nature of the pixels is contrasted with fluid animations to giving life to the otherwise inanimate blocks.",
+                    "I built the visuals of this site were built using HTML Canvas, running a repurposed isometic graphics engine I had created for a previous project. Further animations are acheived using a mixture of JavaSCript and SCSS transitions. Bash scripts are used to keep design variables in-sync across Canvas, Typescript, and SCSS files &#x2014; as well as to simplify development and deployment.",
+                ],
+                "linkCode": "https://github.com/NiallAins/personal-site",
+                "tags": [
+                    ePageTag.Typescript,
+                    ePageTag.Canvas,
+                    ePageTag.NodeJS,
+                    ePageTag.Bash
+                ]
+            }
+        ]
+    },
+    {
         "title": "Maths / Space",
         "projects": [
             {
@@ -260,16 +260,16 @@ export const PROJECT_DATA: tTopicData[] = [
                     ePageTag.Typescript
                 ]
             },
-            {
-                "title": "Every Body in the Solar System",
-                "year": 0,
-                "desc": [
-                    "",
-                ],
-                "linkLive": "https://niallains.github.io/",
-                "linkCode": "https://github.com/NiallAins/",
-                "tags": []
-            },
+            // {
+            //     "title": "Every Body in the Solar System",
+            //     "year": 0,
+            //     "desc": [
+            //         "",
+            //     ],
+            //     "linkLive": "https://niallains.github.io/",
+            //     "linkCode": "https://github.com/NiallAins/",
+            //     "tags": []
+            // },
             {
                 "title": "Voting Charts",
                 "year": 2024,
@@ -283,26 +283,22 @@ export const PROJECT_DATA: tTopicData[] = [
                     ePageTag.Canvas,
                     ePageTag.Javascipt
                 ]
-            }
+            },
+            // {
+            //     "title": "Venn Diagram Generator",
+            //     "year": 0,
+            //     "desc": [
+            //         "",
+            //     ],
+            //     "linkLive": "https://niallains.github.io/",
+            //     "linkCode": "https://github.com/NiallAins/",
+            //     "tags": []
+            // },
         ]
     },
     {
         "title": "Games",
         "projects": [
-            {
-                "title": "Mage Hand",
-                "year": 2019,
-                "desc": [
-                    "Mage Hand is a Dungeons & Dragons character app that can track your equipment, stats, and characer details. The app uses the DnD5e API to pull data for every weapon and object in the game, as well as supporting custom objects",
-                    "The app is built with VueJS and is designed to be downloaded as a local webapp. It supports localstorage and data caching to allow offline usage."
-                ],
-                "linkLive": "https://niallains.github.io/MageHand/dist",
-                "linkCode": "https://github.com/NiallAins/MageHand",
-                "linkDirect": true,
-                "tags": [
-                    ePageTag.VueJS
-                ]
-            },
             {
                 "title": "Buck N Sons",
                 "year": 2016,
@@ -320,10 +316,26 @@ export const PROJECT_DATA: tTopicData[] = [
                 ]
             },
             {
+                "title": "Mage Hand",
+                "year": 2019,
+                "desc": [
+                    "Mage Hand is a Dungeons & Dragons character app that can track your equipment, stats, and characer details. The app uses the DnD5e API to pull data for every weapon and object in the game, as well as supporting custom objects",
+                    "The app is built with VueJS and is designed to be downloaded as a local webapp. It supports localstorage and data caching to allow offline usage."
+                ],
+                "linkLive": "https://niallains.github.io/MageHand/dist",
+                "linkCode": "https://github.com/NiallAins/MageHand",
+                "linkDirect": true,
+                "tags": [
+                    ePageTag.VueJS
+                ]
+            },
+            {
                 "title": "CrossCreator",
                 "year": 2019,
                 "desc": [
-                    "",
+                    "An app to create and share crosswords",
+                    "Includes integration with tool for helping with writing clues, and finding words to fill out your grid",
+                    "Full crossword can be encoded in a URL, so that puzzles can be shared, or printed out"
                 ],
                 "linkLive": "https://niallains.github.io/CrossCreator",
                 "linkCode": "https://github.com/NiallAins/CrossCreator",
@@ -331,15 +343,29 @@ export const PROJECT_DATA: tTopicData[] = [
                     ePageTag.Javascipt
                 ]
             },
+            // {
+            //     "title": "Little Iso World",
+            //     "year": 0,
+            //     "desc": [
+            //         "",
+            //     ],
+            //     "linkLive": "https://niallains.github.io/",
+            //     "linkCode": "https://github.com/NiallAins/",
+            //     "tags": []
+            // },
             {
-                "title": "Little Iso World",
-                "year": 0,
+                "title": "Snooker Score UI",
+                "year": 2026,
                 "desc": [
-                    "",
+                    "My dream job would be to create television score tracking UIs for various sports boradcasts",
+                    "To manifest this reality, I created this snooker scoring UI while watching the World Snooker Championships",
+                    "This visual attempts to communicate the most captivating aspect of snooker - the race to, and the manipulation of, the elusive line of Snookers Required."
                 ],
-                "linkLive": "https://niallains.github.io/",
-                "linkCode": "https://github.com/NiallAins/",
-                "tags": []
+                "linkLive": "https://niallains.github.io/snooker-score-ui",
+                "linkCode": "https://github.com/NiallAins/snooker-score-ui",
+                "tags": [
+                    ePageTag.Javascipt
+                ]
             },
             {
                 "title": "The Gibberish Poet",
@@ -355,7 +381,37 @@ export const PROJECT_DATA: tTopicData[] = [
                 "tags": [
                     ePageTag.Javascipt
                 ]
-            }
+            },
+            // {
+            //     "title": "Agent RegX",
+            //     "year": 0,
+            //     "desc": [
+            //         "",
+            //     ],
+            //     "linkLive": "https://niallains.github.io/",
+            //     "linkCode": "https://github.com/NiallAins/",
+            //     "tags": []
+            // },
+            // {
+            //     "title": "Marathon: The Game",
+            //     "year": 0,
+            //     "desc": [
+            //         "",
+            //     ],
+            //     "linkLive": "https://niallains.github.io/",
+            //     "linkCode": "https://github.com/NiallAins/",
+            //     "tags": []
+            // },
+            // {
+            //     "title": "Glade",
+            //     "year": 0,
+            //     "desc": [
+            //         "",
+            //     ],
+            //     "linkLive": "https://niallains.github.io/",
+            //     "linkCode": "https://github.com/NiallAins/",
+            //     "tags": []
+            // }
         ]
     },
     {
@@ -371,30 +427,6 @@ export const PROJECT_DATA: tTopicData[] = [
                 ],
                 "linkLive": "https://niallains.github.io/every-world-cup",
                 "linkCode": "https://github.com/NiallAins/every-world-cup",
-                "tags": [
-                    ePageTag.Javascipt
-                ]
-            },
-            {
-                "title": "Strava Heatmap",
-                "year": 0,
-                "desc": [
-                    "",
-                ],
-                "linkLive": "https://niallains.github.io/",
-                "linkCode": "https://github.com/NiallAins/",
-                "tags": []
-            },
-            {
-                "title": "Snooker Score UI",
-                "year": 2026,
-                "desc": [
-                    "My dream job would be to create television score tracking UIs for various sports boradcasts",
-                    "To manifest this reality, I created this snooker scoring UI while watching the World Snooker Championships",
-                    "This visual attempts to communicate the most captivating aspect of snooker - the race to, and the manipulation of, the elusive line of Snookers Required."
-                ],
-                "linkLive": "https://niallains.github.io/snooker-score-ui",
-                "linkCode": "https://github.com/NiallAins/snooker-score-ui",
                 "tags": [
                     ePageTag.Javascipt
                 ]
@@ -429,16 +461,16 @@ export const PROJECT_DATA: tTopicData[] = [
                 "linkCode": "https://github.com/NiallAins/",
                 "tags": []
             },
-            {
-                "title": "Run Plan Generator",
-                "year": 0,
-                "desc": [
-                    "",
-                ],
-                "linkLive": "https://niallains.github.io/",
-                "linkCode": "https://github.com/NiallAins/",
-                "tags": []
-            },
+            // {
+            //     "title": "Run Plan Generator",
+            //     "year": 0,
+            //     "desc": [
+            //         "",
+            //     ],
+            //     "linkLive": "https://niallains.github.io/",
+            //     "linkCode": "https://github.com/NiallAins/",
+            //     "tags": []
+            // },
             {
                 "title": "Running Pace Calculator",
                 "year": 2020,
@@ -524,16 +556,16 @@ export const PROJECT_DATA: tTopicData[] = [
                 "linkCode": "https://github.com/NiallAins/",
                 "tags": []
             },
-            {
-                "title": "Extended Range Inputs",
-                "year": 0,
-                "desc": [
-                    "",
-                ],
-                "linkLive": "https://niallains.github.io/",
-                "linkCode": "https://github.com/NiallAins/",
-                "tags": []
-            },
+            // {
+            //     "title": "Extended Range Inputs",
+            //     "year": 0,
+            //     "desc": [
+            //         "",
+            //     ],
+            //     "linkLive": "https://niallains.github.io/",
+            //     "linkCode": "https://github.com/NiallAins/",
+            //     "tags": []
+            // },
             {
                 "title": "Angle Calcs Visualised",
                 "year": 2024,
@@ -548,16 +580,16 @@ export const PROJECT_DATA: tTopicData[] = [
                     ePageTag.Javascipt
                 ]
             },
-            {
-                "title": "Colour Library",
-                "year": 0,
-                "desc": [
-                    "",
-                ],
-                "linkLive": "https://niallains.github.io/",
-                "linkCode": "https://github.com/NiallAins/",
-                "tags": []
-            },
+            // {
+            //     "title": "Colour Library",
+            //     "year": 0,
+            //     "desc": [
+            //         "",
+            //     ],
+            //     "linkLive": "https://niallains.github.io/",
+            //     "linkCode": "https://github.com/NiallAins/",
+            //     "tags": []
+            // },
             {
                 "title": "Colour Space Compare",
                 "year": 0,
@@ -572,73 +604,27 @@ export const PROJECT_DATA: tTopicData[] = [
                     ePageTag.Canvas,
                     ePageTag.Javascipt
                 ]
-            }
-        ]
-    },
-    {
-        "title": "",
-        "hide": true,
-        "projects": [
-            {
-                "title": "Venn Diagram Generator",
-                "year": 0,
-                "desc": [
-                    "",
-                ],
-                "linkLive": "https://niallains.github.io/",
-                "linkCode": "https://github.com/NiallAins/",
-                "tags": []
             },
-            {
-                "title": "Agent RegX",
-                "year": 0,
-                "desc": [
-                    "",
-                ],
-                "linkLive": "https://niallains.github.io/",
-                "linkCode": "https://github.com/NiallAins/",
-                "tags": []
-            },
-            {
-                "title": "Marathon: The Game",
-                "year": 0,
-                "desc": [
-                    "",
-                ],
-                "linkLive": "https://niallains.github.io/",
-                "linkCode": "https://github.com/NiallAins/",
-                "tags": []
-            },
-            {
-                "title": "Glade",
-                "year": 0,
-                "desc": [
-                    "",
-                ],
-                "linkLive": "https://niallains.github.io/",
-                "linkCode": "https://github.com/NiallAins/",
-                "tags": []
-            },
-            {
-                "title": "Extended SASS Themes",
-                "year": 0,
-                "desc": [
-                    "",
-                ],
-                "linkLive": "https://niallains.github.io/",
-                "linkCode": "https://github.com/NiallAins/",
-                "tags": []
-            },
-            {
-                "title": "Gridiron",
-                "year": 0,
-                "desc": [
-                    "",
-                ],
-                "linkLive": "https://niallains.github.io/",
-                "linkCode": "https://github.com/NiallAins/",
-                "tags": []
-            }
+            // {
+            //     "title": "Extended SASS Themes",
+            //     "year": 0,
+            //     "desc": [
+            //         "",
+            //     ],
+            //     "linkLive": "https://niallains.github.io/",
+            //     "linkCode": "https://github.com/NiallAins/",
+            //     "tags": []
+            // },
+            // {
+            //     "title": "Gridiron",
+            //     "year": 0,
+            //     "desc": [
+            //         "",
+            //     ],
+            //     "linkLive": "https://niallains.github.io/",
+            //     "linkCode": "https://github.com/NiallAins/",
+            //     "tags": []
+            // }
         ]
     }
 ];

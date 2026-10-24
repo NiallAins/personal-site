@@ -38,8 +38,8 @@
             rotateY(-18deg)
             translate3d(-2rem, 0, -4rem);
         background:
-            var(--bg-url) center / cover no-repeat,
-            $c-bg-l;
+            var(--bg-url) center / 85% no-repeat,
+            var(--bg-color)
     }
 
     &:has(&__image:hover, &__links:hover, &__links-link:focus-visible) &__image {

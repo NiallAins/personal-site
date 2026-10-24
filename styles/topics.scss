@@ -18,7 +18,7 @@
         text-align: center;
         
         @include viewport(mobile) {
-            margin-top: to-vh($h-main-section-gap-vs);
+            margin-top: to-vh($h-main-section-gap-vs * 1.025);
         }
 
         // Invisible proxy buttons
@@ -39,6 +39,7 @@
             cursor: pointer;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            // outline: 2px solid red;
 
             &::selection {
                 color: transparent;

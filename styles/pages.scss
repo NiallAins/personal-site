@@ -3,7 +3,7 @@
 @use 'mixins' as *;
 
 @mixin set-main-height($gap) {
-    height: to-vh(1 + $gap + (6 * ($h-main-section + $gap)));
+    height: to-vh(1 + $gap + (6 * ($h-main-section + $gap)) - 0.125);
 }
 
 .page {

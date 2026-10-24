@@ -29,6 +29,7 @@ async function buildTemplates() {
         .replace(/ *{{ head }}/, headHtml)
         .replace('{{ title }}', '');
     projects = projects
+        .replace(/\n\s*\/\/.*/g, '')
         .replace(/import .*/, '')
         .replace(/export .* =/, '')
         .replace(/ePageTag.*/g, '')

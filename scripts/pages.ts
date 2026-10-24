@@ -14,7 +14,9 @@ import {
     TOKEN_PREVIOUS_VISIT_SET,
     HEIGHT_MAIN_SECTION,
     HEIGHT_MAIN_SECTION_GAP_VL,
-    HEIGHT_MAIN_SECTION_GAP_VS
+    HEIGHT_MAIN_SECTION_GAP_VS,
+    WIDTH_BLOCK_LABEL_PAD,
+    VAR_LABEL_SCALE
 } from "./consts";
 import { PROJECT_DATA } from "../data/projects";
 import { renderFrame, toggleSectionOpen as toggleGraphicsSectionOpen } from "./graphics/main";
@@ -31,6 +33,7 @@ const
         [ePages.Project]: EL_PAGE_PROJECT
     },
     TOPIC_PAGES_CONTENT: HTMLElement[] = [],
+    TOPIC_PAGES_LABELS: HTMLElement[][] = [],
     TOPIC_PAGES_IMAGES: { el: HTMLDivElement, url: string }[][] = [];
 
 export const
@@ -51,7 +54,6 @@ export function initPages() {
 
     // Topic pages
     PROJECT_DATA
-        .filter(topic => !topic.hide)
         .forEach((topic, ti) => {
             // Add topic button
             const [EL_TOPIC, EL_TOPIC_BUTTON] = html`
@@ -79,19 +81,10 @@ export function initPages() {
                                 class="block-layout__item-image"
                                 style="--bg-color: ${ DATA_BG[toKebabCase(project.title)] || COLOR_BG_L }"
                             ></div>
-                            <h3 class="
-                                block-layout__item-label
-                                ${
-                                    project.title
-                                        .replace(/([a-z])([A-Z])/g, '$1 $2')
-                                        .match(/[^ ]+/g)!
-                                        .sort((a, b) => b.length - a.length)
-                                        [0].length > 8
-                                    ? 'block-layout__item-label--sm'
-                                    : ''
-                                }
-                            ">
-                                ${ project.title.replace(/([a-z])([A-Z])/g, '$1&ZeroWidthSpace;$2') }
+                            <h3 class="block-layout__item-label">
+                                <#span class="block-layout__item-label-content">
+                                    ${ project.title.replace(/([a-z])([A-Z])/g, '$1&ZeroWidthSpace;$2') }
+                                </span>
                             </h3>
                         </button>
                     </div>
@@ -104,6 +97,7 @@ export function initPages() {
             `;
 
             TOPIC_PAGES_CONTENT.push(TOPIC_PAGE[0]);
+            TOPIC_PAGES_LABELS.push(PROJECT_BLOCKS.map(p => p[2]));
             TOPIC_PAGES_IMAGES.push(
                 PROJECT_BLOCKS.map((b, bi) => ({
                     el: b[1] as HTMLDivElement,
@@ -124,6 +118,12 @@ export function initPages() {
 export function resize(pageHeight: number, viewportSm: boolean) {
     sectionHeight = pageHeight * (HEIGHT_MAIN_SECTION + (viewportSm ? HEIGHT_MAIN_SECTION_GAP_VS : HEIGHT_MAIN_SECTION_GAP_VL));
     sectionHeightOffset = pageHeight * (viewportSm ? 1.125 : 0.9);
+
+    TOPIC_PAGES_LABELS.forEach(t => t.forEach(p => p.style.removeProperty(VAR_LABEL_SCALE)));
+
+    if (currentOpenPage === ePages.Topic) {
+        setLabelSizes(currentOpenTopic);
+    }
 }
 
 
@@ -180,7 +180,7 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
             toggleGraphicsSectionOpen(false, currentOpenTopic);
             transitionPage(page);
             setUrl(ROUTES[page]!, isInitial);
-            if (currentOpenTopic > -1) {
+            if (currentOpenTopic !== -1) {
                 window.scrollTo(
                     0,
                     sectionHeightOffset + (currentOpenTopic * sectionHeight)
@@ -211,6 +211,7 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
                 TOPIC_PAGES_IMAGES[topicIndex].forEach(img => img.el.style.setProperty('--bg-url', img.url));
 
                 toggleGraphicsSectionOpen(true, topicIndex);
+                setLabelSizes(topicIndex);
                 transitionPage(page, currentOpenPage === ePages.Main ? DURATION_PAGE_OPEN_DELAY : 0);
                 setUrl(PROJECT_DATA[topicIndex].title, isInitial);
             }
@@ -225,7 +226,8 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
             EL_PROJECT_DESC.innerHTML = PROJECT.desc
                 .map(d => `<p class="project__desc-item">${ d }</p>`)
                 .join('\n');
-            EL_PROJECT_IMAGE.style.setProperty('--bg-url', `url(thumbnails/${ TITLE_KEBAB }.png)`);
+            EL_PROJECT_IMAGE.style.setProperty('--bg-url', `url(thumbnails/${TITLE_KEBAB}.png)`);
+            EL_PROJECT_IMAGE.style.setProperty('--bg-color', DATA_BG[TITLE_KEBAB]);
             currentOpenTopic = topicIndex;
 
             if (PROJECT.linkLive) {
@@ -335,5 +337,29 @@ function setUrl(title: string, isInitial: boolean) {
     document.title = document.title.replace(/( \| .*)?$/, title ? ' | ' + title : '');
     if (!isInitial && HREF != window.location.href) {
         window.history.pushState({}, '', new URL(HREF));
+    }
+}
+
+// Shrink project labels to fit
+function setLabelSizes(topicIndex: number) {
+    const FIRST_BLOCK_SCALE = parseFloat(TOPIC_PAGES_LABELS[topicIndex][0].style.getPropertyValue(VAR_LABEL_SCALE));
+
+    // Scale labels if not already
+    if (!FIRST_BLOCK_SCALE) {
+        setTimeout(() => {
+            TOPIC_PAGES_LABELS[topicIndex].forEach(label => {
+                const
+                    PARENT = label.parentElement as HTMLElement,
+                    CHILD = label;
+                CHILD.style.setProperty(
+                    VAR_LABEL_SCALE,
+                    String(Math.min(
+                        1,
+                        (PARENT.clientWidth - (WIDTH_BLOCK_LABEL_PAD * 2)) / CHILD.clientWidth,
+                        (PARENT.clientHeight - (WIDTH_BLOCK_LABEL_PAD * 2)) / CHILD.clientHeight
+                    ))
+                )
+            });
+        });
     }
 }

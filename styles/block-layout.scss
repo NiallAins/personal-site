@@ -150,12 +150,16 @@ $w-layout-pad-bottom: 4.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 0.5rem;
+            padding: $w-block-label-pad;
             text-align: center;
             color: $c-text-l;
             text-decoration: none;
             background-color: $c-bg-l;
             line-height: 1;
+
+            &-content {
+                scale: var(#{ $var-label-scale });
+            }
 
             &--sm {
                 font-size: $f-size-h4-sm;

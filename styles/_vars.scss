@@ -28,7 +28,7 @@ $f-size-h4-sm:          1.625rem;
 $f-size-bm:             1.125rem;
 $f-size-bs:             0.875rem;
 $f-size-section:        2.75rem;
-$f-size-section-sm:     1.75rem;
+$f-size-section-sm:     2rem;
 
 $f-weight-norm:         400;
 $f-weight-demi:         500;
@@ -53,10 +53,12 @@ $w-page-bg-max:         1800px;
 $w-scrollbar:           1rem;
 
 $h-main-section:        0.4;
-$h-main-section-gap-vl: 0.30;
-$h-main-section-gap-vs: 0.50;
+$h-main-section-gap-vl: 0.3;
+$h-main-section-gap-vs: 0.35;
 $h-min-sea:             0.14;
-$h-main-item-offset-vs: 0.17;
+$h-main-item-offset-vs: 0.165;
+
+$w-block-label-pad:     0.375rem;
 
 $w-stroke-underline:    0.375rem;
 $w-stroke-outline:      2px;
@@ -66,6 +68,7 @@ $w-img-sm:              200px;
 $w-img-md:              400px;
 
 $var-page-height:       $util-var-page-height;
+$var-label-scale:       '--label-scale';
 
 
 //

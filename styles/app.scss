@@ -64,19 +64,29 @@ body {
         &-close {
             @include focus-outline;
 
+            position: relative;
             width: $h-header-inner;
             height: $h-header-inner;
             padding: 0;
             border: none;
             border-radius: 100%;
             margin-left: auto;
-            color: $c-text-l;
-            font-size: 1.5rem;
             cursor: pointer;
             background: unset;
             
             &:focus-visible {
                 outline-offset: 0.25rem;
+            }
+
+            &::after {
+                content: '';
+                position: absolute;
+                inset: 0.625rem;
+                display: inline-block;
+                border: solid $c-text-l;
+                rotate: 45deg;
+                translate: 0 0.125rem;
+                border-width: 2px 0 0 2px;
             }
         }
     }

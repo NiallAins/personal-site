@@ -28,7 +28,6 @@ const
 export const
     LABELS: Label[] = [],
     CUBLETS: Cublet[][] = PROJECT_DATA
-        .filter(t => !t.hide)
         .map((t, ti) => t.projects.map(p => new Cublet(ti, p.title)));
 
 
@@ -59,7 +58,7 @@ export function toggleSectionOpen(open: boolean, sectionI: number = -1) {
     clearTimeout(sectionOpenTimeout);
 
     if (open) {
-        if (sectionI >= 0) {
+        if (sectionI !== -1) {
             fades[sectionI].play(eEaseState.Forward);
         }
         sectionOpenTimeout = setTimeout(
@@ -67,15 +66,15 @@ export function toggleSectionOpen(open: boolean, sectionI: number = -1) {
             DURATION_PAGE_OPEN_DELAY
         );
     } else {
-        if (sectionI >= 0) {
-            sectionOpenTimeout = setTimeout(
-                () => { 
-                    paused = false;
-                    fades[sectionI].play(eEaseState.Backward)
-                },
-                DURATION_PAGE_OPEN
-            );
-        }
+        sectionOpenTimeout = setTimeout(
+            () => { 
+                paused = false;
+                if (sectionI !== -1) {
+                    fades[sectionI].play(eEaseState.Backward);
+                }
+            },
+            DURATION_PAGE_OPEN
+        );
     }
 }
 
