@@ -62,7 +62,7 @@ export const
 //
 
 export const
-    CAN_QUALITY = 2,//window.devicePixelRatio,
+    CAN_QUALITY = 4,
     SKY_HEIGHT_RATIO: number = 0.75,
     MAX_SEA_ISO_DEPTH: number = 2,
     MIN_LAND_ISO_Z: number = -3,
