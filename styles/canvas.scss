@@ -15,12 +15,17 @@
     }
     
     &__sea {
-        bottom: 0;
+        top: 0;
         z-index: $z-canvas-fg;
-        transition: bottom ease-out $dur-page-open;
+        transition: top ease-out $dur-page-open;
+        
+        // Account for viewport height changes due to mobile browser sliding nav bar
+        @include viewport(mobile) {
+            top: calc(100dvh - var(#{ $var-page-height }));
+        }
 
         .#{ $cl-page-closing } > & {
-            bottom: -100svh;
+            top: 100svh;
             pointer-events: none;
             translate: calc(-50% - 0.5rem) 0;
         }
