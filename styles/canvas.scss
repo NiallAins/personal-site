@@ -15,19 +15,25 @@
     }
     
     &__sea {
-        top: 0;
+        bottom: 0;
         z-index: $z-canvas-fg;
-        transition: top ease-out $dur-page-open;
+        transition: translate ease-out $dur-page-open;
         
         // Account for viewport height changes due to mobile browser sliding nav bar
         @include viewport(mobile) {
-            top: calc(100dvh - var(#{ $var-page-height }));
+            translate: calc(100dvh - var(#{ $var-page-height })) 0;
+
+            .#{ $cl-page-closing } > & {
+                translate: calc(
+                    (100dvh - var(#{ $var-page-height })) +
+                    100svh - 50% - 0.5rem
+                ) 0;
+            }
         }
 
         .#{ $cl-page-closing } > & {
-            top: 100svh;
             pointer-events: none;
-            translate: calc(-50% - 0.5rem) 0;
+            translate: calc(100svh - 50% - 0.5rem) 0;
         }
     }
 }
