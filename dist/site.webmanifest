@@ -1,0 +1,19 @@
+{
+    "name": "NiallDesign.Dev",
+    "short_name":"Niall",
+    "icons":[
+        {
+            "src":"assets/android-chrome-192x192.png",
+            "sizes":"192x192",
+            "type":"image/png"
+        },
+        {
+            "src":"assets/android-chrome-512x512.png",
+            "sizes":"512x512",
+            "type":"image/png"
+        }
+    ],
+    "theme_color":"#111128",
+    "background_color":"#111128",
+    "display":"standalone"
+}
