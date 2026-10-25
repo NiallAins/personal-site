@@ -18,12 +18,16 @@ export function log(text, color = 'b', inline = false) {
         w: '\x1b[0m'
     };
 
+    // Inline log in node
     if (inline) {
         if (text[0] === '~') {
             process.stdout.write('\n');
         }
         process.stdout.write(`${ COLORS[color] }> ${ text.replace(/~/g, '') }${ COLORS.w }`);
-    } else {
+    }
+
+    // Standard console log
+    else {
         console.log(
             ...text
                 .split('~')
