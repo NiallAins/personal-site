@@ -10,13 +10,12 @@ if [ "$1" == "prod" ]; then
         # Confirm Deploy after commit outputs
         node ./build-scripts/log.js "~Complete deploy? (y) " b true &&
         read resp;
-        echo '';
         if [ "$resp" = "y" ]; then
-            node ./build-scripts/log.js "Pushing to main..."
+            node ./build-scripts/log.js "~Pushing to main...~"
             git push origin main &&
 
             # Copy to prod
-            node ./build-scripts/log.js "Resetting prod to main..."
+            node ./build-scripts/log.js "~Resetting prod to main...~"
             git checkout prod &&
             git reset origin/main --hard &&
 
@@ -24,7 +23,7 @@ if [ "$1" == "prod" ]; then
             npm run build-prod;
 
             # Push to prod
-            node ./build-scripts/log.js "Pushing to prod..."
+            node ./build-scripts/log.js "Pushing to prod...~"
             git add *;
             git add -f ./dist/*;
             git commit -m "Auto-deploy";
