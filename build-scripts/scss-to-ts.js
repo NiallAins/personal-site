@@ -14,7 +14,7 @@ const
     PATH_FROM   = 'styles/_vars.scss',
     PATH_TO_TS  = 'scripts/consts.scss.ts';
 
-util.log('Generating consts.scss.ts from _vars.scss');
+util.log('Generating consts.scss.ts from vars.scss');
 
 FS.readFile(
     PATH_FROM, 'utf8',
