@@ -18,7 +18,8 @@ module.exports = [
                     loader: "ts-loader"
                 }
             ]
-        }
+        },
+        stats: 'errors-only'
     },
     {
         entry: {
@@ -37,6 +38,7 @@ module.exports = [
                     loader: "ts-loader"
                 }
             ]
-        }
+        },
+        stats: 'errors-only'
     }
 ];

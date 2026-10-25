@@ -1,6 +1,7 @@
 const
     FS = require('fs'),
     sharp = require('sharp'),
+    util = require('../scripts/util-js.js'),
     { createCanvas, loadImage } = require('canvas');
 
 const
@@ -19,6 +20,13 @@ const
     CTX_SM = CAN_SM.getContext('2d');
 
 CTX_SM.imageSmoothingEnabled = false;
+
+
+//
+// Status log
+//
+
+util.log('Generating thumbnails', 'CB');
 
 
 //

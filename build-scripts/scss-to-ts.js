@@ -7,11 +7,14 @@
 
 const
     FS = require('fs'),
-    SASS = require('sass');
+    SASS = require('sass'),
+    util = require('../scripts/util-js.js');
 
 const
     PATH_FROM   = 'styles/_vars.scss',
     PATH_TO_TS  = 'scripts/consts.scss.ts';
+
+util.log('Generating consts.scss.ts from _vars.scss', 'CB');
 
 FS.readFile(
     PATH_FROM, 'utf8',

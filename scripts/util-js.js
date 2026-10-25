@@ -9,3 +9,14 @@ export function toKebabCase(text) {
         .toLowerCase()
         .replace(/ +/g, '-');
 }
+
+export function log(text, color = 'CW') {
+    const COLORS = {
+        CR: '\x1b[0;31m',
+        CG: '\x1b[0;32m',
+        CB: '\x1b[0;36m',
+        CW: '\x1b[0m'
+    };
+
+    console.log(`${ COLORS[color] }> ${ text }${ COLORS.CW }`);
+}

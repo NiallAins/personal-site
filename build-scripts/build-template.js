@@ -13,6 +13,8 @@ const
     PATH_TO_INDEX   = PATH_DIST + '/index.html',
     PATH_TO_APP     = PATH_DIST + '/{{ title }}/index.html';
 
+util.log(`Generating ${ IS_PROD ? 'production ' : ''}templates`, 'CB');
+
 async function buildTemplates() {
     // Get template files and project data
     let
