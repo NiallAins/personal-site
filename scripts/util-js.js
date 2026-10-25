@@ -10,13 +10,25 @@ export function toKebabCase(text) {
         .replace(/ +/g, '-');
 }
 
-export function log(text, color = 'CW') {
+export function log(text, color = 'b', inline = false) {
     const COLORS = {
-        CR: '\x1b[0;31m',
-        CG: '\x1b[0;32m',
-        CB: '\x1b[0;36m',
-        CW: '\x1b[0m'
+        r: '\x1b[0;31m',
+        g: '\x1b[0;32m',
+        b: '\x1b[0;36m',
+        w: '\x1b[0m'
     };
 
-    console.log(`${ COLORS[color] }> ${ text }${ COLORS.CW }`);
+    if (inline) {
+        if (text[0] === '~') {
+            process.stdout.write('\n');
+        }
+        process.stdout.write(`${ COLORS[color] }> ${ text.replace(/~/g, '') }${ COLORS.w }`);
+    } else {
+        console.log(
+            ...text
+                .split('~')
+                .map(t => t ? `${ COLORS[color] }> ${ t }${ COLORS.w }` : '\n'),
+            ' '
+        );
+    }
 }

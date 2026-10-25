@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-CB='\033[0;36m';
-CW='\033[0m';
-echo -e "\n${CB}> Watching for file changes...${CW}\n"
+node ./build-scripts/log.js "Watching for file changes..."
 
 concurrently --prefix none \
     "onchange \"./templates/**/*.html\"                              -- node ./build-scripts/build-template.js"\

@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 
-CG='\033[0;32m';
-CB='\033[0;36m';
-CW='\033[0m';
-
-echo -e "${CB}> Generating /dist from /public${CW}"
+node ./build-scripts/log.js "Generating /dist from /public"
 rm -rf ./dist
 cp -r ./public ./dist
 
@@ -20,4 +16,4 @@ else
     node ./build-scripts/build-template.js
 fi
 
-echo -e "${CG}> Build complete${CW}"
+node ./build-scripts/log.js "Build complete~" g

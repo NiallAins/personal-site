@@ -26,7 +26,7 @@ CTX_SM.imageSmoothingEnabled = false;
 // Status log
 //
 
-util.log('Generating thumbnails', 'CB');
+util.log('Generating thumbnails');
 
 
 //
