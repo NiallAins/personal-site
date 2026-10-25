@@ -4,5 +4,5 @@ const
     COLOR = process.argv[3];
     INLINE = !!process.argv[4];
 
-util.log(TEXT, COLOR);
+util.log(TEXT, COLOR, INLINE);
    
