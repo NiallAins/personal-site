@@ -18,6 +18,9 @@ export class Canvas {
     }
 
     public setSize(width: number, height: number, preventScale: boolean = false) {
+        width = Math.floor(width);
+        height = Math.floor(height);
+        
         const QUALITY = preventScale ? 1 : CAN_QUALITY;
         this.width = width;
         this.height = height;

@@ -130,22 +130,22 @@ $c-bg-d:                #111111;
 $c-bg-l:                #111128;
 $c-text-l:              #ffffff;
 $c-text-d:              $c-bg-l;
-$c-text-l-outline:      scale($c-terrain-sea, $lightness: -50%, $alpha: 100%);
+$c-text-l-outline-l:    scale($c-terrain-sea, $lightness: -60%, $alpha: 100%);
+$c-text-l-outline-d:    $c-bg-l;
 $c-text-shadow:         #11111188;
-$c-text-link:           #4848c8;
-$c-bg-select:           change($c-text-link, $alpha: 50%);
-$c-text-select:         $c-text-l;
+$c-text-select:         #4848c8;
+$c-bg-select:           change($c-text-select, $alpha: 50%);
 
 
 //
 // Animation durations
 //
 
-$dur-sh:                   500ms;
+$dur-sh:                  500ms;
 $dur-lg:                  1000ms;
 $dur-page-open:           1000ms;
 $dur-main-close-delay:    1000ms;
-$dur-project-open-delay:   250ms;
+$dur-project-open-delay:  250ms;
 
 
 

@@ -2,11 +2,12 @@ import {
     LABEL_LETTER_HEIGHT, LABEL_LETTER_WIDTH,
     MAX_SEA_ISO_DEPTH, MIN_LAND_ISO_Z,
     TERRAIN_COLOR_SEA,
-    COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE,
+    COLOR_TEXT_L, COLOR_TEXT_L_OUTLINE_L,
     WIDTH_STROKE_OUTLINE, WIDTH_STROKE_UNDERLINE,
     HEIGHT_MAIN_SECTION, HEIGHT_MAIN_SECTION_GAP_VS, HEIGHT_MAIN_SECTION_GAP_VL,
     TERRAIN_TYPES, TERRAIN_COLOR_LAND, TERRAIN_SEA_NOISE,
-    WIDTH_PAGE_BG_MAX
+    WIDTH_PAGE_BG_MAX,
+    CAN_QUALITY
 } from "../consts";
 import { Canvas } from "./Canvas";
 import { LabelLetter } from "./Label";
@@ -402,7 +403,7 @@ function renderLetter(
                 letter.y + HORIZON_Z_LETTER - LABEL_ISO_Z + LABEL_DEPRESS
             );
             let scale = Math.max(-1, 1 - (HORIZON_Z / 6));
-            c.scale(1, scale);
+            c.scale(CAN_QUALITY, scale * CAN_QUALITY);
             c.drawImage(
                 letter.CAN_FG.CAN,
                 0, 0
@@ -444,7 +445,7 @@ function renderLetter(
                         c.lineTo(...PTS[i]);
                     }
                 c.closePath();
-                c.strokeStyle = COLOR_TEXT_L_OUTLINE;
+                c.strokeStyle = COLOR_TEXT_L_OUTLINE_L;
                 c.lineWidth = WIDTH_STROKE_OUTLINE * 2 * HOVER;
                 c.stroke();
                 c.fillStyle = COLOR_TEXT_L;

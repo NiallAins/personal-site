@@ -18,18 +18,13 @@
     }
     
     &__sea {
-        top: 0;
+        bottom: 0;
         z-index: $z-canvas-fg;
         transition: translate ease-out $dur-page-open;
-        
-        // Account for viewport height changes due to mobile browser sliding nav bar
-        @include viewport(mobile) {
-            top: calc(100dvh - var(#{ $var-page-height }));
-        }
 
         .#{ $cl-page-closing } > & {
             pointer-events: none;
-            translate: 0 100vh;
+            translate: 0 100lvh;
         }
     }
 }

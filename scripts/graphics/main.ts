@@ -152,8 +152,12 @@ function animate(t: number = 0, dT: number = 1) {
 //
 
 function renderSky(can: Canvas) {
-    const RAND = new Rand();
-    for (let i = 0; i < 50; i++) {
+    const
+        RAND = new Rand(),
+        COUNT = 50,
+        SCALE = (can.width * can.height) / 650000;
+
+    for (let i = 0; i < COUNT * SCALE; i++) {
         const
             X = RAND.get() * can.width,
             Y = RAND.get() * can.height;
