@@ -403,7 +403,7 @@ function renderLetter(
                 letter.y + HORIZON_Z_LETTER - LABEL_ISO_Z + LABEL_DEPRESS
             );
             let scale = Math.max(-1, 1 - (HORIZON_Z / 6));
-            c.scale(CAN_QUALITY, scale * CAN_QUALITY);
+            c.scale(1 / CAN_QUALITY, scale / CAN_QUALITY);
             c.drawImage(
                 letter.CAN_FG.CAN,
                 0, 0
