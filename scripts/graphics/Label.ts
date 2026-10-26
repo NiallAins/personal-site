@@ -11,8 +11,7 @@ import {
     WIDTH_STROKE_OUTLINE,
     FONT_FAM_TITLE_PRIMARY,
     FONT_FAM_TITLE_FALLBACK,
-    DURATION_SH,
-    CAN_QUALITY
+    DURATION_SH
 } from "../consts";
 import { eEaseState, eEaseType } from "../types";
 import { Canvas } from "./Canvas";
@@ -153,15 +152,15 @@ export class LabelLetter {
         const
             CTX_FG = this.CAN_FG.CTX,
             CTX_BG = this.CAN_BG.CTX,
-            CAN_W = CAN_QUALITY * (isViewportSmall ? LABEL_LETTER_WIDTH_SM : LABEL_LETTER_WIDTH),
-            CAN_H = CAN_QUALITY * (isViewportSmall ? LABEL_LETTER_WIDTH_SM : LABEL_LETTER_WIDTH),
+            CAN_W = isViewportSmall ? LABEL_LETTER_WIDTH_SM : LABEL_LETTER_WIDTH,
+            CAN_H = isViewportSmall ? LABEL_LETTER_WIDTH_SM : LABEL_LETTER_WIDTH,
             FONT_SIZE = (isViewportSmall ? FONT_SIZE_SECTION_SM : FONT_SIZE_SECTION) / ISO_SCALE,
             OFF_X = (isViewportSmall ? LABEL_LETTER_WIDTH_SM : LABEL_LETTER_WIDTH) * 0.55,
             OFF_Y = (isViewportSmall ? LABEL_LETTER_HEIGHT_SM : LABEL_LETTER_HEIGHT) * 0.4,
             STROKE_OUTLINE = WIDTH_STROKE_OUTLINE * (2 / ISO_SCALE);
 
-        this.CAN_FG.setSize(CAN_W, CAN_H, true);
-        this.CAN_BG.setSize(CAN_W, CAN_H, true);
+        this.CAN_FG.setSize(CAN_W, CAN_H);
+        this.CAN_BG.setSize(CAN_W, CAN_H);
 
         CTX_FG.strokeStyle = isViewportSmall ? COLOR_TEXT_L_OUTLINE_D : COLOR_TEXT_L_OUTLINE_L;
         CTX_FG.fillStyle = COLOR_TEXT_L;
@@ -178,7 +177,6 @@ export class LabelLetter {
 
         [CTX_FG, CTX_BG].forEach(c => {
             c.save();
-                c.scale(CAN_QUALITY, CAN_QUALITY);
                 c.font = font;
                 c.textAlign = 'center';
                 c.textBaseline = 'middle';

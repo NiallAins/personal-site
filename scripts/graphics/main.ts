@@ -117,7 +117,7 @@ export function setCanvasSize(pageWidth: number, pageHeight: number, viewportSm:
 
     CAN_SKY.setSize(pageWidth, pageHeight * SKY_HEIGHT_RATIO);
     renderSky(CAN_SKY);
-    CAN_SEA.setSize(pageWidth, pageHeight, viewportSm);
+    CAN_SEA.setSize(pageWidth, pageHeight);
 
     LABELS.forEach(l => l.setPosition(pageWidth, pageHeight, viewportSm));
     resizeTerrain(pageWidth, pageHeight, viewportSm, BREAKPOINT_HIT || isInitial);

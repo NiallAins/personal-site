@@ -6,8 +6,7 @@ import {
     WIDTH_STROKE_OUTLINE, WIDTH_STROKE_UNDERLINE,
     HEIGHT_MAIN_SECTION, HEIGHT_MAIN_SECTION_GAP_VS, HEIGHT_MAIN_SECTION_GAP_VL,
     TERRAIN_TYPES, TERRAIN_COLOR_LAND, TERRAIN_SEA_NOISE,
-    WIDTH_PAGE_BG_MAX,
-    CAN_QUALITY
+    WIDTH_PAGE_BG_MAX
 } from "../consts";
 import { Canvas } from "./Canvas";
 import { LabelLetter } from "./Label";
@@ -141,13 +140,11 @@ export function resize(width: number, height: number, viewportSm: boolean, rePre
 export function preRenderTerrain() {
     CAN_SEA_PRE_RENDER.setSize(
         X_UNIT,
-        (MAX_SEA_ISO_DEPTH + 1) * Z_UNIT,
-        true
+        (MAX_SEA_ISO_DEPTH + 1) * Z_UNIT
     );
     CAN_LAND_PRE_RENDER.setSize(
         X_UNIT * LAND_PRE_RENDER_Q,
         landPreRenderDepth * TERRAIN_TYPES.length,
-        true
     );
 
     const CL = CAN_LAND_PRE_RENDER.CTX;
@@ -254,7 +251,7 @@ export function render(can: Canvas, fades: number[], t: number, dT: number, isVi
             LETTERS
                 .filter(l => !l.drawen && l.y <= y)
                 .forEach(l => {
-                    renderLetter(C, t, l, fades[l.LABEL.INDEX]);
+                    renderLetter(can, t, l, fades[l.LABEL.INDEX]);
                     l.drawen = true;
                 });
         }
@@ -277,21 +274,20 @@ function renderTerrainIso(
 
     // Render land
     if (landZ > MIN_Z) {
-        can.CTX.drawImage(
+        can.drawFromCanvas(
             CAN_LAND_PRE_RENDER.CAN,
             X_UNIT * Math.floor(LAND_PRE_RENDER_Q * Math.min(1, Math.max(0, ((landZ + horizonIsoZ) + 3) / 8))),
             (sectionI % TERRAIN_TYPES.length) * landPreRenderDepth,
             X_UNIT, landPreRenderDepth,
             x - (X_UNIT * 0.5),
-            y - (landZ * Z_UNIT) - Y_UNIT + window.scrollY,
-            X_UNIT, landPreRenderDepth
+            y - (landZ * Z_UNIT) - Y_UNIT + window.scrollY
         );
     }
 
     if (drawSea) {
         // Render sea independent of land
         if (landZ <= MIN_Z || seaZ - landZ > MAX_SEA_ISO_DEPTH) {
-            can.CTX.drawImage(
+            can.drawFromCanvas(
                 CAN_SEA_PRE_RENDER.CAN,
                 x - (X_UNIT * 0.5),
                 y - (seaZ * Z_UNIT) - Y_UNIT + window.scrollY
@@ -350,12 +346,13 @@ export function renderSingleIso(
 }
 
 function renderLetter(
-    c: CanvasRenderingContext2D,
+    can: Canvas,
     t: number,
     letter: LabelLetter,
     fade: number
 ) {
     const
+        C = can.CTX,
         LABEL = letter.LABEL,
         LABEL_DEPRESS =
             (LABEL.pressAni.value * LABEL_DEPRESS_Z) +
@@ -369,47 +366,47 @@ function renderLetter(
             HORIZON_Z
         )[2] * Z_UNIT;
     
-    c.save();
-        c.globalAlpha = Math.max(0, 1 - fade);
+    C.save();
+        C.globalAlpha = Math.max(0, 1 - fade);
 
-        c.translate(
+        C.translate(
             LABEL_LETTER_WIDTH * -0.5,
             LABEL_LETTER_HEIGHT * -1.5
         );
 
-        c.save();
+        C.save();
 
             // Shadow
-            c.save();
+            C.save();
                 const
                     SHADOW_SIZE = 1 + (LABEL_DEPRESS * 0.005),
                     HALF_CAN_W = letter.CAN_BG.width * 0.5,
                     HALF_CAN_H = letter.CAN_BG.height * 0.5;
-                c.translate(
+                C.translate(
                     letter.x + HALF_CAN_W,
                     letter.y - TERRAIN_Z + HALF_CAN_H
                 );
-                c.scale(SHADOW_SIZE, SHADOW_SIZE);
-                c.drawImage(
+                C.scale(SHADOW_SIZE, SHADOW_SIZE);
+                can.drawFromCanvas(
                     letter.CAN_BG.CAN,
                     HALF_CAN_W * -1,
                     HALF_CAN_H * -1
                 );
-            c.restore();
+            C.restore();
 
             // Letter
-            c.translate(
+            C.translate(
                 letter.x,
                 letter.y + HORIZON_Z_LETTER - LABEL_ISO_Z + LABEL_DEPRESS
             );
             let scale = Math.max(-1, 1 - (HORIZON_Z / 6));
-            c.scale(1 / CAN_QUALITY, scale / CAN_QUALITY);
-            c.drawImage(
+            C.scale(1, scale);
+            can.drawFromCanvas(
                 letter.CAN_FG.CAN,
                 0, 0
             );
 
-        c.restore();
+        C.restore();
 
         // Underline
         if (letter.LAST_LINE) {
@@ -433,26 +430,26 @@ function renderLetter(
                     PTS[PTS.length - 1][1] - ((PTS[PTS.length - 2][1] - PTS[PTS.length - 1][1]) * 0.2)
                 ]);
 
-                c.beginPath();
+                C.beginPath();
                     for (let i = 0; i < PTS.length; i++) {
-                        c.lineTo(...PTS[i]);
+                        C.lineTo(...PTS[i]);
                     }
-                    c.translate(
+                    C.translate(
                         WIDTH_STROKE_UNDERLINE * HOVER * -1.25,
                         WIDTH_STROKE_UNDERLINE * HOVER * -0.75
                     );
                     for (let i = PTS.length - 1; i >= 0; i--) {
-                        c.lineTo(...PTS[i]);
+                        C.lineTo(...PTS[i]);
                     }
-                c.closePath();
-                c.strokeStyle = COLOR_TEXT_L_OUTLINE_L;
-                c.lineWidth = WIDTH_STROKE_OUTLINE * 2 * HOVER;
-                c.stroke();
-                c.fillStyle = COLOR_TEXT_L;
-                c.fill();
+                C.closePath();
+                C.strokeStyle = COLOR_TEXT_L_OUTLINE_L;
+                C.lineWidth = WIDTH_STROKE_OUTLINE * 2 * HOVER;
+                C.stroke();
+                C.fillStyle = COLOR_TEXT_L;
+                C.fill();
             }
         }
-    c.restore();
+    C.restore();
 }
 
 function renderCublet(
