@@ -16,4 +16,4 @@ else
     node ./build-scripts/build-template.js
 fi
 
-node ./build-scripts/log.js "Build complete~" g
+node ./build-scripts/log.js "Build complete" 12 g

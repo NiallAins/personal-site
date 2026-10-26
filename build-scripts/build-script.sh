@@ -17,4 +17,4 @@ else
     webpack --config ./build-scripts/webpack.config.js --mode development
 fi
 
-node ./build-scripts/log.js "Build scripts complete"
+node ./build-scripts/log.js "complete" 00

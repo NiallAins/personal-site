@@ -10,7 +10,7 @@ export function toKebabCase(text) {
         .replace(/ +/g, '-');
 }
 
-export function log(text, color = 'b', inline = false) {
+export function log(text, color = 'b', newLineBefore = 1, newLineAfter = 0) {
     const COLORS = {
         r: '\x1b[0;31m',
         g: '\x1b[0;32m',
@@ -18,21 +18,25 @@ export function log(text, color = 'b', inline = false) {
         w: '\x1b[0m'
     };
 
-    // Inline log in node
-    if (inline) {
-        if (text[0] === '~') {
-            process.stdout.write('\n');
+    // Node logging
+    if (process) {
+        if (newLineBefore) {
+            process.stdout.write('\n'.repeat(newLineBefore));
         }
-        process.stdout.write(`${ COLORS[color] }> ${ text.replace(/~/g, '') }${ COLORS.w }`);
+        process.stdout.write(`${ COLORS[color] }${ newLineBefore ? '>' : ''} ${ text }${ COLORS.w }`);
+        if (newLineAfter) {
+            process.stdout.write('\n'.repeat(newLineAfter));
+        }
     }
-
-    // Standard console log
+    
+    // Standrad console logging
     else {
-        console.log(
-            ...text
-                .split('~')
-                .map(t => t ? `${ COLORS[color] }> ${ t }${ COLORS.w }` : '\n'),
-            ' '
-        );
+        if (newLineBefore > 1) {
+            console.log('\n'.repeat(newLineBefore - 1));
+        }
+        console.log(`${ COLORS[color] }> ${ text }${ COLORS.w }`);
+        if (newLineAfter) {
+            console.log('\n'.repeat(newLineAfter));
+        }
     }
 }
