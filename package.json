@@ -3,10 +3,10 @@
     "main": "main.js",
     "version": "1.1.0",
     "scripts": {
-        "dev":         "bash ./build-scripts/build.sh && bash ./build-scripts/watch.sh",
-        "build":       "bash ./build-scripts/build.sh",
-        "build-prod":  "bash ./build-scripts/build.sh prod",
-        "push":        "bash ./build-scripts/push-deploy.sh",
+        "dev": "bash ./build-scripts/build.sh && bash ./build-scripts/watch.sh",
+        "build": "bash ./build-scripts/build.sh",
+        "build-prod": "bash ./build-scripts/build.sh prod",
+        "push": "bash ./build-scripts/push-deploy.sh",
         "push-deploy": "bash ./build-scripts/push-deploy.sh prod"
     },
     "repository": {
@@ -17,9 +17,9 @@
     "homepage": "https://github.com/NiallAins/personal-site#readme",
     "devDependencies": {
         "@img/sharp-win32-x64": "^0.35.1",
+        "@types/three": "^0.187.0",
         "canvas": "^3.2.3",
         "concurrently": "^9.2.1",
-        "http-server": "^14.1.1",
         "onchange": "^7.1.0",
         "sass": "^1.100.0",
         "sharp": "^0.35.1",
@@ -27,5 +27,8 @@
         "typescript": "^6.0.3",
         "webpack": "^5.107.2",
         "webpack-cli": "^7.0.2"
+    },
+    "dependencies": {
+        "three": "^0.187.0"
     }
 }

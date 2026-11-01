@@ -31,16 +31,16 @@ if [ "$1" == "prod" ]; then
 
             # Return to main
             git checkout main &&
-            node ./build-scripts/log.js "Deploy successful" 11 g &&
+            node ./build-scripts/log.js "Deploy successful" 12 g &&
             exit 1;
         else
-            node ./build-scripts/log.js "Deploy failed: Cancelled" 11 r &&
+            node ./build-scripts/log.js "Deploy failed: Cancelled" 12 r &&
             exit 1;
         fi
 
-         node ./build-scripts/log.js "Deploy failed: Command failed" 11 r;
+         node ./build-scripts/log.js "Deploy failed: Command failed" 12 r;
     else
-         node ./build-scripts/log.js "Deploy failed: Missing commit message" 11 r;
+         node ./build-scripts/log.js "Deploy failed: Missing commit message" 12 r;
     fi
 
 # Push only
@@ -55,14 +55,14 @@ elif [ "$1" ]; then
     if [ "$resp" = "y" ]; then
         node ./build-scripts/log.js "Pushing to main..." 11
         git push origin main &&
-        node ./build-scripts/log.js "Push successful" 11 g &&
+        node ./build-scripts/log.js "Push successful" 12 g &&
         exit 1;
     else
-        node ./build-scripts/log.js "Push failed: Cancelled" 11 r &&
+        node ./build-scripts/log.js "Push failed: Cancelled" 12 r &&
         exit 1;
     fi
 
-     node ./build-scripts/log.js "Push failed: Command failed" 11 r;
+     node ./build-scripts/log.js "Push failed: Command failed" 12 r;
 else
-     node ./build-scripts/log.js "Push failed: Missing commit message" 11 r;
+     node ./build-scripts/log.js "Push failed: Missing commit message" 12 r;
 fi

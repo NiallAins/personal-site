@@ -24,6 +24,8 @@ import {
     labelIsoZ as LABEL_ISO_Z,
     labelDepressZ as LABEL_DEPRESS_Z
 } from "./main";
+import { Boat } from "./Boat";
+import { _DEBUG_renderBaseIso } from "../_debug";
 
 
 //
@@ -46,7 +48,11 @@ const
     LAND_PRE_RENDER_Q = 10,
     LAND_PRE_RENDER_DEPTH_ISO = 4,
     CAN_SEA_PRE_RENDER = new Canvas(),
-    CAN_LAND_PRE_RENDER = new Canvas();
+    CAN_LAND_PRE_RENDER = new Canvas(),
+    BOAT = new Boat(
+        window.innerWidth * 0.125,
+        window.innerHeight * 0.8
+    );
 
 let
     overshootMinSea: number,
@@ -180,6 +186,30 @@ export function render(can: Canvas, fades: number[], t: number, dT: number, isVi
     C.clearRect(0, 0, can.width, can.height);
 
     C.save();
+        // Calculate boat position
+        const
+            BOAT_ISO_PT = ptFromScreen(BOAT.x, BOAT.y),
+            // BOAT_ISO_Z = getSeaZ(t, ...BOAT_ISO_PT, BOAT.x, BOAT.y),
+            BOAT_Y = BOAT.y + (ISO_SCALE * 4);
+        let boatDrawn = false;
+        BOAT.step(
+            dT,
+            1 - Math.max(
+                getLandZ(BOAT.x, BOAT.y)[0],
+                getSeaZ(t, ...BOAT_ISO_PT, BOAT.x, BOAT.y),
+            ) * Z_UNIT
+        );
+        if (BOAT.hasControl) {
+            const
+                TOP_Y = BOAT.y - (window.scrollY + window.innerHeight * 0.3),
+                BOTTOM_Y = BOAT.y - (window.scrollY + window.innerHeight * 0.8);
+            if (TOP_Y < 0) {
+                window.scrollBy(0, TOP_Y);
+            } else if (BOTTOM_Y > 0) {  
+                window.scrollBy(0, BOTTOM_Y);
+            }
+        }
+
         // Calculate viewport
         const
             MIN_Y_SEA = Math.max(
@@ -206,6 +236,18 @@ export function render(can: Canvas, fades: number[], t: number, dT: number, isVi
 
             // Terrain
             if (y >= MIN_Y_LAND && y <= MAX_Y_SEA) {
+                if (!boatDrawn && y >= BOAT_Y) {
+                    // renderSingleIso(
+                    //     C, BOAT_ISO_PT[0], BOAT_ISO_PT[1], BOAT_ISO_Z, BOAT_ISO_Z, ['red']
+                    // );
+                    can.drawFromCanvas(
+                        BOAT.CAN,
+                        BOAT.x - Boat.CAN_CENTER_X,
+                        BOAT.y + BOAT.z + (getHorizonIsoZ(BOAT.y) * Z_UNIT) - Boat.CAN_CENTER_Y
+                    );
+                    boatDrawn = true;
+                }
+
                 const HORIZON_ISO_Z = getHorizonIsoZOfRow(offsetRow, y);
                 for (let x = 0; x < can.width + X_UNIT; x += X_UNIT) {
                     const

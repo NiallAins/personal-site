@@ -16,6 +16,8 @@ import { PROJECT_DATA } from "../../data/projects";
 import { Ease } from "./Ease";
 import { _DEBUG_log, _DEBUG_logDt } from "../_debug";
 import { eEaseState, eEaseType } from "../types";
+import { Boat } from "./Boat";
+import { step as inputsStep } from "./Inputs";
 
 
 //
@@ -137,12 +139,13 @@ function animate(t: number = 0, dT: number = 1) {
         _DEBUG_logDt(dT);
 
         Ease.step(dT);
-
+        
         renderTerrain(CAN_SEA, fades.map(f => f.value), t, dT, isViewportSmall);
         t = (t + (0.00075 * dT)) % 1;
         renderSingleFrame = false;
     }
-
+    
+    inputsStep();
     requestFrameScaled(animate.bind(null, t));
 }
 

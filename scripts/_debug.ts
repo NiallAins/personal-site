@@ -16,8 +16,10 @@ const
 
 LOG.el.id = 'DEBUG';
 
-export function _DEBUG_log(...strs: string[]) {
-    const STR = strs.join('<br/>');
+export function _DEBUG_log(...strs: any[]) {
+    const STR = strs
+        .map(s => typeof s === 'object' ? JSON.stringify(s) : String(s))
+        .join('<br/>');
 
     if (PROD) {
         return;
