@@ -12,15 +12,15 @@ export class Splash {
     private fading: boolean = false;
     private period: number = 0;
 
-    constructor(x: number, y: number, isLarge: boolean) {
+    constructor(x: number, y: number, size: number) {
         this.x = x;
         this.y = y;
-        this.size = isLarge ? 10 : 1;
+        this.size = size;
     }
 
-    static createSplash(x: number, y: number, isLarge: boolean = false) {
-        if (isLarge || !Splash.splashes.find(s => Math.abs(y - s.y) + Math.abs(x - s.x) < ISO_SCALE * 2)) {
-            Splash.splashes.push(new Splash(x, y, isLarge));
+    static createSplash(x: number, y: number, size: 0 | 1 | 2 = 0) {
+        if (size || !Splash.splashes.find(s => Math.abs(y - s.y) + Math.abs(x - s.x) < ISO_SCALE * 2)) {
+            Splash.splashes.push(new Splash(x, y, [1, 5, 8][size]));
         }
     }
 

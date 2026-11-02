@@ -1,10 +1,21 @@
 import * as Three from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { _DEBUG_log } from "../_debug";
-import { Canvas } from "./Canvas";
 import { KEYS, toggleInputListeners, toggleKeyLock } from "./Inputs";
-import { renderSingleIso } from "./terrain";
+import { renderSingleIso, ptFromScreen, ptToScreen } from "./terrain";
+import { Splash } from './Splash';
 
+enum eSurface {
+    Sea,
+    Land,
+    Air
+};
+
+enum eRotation {
+    Turn,
+    Flip,
+    Roll
+};
 
 export class Boat {
 
@@ -12,48 +23,107 @@ export class Boat {
     // Static properties
     //
 
-    protected static readonly CAN_W = 96;
-    public static readonly CAN_CENTER_X = Boat.CAN_W * 0.5;
-    public static readonly CAN_CENTER_Y = Boat.CAN_W * 0.75;
+    // Model
+    protected static readonly CAN_W = 128;
     protected static readonly MODEL_SRC: string = './assets/boat.glb';
+    protected static readonly MODEL_ROT_X: number = 35.264 * (Math.PI / 180);
+    protected static readonly MODEL_ROT_Y: number = 0.25 * Math.PI;
+    public static readonly CAN_CENTER_X = Boat.CAN_W * 0.5;
+    public static readonly CAN_CENTER_Y = Boat.CAN_W * 0.625;
 
-    protected static readonly DDP: number = 1.25;
-    protected static readonly DAA: number = 0.01;
-    protected static readonly DZ_JUMP: number = -50;
-    protected static readonly MAX_DP: number = 4**2;
-    protected static readonly MAX_DP_REV: number = 2**2;
-    protected static readonly MAX_DANG: number = 1;
-    protected static readonly FRIC_D: number = 0.92;
-    protected static readonly FRIC_A: number = 0.9;
-    protected static readonly GRAV: number = 7;
+    // PLanar movement
+    protected static DDP = 0.03;
+    protected static DDP_REV = Boat.DDP * -0.2;
+    protected static DP_MAX2 = (1)**2;
+
+    // Vertical movement
+    protected static DP_JUMP = 1;
+    protected static GRAV = -0.08;
+    protected static FRIC_P = {
+        [eSurface.Sea]: -0.02,
+        [eSurface.Land]: -0.2,
+        [eSurface.Air]: 0
+    };
+
+    // Anglular movement
+    protected static DDA = {
+        [eSurface.Sea]: 0.06,
+        [eSurface.Land]: 0.025,
+        [eSurface.Air]: {
+            [eRotation.Turn]: 0.01,
+            [eRotation.Flip]: 0.03,
+            [eRotation.Roll]: 0.05
+        }
+    };
+    protected static DDA_MAX = {
+        [eSurface.Sea]: 0.15,
+        [eSurface.Land]: 0.075,
+        [eSurface.Air]: {
+            [eRotation.Turn]: 0.3,
+            [eRotation.Flip]: 0.4,
+            [eRotation.Roll]: 0.4
+        }
+    };
+    protected static FRIC_A = {
+        [eSurface.Sea]: -0.3,
+        [eSurface.Land]: -0.4,
+        [eSurface.Air]: 0
+    };
 
 
     //
     // Private properties
     //
 
-    private ang: number = Math.PI * 0.125;
-    private dAng: number = 0;
-    private dP: number = 0;
-    private dZ: number = 0;
+    private p  = new Vec(0, 0, 0);
+    private dP = new Vec(0, 0, 0);
+    private a  = new Vec(0, 0, 0);
+    private dA = new Vec(0, 0, 0);
+    private fP = new Vec(0, 0, 0);
+    private fA = new Vec(0, 0, 0);
+    private gradAX = 0;
+    private gradAY = 0;
+    private surface = eSurface.Sea;
+    private prevSurface = eSurface.Sea;
+    private doubleKeyDAReset = 0;
+    private flipXActive = false;
+    private flipYActive = false;
     private model: Three.Group | null = null;
-    private onGround: boolean = false;
     
-    
+
     //
     // Public properties
     //
-    
+
     public readonly CAN: HTMLCanvasElement;
-    public x: number;
-    public y: number;
-    public z: number = 0;
     public hasControl: boolean = false;
+    public alti = 0;
 
 
-    constructor(x: number, y: number) {
-        this.x = x;
-        this.y = y;
+    set x(newX: number) {
+        this.p.x = newX;
+    }
+    get x() {
+        return this.p.x;
+    }
+
+    set y(newY: number) {
+        this.p.y = newY;
+    }
+    get y() {
+        return this.p.y;
+    }
+    
+    set z(newZ: number) {
+        this.p.z = newZ;
+    }
+    get z() {
+        return this.p.z;
+    }
+
+    constructor(x: number = 0, y: number = 0) {
+        this.p.x = x;
+        this.p.y = y;
 
 
         //
@@ -62,38 +132,79 @@ export class Boat {
     
         const
             SCENE = new Three.Scene(),
-            CTX = new Three.WebGLRenderer();
+            CTX = new Three.WebGLRenderer(),
+            LIGHT = new Three.DirectionalLight(0xffffff, 2),
+            CAM = new Three.OrthographicCamera(
+                -1,    1,
+                 1,   -1,
+                 1, 2000
+            );
     
         CTX.setSize(Boat.CAN_W, Boat.CAN_W);
         CTX.setClearColor(0x00ff00, 0);
         this.CAN = CTX.domElement;
 
-        const LIGHT = new Three.DirectionalLight(0xffffff, 1);
-        LIGHT.position.set(5, 5, 5);
+        LIGHT.position.set(10, 20, 10);
         SCENE.add(LIGHT);
-    
-    
-        //
-        // Set isometirc camera
-        //
-    
-        const camera = new Three.OrthographicCamera(
-            -1, 1,
-            1, -1,
-            1, 2000
-        );
-        camera.position.set(0, 0, 100);
 
-        this._render = () => CTX.render(SCENE, camera);
+        CAM.position.set(0, 0, 100);
+        CTX.setAnimationLoop(() => CTX.render(SCENE, CAM));
+
         this._loadModel(SCENE);
 
         this.toggleControls(true);
     }
 
-
+    
     //
     // Public methods
     //
+
+    public step(
+        dT: number,
+        outOfBounds: [boolean, boolean, boolean, boolean],
+        getZ: (x: number, y: number) => [number, boolean]
+    ) {
+        if (outOfBounds[0]) {
+            this.fP.x += 0.35;
+            this.fP.y += 0.35;
+        }
+        if (outOfBounds[2]) {
+            this.fP.x -= 0.35;
+            this.fP.y -= 0.35;
+        }
+        if (outOfBounds[1]) {
+            this.fP.x -= 0.35;
+            this.fP.y += 0.35;
+        }
+        if (outOfBounds[3]) {
+            this.fP.x += 0.35;
+            this.fP.y -= 0.35;
+        }
+
+        this._setPositionalForces(dT);
+        this._setAngularForces();
+        this._applyForces(dT);
+        this._applySurface(getZ);
+        this.fP = new Vec();
+        this.fA = new Vec();
+
+        if (this.model) {
+            this.model.rotation.x = Boat.MODEL_ROT_X;
+            this.model.rotation.z = 0;
+            this.model.rotation.y = Boat.MODEL_ROT_Y;
+
+            if (this.surface === eSurface.Air) {
+                this.model.rotateOnAxis(new Three.Vector3(1, 0, 0), this.a.x);
+                this.model.rotateOnAxis(new Three.Vector3(0, 0, 1), this.a.y);
+                this.model.rotateOnAxis(new Three.Vector3(0, 1, 0), this.a.z * -1);
+            } else {
+                this.model.rotateOnAxis(new Three.Vector3(0, 1, 0), this.a.z * -1);
+                this.model.rotateOnWorldAxis(new Three.Vector3(0, 0, 1), this.gradAX * -1);
+                this.model.rotateOnWorldAxis(new Three.Vector3(1, 0, 0), this.gradAY);
+            }
+        }
+    }
 
     public toggleControls(state: boolean) {
         this.hasControl = state;
@@ -107,85 +218,20 @@ export class Boat {
             ],
             state
         );
-        toggleInputListeners(
-            [
-                'mousewheel',
-                'mousedown'
-            ],
-            { removeControls: () => this.toggleControls(false) },
-            state
-        );
-    }
-
-    public step(dT: number, groundZ: number) {
-        if (this.hasControl) {
-            if (KEYS.ArrowUp.pressed) {
-                this._move(false);
-            }
-            if (KEYS.ArrowDown.pressed) {
-                this._move(true);
-            }
-            if (KEYS.ArrowLeft.pressed) {
-                this._turn(true);
-            }
-            if (KEYS.ArrowRight.pressed) {
-                this._turn(false);
-            }
-            if (KEYS.Space.down) {
-                this._jump();
-            }
-        }
-
-        const PREV_ANG = this.ang;
-        this.ang += this.dAng * dT;
-        this.dAng *= Boat.FRIC_A;
-
-        this.x += this.dP * Math.cos(this.ang) * dT;
-        this.y += this.dP * Math.sin(this.ang) * dT;
-        this.z += this.dZ * dT;
-        this.dP *= Boat.FRIC_D;
-
-
-        if (this.z < groundZ) {
-            this.dZ += Boat.GRAV * dT;
-        } else {
-            this.z = groundZ;
-            this.dZ = 0;
-            this.onGround = true;
-        }
-
-        if (this.model && PREV_ANG !== this.ang) {
-            this.model.rotation.y = Math.PI - this.ang;
-            this._render();
-        }
+        // toggleInputListeners(
+        //     [
+        //         'mousewheel',
+        //         'mousedown'
+        //     ],
+        //     { removeControls: () => this.toggleControls(false) },
+        //     state
+        // );
     }
 
 
     //
-    // Private / Protected methods
+    // Private methods
     //
-
-    protected _move(isReverse: boolean) {
-        if (isReverse) {
-            this.dP -= Boat.DDP;
-            this.dP = Math.max(Boat.MAX_DP_REV * -1, this.dP);
-        } else {
-            this.dP += Boat.DDP;
-            this.dP = Math.min(Boat.MAX_DP, this.dP);
-        }
-    }
-
-    protected _turn(isCounter: boolean) {
-        this.dAng += Boat.DAA * (isCounter ? -1 : 1);
-        this.dAng = Math.max(Boat.MAX_DANG * -1, Math.min(Boat.MAX_DANG, this.dAng));
-    }
-
-    protected _jump() {
-        if (this.onGround) {
-            this.dZ = Boat.DZ_JUMP;
-            this.onGround = false;
-        }
-    }
 
     private async _loadModel(scene: Three.Scene) {
         const LOADER = new GLTFLoader();
@@ -197,34 +243,274 @@ export class Boat {
             )
         );
 
-        this.model!.rotation.y = Math.PI - this.ang;
-        this.model!.rotation.x = 35.264 * (Math.PI / 180);
+        if (this.model) {
+            const SCALE = 0.125;
+            this.model!.scale.set(SCALE, SCALE, SCALE);
 
-        const SCALE = 0.3;
-        this.model!.scale.set(SCALE, SCALE, SCALE);
-
-        scene.add(this.model!);
-        this._render();
+            scene.add(this.model!);
+        }
+    }
+    
+    // Z position
+    private _moveJump() {
+        if (this.surface !== eSurface.Air) {
+            this.fP.z += Boat.DP_JUMP;
+        }
     }
 
-    private _render: () => void;
+    // X, Y position
+    private _moveAccel(reverse: boolean) {
+        if (
+            this.surface !== eSurface.Air &&
+            this.dP.x** 2 + this.dP.y**2 <= Boat.DP_MAX2
+        ) {
+            const M = reverse ? Boat.DDP_REV : Boat.DDP;
+            this.fP.x += Math.cos(this.a.z) * M;
+            this.fP.y += Math.sin(this.a.z) * M;
+        }
+    }
 
-    // private _render() {
-    //     const C = this._CAN.CTX;
-    //     C.clearRect(0, 0, Boat.CAN_W, Boat.CAN_W);
-    //     C.save();
-    //         C.translate(Boat.CAN_W / 2, Boat.CAN_W / 2);
-    //         C.scale(1, -1);
-    //         renderSingleIso(C, 0, 0, 0, 0, ['red']);
-    //         C.beginPath();
-    //             C.beginPath();
-    //             C.moveTo(Boat.CAN_W * -0.5, 0);
-    //             C.lineTo(Boat.CAN_W *  0.5, 0);
-    //             C.moveTo(0, Boat.CAN_W * -0.5);
-    //             C.lineTo(0, Boat.CAN_W *  0.5);
-    //         C.lineWidth = 3;
-    //         C.strokeStyle = 'green';
-    //         C.stroke();
-    //     C.restore();
-    // }
+    // Z rotate
+    private _moveTurn(clockwise: boolean) {
+        const
+            DAA: number = this.surface === eSurface.Air
+                ? Boat.DDA[this.surface][eRotation.Turn]
+                : Boat.DDA[this.surface],
+            MAX: number = this.surface === eSurface.Air
+                ? Boat.DDA_MAX[this.surface][eRotation.Turn]
+                : Boat.DDA_MAX[this.surface];
+
+        if (clockwise && this.dA.z > -MAX) {
+            this.fA.z -= DAA;
+            return;
+        }
+        if (!clockwise && this.dA.z < MAX) {
+            this.fA.z += DAA;
+            return;
+        }
+    }
+
+    // X, Y rotate
+    private _moveFlip(isRoll: boolean, anti: boolean) {
+        if (this.surface === eSurface.Air) {
+            if (isRoll) {
+                if (anti && this.dA.x > -Boat.DDA_MAX[eSurface.Air][eRotation.Roll]) {
+                    this.fA.x -= Boat.DDA[eSurface.Air][eRotation.Roll];
+                    return;
+                }
+                if (!anti && this.dA.x < Boat.DDA_MAX[eSurface.Air][eRotation.Roll]) {
+                    this.fA.x += Boat.DDA[eSurface.Air][eRotation.Roll];
+                }
+            } else {
+                if (anti && this.dA.y > -Boat.DDA_MAX[eSurface.Air][eRotation.Flip]) {
+                    this.fA.y -= Boat.DDA[eSurface.Air][eRotation.Flip];
+                    return;
+                }
+                if (!anti && this.dA.y < Boat.DDA_MAX[eSurface.Air][eRotation.Flip]) {
+                    this.fA.y += Boat.DDA[eSurface.Air][eRotation.Flip];
+                }
+            }
+        }
+    }
+
+    private _setPositionalForces(dT: number) {
+        // Accelerate
+        if (KEYS.ArrowUp.pressed || KEYS.ArrowDown.pressed) {
+          this._moveAccel(KEYS.ArrowDown.pressed);
+        }
+    
+        // Jump
+        if (KEYS.Space.down) {
+          this._moveJump();
+        }
+
+        // Gravity
+        if (this.surface === eSurface.Air) {
+            this.fP.z += Boat.GRAV * dT;
+        }
+    
+        // Friction
+        this.fP.x += this.dP.x * Boat.FRIC_P[this.surface];
+        this.fP.y += this.dP.y * Boat.FRIC_P[this.surface];
+    }
+    
+    private _setAngularForces() {
+        if (this.hasControl) {
+            // Z ground rotate
+            if (this.surface !== eSurface.Air) {
+                if (KEYS.ArrowLeft.pressed) {
+                    this._moveTurn(true);
+                } else if (KEYS.ArrowRight.pressed) {
+                    this._moveTurn(false);
+                }
+            } else {
+                // Active X, Y axis flip control
+                if (KEYS.ArrowLeft.downDouble || KEYS.ArrowRight.downDouble) {
+                    this.flipXActive = true;
+                }
+                if (KEYS.ArrowUp.down || KEYS.ArrowDown.down) {
+                    this.flipYActive = true;
+                }
+
+                // Roll
+                if (this.flipXActive) {
+                    if (KEYS.ArrowLeft.pressed) {
+                        this._moveFlip(true, false);
+                    } else if (KEYS.ArrowRight.pressed) {
+                        this._moveFlip(true, true);
+                    }
+                }
+                // Turn
+                else {
+                    if (KEYS.ArrowLeft.pressed) {
+                        this._moveTurn(true);
+                    } else if (KEYS.ArrowRight.pressed) {
+                        this._moveTurn(false);
+                    }
+                }
+
+                // Flip
+                if (this.flipYActive) {
+                    if (KEYS.ArrowUp.pressed) {
+                        this._moveFlip(false, false);
+                    } else if (KEYS.ArrowDown.pressed) {
+                        this._moveFlip(false, true);
+                    }
+                }
+
+                // Prevent inital single key rotation after double key pressed
+                if (KEYS.ArrowLeft.downSingle || KEYS.ArrowRight.downSingle) {
+                    this.doubleKeyDAReset = this.dA.z;
+                } else if (KEYS.ArrowLeft.downDouble || KEYS.ArrowRight.downDouble) {
+                    this.dA.z = this.doubleKeyDAReset;
+                }
+            }
+        }
+
+        // Friction
+        this.fA.add(this.dA.scale(Boat.FRIC_A[this.surface], true));
+    }
+    
+    private _applyForces(dT: number) {
+        // Positional Movement
+        this.dP.add(this.fP);
+        this.p.add(this.dP.scale(dT, true));
+
+    
+        // Angular movement
+        this.dA.add(this.fA);
+        this.a.add(this.dA.scale(dT, true));
+    }
+    
+    private _applySurface(getZ: (x: number, y: number) => [number, boolean]) {
+        const [
+            GROUND_Z,
+            ON_LAND
+         ] = getZ(this.p.x, this.p.y);
+
+        // On ground
+        if (this.p.z - GROUND_Z < 0.2) {
+            // Move to contact
+            this.p.z = GROUND_Z;
+            this.alti = 0;
+
+            if (this.prevSurface === eSurface.Air) {
+                this._onJumpEnd();
+            }
+        
+            this.surface = ON_LAND ? eSurface.Land : eSurface.Sea;
+        
+            // Match gradient angle
+            const CHECK_DIS = 1.5;
+            this.gradAX = Math.atan2(
+                getZ(this.p.x - CHECK_DIS, this.p.y)[0] -
+                getZ(this.p.x + CHECK_DIS, this.p.y)[0],
+                CHECK_DIS * 2
+            );
+            this.gradAY = Math.atan2(
+                getZ(this.p.x, this.p.y - CHECK_DIS)[0] -
+                getZ(this.p.x, this.p.y + CHECK_DIS)[0],
+                CHECK_DIS * 2
+            );
+        }
+    
+        // In air
+        else {
+            this.surface = eSurface.Air;
+            this.alti = this.p.z - GROUND_Z;
+
+            if (this.prevSurface !== eSurface.Air) {
+                this._onJumpStart();
+            }
+        }
+
+        this.prevSurface = this.surface;
+    }
+
+    private _onJumpStart() {
+        this.dA.y += Math.random()*0.05 - 0.025;
+        this.dA.z += Math.random()*0.05 - 0.025;
+    }
+    
+    private _onJumpEnd() {
+        this.flipXActive = false;
+        this.flipYActive = false;
+        
+        // Convert y axis half flips to z axis rotation
+        let ay = this.a.y % (Math.PI * 2);
+        ay = ay > Math.PI ? ay - (Math.PI * 2) : ay < -Math.PI ? ay + (Math.PI * 2) : ay;
+        if (Math.abs(ay) > Math.PI * 0.5) {
+            this.a.z += Math.PI;
+        }
+
+        if (this.dP.z < -0.5) {
+            Splash.createSplash(...ptToScreen(this.x, this.y), 1);
+        }
+
+        this.a.x = 0;
+        this.a.y = 0;
+        this.dA.x = 0;
+        this.dA.y = 0;
+        this.dP.z = 0;
+    }
+}
+
+class Vec {
+    public x: number;
+    public y: number;
+    public z: number;
+
+    constructor(x: number = 0, y: number = 0, z: number = 0) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+  
+    public scale(s: number | Vec, copy: boolean = false) {
+        let v = copy ? new Vec(this.x, this.y, this.z) : this;
+        if (typeof s === 'number') {
+            v.x *= s;
+            v.y *= s;
+            v.z *= s;
+        } else {
+            v.x *= s.x;
+            v.y *= s.y;
+            v.z *= s.z;
+        }
+        return v;
+    }
+  
+    public add(s: number | Vec, copy: boolean = false) {
+        let v = copy ? new Vec(this.x, this.y, this.z) : this;
+        if (typeof s === 'number') {
+            v.x += s;
+            v.y += s;
+            v.z += s;
+        } else {
+            v.x += s.x;
+            v.y += s.y;
+            v.z += s.z;
+        }
+        return v;
+    }
 }

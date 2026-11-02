@@ -14,7 +14,7 @@ import { EL_TOPIC_BUTTONS } from "../pages";
 import { Cublet } from "./Cublet";
 import { PROJECT_DATA } from "../../data/projects";
 import { Ease } from "./Ease";
-import { _DEBUG_log, _DEBUG_logDt } from "../_debug";
+import { _DEBUG_log, _DEBUG_logClear, _DEBUG_logDt } from "../_debug";
 import { eEaseState, eEaseType } from "../types";
 import { Boat } from "./Boat";
 import { step as inputsStep } from "./Inputs";
@@ -88,7 +88,7 @@ export function toggleSectionOpen(open: boolean, sectionI: number = -1) {
 
 export function init() {
     CAN_SEA.CAN.onmousemove = e => Splash.createSplash(e.clientX, e.clientY);
-    CAN_SEA.CAN.onclick = e => Splash.createSplash(e.clientX, e.clientY, true);
+    CAN_SEA.CAN.onclick = e => Splash.createSplash(e.clientX, e.clientY, 2);
     EL_TOPIC_BUTTONS.forEach((el, i) => {
         LABELS.push(new Label(el, i));
         fades.push(new Ease([DURATION_MAIN_CLOSE_DELAY, DURATION_SH], eEaseType.EaseOut, true));
@@ -135,6 +135,8 @@ export function renderFrame() {
 //
 
 function animate(t: number = 0, dT: number = 1) {
+    _DEBUG_logClear();
+
     if (!paused || renderSingleFrame) {
         _DEBUG_logDt(dT);
 
@@ -145,7 +147,7 @@ function animate(t: number = 0, dT: number = 1) {
         renderSingleFrame = false;
     }
     
-    inputsStep();
+    inputsStep(dT);
     requestFrameScaled(animate.bind(null, t));
 }
 

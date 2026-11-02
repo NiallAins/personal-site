@@ -25,7 +25,7 @@ import {
     labelDepressZ as LABEL_DEPRESS_Z
 } from "./main";
 import { Boat } from "./Boat";
-import { _DEBUG_renderBaseIso } from "../_debug";
+import { _DEBUG_log, _DEBUG_renderBaseIso } from "../_debug";
 
 
 //
@@ -49,10 +49,7 @@ const
     LAND_PRE_RENDER_DEPTH_ISO = 4,
     CAN_SEA_PRE_RENDER = new Canvas(),
     CAN_LAND_PRE_RENDER = new Canvas(),
-    BOAT = new Boat(
-        window.innerWidth * 0.125,
-        window.innerHeight * 0.8
-    );
+    BOAT = new Boat();
 
 let
     overshootMinSea: number,
@@ -141,6 +138,11 @@ export function resize(width: number, height: number, viewportSm: boolean, rePre
                 c.setAngle(c.inSea);
             });
     });
+
+    [BOAT.x, BOAT.y] = ptFromScreen(
+        window.innerWidth * 0.175,
+        window.innerHeight * 0.875
+    );
 }
 
 export function preRenderTerrain() {
@@ -187,26 +189,43 @@ export function render(can: Canvas, fades: number[], t: number, dT: number, isVi
 
     C.save();
         // Calculate boat position
-        const
-            BOAT_ISO_PT = ptFromScreen(BOAT.x, BOAT.y),
-            // BOAT_ISO_Z = getSeaZ(t, ...BOAT_ISO_PT, BOAT.x, BOAT.y),
-            BOAT_Y = BOAT.y + (ISO_SCALE * 4);
-        let boatDrawn = false;
+        let
+            boatDrawn = false,
+            [boatScrX, boatScrY] = ptToScreen(BOAT.x, BOAT.y);
+        boatScrY += window.scrollY;
+
         BOAT.step(
             dT,
-            1 - Math.max(
-                getLandZ(BOAT.x, BOAT.y)[0],
-                getSeaZ(t, ...BOAT_ISO_PT, BOAT.x, BOAT.y),
-            ) * Z_UNIT
+            [
+                boatScrY < window.innerHeight * 0.8,
+                boatScrX > window.innerWidth,
+                boatScrY > document.body.clientHeight,
+                boatScrX < 0
+            ],
+            (x: number, y: number): [number, boolean] => {
+                const
+                    SCR_P = ptToScreen(x, y),
+                    SEA_Z = getSeaZ(t, x, y, SCR_P[0], SCR_P[1]),
+                    LAND_Z = getLandZ(SCR_P[0], SCR_P[1] + window.scrollY)[0];
+                return SEA_Z > LAND_Z
+                    ? [SEA_Z, false]
+                    : [LAND_Z, true]
+            }
         );
+
+        const BOAT_RENDER_DEPTH = boatScrY + (ISO_SCALE * 6);
         if (BOAT.hasControl) {
             const
-                TOP_Y = BOAT.y - (window.scrollY + window.innerHeight * 0.3),
-                BOTTOM_Y = BOAT.y - (window.scrollY + window.innerHeight * 0.8);
-            if (TOP_Y < 0) {
-                window.scrollBy(0, TOP_Y);
-            } else if (BOTTOM_Y > 0) {  
-                window.scrollBy(0, BOTTOM_Y);
+                SY = window.scrollY,
+                WH = window.innerHeight,
+                BC_TOP = WH * (0.3 + (0.5 * (1 - Math.min(1, (SY / WH))))),
+                BC_BOTTOM = WH * 0.8,
+                DT = boatScrY - (SY + BC_TOP),
+                DB = boatScrY - (SY + BC_BOTTOM);
+            if (DT < 0) {
+                window.scrollBy(0, DT);
+            } else if (DB > 0) {  
+                window.scrollBy(0, DB);
             }
         }
 
@@ -236,16 +255,9 @@ export function render(can: Canvas, fades: number[], t: number, dT: number, isVi
 
             // Terrain
             if (y >= MIN_Y_LAND && y <= MAX_Y_SEA) {
-                if (!boatDrawn && y >= BOAT_Y) {
-                    // renderSingleIso(
-                    //     C, BOAT_ISO_PT[0], BOAT_ISO_PT[1], BOAT_ISO_Z, BOAT_ISO_Z, ['red']
-                    // );
-                    can.drawFromCanvas(
-                        BOAT.CAN,
-                        BOAT.x - Boat.CAN_CENTER_X,
-                        BOAT.y + BOAT.z + (getHorizonIsoZ(BOAT.y) * Z_UNIT) - Boat.CAN_CENTER_Y
-                    );
-                    boatDrawn = true;
+                if (!boatDrawn && y > BOAT_RENDER_DEPTH) {
+                   renderBoat(can, boatScrX, boatScrY);
+                   boatDrawn = true;
                 }
 
                 const HORIZON_ISO_Z = getHorizonIsoZOfRow(offsetRow, y);
@@ -514,6 +526,41 @@ function renderCublet(
 }
 
 
+function renderBoat(can: Canvas, boatScrX: number, boatScrY: number) {
+    const
+        C = can.CTX,
+        BOAT_Y = boatScrY + getHorizonIsoZ(boatScrY) - (BOAT.z * Z_UNIT);
+
+    // renderSingleIso(
+    //     C,
+    //     BOAT.x,
+    //     BOAT.y,
+    //     BOAT.z, BOAT.z, ['red']
+    // );
+
+    // Shadow
+    if (BOAT.alti) {
+        const H = Math.max(0, Math.min(1, BOAT.alti / 7));
+        C.save();
+            C.fillStyle = 'black'; 
+            C.beginPath();
+                C.translate(boatScrX, BOAT_Y + ((BOAT.alti - 0.75) * Z_UNIT));
+                C.scale(1, 0.5)
+                C.filter = `blur(${ 2 + (18 * H) }px)`;
+                C.globalAlpha = 0.5 - (0.4 * H);
+                C.arc(0, 0, ISO_SCALE * (2.5 + (2 * H)), 0, Math.PI * 2);
+            C.fill();
+        C.restore();
+    }
+
+    can.drawFromCanvas(
+        BOAT.CAN,
+        boatScrX - Boat.CAN_CENTER_X,
+        BOAT_Y - Boat.CAN_CENTER_Y
+    );
+}
+
+
 //
 // Color
 //
@@ -543,7 +590,7 @@ function getTerrainColor(z: number, sectionI: number): string[] {
 // Co-ordinate look-ups
 //
 
-export function ptFromScreen(x: number, y: number): [number, number] {
+export function ptFromScreen(x: number, y: number, float: boolean = false): [number, number] {
     x *= -0.5;
     y *= 0.5;
 
@@ -556,8 +603,10 @@ export function ptFromScreen(x: number, y: number): [number, number] {
     x /= ISO_SCALE;
     y /= ISO_SCALE;
 
-    x = Math.floor(x);
-    y = Math.floor(y);
+    if (!float) {
+        x = Math.floor(x);
+        y = Math.floor(y);
+    }
 
     return [x, y];
 }

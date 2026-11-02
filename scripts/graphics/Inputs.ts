@@ -1,9 +1,14 @@
 const LISTENERS: { [key: string]: (e: Event) => void } = {};
 
+const DOUBLE_DOWN_TIME = 5;
+
 export const KEYS: {
     [code: string]: {
         pressed: boolean;
         down: boolean;
+        downSingle: boolean;
+        downDouble: boolean;
+        downDoubleTimer: number;
         up: boolean;
         locked: boolean;
     }
@@ -20,6 +25,9 @@ export const KEYS: {
             {
                 pressed: false,
                 down: false,
+                downSingle: false,
+                downDouble: false,
+                downDoubleTimer: 0,
                 up: false,
                 locked: false
             }
@@ -33,6 +41,12 @@ export function init() {
             if (!e.repeat) {
                 KEY.pressed = true;
                 KEY.down = true;
+                if (KEY.downDoubleTimer > 0) {
+                    KEY.downDouble = true;
+                } else {
+                    KEY.downSingle = true;
+                    KEY.downDoubleTimer = DOUBLE_DOWN_TIME;
+                }
             }
             if (KEY.locked) {
                 e.preventDefault();
@@ -44,6 +58,8 @@ export function init() {
         if (KEY) {
             KEY.pressed = false;
             KEY.up = true;
+            KEY.downDouble = false;
+            KEY.downSingle = false;
             if (KEY.locked) {
                 e.preventDefault();
             }
@@ -53,22 +69,20 @@ export function init() {
         Object.values(KEYS).forEach(k => {
             k.pressed = false;
             k.down = false;
+            k.downDouble = false;
+            k.downSingle = false;
             k.up = false;
         });
     });
-
-    window.addEventListener('mousedown', () => {
-        Object.values(KEYS).forEach(k => k.locked = false);
-    });
-    window.addEventListener('mousewheel', () => {
-        Object.values(KEYS).forEach(k => k.locked = false);
-    });
 }
 
-export function step() {
+export function step(dT: number) {
     Object.values(KEYS).forEach(k => {
         k.down = false;
         k.up = false;
+        if (k.downDoubleTimer > 0) {
+            k.downDoubleTimer -= dT;
+        }
     });
 }
 

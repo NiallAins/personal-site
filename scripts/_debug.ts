@@ -11,34 +11,19 @@ const
         dtSum: 0,
         dtRecord: [] as number[],
         dtRecordMax: 15,
-        el: document.createElement('div')
+        elDt: document.createElement('div'),
+        elLog: document.createElement('div'),
     };
 
-LOG.el.id = 'DEBUG';
-
 export function _DEBUG_log(...strs: any[]) {
-    const STR = strs
-        .map(s => typeof s === 'object' ? JSON.stringify(s) : String(s))
-        .join('<br/>');
+    _DEBUG_renderLog(false, ...strs);
+}
 
+export function _DEBUG_logClear() {
     if (PROD) {
         return;
     }
-
-    if (!LOG.el.parentElement) {
-        document.body.appendChild(LOG.el);
-        LOG.el.style.position = 'fixed';
-        LOG.el.style.top = '0px';
-        LOG.el.style.right = '0px';
-        LOG.el.style.padding = '1rem';
-        LOG.el.style.color = 'red';
-        LOG.el.style.font = '16px "Courier New"';
-        LOG.el.style.fontWeight = 'bold';
-        LOG.el.style.textAlign = 'right';
-        LOG.el.innerHTML = '0';
-    }
-
-    LOG.el.innerHTML = STR;
+    LOG.elLog.innerHTML = '';
 }
 
 export function _DEBUG_logDt(dT: number) {
@@ -52,7 +37,8 @@ export function _DEBUG_logDt(dT: number) {
     if (LOG.t > TARGET_FPS * 0.5) {
         const DT = LOG.dtSum / LOG.t;
         LOG.dtRecord.push(DT);
-        _DEBUG_log(
+        _DEBUG_renderLog(
+            true,
             'dt ' + DT.toFixed(2),
             'max ' + Math.max(...LOG.dtRecord).toFixed(2)
         );
@@ -61,6 +47,38 @@ export function _DEBUG_logDt(dT: number) {
         if (LOG.dtRecord.length > LOG.dtRecordMax) {
             LOG.dtRecord.shift();
         }
+    }
+}
+
+function _DEBUG_renderLog(isDt: boolean, ...strs: any[]) {
+    if (!LOG.elDt.parentElement) {
+        const EL_CONTAIN = document.createElement('div');
+        document.body.appendChild(EL_CONTAIN);
+        EL_CONTAIN.appendChild(LOG.elDt);
+        EL_CONTAIN.appendChild(LOG.elLog);
+        EL_CONTAIN.style.position = 'fixed';
+        EL_CONTAIN.style.top = '0px';
+        EL_CONTAIN.style.right = '0px';
+        EL_CONTAIN.style.padding = '1rem';
+        EL_CONTAIN.style.color = 'red';
+        EL_CONTAIN.style.font = '16px "Courier New"';
+        EL_CONTAIN.style.fontWeight = 'bold';
+        EL_CONTAIN.style.textAlign = 'right';
+        EL_CONTAIN.id = 'DEBUG';
+    }
+
+    const STR = strs
+    .map(s => typeof s === 'object'
+        ? JSON.stringify(s)
+        : String(s)
+    )
+    .join('<br/>')
+    .replace(/([0-9]\.[0-9]{0,2})[0-9]*/g, '$1');
+
+    if (isDt) {
+        LOG.elDt.innerHTML = STR + '<br/>';
+    } else {
+        LOG.elLog.innerHTML += STR + '<br/>';
     }
 }
 
