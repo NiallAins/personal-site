@@ -50,7 +50,7 @@ elif [ "$1" ]; then
     git commit -m "$1";
 
     # Confirm push after commit outputs
-    node ./build-scripts/log.js "~Complete push? (y) " 10 &&
+    node ./build-scripts/log.js "Complete push? (y) " 10 &&
     read resp;
     if [ "$resp" = "y" ]; then
         node ./build-scripts/log.js "Pushing to main..." 11
