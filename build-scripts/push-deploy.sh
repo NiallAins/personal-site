@@ -22,30 +22,30 @@ if [ "$1" == "prod" ]; then
             # Build in prod mode
             npm run build-prod  &&
 
-            node ./build-scripts/log.js "Restructuring for production, then pushing to prod..." 11 &&
+            node ./build-scripts/log.js "Restructuring for production, then pushing to prod..." 11
 
             # Restructure with /dist at root
-            git add * &&
-            git rm -r -f ./build-scripts &&
-            git rm -r -f ./data &&
-            git rm -r -f ./public &&
-            git rm -r -f ./scripts &&
-            git rm -r -f ./styles &&
-            git rm -r -f ./templates &&
-            git rm ./README.md &&
-            git rm ./package-lock.json &&
-            git rm ./package.json &&
-            git rm ./tsconfig.json &&
-            git add -f ./dist/* &&
-            git mv ./dist/* . &&
-            git mv README.prod.md README.md &&
+            git add *
+            git rm -r -f ./build-scripts
+            git rm -r -f ./data
+            git rm -r -f ./public
+            git rm -r -f ./scripts
+            git rm -r -f ./styles
+            git rm -r -f ./templates
+            git rm ./README.md
+            git rm ./package-lock.json
+            git rm ./package.json
+            git rm ./tsconfig.json
+            git add -f ./dist/*
+            git mv ./dist/* .
+            git mv README.prod.md README.md
 
             # Push to prod
-            git commit -m "Auto-deploy" &&
-            git push origin prod -f &&
+            git commit -m "Auto-deploy"
+            git push origin prod -f
 
             # Return to main
-            git checkout main &&
+            git checkout main
             node ./build-scripts/log.js "Deploy successful" 12 g &&
             exit 1;
         else
@@ -53,9 +53,9 @@ if [ "$1" == "prod" ]; then
             exit 1;
         fi
 
-         node ./build-scripts/log.js "Deploy failed: Command failed" 12 r;
+        node ./build-scripts/log.js "Deploy failed: Command failed" 12 r;
     else
-         node ./build-scripts/log.js "Deploy failed: Missing commit message" 12 r;
+        node ./build-scripts/log.js "Deploy failed: Missing commit message" 12 r;
     fi
 
 # Push only
