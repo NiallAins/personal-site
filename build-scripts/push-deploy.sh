@@ -23,21 +23,28 @@ if [ "$1" == "prod" ]; then
             npm run build-prod;
 
             # Restructure with /dist at root
-            find . ! -name "NOTES.md" ! -name "README.prod.md" ! -name "dist" ! -path "dist/*" ! -path "node_modules/*" ! -path ".git/*" -delete
             mv ./dist/* .
-            rm dist
             mv README.prod.md README.md
+            rm -r ./build-scripts
+            rm -r ./data
+            rm -r ./public
+            rm -r ./scripts
+            rm -r ./styles
+            rm -r ./templates
+            rm ./package-lock.json
+            rm ./package.json
+            rm ./README.md
 
             # Push to prod
-            node ./build-scripts/log.js "Pushing to prod..." 11
-            git add *;
-            git add -f ./dist/*;
-            git commit -m "Auto-deploy";
-            git push origin prod -f &&
+            # node ./build-scripts/log.js "Pushing to prod..." 11
+            # git add *;
+            # git add -f ./dist/*;
+            # git commit -m "Auto-deploy";
+            # git push origin prod -f &&
 
             # Return to main
-            git checkout main &&
-            node ./build-scripts/log.js "Deploy successful" 12 g &&
+            # git checkout main &&
+            # node ./build-scripts/log.js "Deploy successful" 12 g &&
             exit 1;
         else
             node ./build-scripts/log.js "Deploy failed: Cancelled" 12 r &&
