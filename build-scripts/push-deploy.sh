@@ -12,7 +12,7 @@ if [ "$1" == "prod" ]; then
         read resp;
         if [ "$resp" = "y" ]; then
             node ./build-scripts/log.js "Pushing to main..." 11
-            # git push origin main &&
+            git push origin main &&
 
             # Copy to prod
             node ./build-scripts/log.js "Resetting prod to main..." 21
