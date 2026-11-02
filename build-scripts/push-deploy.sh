@@ -4,8 +4,8 @@
 if [ "$1" == "prod" ]; then
     if [ "$2" ]; then
         # Deploy to main
-        # git add .;
-        # git commit -m "$2";
+        git add .;
+        git commit -m "$2";
 
         # Confirm Deploy after commit outputs
         node ./build-scripts/log.js "Complete deploy? (y) " 10  &&
@@ -36,15 +36,15 @@ if [ "$1" == "prod" ]; then
             rm ./README.md &&
 
             # Push to prod
-            # node ./build-scripts/log.js "Pushing to prod..." 11
-            # git add *;
-            # git add -f ./dist/*;
-            # git commit -m "Auto-deploy";
-            # git push origin prod -f &&
+            node ./build-scripts/log.js "Pushing to prod..." 11
+            git add *;
+            git add -f ./dist/*;
+            git commit -m "Auto-deploy";
+            git push origin prod -f &&
 
             # Return to main
-            # git checkout main &&
-            # node ./build-scripts/log.js "Deploy successful" 12 g &&
+            git checkout main &&
+            node ./build-scripts/log.js "Deploy successful" 12 g &&
             exit 1;
         else
             node ./build-scripts/log.js "Deploy failed: Cancelled" 12 r &&
