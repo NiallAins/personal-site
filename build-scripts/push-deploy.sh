@@ -22,6 +22,12 @@ if [ "$1" == "prod" ]; then
             # Build in prod mode
             npm run build-prod;
 
+            # Restructure with /dist at root
+            find . ! -name "CNAME" ! -name "README.prod.md" ! -name "dist" ! -path "dist/*" -delete
+            mv ./dist/* .
+            rm dist
+            mv README.prod.md README.md
+
             # Push to prod
             node ./build-scripts/log.js "Pushing to prod..." 11
             git add *;
