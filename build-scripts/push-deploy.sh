@@ -23,17 +23,17 @@ if [ "$1" == "prod" ]; then
             npm run build-prod  &&
 
             # Restructure with /dist at root
-            mv ./dist/* . &&
-            mv README.prod.md README.md &&
-            rm -r ./build-scripts &&
-            rm -r ./data &&
-            rm -r ./public &&
-            rm -r ./scripts &&
-            rm -r ./styles &&
-            rm -r ./templates &&
-            rm ./package-lock.json &&
-            rm ./package.json &&
-            rm ./README.md &&
+            git mv ./dist/* . &&
+            git mv README.prod.md README.md &&
+            git rm -r ./build-scripts &&
+            git rm -r ./data &&
+            git rm -r ./public &&
+            git rm -r ./scripts &&
+            git rm -r ./styles &&
+            git rm -r ./templates &&
+            git rm ./package-lock.json &&
+            git rm ./package.json &&
+            git rm ./README.md &&
 
             # Push to prod
             node ./build-scripts/log.js "Pushing to prod..." 11
