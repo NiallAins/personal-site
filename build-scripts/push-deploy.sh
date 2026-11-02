@@ -22,7 +22,11 @@ if [ "$1" == "prod" ]; then
             # Build in prod mode
             npm run build-prod  &&
 
+            node ./build-scripts/log.js "Restructuring for production, then pushing to prod..." 11 &&
+
             # Restructure with /dist at root
+            git add *;
+            git add -f ./dist/*;
             git mv ./dist/* . &&
             git mv README.prod.md README.md &&
             git rm -r ./build-scripts &&
@@ -36,9 +40,6 @@ if [ "$1" == "prod" ]; then
             git rm ./README.md &&
 
             # Push to prod
-            node ./build-scripts/log.js "Pushing to prod..." 11
-            git add *;
-            git add -f ./dist/*;
             git commit -m "Auto-deploy";
             git push origin prod -f &&
 
