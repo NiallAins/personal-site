@@ -4,15 +4,15 @@
 if [ "$1" == "prod" ]; then
     if [ "$2" ]; then
         # Deploy to main
-        git add .;
-        git commit -m "$2";
+        # git add .;
+        # git commit -m "$2";
 
         # Confirm Deploy after commit outputs
         node ./build-scripts/log.js "Complete deploy? (y) " 10  &&
         read resp;
         if [ "$resp" = "y" ]; then
             node ./build-scripts/log.js "Pushing to main..." 11
-            git push origin main &&
+            # git push origin main &&
 
             # Copy to prod
             node ./build-scripts/log.js "Resetting prod to main..." 21
@@ -20,20 +20,20 @@ if [ "$1" == "prod" ]; then
             git reset origin/main --hard &&
 
             # Build in prod mode
-            npm run build-prod;
+            npm run build-prod  &&
 
             # Restructure with /dist at root
-            mv ./dist/* .
-            mv README.prod.md README.md
-            rm -r ./build-scripts
-            rm -r ./data
-            rm -r ./public
-            rm -r ./scripts
-            rm -r ./styles
-            rm -r ./templates
-            rm ./package-lock.json
-            rm ./package.json
-            rm ./README.md
+            mv ./dist/* . &&
+            mv README.prod.md README.md &&
+            rm -r ./build-scripts &&
+            rm -r ./data &&
+            rm -r ./public &&
+            rm -r ./scripts &&
+            rm -r ./styles &&
+            rm -r ./templates &&
+            rm ./package-lock.json &&
+            rm ./package.json &&
+            rm ./README.md &&
 
             # Push to prod
             # node ./build-scripts/log.js "Pushing to prod..." 11
