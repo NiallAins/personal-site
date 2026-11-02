@@ -25,22 +25,23 @@ if [ "$1" == "prod" ]; then
             node ./build-scripts/log.js "Restructuring for production, then pushing to prod..." 11 &&
 
             # Restructure with /dist at root
-            git add *;
-            git add -f ./dist/*;
-            git mv ./dist/* . &&
-            git mv README.prod.md README.md &&
-            git rm -r ./build-scripts &&
-            git rm -r ./data &&
-            git rm -r ./public &&
-            git rm -r ./scripts &&
-            git rm -r ./styles &&
-            git rm -r ./templates &&
+            git add * &&
+            git rm -r -f ./build-scripts &&
+            git rm -r -f ./data &&
+            git rm -r -f ./public &&
+            git rm -r -f ./scripts &&
+            git rm -r -f ./styles &&
+            git rm -r -f ./templates &&
+            git rm ./README.md &&
             git rm ./package-lock.json &&
             git rm ./package.json &&
-            git rm ./README.md &&
+            git rm ./tsconfig.json &&
+            git add -f ./dist/* &&
+            git mv ./dist/* . &&
+            git mv README.prod.md README.md &&
 
             # Push to prod
-            git commit -m "Auto-deploy";
+            git commit -m "Auto-deploy" &&
             git push origin prod -f &&
 
             # Return to main

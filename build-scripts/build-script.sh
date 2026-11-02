@@ -6,6 +6,7 @@ if [ "$1" == "prod" ]; then
 
     node ./build-scripts/log.js "Building production scripts..."
     webpack --config ./build-scripts/webpack.config.js --mode production
+    rm ./dist/script.js.LICENSE.txt;
 elif [ "$1" == "watch" ]; then
     node ./build-scripts/log.js "Building scripts..."
     webpack --config ./build-scripts/webpack.config.js --mode development
