@@ -1,4 +1,4 @@
-# Personal Site - niall.design
+# Personal Site - nialldesign.dev
 
 This project is my personal portfolio web site.\
 It is curently running live at [niall.design](http://nialldesign.dev) or [niallains.github.io/personal-site/dist](`http://niallains.github.io/personal-site/dist`).

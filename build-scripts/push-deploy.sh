@@ -23,7 +23,7 @@ if [ "$1" == "prod" ]; then
             npm run build-prod;
 
             # Restructure with /dist at root
-            find . ! -name "CNAME" ! -name "README.prod.md" ! -name "dist" ! -path "dist/*" -delete
+            find . ! -name "NOTES.md" ! -name "README.prod.md" ! -name "dist" ! -path "dist/*" ! -path "node_modules/*" ! -path ".git/*" -delete
             mv ./dist/* .
             rm dist
             mv README.prod.md README.md
