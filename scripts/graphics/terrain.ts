@@ -49,7 +49,7 @@ const
     LAND_PRE_RENDER_DEPTH_ISO = 4,
     CAN_SEA_PRE_RENDER = new Canvas(),
     CAN_LAND_PRE_RENDER = new Canvas(),
-    BOAT = new Boat();
+    BOAT = new Boat(0, 0, true);
 
 let
     overshootMinSea: number,
@@ -193,15 +193,9 @@ export function render(can: Canvas, fades: number[], t: number, dT: number, isVi
             boatDrawn = false,
             [boatScrX, boatScrY] = ptToScreen(BOAT.x, BOAT.y);
         boatScrY += window.scrollY;
-
+        const BOAT_RENDER_DEPTH = boatScrY + (Y_UNIT * 2);
         BOAT.step(
             dT,
-            [
-                boatScrY < window.innerHeight * 0.8,
-                boatScrX > window.innerWidth,
-                boatScrY > document.body.clientHeight,
-                boatScrX < 0
-            ],
             (x: number, y: number): [number, boolean] => {
                 const
                     SCR_P = ptToScreen(x, y),
@@ -213,7 +207,18 @@ export function render(can: Canvas, fades: number[], t: number, dT: number, isVi
             }
         );
 
-        const BOAT_RENDER_DEPTH = boatScrY + (ISO_SCALE * 6);
+
+        // Keep boat in viewport, keep viewport on boat
+        if (boatScrY < window.innerHeight * 0.8) {
+            [BOAT.x, BOAT.y] = ptFromScreen(boatScrX, window.innerHeight * 0.8, true);
+        } else if (boatScrX > window.innerWidth - X_UNIT) {
+            [BOAT.x, BOAT.y] = ptFromScreen(boatScrX, window.innerWidth - X_UNIT, true);
+        }
+        if (boatScrX > window.innerWidth - X_UNIT) {
+            [BOAT.x, BOAT.y] = ptFromScreen(window.innerWidth - X_UNIT, boatScrY, true);
+        } else if (boatScrX < X_UNIT) {
+            [BOAT.x, BOAT.y] = ptFromScreen(X_UNIT, boatScrY, true);
+        }
         if (BOAT.hasControl) {
             const
                 SY = window.scrollY,
@@ -256,8 +261,14 @@ export function render(can: Canvas, fades: number[], t: number, dT: number, isVi
             // Terrain
             if (y >= MIN_Y_LAND && y <= MAX_Y_SEA) {
                 if (!boatDrawn && y > BOAT_RENDER_DEPTH) {
-                   renderBoat(can, boatScrX, boatScrY);
-                   boatDrawn = true;
+                    const HORZ_Z = getHorizonIsoZ(boatScrY)
+                    BOAT.render(
+                        can,
+                        boatScrX,
+                        boatScrY - ((BOAT.z - HORZ_Z) * Z_UNIT),
+                        HORZ_Z * Z_UNIT
+                    );
+                    boatDrawn = true;
                 }
 
                 const HORIZON_ISO_Z = getHorizonIsoZOfRow(offsetRow, y);
@@ -523,41 +534,6 @@ function renderCublet(
         );
         cube.draw(C);
     C.restore();
-}
-
-
-function renderBoat(can: Canvas, boatScrX: number, boatScrY: number) {
-    const
-        C = can.CTX,
-        BOAT_Y = boatScrY + getHorizonIsoZ(boatScrY) - (BOAT.z * Z_UNIT);
-
-    // renderSingleIso(
-    //     C,
-    //     BOAT.x,
-    //     BOAT.y,
-    //     BOAT.z, BOAT.z, ['red']
-    // );
-
-    // Shadow
-    if (BOAT.alti) {
-        const H = Math.max(0, Math.min(1, BOAT.alti / 7));
-        C.save();
-            C.fillStyle = 'black'; 
-            C.beginPath();
-                C.translate(boatScrX, BOAT_Y + ((BOAT.alti - 0.75) * Z_UNIT));
-                C.scale(1, 0.5)
-                C.filter = `blur(${ 2 + (18 * H) }px)`;
-                C.globalAlpha = 0.5 - (0.4 * H);
-                C.arc(0, 0, ISO_SCALE * (2.5 + (2 * H)), 0, Math.PI * 2);
-            C.fill();
-        C.restore();
-    }
-
-    can.drawFromCanvas(
-        BOAT.CAN,
-        boatScrX - Boat.CAN_CENTER_X,
-        BOAT_Y - Boat.CAN_CENTER_Y
-    );
 }
 
 

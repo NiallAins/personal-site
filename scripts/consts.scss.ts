@@ -86,6 +86,7 @@ export const
     DURATION_PAGE_OPEN: number = 1000,
     DURATION_MAIN_CLOSE_DELAY: number = 1000,
     DURATION_PROJECT_OPEN_DELAY: number = 250,
+    CLASS_BOAT_ACTIVE: string = 'canvas__boat--active',
     CLASS_PAGE_POST_FOUC: string = 'page--post-fouc',
     CLASS_PAGE_INACTIVE: string = 'page--inactive',
     CLASS_PAGE_CLOSING: string = 'page--closing',

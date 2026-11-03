@@ -1,9 +1,11 @@
 import * as Three from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { _DEBUG_log } from "../_debug";
-import { KEYS, toggleInputListeners, toggleKeyLock } from "./Inputs";
-import { renderSingleIso, ptFromScreen, ptToScreen } from "./terrain";
+import { KEYS, toggleKeyLock } from "./Inputs";
+import { renderSingleIso, ptToScreen } from "./terrain";
 import { Splash } from './Splash';
+import { CAN_QUALITY, CLASS_BOAT_ACTIVE, EL_BOAT, ISO_SCALE_LG, Z_UNIT_SCALE } from '../consts';
+import { Canvas } from './Canvas';
 
 enum eSurface {
     Sea,
@@ -24,7 +26,8 @@ export class Boat {
     //
 
     // Model
-    protected static readonly CAN_W = 128;
+    protected static readonly CAN_W = 128 * CAN_QUALITY;
+    protected static readonly BUTTON_SCALE = 1.25;
     protected static readonly MODEL_SRC: string = './assets/boat.glb';
     protected static readonly MODEL_ROT_X: number = 35.264 * (Math.PI / 180);
     protected static readonly MODEL_ROT_Y: number = 0.25 * Math.PI;
@@ -34,7 +37,7 @@ export class Boat {
     // PLanar movement
     protected static DDP = 0.03;
     protected static DDP_REV = Boat.DDP * -0.2;
-    protected static DP_MAX2 = (1)**2;
+    protected static DP_MAX2 = (0.8)**2;
 
     // Vertical movement
     protected static DP_JUMP = 1;
@@ -89,6 +92,9 @@ export class Boat {
     private flipXActive = false;
     private flipYActive = false;
     private model: Three.Group | null = null;
+    private wakeThrottle = 0;
+    private allowControl = false;
+    private horZ = 0;
     
 
     //
@@ -121,14 +127,18 @@ export class Boat {
         return this.p.z;
     }
 
-    constructor(x: number = 0, y: number = 0) {
+    constructor(x: number, y: number, allowControl: boolean) {
         this.p.x = x;
         this.p.y = y;
+        this.allowControl = allowControl;
 
-
-        //
-        // Create scene
-        //
+        if (allowControl) {
+            EL_BOAT.addEventListener('click', this.toggleControls.bind(this, true));
+            EL_BOAT.style.width = (Boat.CAN_W * Boat.BUTTON_SCALE) + 'px';
+            EL_BOAT.style.height = (Boat.CAN_W * Boat.BUTTON_SCALE) + 'px';
+            window.addEventListener('mousewheel', this.toggleControls.bind(this, false));
+            window.addEventListener('keydown', e => e.code === 'Escape' ? this.toggleControls.bind(this, false) : null);
+        }
     
         const
             SCENE = new Three.Scene(),
@@ -151,8 +161,6 @@ export class Boat {
         CTX.setAnimationLoop(() => CTX.render(SCENE, CAM));
 
         this._loadModel(SCENE);
-
-        this.toggleControls(true);
     }
 
     
@@ -162,30 +170,14 @@ export class Boat {
 
     public step(
         dT: number,
-        outOfBounds: [boolean, boolean, boolean, boolean],
         getZ: (x: number, y: number) => [number, boolean]
     ) {
-        if (outOfBounds[0]) {
-            this.fP.x += 0.35;
-            this.fP.y += 0.35;
-        }
-        if (outOfBounds[2]) {
-            this.fP.x -= 0.35;
-            this.fP.y -= 0.35;
-        }
-        if (outOfBounds[1]) {
-            this.fP.x -= 0.35;
-            this.fP.y += 0.35;
-        }
-        if (outOfBounds[3]) {
-            this.fP.x += 0.35;
-            this.fP.y -= 0.35;
-        }
-
         this._setPositionalForces(dT);
         this._setAngularForces();
+
         this._applyForces(dT);
         this._applySurface(getZ);
+
         this.fP = new Vec();
         this.fA = new Vec();
 
@@ -195,14 +187,70 @@ export class Boat {
             this.model.rotation.y = Boat.MODEL_ROT_Y;
 
             if (this.surface === eSurface.Air) {
-                this.model.rotateOnAxis(new Three.Vector3(1, 0, 0), this.a.x);
-                this.model.rotateOnAxis(new Three.Vector3(0, 0, 1), this.a.y);
                 this.model.rotateOnAxis(new Three.Vector3(0, 1, 0), this.a.z * -1);
+                this.model.rotateOnAxis(new Three.Vector3(0, 0, 1), this.a.x);
+                this.model.rotateOnAxis(new Three.Vector3(1, 0, 0), this.a.y);
             } else {
                 this.model.rotateOnAxis(new Three.Vector3(0, 1, 0), this.a.z * -1);
                 this.model.rotateOnWorldAxis(new Three.Vector3(0, 0, 1), this.gradAX * -1);
-                this.model.rotateOnWorldAxis(new Three.Vector3(1, 0, 0), this.gradAY);
+                this.model.rotateOnWorldAxis(new Three.Vector3(1, 0, 0), this.gradAY - Math.min(1.5, this.horZ / 200));
             }
+        }
+    }
+
+    public render(
+        can: Canvas,
+        sx: number,
+        sy: number,
+        horZ: number
+    ) {
+        const C = can.CTX;
+
+        this.horZ = horZ; 
+
+        // renderSingleIso(
+        //     C,
+        //     this.x,
+        //     this.y,
+        //     this.z - horzZ, this.z - horzZ,
+        //     ['red']
+        // );
+
+        // Wake
+        if (this.wakeThrottle === 0) {
+            if (this.dP.x + this.dP.y > 0.1) {
+                Splash.createSplash(sx, sy - window.scrollY);
+                this.wakeThrottle = 5;
+            }
+        } else {
+            this.wakeThrottle -= 1;
+        }
+
+        // Shadow
+        if (this.alti) {
+            const SIZE = Math.max(0, Math.min(1, this.alti / 7));
+            C.save();
+                C.fillStyle = 'black'; 
+                C.beginPath();
+                    C.translate(sx, sy + ((this.alti - 0.75) * Z_UNIT_SCALE));
+                    C.scale(1, 0.5)
+                    C.filter = `blur(${ 2 + (18 * SIZE) }px)`;
+                    C.globalAlpha = 0.5 - (0.4 * SIZE);
+                    C.arc(0, 0, ISO_SCALE_LG * (2.5 + (2 * SIZE)), 0, Math.PI * 2);
+                C.fill();
+            C.restore();
+        }
+
+        can.drawFromCanvas(
+            this.CAN,
+            sx - Boat.CAN_CENTER_X,
+            sy - Boat.CAN_CENTER_Y - (Boat.CAN_W * 0.125)
+        );
+
+        // Button
+        if (this.allowControl) {
+            EL_BOAT.style.left = (sx - (Boat.CAN_CENTER_X * Boat.BUTTON_SCALE)) + 'px';
+            EL_BOAT.style.top = (sy - (Boat.CAN_CENTER_Y * Boat.BUTTON_SCALE) - window.scrollY) + 'px';
         }
     }
 
@@ -218,14 +266,7 @@ export class Boat {
             ],
             state
         );
-        // toggleInputListeners(
-        //     [
-        //         'mousewheel',
-        //         'mousedown'
-        //     ],
-        //     { removeControls: () => this.toggleControls(false) },
-        //     state
-        // );
+        EL_BOAT.classList.toggle(CLASS_BOAT_ACTIVE, state);
     }
 
 
@@ -245,7 +286,7 @@ export class Boat {
 
         if (this.model) {
             const SCALE = 0.125;
-            this.model!.scale.set(SCALE, SCALE, SCALE);
+            this.model.scale.set(SCALE, SCALE, SCALE);
 
             scene.add(this.model!);
         }
@@ -314,14 +355,16 @@ export class Boat {
     }
 
     private _setPositionalForces(dT: number) {
-        // Accelerate
-        if (KEYS.ArrowUp.pressed || KEYS.ArrowDown.pressed) {
-          this._moveAccel(KEYS.ArrowDown.pressed);
-        }
-    
-        // Jump
-        if (KEYS.Space.down) {
-          this._moveJump();
+        if (this.hasControl) {
+            // Accelerate
+            if (KEYS.ArrowUp.pressed || KEYS.ArrowDown.pressed) {
+                this._moveAccel(KEYS.ArrowDown.pressed);
+            }
+        
+            // Jump
+            if (KEYS.Space.down) {
+                this._moveJump();
+            }
         }
 
         // Gravity
@@ -396,7 +439,6 @@ export class Boat {
         this.dP.add(this.fP);
         this.p.add(this.dP.scale(dT, true));
 
-    
         // Angular movement
         this.dA.add(this.fA);
         this.a.add(this.dA.scale(dT, true));
@@ -421,7 +463,7 @@ export class Boat {
             this.surface = ON_LAND ? eSurface.Land : eSurface.Sea;
         
             // Match gradient angle
-            const CHECK_DIS = 1.5;
+            const CHECK_DIS = 1;
             this.gradAX = Math.atan2(
                 getZ(this.p.x - CHECK_DIS, this.p.y)[0] -
                 getZ(this.p.x + CHECK_DIS, this.p.y)[0],

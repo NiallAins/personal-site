@@ -1,4 +1,4 @@
-import { tTopicData, ePageTag, ePages } from "../scripts/types";
+import { tTopicData, ePageTag } from "../scripts/types";
 
 export const PROJECT_DATA: tTopicData[] = [
     {
@@ -479,7 +479,7 @@ export const PROJECT_DATA: tTopicData[] = [
                     "I built this for my own use, as every other pace calculator on the internet is shite.",
                     "The app is designed to have maximum funtionality, with minimum elements."
                 ],
-                "linkLive": "https://niallains.github.io/running-pace-calculator",
+                "linkLive": "https://pacer.nialldesign.dev/",
                 "linkCode": "https://github.com/NiallAins/running-pace-calculator",
                 "linkDirect": true,
                 "tags": [

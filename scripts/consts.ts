@@ -52,7 +52,8 @@ export const
     EL_PROJECT_TAGS                = getEl('#project_tags'),
     EL_PROJECT_DESC                = getEl('#project_desc'),
     EL_PROJECT_LINK_LIVE           = getEl<HTMLAnchorElement>('#project_linkLive'),
-    EL_PROJECT_LINK_CODE           = getEl<HTMLAnchorElement>('#project_linkCode');
+    EL_PROJECT_LINK_CODE           = getEl<HTMLAnchorElement>('#project_linkCode'),
+    EL_BOAT                        = getEl<HTMLButtonElement>('#boat');
 
 
 //
