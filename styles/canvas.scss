@@ -27,6 +27,7 @@
             translate: 0 100lvh;
         }
     }
+
     &__boat {
         position: fixed;
         width: 100px;
@@ -35,11 +36,15 @@
         z-index: $z-focus-visible;
         border: 3px solid $c-text-l;
         opacity: 0;
-        transition: opacity $dur-lg $dur-lg;
-
+        transition: opacity $dur-lg;
+        
         &:hover,
         &:focus-visible {
             opacity: 0.75;
+        }
+
+        &:hover {
+            transition-delay: $dur-lg;
         }
 
         &.#{ $cl-boat-active } {

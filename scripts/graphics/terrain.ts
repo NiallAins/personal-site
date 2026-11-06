@@ -193,7 +193,7 @@ export function render(can: Canvas, fades: number[], t: number, dT: number, isVi
             boatDrawn = false,
             [boatScrX, boatScrY] = ptToScreen(BOAT.x, BOAT.y);
         boatScrY += window.scrollY;
-        const BOAT_RENDER_DEPTH = boatScrY + (Y_UNIT * 2);
+        const BOAT_RENDER_DEPTH = boatScrY + (Y_UNIT * 2.5);
         BOAT.step(
             dT,
             (x: number, y: number): [number, boolean] => {
@@ -206,7 +206,6 @@ export function render(can: Canvas, fades: number[], t: number, dT: number, isVi
                     : [LAND_Z, true]
             }
         );
-
 
         // Keep boat in viewport, keep viewport on boat
         if (boatScrY < window.innerHeight * 0.8) {
