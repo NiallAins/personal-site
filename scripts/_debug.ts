@@ -51,6 +51,10 @@ export function _DEBUG_logDt(dT: number) {
 }
 
 function _DEBUG_renderLog(isDt: boolean, ...strs: any[]) {
+    if (PROD) {
+        return;
+    }
+    
     if (!LOG.elDt.parentElement) {
         const EL_CONTAIN = document.createElement('div');
         document.body.appendChild(EL_CONTAIN);

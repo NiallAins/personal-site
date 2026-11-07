@@ -11,7 +11,6 @@ import { loadFont } from './util';
 import { init as initGraphics, setCanvasSize } from './graphics/main';
 import { init as initInputs } from './graphics/Inputs';
 import { initPages, resize as pageResize, openPageFromUrl } from './pages';
-import { _DEBUG_log } from './_debug';
 
 let
     resizeDebounce: number = 0,

@@ -25,7 +25,7 @@ import {
     labelDepressZ as LABEL_DEPRESS_Z
 } from "./main";
 import { Boat } from "./Boat";
-import { _DEBUG_log, _DEBUG_renderBaseIso } from "../_debug";
+import { _DEBUG_renderBaseIso } from "../_debug";
 
 
 //
@@ -193,7 +193,7 @@ export function render(can: Canvas, fades: number[], t: number, dT: number, isVi
             boatDrawn = false,
             [boatScrX, boatScrY] = ptToScreen(BOAT.x, BOAT.y);
         boatScrY += window.scrollY;
-        const BOAT_RENDER_DEPTH = boatScrY + (Y_UNIT * 2.5);
+        const BOAT_RENDER_DEPTH = boatScrY + (Y_UNIT * 3);
         BOAT.step(
             dT,
             (x: number, y: number): [number, boolean] => {
