@@ -4,8 +4,10 @@ import { _DEBUG_log } from "../_debug";
 import { KEYS, toggleKeyLock } from "./Inputs";
 import { renderSingleIso, ptToScreen } from "./terrain";
 import { Splash } from './Splash';
-import { CAN_QUALITY, CLASS_BOAT_ACTIVE, COLOR_TEXT_L, EL_BOAT, INV_45, ISO_SCALE_LG, Z_UNIT_SCALE } from '../consts';
+import { CAN_QUALITY, CLASS_BOAT_ACTIVE, COLOR_TEXT_L, DURATION_LG, EL_BOAT, INV_45, ISO_SCALE_LG, Z_UNIT_SCALE } from '../consts';
 import { Canvas } from './Canvas';
+import { zUnit as Z_UNIT } from './main';
+import { Cublet } from './Cublet';
 
 enum eSurface {
     Sea,
@@ -19,6 +21,50 @@ enum eRotation {
     Roll
 };
 
+class Vec {
+    public x: number;
+    public y: number;
+    public z: number;
+
+    constructor(x: number = 0, y: number = 0, z: number = 0) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    public scale(s: number | Vec, copy: boolean = false) {
+        let v = copy ? this.copy() : this;
+        if (typeof s === 'number') {
+            v.x *= s;
+            v.y *= s;
+            v.z *= s;
+        } else {
+            v.x *= s.x;
+            v.y *= s.y;
+            v.z *= s.z;
+        }
+        return v;
+    }
+
+    public add(s: number | Vec, copy: boolean = false) {
+        let v = copy ? this.copy() : this;
+        if (typeof s === 'number') {
+            v.x += s;
+            v.y += s;
+            v.z += s;
+        } else {
+            v.x += s.x;
+            v.y += s.y;
+            v.z += s.z;
+        }
+        return v;
+    }
+
+    public copy(): Vec {
+        return new Vec(this.x, this.y, this.z);
+    }
+}
+
 export class Boat {
 
     //
@@ -31,13 +77,14 @@ export class Boat {
     protected static readonly MODEL_SRC: string = './assets/boat.glb';
     protected static readonly MODEL_ROT_X: number = 35.264 * (Math.PI / 180);
     protected static readonly MODEL_ROT_Y: number = 0.25 * Math.PI;
+    protected static readonly COLLECT_DIST2: number = 5 ** 2;
     public static readonly CAN_CENTER_X = Boat.CAN_W * 0.5;
     public static readonly CAN_CENTER_Y = Boat.CAN_CENTER_X + (Boat.CAN_W * 0.125);
 
     // Planar movement
     protected static DDP = 0.035;
     protected static DDP_REV = Boat.DDP * -0.2;
-    protected static DP_MAX2 = (0.7)**2;
+    protected static DP_MAX2 = (0.7) ** 2;
 
     // Vertical movement
     protected static DP_JUMP = 1;
@@ -72,17 +119,19 @@ export class Boat {
         [eSurface.Land]: -0.3,
         [eSurface.Air]: 0
     };
+    protected static CRASH_TOLERANCE = 0.15;
 
 
     //
     // Private properties
     //
 
-    private p  = new Vec(0, 0, 0);
+    private initP = new Vec(0, 0, 0);
+    private p = new Vec(0, 0, 0);
     private alti = 0;
     private bounds: [number, number, number, number] = [0, 0, 0, 0];
     private dP = new Vec(0, 0, 0);
-    private a  = new Vec(0, 0, 0);
+    private a = new Vec(0, 0, 0);
     private dA = new Vec(0, 0, 0);
     private fP = new Vec(0, 0, 0);
     private fA = new Vec(0, 0, 0);
@@ -94,10 +143,12 @@ export class Boat {
     private model: Three.Group | null = null;
     private wakeThrottle = 0;
     private allowControl = false;
+    private crashFade = 0;
+    private winState = false;
     private readonly CAN: HTMLCanvasElement;
     private readonly GUI = {
         fade: 0,
-        timer: 0,
+        timer: 1,
         controlsComplete: false,
         controls: {
             left: 1,
@@ -132,23 +183,29 @@ export class Boat {
         this.allowControl = allowControl;
 
         if (allowControl) {
-            EL_BOAT.addEventListener('click', this.toggleControls.bind(this, true));
             EL_BOAT.style.width = (Boat.CAN_W * Boat.BUTTON_SCALE) + 'px';
             EL_BOAT.style.height = (Boat.CAN_W * Boat.BUTTON_SCALE) + 'px';
+            EL_BOAT.addEventListener('click', () => {
+                this.toggleControls(true);
+                if (!this.GUI.fade) {
+                    this.GUI.fade = 0.01;
+                }
+            });
             window.addEventListener('mousewheel', this.toggleControls.bind(this, false));
             window.addEventListener('keydown', e => e.code === 'Escape' ? this.toggleControls.bind(this, false) : null);
+            window.addEventListener('keydown', e => e.code === 'Tab' ? this.toggleControls.bind(this, false) : null);
         }
-    
+
         const
             SCENE = new Three.Scene(),
             CTX = new Three.WebGLRenderer(),
             LIGHT = new Three.DirectionalLight(0xffffff, 2),
             CAM = new Three.OrthographicCamera(
-                -1,    1,
-                 1,   -1,
-                 1, 2000
+                -1, 1,
+                1, -1,
+                1, 2000
             );
-    
+
         CTX.setSize(Boat.CAN_W, Boat.CAN_W);
         CTX.setClearColor(0x00ff00, 0);
         this.CAN = CTX.domElement;
@@ -162,16 +219,17 @@ export class Boat {
         this._loadModel(SCENE);
     }
 
-    
+
     //
     // Public methods
     //
 
     public setPosition(x: number, y: number, ...bounds: [number, number, number, number]) {
-        this.p.x = x;
-        this.p.y = y;
+        this.initP.x = x;
+        this.initP.y = y;
         this.bounds = bounds;
-        console.log(bounds);
+
+        this.reset();
     }
 
     public step(
@@ -195,11 +253,13 @@ export class Boat {
         } else if (this.GUI.fade < 0 && this.GUI.fade > -1) {
             this.GUI.fade -= FADE;
         }
-        if (this.hasControl) {
+        if (this.GUI.fade) {
             if (this.GUI.controlsComplete) {
                 this.GUI.timer -= 0.001 * dT;
                 if (this.GUI.timer <= 0) {
-                    this.toggleControls(false);
+                    this.crashFade -= 0.01;
+                    this.hasControl = false;
+                    this.GUI.timer = 0;
                 }
             } else {
                 let c: keyof typeof this.GUI.controls;
@@ -208,10 +268,37 @@ export class Boat {
                         this.GUI.controls[c] -= FADE;
                     }
                 }
+                if (Object.entries(this.GUI.controls).every(([c, v]) => v <= 0 || c === 'down')) {
+                    this.GUI.controlsComplete = true;
+                    this.GUI.fade = 0.01;
+                    this.GUI.timer = 1;
+                }
             }
         }
 
-        _DEBUG_log(this.p.x + this.p.y, this.p.x - this.p.y);
+        if (this.crashFade < 1) {
+            this.crashFade -= FADE * 0.1;
+            if (this.crashFade <= 0) {
+                this.reset();
+            }
+        }
+
+        // Dragging cublets
+        if (this.alti < 2) {
+            Cublet.CUBLETS
+                .filter(c => !c.caught)
+                .forEach(c => {
+                    if (((this.p.x - c.isoX) ** 2) + ((this.p.y - c.isoY) ** 2) < Boat.COLLECT_DIST2) {
+                        c.caught = true;
+                    }
+                });
+            if (Cublet.CUBLETS.every(c => c.caught)) {
+                this.winState = true;
+            }
+        }
+        Cublet.CUBLETS
+            .filter(c => c.caught)
+            .forEach(c => c.hideFade += FADE);
     }
 
     public render(
@@ -228,7 +315,7 @@ export class Boat {
             this.model.rotation.z = 0;
             this.model.rotation.y = Boat.MODEL_ROT_Y;
 
-            if (this.surface === eSurface.Air) {
+            if (this.surface === eSurface.Air || this.crashFade < 1) {
                 this.model.rotateOnAxis(new Three.Vector3(0, 1, 0), this.a.z * -1);
                 this.model.rotateOnAxis(new Three.Vector3(0, 0, 1), this.a.x);
                 this.model.rotateOnAxis(new Three.Vector3(1, 0, 0), this.a.y);
@@ -242,7 +329,7 @@ export class Boat {
 
         // Wake
         if (this.wakeThrottle === 0) {
-            if (this.dP.x + this.dP.y > 0) {
+            if (Math.abs(this.dP.x) + Math.abs(this.dP.y) > 0.1) {
                 Splash.createSplash(sx, sy - window.scrollY);
                 this.wakeThrottle = 5;
             }
@@ -251,77 +338,91 @@ export class Boat {
         }
 
         // Shadow
-        if (this.alti) {
+        if (this.alti > 0) {
             const SIZE = Math.max(0, Math.min(1, this.alti / 7));
             C.save();
-                C.fillStyle = 'black'; 
-                C.beginPath();
-                    C.translate(sx, sy + ((this.alti - 0.75) * Z_UNIT_SCALE));
-                    C.scale(1, 0.5)
-                    C.filter = `blur(${ 2 + (18 * SIZE) }px)`;
-                    C.globalAlpha = 0.5 - (0.4 * SIZE);
-                    C.arc(0, 0, ISO_SCALE_LG * (1.5 + (2.5 * SIZE)), 0, Math.PI * 2);
-                C.fill();
+            C.fillStyle = 'black';
+            C.beginPath();
+            C.translate(sx, sy + ((this.alti - 0.75) * Z_UNIT));
+            C.scale(1, 0.5);
+            C.filter = `blur(${2 + (18 * SIZE)}px)`;
+            C.globalAlpha = 0.5 - (0.4 * SIZE);
+            C.arc(0, 0, ISO_SCALE_LG * (1.5 + (2.5 * SIZE)), 0, Math.PI * 2);
+            C.fill();
             C.restore();
         }
 
+        // Dragging cublets
+        Cublet.CUBLETS
+            .filter(c => c.caught && c.hideFade && c.hideFade < 1)
+            .forEach(c => {
+                const
+                    DIST_X = sx - c.x,
+                    DIST_Y = sy - c.y;
+
+                c.x += DIST_X * c.hideFade;
+                c.y += DIST_Y * c.hideFade;
+            });
+
         // Draw to canvas
+        can.CTX.globalAlpha = this.crashFade;
         can.drawFromCanvas(
             this.CAN,
             sx - Boat.CAN_CENTER_X,
-            sy - Boat.CAN_CENTER_Y
+            sy - Boat.CAN_CENTER_Y + ((1 - this.crashFade) * Boat.CAN_CENTER_Y * 1.5)
         );
+        can.CTX.globalAlpha = 1;
 
-        if (this.hasControl) {
+        const FADE = Math.max(0, (this.GUI.fade >= 0 ? this.GUI.fade : 1 + this.GUI.fade) * 0.5);
+        if (FADE) {
             const
                 KEY_W = 18,
                 KEY_S = 4;
-    
-            C.save();
-                C.translate(sx + KEY_W*3, sy - KEY_W*2);
-                
-                const FADE = 0.5 * Math.abs(this.GUI.fade);
-                if (this.GUI.controlsComplete) {
-                    C.globalAlpha =FADE;
-                    C.strokeStyle = COLOR_TEXT_L;
-                    C.lineWidth = KEY_W * 0.5;
-                    C.beginPath();
-                        C.arc(
-                            KEY_W, KEY_W * -3,
-                            KEY_W * 1.5,
-                            (Math.PI * -0.5) + (Math.PI * 2 * this.GUI.timer),
-                            Math.PI * -0.5,
-                            true
-                        );
-                    C.stroke();
-                } else {
-                    C.fillStyle = COLOR_TEXT_L;
 
-                    if (this.GUI.controls.space > 0) {
-                        C.globalAlpha = FADE * this.GUI.controls.space;
-                        C.fillRect(0, 0, 4*KEY_W + 3*KEY_S, KEY_W);
-                    }
-                    
-                    C.translate(KEY_W + KEY_S, -1 * (KEY_W + KEY_S*2));
-                    if (this.GUI.controls.left > 0) {
-                        C.globalAlpha = FADE * this.GUI.controls.left;
-                        C.fillRect(0, 0, KEY_W, KEY_W);
-                    }
-                    if (this.GUI.controls.down > 0) {
-                        C.globalAlpha = FADE * this.GUI.controls.down;
-                        C.fillRect(KEY_W + KEY_S, 0, KEY_W, KEY_W);
-                    }
-                    if (this.GUI.controls.right > 0) {
-                        C.globalAlpha = FADE * this.GUI.controls.right;
-                        C.fillRect((KEY_W + KEY_S) * 2, 0, KEY_W, KEY_W);
-                    }
-                    
-                    C.translate(KEY_W + KEY_S, -1 * (KEY_W + KEY_S));
-                    if (this.GUI.controls.up > 0) {
-                        C.globalAlpha = FADE * this.GUI.controls.up;
-                        C.fillRect(0, 0, KEY_W, KEY_W);
-                    }
+            C.save();
+            C.translate(sx + KEY_W * 3, sy - KEY_W * 2);
+
+            if (this.GUI.controlsComplete) {
+                C.globalAlpha = FADE;
+                C.strokeStyle = COLOR_TEXT_L;
+                C.lineWidth = KEY_W * 0.5;
+                C.beginPath();
+                C.arc(
+                    KEY_W, KEY_W * -3,
+                    KEY_W * 1.5,
+                    (Math.PI * -0.5) + (Math.PI * 2 * this.GUI.timer),
+                    Math.PI * -0.5,
+                    true
+                );
+                C.stroke();
+            } else {
+                C.fillStyle = COLOR_TEXT_L;
+
+                if (this.GUI.controls.space > 0) {
+                    C.globalAlpha = FADE * this.GUI.controls.space;
+                    C.fillRect(0, 0, 4 * KEY_W + 3 * KEY_S, KEY_W);
                 }
+
+                C.translate(KEY_W + KEY_S, -1 * (KEY_W + KEY_S * 2));
+                if (this.GUI.controls.left > 0) {
+                    C.globalAlpha = FADE * this.GUI.controls.left;
+                    C.fillRect(0, 0, KEY_W, KEY_W);
+                }
+                if (this.GUI.controls.down > 0) {
+                    C.globalAlpha = FADE * this.GUI.controls.down;
+                    C.fillRect(KEY_W + KEY_S, 0, KEY_W, KEY_W);
+                }
+                if (this.GUI.controls.right > 0) {
+                    C.globalAlpha = FADE * this.GUI.controls.right;
+                    C.fillRect((KEY_W + KEY_S) * 2, 0, KEY_W, KEY_W);
+                }
+
+                C.translate(KEY_W + KEY_S, -1 * (KEY_W + KEY_S));
+                if (this.GUI.controls.up > 0) {
+                    C.globalAlpha = FADE * this.GUI.controls.up;
+                    C.fillRect(0, 0, KEY_W, KEY_W);
+                }
+            }
             C.restore();
         }
 
@@ -331,13 +432,13 @@ export class Boat {
             EL_BOAT.style.top = (sy - (Boat.CAN_CENTER_Y * Boat.BUTTON_SCALE) - window.scrollY) + 'px';
         }
 
-        renderSingleIso(
-            C,
-            this.x,
-            this.y,
-            this.z, this.z,
-            ['#ff000066']
-        );
+        // renderSingleIso(
+        //     C,
+        //     this.x,
+        //     this.y,
+        //     this.z, this.z,
+        //     ['#ff000066']
+        // );
     }
 
     public toggleControls(state: boolean) {
@@ -353,12 +454,6 @@ export class Boat {
             state
         );
         EL_BOAT.classList.toggle(CLASS_BOAT_ACTIVE, state);
-        if (state) {
-            this.GUI.fade = 0.11;
-            this.GUI.timer = 1;
-        } else {
-            this.GUI.fade = -0.99;
-        }
     }
 
 
@@ -384,8 +479,21 @@ export class Boat {
         }
     }
 
-    private _renderModel = () => {}
-    
+    private _renderModel = () => { }
+
+    private reset() {
+        this.a = new Vec(0, 0, 0);
+        this.p = this.initP.copy();
+        this.GUI.fade = 0;
+        this.GUI.timer = 1;
+        Cublet.CUBLETS.forEach(c => {
+            c.hideFade = 0;
+            c.caught = false;
+        });
+        this.toggleControls(false);
+        setTimeout(() => this.crashFade = 1);
+    }
+
     // Z position
     private _moveJump(dT: number) {
         if (this.surface !== eSurface.Air) {
@@ -397,7 +505,7 @@ export class Boat {
     private _moveAccel(reverse: boolean) {
         if (
             this.surface !== eSurface.Air &&
-            this.dP.x** 2 + this.dP.y**2 <= Boat.DP_MAX2
+            this.dP.x ** 2 + this.dP.y ** 2 <= Boat.DP_MAX2
         ) {
             const M = reverse ? Boat.DDP_REV : Boat.DDP;
             this.fP.x += Math.cos(this.a.z) * M;
@@ -454,11 +562,11 @@ export class Boat {
             if (KEYS.ArrowUp.pressed) {
                 this._setShowControls('up');
                 this._moveAccel(false);
-            } else  if (KEYS.ArrowDown.pressed) {
+            } else if (KEYS.ArrowDown.pressed) {
                 this._setShowControls('down');
                 this._moveAccel(true);
             }
-        
+
             // Jump
             if (KEYS.Space.down) {
                 this._setShowControls('space');
@@ -471,7 +579,7 @@ export class Boat {
             this.fP.z += Boat.GRAV;
         }
     }
-    
+
     private _setAngularForces() {
         if (this.hasControl) {
             // Z ground rotate
@@ -528,9 +636,9 @@ export class Boat {
         }
 
         // Friction
-        this.fA.add(this.dA.scale(Boat.FRIC_A[this.surface], true));    
+        this.fA.add(this.dA.scale(Boat.FRIC_A[this.surface], true));
     }
-    
+
     private _applyForces(dT: number) {
         // Positional movement
         this.dP.add(this.fP.scale(dT, true));
@@ -556,7 +664,7 @@ export class Boat {
         this.dA.add(this.fA.scale(dT, true));
         this.a.add(this.dA.scale(dT, true));
     }
-    
+
     private _applySurface(getZ: (x: number, y: number) => [number, boolean]) {
         const [
             GROUND_Z,
@@ -579,12 +687,11 @@ export class Boat {
 
             // Jump end
             if (this.alti <= 0 && this.dP.z < 0) {
+                this.alti = 0;
                 this.surface = eSurface.Sea;
                 this.dP.z = 0;
                 this.dA.x = 0;
                 this.dA.y = 0;
-                this.a.x = 0;
-                this.a.y = 0;
                 jumpEnd = true;
             }
         }
@@ -593,7 +700,7 @@ export class Boat {
         if (this.surface !== eSurface.Air) {
             // Move to contact
             this.p.z = GROUND_Z;
-        
+
             // Match gradient angle
             const
                 CHECK_DIS = 1.5,
@@ -628,7 +735,7 @@ export class Boat {
             this.p.x += OVER;
             this.p.y += OVER;
         }
-    
+
         // Right / Left
         if (this.p.x - this.p.y > this.bounds[1]) {
             const OVER = 0.5 * (this.bounds[1] - (this.p.x - this.p.y));
@@ -642,78 +749,61 @@ export class Boat {
     }
 
     private _onJumpStart() {
-        this.dA.y += Math.random()*0.05 - 0.025;
-        this.dA.z += Math.random()*0.05 - 0.025;
+        this.dA.y += Math.random() * 0.05 - 0.025;
+        this.dA.z += Math.random() * 0.05 - 0.025;
     }
-    
+
     private _onJumpEnd() {
         this.flipXActive = false;
         this.flipYActive = false;
-        
-        // Convert y axis half flips to z axis rotation
-        let ay = this.a.y % (Math.PI * 2);
-        ay = ay > Math.PI ? ay - (Math.PI * 2) : ay < -Math.PI ? ay + (Math.PI * 2) : ay;
-        if (Math.abs(ay) > Math.PI * 0.5) {
-            this.a.z += Math.PI;
+
+        const
+            FLIP = Math.abs(this.a.y / (Math.PI * 2)),
+            ROLL = Math.abs(this.a.x / (Math.PI * 2)),
+            FLIP_MOD = FLIP % 1,
+            ROLL_MOD = ROLL % 1;
+
+        if (
+            (
+                (FLIP_MOD > Boat.CRASH_TOLERANCE && FLIP_MOD < 1 - Boat.CRASH_TOLERANCE) ||
+                (ROLL_MOD > Boat.CRASH_TOLERANCE && ROLL_MOD < 1 - Boat.CRASH_TOLERANCE)
+            ) &&
+            !(
+                FLIP_MOD > 0.5 - Boat.CRASH_TOLERANCE && FLIP_MOD < 0.5 + Boat.CRASH_TOLERANCE &&
+                ROLL_MOD > 0.5 - Boat.CRASH_TOLERANCE && ROLL_MOD < 0.5 + Boat.CRASH_TOLERANCE
+            )
+        ) {
+            this.hasControl = false;
+            this.crashFade -= 0.01;
+            this.GUI.fade = -0.01;
+        } else {
+            if (FLIP >= 1 - Boat.CRASH_TOLERANCE) {
+                this.GUI.timer += 0.1;
+            }
+            if (ROLL >= 1 - Boat.CRASH_TOLERANCE) {
+                this.GUI.timer += 0.2;
+            }
+
+            // Convert y axis half flips to z axis rotation
+            let ay = this.a.y % (Math.PI * 2);
+            ay = ay > Math.PI ? ay - (Math.PI * 2) : ay < -Math.PI ? ay + (Math.PI * 2) : ay;
+            if (Math.abs(ay) > Math.PI * 0.5) {
+                this.a.z += Math.PI;
+                this.GUI.timer += 0.2;
+            }
+
+            this.GUI.timer = Math.min(1, this.GUI.timer);
+
+            this.a.x = 0;
+            this.a.y = 0;
         }
 
         Splash.createSplash(...ptToScreen(this.x, this.y), 1);
     }
 
     private _setShowControls(key: keyof typeof this.GUI.controls) {
-        if (!this.GUI.controlsComplete) {
-            if (this.GUI.controls[key] === 1) {
-                this.GUI.controls[key] -= 0.1;
-            }
-            if (Object.entries(this.GUI.controls).every(([c, v]) => v <= 0 || c === 'down')) {
-                this.GUI.controlsComplete = true;
-                this.GUI.fade = 0.1;
-                this.GUI.timer = 1;
-            }
+        if (!this.GUI.controlsComplete && this.GUI.controls[key] === 1) {
+            this.GUI.controls[key] -= 0.1;
         }
-    }
-}
-
-class Vec {
-    public x: number;
-    public y: number;
-    public z: number;
-
-    constructor(x: number = 0, y: number = 0, z: number = 0) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-  
-    public scale(s: number | Vec, copy: boolean = false) {
-        let v = copy ? this.copy() : this;
-        if (typeof s === 'number') {
-            v.x *= s;
-            v.y *= s;
-            v.z *= s;
-        } else {
-            v.x *= s.x;
-            v.y *= s.y;
-            v.z *= s.z;
-        }
-        return v;
-    }
-  
-    public add(s: number | Vec, copy: boolean = false) {
-        let v = copy ? this.copy() : this;
-        if (typeof s === 'number') {
-            v.x += s;
-            v.y += s;
-            v.z += s;
-        } else {
-            v.x += s.x;
-            v.y += s.y;
-            v.z += s.z;
-        }
-        return v;
-    }
-
-    public copy(): Vec {
-        return new Vec(this.x, this.y, this.z);
     }
 }

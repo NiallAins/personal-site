@@ -37,6 +37,7 @@
         border: 3px solid $c-text-l;
         opacity: 0;
         transition: opacity $dur-lg;
+        cursor: default;
         
         &:hover,
         &:focus-visible {
@@ -48,7 +49,9 @@
         }
 
         &.#{ $cl-boat-active } {
-            display: none;
+            pointer-events: none;
+            opacity: 0;
+            transition-delay: 0;
         }
     }
 }

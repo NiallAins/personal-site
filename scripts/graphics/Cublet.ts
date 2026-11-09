@@ -18,10 +18,12 @@ export class Cublet {
     public readonly RAND_Y: number;
     public x: number = 0;
     public y: number = 0;
-    public isoX?: number;
-    public isoY?: number;
+    public isoX: number = 0;
+    public isoY: number = 0;
     public inSea: boolean = false;
     public sectionI: number = 0;
+    public caught: boolean = false;
+    public hideFade: number = 0;
 
     constructor(sectionI: number, title: string) {
         this.sectionI = sectionI;

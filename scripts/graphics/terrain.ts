@@ -305,7 +305,7 @@ export function render(can: Canvas, fades: number[], t: number, dT: number, isVi
                         HORIZON_ISO_Z
                     );
 
-                    const CUBE = CUBLETS.find(c => c.isoX === ISO_PT[0] && c.isoY === ISO_PT[1]);
+                    const CUBE = CUBLETS.find(c => c.hideFade < 1 && c.isoX === ISO_PT[0] && c.isoY === ISO_PT[1]);
                     if (CUBE) {
                         C.strokeStyle = COLOR_TEXT_L;
                         C.fillStyle = COLOR_TEXT_L;
@@ -313,8 +313,14 @@ export function render(can: Canvas, fades: number[], t: number, dT: number, isVi
                         renderCublet(
                             can,
                             CUBE,
-                            SCR_PT[0],
-                            SCR_PT[1] - (MAX_Z * Z_UNIT) + window.scrollY,
+                            CUBE.caught
+                                ? CUBE.x
+                                : SCR_PT[0],
+                            (
+                                CUBE.caught
+                                    ? CUBE.y 
+                                    : SCR_PT[1] + window.scrollY
+                            ) - (MAX_Z * Z_UNIT),
                             fades[CUBE.sectionI]
                         );
                     };
@@ -536,10 +542,10 @@ function renderCublet(
     const C = can.CTX;
     
     C.save();
-        C.globalAlpha = Math.max(0, 1 - fade);
+        C.globalAlpha = Math.max(0, 1 - (fade + cube.hideFade));
         C.translate(
             x,
-            y - (ISO_SCALE * (cube.inSea ? 0.875 : 1.75)) - (Z_UNIT * 40 * Math.max(0, fade - cube.RAND_X * 0.5))
+            y -  (ISO_SCALE * (cube.inSea ? 0.875 : 1.75)) - (Z_UNIT * 40 * Math.max(0, fade - cube.RAND_X * 0.5))
         );
         cube.draw(C);
     C.restore();
