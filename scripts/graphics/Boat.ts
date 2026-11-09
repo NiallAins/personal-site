@@ -171,6 +171,7 @@ export class Boat {
         this.p.x = x;
         this.p.y = y;
         this.bounds = bounds;
+        console.log(bounds);
     }
 
     public step(

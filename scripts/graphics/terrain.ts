@@ -6,7 +6,9 @@ import {
     WIDTH_STROKE_OUTLINE, WIDTH_STROKE_UNDERLINE,
     HEIGHT_MAIN_SECTION, HEIGHT_MAIN_SECTION_GAP_VS, HEIGHT_MAIN_SECTION_GAP_VL,
     TERRAIN_TYPES, TERRAIN_COLOR_LAND, TERRAIN_SEA_NOISE,
-    WIDTH_PAGE_BG_MAX
+    WIDTH_PAGE_BG_MAX,
+    Y_UNIT_SCALE,
+    X_UNIT_SCALE
 } from "../consts";
 import { Canvas } from "./Canvas";
 import { LabelLetter } from "./Label";
@@ -140,17 +142,28 @@ export function resize(width: number, height: number, viewportSm: boolean, rePre
     });
 
     const
-        PAD = 4,
-        [X, Y] = ptFromScreen(window.innerWidth * 0.175, window.innerHeight * 0.875),
-        [LEFT, TOP] = ptFromScreen(0, window.innerHeight * 0.75),
-        [RIGHT, BOTTOM] = ptFromScreen(window.innerWidth, document.body.clientHeight);
+        PAD = 8,
+        PAD_X = PAD / X_UNIT_SCALE,
+        PAD_Y = PAD / Y_UNIT_SCALE,
+        [X, Y] = ptFromScreen(
+            window.innerWidth * 0.175,
+            window.innerHeight * 0.875
+        ),
+        [LEFT, TOP] = ptFromScreen(
+            0,
+            window.innerHeight * 0.75
+        ),
+        [RIGHT, BOTTOM] = ptFromScreen(
+            window.innerWidth,
+            terrainLayout_offsetY + (terrainLayout_sectionFullHeight * SECTION_TERRAIN.length)
+        );
     BOAT.setPosition(
         X, Y,
-        LEFT + TOP + PAD,
-        RIGHT - TOP - PAD,
-        RIGHT + BOTTOM - PAD,
-        LEFT - BOTTOM + PAD
-    )
+        LEFT + TOP + PAD_Y,
+        RIGHT - BOTTOM - PAD_X,
+        RIGHT + BOTTOM - PAD_Y,
+        LEFT - TOP + PAD_X
+    );
 }
 
 export function preRenderTerrain() {

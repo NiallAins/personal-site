@@ -16,7 +16,6 @@ import { PROJECT_DATA } from "../../data/projects";
 import { Ease } from "./Ease";
 import { _DEBUG_log, _DEBUG_logClear, _DEBUG_logDt } from "../_debug";
 import { eEaseState, eEaseType } from "../types";
-import { Boat } from "./Boat";
 import { step as inputsStep } from "./Inputs";
 
 
