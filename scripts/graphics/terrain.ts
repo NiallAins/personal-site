@@ -139,10 +139,18 @@ export function resize(width: number, height: number, viewportSm: boolean, rePre
             });
     });
 
-    [BOAT.x, BOAT.y] = ptFromScreen(
-        window.innerWidth * 0.175,
-        window.innerHeight * 0.875
-    );
+    const
+        PAD = 4,
+        [X, Y] = ptFromScreen(window.innerWidth * 0.175, window.innerHeight * 0.875),
+        [LEFT, TOP] = ptFromScreen(0, window.innerHeight * 0.75),
+        [RIGHT, BOTTOM] = ptFromScreen(window.innerWidth, document.body.clientHeight);
+    BOAT.setPosition(
+        X, Y,
+        LEFT + TOP + PAD,
+        RIGHT - TOP - PAD,
+        RIGHT + BOTTOM - PAD,
+        LEFT - BOTTOM + PAD
+    )
 }
 
 export function preRenderTerrain() {
@@ -193,7 +201,7 @@ export function render(can: Canvas, fades: number[], t: number, dT: number, isVi
             boatDrawn = false,
             [boatScrX, boatScrY] = ptToScreen(BOAT.x, BOAT.y);
         boatScrY += window.scrollY;
-        const BOAT_RENDER_DEPTH = boatScrY + (Y_UNIT * 3);
+        const BOAT_RENDER_DEPTH = boatScrY + (Y_UNIT * 1.75);
         BOAT.step(
             dT,
             (x: number, y: number): [number, boolean] => {
@@ -207,17 +215,6 @@ export function render(can: Canvas, fades: number[], t: number, dT: number, isVi
             }
         );
 
-        // Keep boat in viewport, keep viewport on boat
-        if (boatScrY < window.innerHeight * 0.8) {
-            [BOAT.x, BOAT.y] = ptFromScreen(boatScrX, window.innerHeight * 0.8, true);
-        } else if (boatScrX > window.innerWidth - X_UNIT) {
-            [BOAT.x, BOAT.y] = ptFromScreen(boatScrX, window.innerWidth - X_UNIT, true);
-        }
-        if (boatScrX > window.innerWidth - X_UNIT) {
-            [BOAT.x, BOAT.y] = ptFromScreen(window.innerWidth - X_UNIT, boatScrY, true);
-        } else if (boatScrX < X_UNIT) {
-            [BOAT.x, BOAT.y] = ptFromScreen(X_UNIT, boatScrY, true);
-        }
         if (BOAT.hasControl) {
             const
                 SY = window.scrollY,

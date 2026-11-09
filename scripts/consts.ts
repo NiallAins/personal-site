@@ -128,6 +128,7 @@ export const
     LABEL_Z_SCALE: number = 3,
     LABEL_DEPRESS_Z_SCALE: number = 1;
 
+
 //
 // Local storage tokens
 //
@@ -135,3 +136,11 @@ export const
 export const
     TOKEN_PREVIOUS_VISIT = 'hasPreviousVisit',
     TOKEN_PREVIOUS_VISIT_SET = 'true';
+
+
+//
+// Maths constants
+//
+
+export const
+    INV_45 = 1 / (Math.PI * 0.25);
