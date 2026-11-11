@@ -6,6 +6,7 @@
         "allowJs": true,
         "strict": true,
         "noImplicitReturns": true,
+        "outDir": "./dist"
     },
     "include": ["./scripts/**.ts" ]
 }

@@ -35,8 +35,7 @@ The base URLs for both development and production are set in `./build-scripts/ba
 ### Add a project
 
 - Add project details to `data/projects.ts`
-- Add project image to `thumbnails` as `project-title-kebab-case.png`
-- Run `npm run prep-images` to update production image sizes
+- Add project image to `public/thumbnails` as `project-title-kebab-case.png`
 
 
 ### Push changes
@@ -50,6 +49,6 @@ Commit and push all changes to non-production branch in GitHub:
 ### Deploy
 
 ```bash
-  npm run push-reploy "Commit message"
+  npm run push-deploy "Commit message"
 ```
 This will push all changes to non-production branch, then copy branch `main` to `prod`, build scripts and templates in production mode, then push to Git where changes will be reflected on GitHub Pages site.

@@ -43,7 +43,15 @@ export enum eEaseState {
     ForwardLoop = 2,
     ForwardReverse = 3,
     ForwardReverseLoop = 4
-}
+};
+
+export enum eKey {
+    ArrowUp = 'up',
+    ArrowDown = 'down',
+    ArrowLeft = 'left',
+    ArrowRight = 'right',
+    Space = 'space'
+};
 
 
 //

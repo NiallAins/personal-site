@@ -4,10 +4,11 @@ import { _DEBUG_log } from "../_debug";
 import { KEYS, toggleKeyLock } from "./Inputs";
 import { renderSingleIso, ptToScreen } from "./terrain";
 import { Splash } from './Splash';
-import { CAN_QUALITY, CLASS_BOAT_ACTIVE, COLOR_TEXT_L, DURATION_LG, EL_BOAT, INV_45, ISO_SCALE_LG, Z_UNIT_SCALE } from '../consts';
+import { CAN_QUALITY, CLASS_BOAT_ACTIVE, COLOR_TEXT_L, COLOR_TEXT_SHADOW, DURATION_LG, EL_BOAT, INV_45, ISO_SCALE_LG, Z_UNIT_SCALE } from '../consts';
 import { Canvas } from './Canvas';
 import { zUnit as Z_UNIT } from './main';
 import { Cublet } from './Cublet';
+import { eKey } from '../types';
 
 enum eSurface {
     Sea,
@@ -84,10 +85,12 @@ export class Boat {
     // Planar movement
     protected static DDP = 0.035;
     protected static DDP_REV = Boat.DDP * -0.2;
-    protected static DP_MAX2 = (0.7) ** 2;
+    protected static DP_MAX2 = 0.7 ** 2;
 
     // Vertical movement
-    protected static DP_JUMP = 1;
+    protected static DP_JUMP_SM = 1;
+    protected static DP_JUMP_LG = 1.5;
+    protected static DP_JUMP_RESET = 0.2;
     protected static GRAV = -0.08;
     protected static FRIC_P = {
         [eSurface.Sea]: 0.97,
@@ -110,8 +113,8 @@ export class Boat {
         [eSurface.Land]: 0.075,
         [eSurface.Air]: {
             [eRotation.Turn]: 0.3,
-            [eRotation.Flip]: 0.35,
-            [eRotation.Roll]: 0.4
+            [eRotation.Flip]: 0.38,
+            [eRotation.Roll]: 0.37
         }
     };
     protected static FRIC_A = {
@@ -151,11 +154,11 @@ export class Boat {
         timer: 1,
         controlsComplete: false,
         controls: {
-            left: 1,
-            right: 1,
-            down: 1,
-            up: 1,
-            space: 1
+            [eKey.ArrowLeft]: 1,
+            [eKey.ArrowRight]: 1,
+            [eKey.ArrowDown]: 1,
+            [eKey.ArrowUp]: 1,
+            [eKey.Space]: 1
         }
     };
 
@@ -246,14 +249,19 @@ export class Boat {
         this.fP = new Vec();
         this.fA = new Vec();
 
+        // GUI controls fade
+        if (!this.GUI.controlsComplete) {
+            this._updateShowControls();
+        }
+
         // GUI
         const FADE = 0.1 * dT;
         if (this.GUI.fade > 0 && this.GUI.fade < 1) {
-            this.GUI.fade += FADE;
+            this.GUI.fade += FADE * 0.2;
         } else if (this.GUI.fade < 0 && this.GUI.fade > -1) {
             this.GUI.fade -= FADE;
         }
-        if (this.GUI.fade) {
+        if (this.GUI.fade && !this.winState) {
             if (this.GUI.controlsComplete) {
                 this.GUI.timer -= 0.001 * dT;
                 if (this.GUI.timer <= 0) {
@@ -262,13 +270,13 @@ export class Boat {
                     this.GUI.timer = 0;
                 }
             } else {
-                let c: keyof typeof this.GUI.controls;
-                for (c in this.GUI.controls) {
-                    if (this.GUI.controls[c] < 1) {
-                        this.GUI.controls[c] -= FADE;
+                for (let c in this.GUI.controls) {
+                    if (this.GUI.controls[c as eKey] < 1) {
+                        this.GUI.controls[c as eKey] -= FADE;
                     }
                 }
-                if (Object.entries(this.GUI.controls).every(([c, v]) => v <= 0 || c === 'down')) {
+
+                if (Object.entries(this.GUI.controls).every(([c, v]) => v <= 0 || c === eKey.ArrowDown)) {
                     this.GUI.controlsComplete = true;
                     this.GUI.fade = 0.01;
                     this.GUI.timer = 1;
@@ -276,15 +284,16 @@ export class Boat {
             }
         }
 
+        // Crash fade
         if (this.crashFade < 1) {
-            this.crashFade -= FADE * 0.1;
+            this.crashFade -= FADE * (this.winState ? 0.25 : 0.1);
             if (this.crashFade <= 0) {
-                this.reset();
+                this.reset(this.winState);
             }
         }
 
         // Dragging cublets
-        if (this.alti < 2) {
+        if (!this.winState && this.alti < 2) {
             Cublet.CUBLETS
                 .filter(c => !c.caught)
                 .forEach(c => {
@@ -294,6 +303,9 @@ export class Boat {
                 });
             if (Cublet.CUBLETS.every(c => c.caught)) {
                 this.winState = true;
+                this.GUI.fade = -0.01;
+                this.dP.z = Boat.DP_JUMP_LG;
+                this.dA.x += 0.6;
             }
         }
         Cublet.CUBLETS
@@ -341,12 +353,12 @@ export class Boat {
         if (this.alti > 0) {
             const SIZE = Math.max(0, Math.min(1, this.alti / 7));
             C.save();
-            C.fillStyle = 'black';
+            C.fillStyle = COLOR_TEXT_SHADOW;
             C.beginPath();
             C.translate(sx, sy + ((this.alti - 0.75) * Z_UNIT));
             C.scale(1, 0.5);
             C.filter = `blur(${2 + (18 * SIZE)}px)`;
-            C.globalAlpha = 0.5 - (0.4 * SIZE);
+            C.globalAlpha = 1 - (0.4 * SIZE);
             C.arc(0, 0, ISO_SCALE_LG * (1.5 + (2.5 * SIZE)), 0, Math.PI * 2);
             C.fill();
             C.restore();
@@ -373,6 +385,7 @@ export class Boat {
         );
         can.CTX.globalAlpha = 1;
 
+        // Draw GUI controls / timer
         const FADE = Math.max(0, (this.GUI.fade >= 0 ? this.GUI.fade : 1 + this.GUI.fade) * 0.5);
         if (FADE) {
             const
@@ -409,11 +422,11 @@ export class Boat {
                     C.fillRect(0, 0, KEY_W, KEY_W);
                 }
                 if (this.GUI.controls.down > 0) {
-                    C.globalAlpha = FADE * this.GUI.controls.down;
+                    C.globalAlpha = FADE * this.GUI.controls.down
                     C.fillRect(KEY_W + KEY_S, 0, KEY_W, KEY_W);
                 }
                 if (this.GUI.controls.right > 0) {
-                    C.globalAlpha = FADE * this.GUI.controls.right;
+                    C.globalAlpha = FADE * this.GUI.controls.right
                     C.fillRect((KEY_W + KEY_S) * 2, 0, KEY_W, KEY_W);
                 }
 
@@ -445,11 +458,11 @@ export class Boat {
         this.hasControl = state;
         toggleKeyLock(
             [
-                'ArrowUp',
-                'ArrowDown',
-                'ArrowLeft',
-                'ArrowRight',
-                'Space'
+                eKey.ArrowUp,
+                eKey.ArrowDown,
+                eKey.ArrowLeft,
+                eKey.ArrowRight,
+                eKey.Space
             ],
             state
         );
@@ -481,23 +494,34 @@ export class Boat {
 
     private _renderModel = () => { }
 
-    private reset() {
+    private reset(isQuick: boolean = false) {
         this.a = new Vec(0, 0, 0);
-        this.p = this.initP.copy();
-        this.GUI.fade = 0;
-        this.GUI.timer = 1;
-        Cublet.CUBLETS.forEach(c => {
-            c.hideFade = 0;
-            c.caught = false;
+
+        if (isQuick) {
+            this.hasControl = true;
+        } else {
+            this.p = this.initP.copy();
+            this.GUI.fade = 0;
+            this.GUI.timer = 1;
+            this.toggleControls(false);
+            Cublet.CUBLETS.forEach(c => {
+                c.hideFade = 0;
+                c.caught = false;
+            });
+        }
+        
+        setTimeout(() => {
+            this.crashFade = 1;
+            this.dP.z = Boat.DP_JUMP_RESET;
         });
-        this.toggleControls(false);
-        setTimeout(() => this.crashFade = 1);
     }
 
     // Z position
     private _moveJump(dT: number) {
         if (this.surface !== eSurface.Air) {
-            this.fP.z += Boat.DP_JUMP * (this.surface === eSurface.Land ? 0.5 : 1) / dT;
+            this.fP.z +=
+                (this.winState ? Boat.DP_JUMP_LG : Boat.DP_JUMP_SM) *
+                (this.surface === eSurface.Land ? 0.5 : 1) / dT;
         }
     }
 
@@ -559,17 +583,14 @@ export class Boat {
     private _setPositionalForces(dT: number) {
         if (this.hasControl) {
             // Accelerate
-            if (KEYS.ArrowUp.pressed) {
-                this._setShowControls('up');
+            if (KEYS.up.pressed) {
                 this._moveAccel(false);
-            } else if (KEYS.ArrowDown.pressed) {
-                this._setShowControls('down');
+            } else if (KEYS.down.pressed) {
                 this._moveAccel(true);
             }
 
             // Jump
-            if (KEYS.Space.down) {
-                this._setShowControls('space');
+            if (KEYS.space.down) {
                 this._moveJump(dT);
             }
         }
@@ -584,52 +605,50 @@ export class Boat {
         if (this.hasControl) {
             // Z ground rotate
             if (this.surface !== eSurface.Air) {
-                if (KEYS.ArrowLeft.pressed) {
-                    this._setShowControls('left');
+                if (KEYS.left.pressed) {
                     this._moveTurn(true);
-                } else if (KEYS.ArrowRight.pressed) {
-                    this._setShowControls('right');
+                } else if (KEYS.right.pressed) {
                     this._moveTurn(false);
                 }
             } else {
                 // Active X, Y axis flip control
-                if (KEYS.ArrowLeft.downDouble || KEYS.ArrowRight.downDouble) {
+                if (KEYS.left.downDouble || KEYS.right.downDouble) {
                     this.flipXActive = true;
                 }
-                if (KEYS.ArrowUp.down || KEYS.ArrowDown.down) {
+                if (KEYS.up.down || KEYS.down.down) {
                     this.flipYActive = true;
                 }
 
                 // Roll
                 if (this.flipXActive) {
-                    if (KEYS.ArrowLeft.pressed) {
+                    if (KEYS.left.pressed) {
                         this._moveFlip(true, false);
-                    } else if (KEYS.ArrowRight.pressed) {
+                    } else if (KEYS.right.pressed) {
                         this._moveFlip(true, true);
                     }
                 }
                 // Turn
                 else {
-                    if (KEYS.ArrowLeft.pressed) {
+                    if (KEYS.left.pressed) {
                         this._moveTurn(true);
-                    } else if (KEYS.ArrowRight.pressed) {
+                    } else if (KEYS.right.pressed) {
                         this._moveTurn(false);
                     }
                 }
 
                 // Flip
                 if (this.flipYActive) {
-                    if (KEYS.ArrowUp.pressed) {
+                    if (KEYS.up.pressed) {
                         this._moveFlip(false, false);
-                    } else if (KEYS.ArrowDown.pressed) {
+                    } else if (KEYS.down.pressed) {
                         this._moveFlip(false, true);
                     }
                 }
 
                 // Prevent inital single key rotation after double key pressed
-                if (KEYS.ArrowLeft.downSingle || KEYS.ArrowRight.downSingle) {
+                if (KEYS.left.downSingle || KEYS.right.downSingle) {
                     this.doubleKeyDAReset = this.dA.z;
-                } else if (KEYS.ArrowLeft.downDouble || KEYS.ArrowRight.downDouble) {
+                } else if (KEYS.left.downDouble || KEYS.right.downDouble) {
                     this.dA.z = this.doubleKeyDAReset;
                 }
             }
@@ -684,6 +703,15 @@ export class Boat {
         // In air
         if (this.surface === eSurface.Air) {
             this.alti = this.p.z - GROUND_Z;
+
+            // Prevent crash due to over-rotation
+            const OVER_FLIP = (Math.PI * (this.winState ? 4 : 2)) + (Math.PI * 2 * Boat.CRASH_TOLERANCE);
+            if (Math.abs(this.a.x) > OVER_FLIP) {
+                this.a.x = OVER_FLIP * Math.sign(this.a.x);
+            }
+            if (Math.abs(this.a.y) > OVER_FLIP) {
+                this.a.y = OVER_FLIP * Math.sign(this.a.y);
+            }
 
             // Jump end
             if (this.alti <= 0 && this.dP.z < 0) {
@@ -757,6 +785,7 @@ export class Boat {
         this.flipXActive = false;
         this.flipYActive = false;
 
+        // Detect crash
         const
             FLIP = Math.abs(this.a.y / (Math.PI * 2)),
             ROLL = Math.abs(this.a.x / (Math.PI * 2)),
@@ -801,9 +830,10 @@ export class Boat {
         Splash.createSplash(...ptToScreen(this.x, this.y), 1);
     }
 
-    private _setShowControls(key: keyof typeof this.GUI.controls) {
-        if (!this.GUI.controlsComplete && this.GUI.controls[key] === 1) {
-            this.GUI.controls[key] -= 0.1;
-        }
+    private _updateShowControls() {
+        Object
+            .entries(this.GUI.controls)
+            .filter((([key, fade]) => fade === 1 && KEYS[key as eKey].down))
+            .forEach(([key]) => this.GUI.controls[key as eKey] -= 0.1);
     }
 }

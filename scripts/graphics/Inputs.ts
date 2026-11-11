@@ -1,27 +1,14 @@
-const LISTENERS: { [key: string]: (e: Event) => void } = {};
+import { eKey } from "../types";
 
-const DOUBLE_DOWN_TIME = 5;
+const
+    LISTENERS: { [key: string]: (e: Event) => void } = {},
+    DOUBLE_DOWN_TIME = 5;
 
-export const KEYS: {
-    [code: string]: {
-        pressed: boolean;
-        down: boolean;
-        downSingle: boolean;
-        downDouble: boolean;
-        downDoubleTimer: number;
-        up: boolean;
-        locked: boolean;
-    }
-} = Object.fromEntries(
-    [
-        'ArrowLeft',
-        'ArrowRight',
-        'ArrowUp',
-        'ArrowDown',
-        'Space'
-    ]
+export const KEYS = Object.fromEntries(
+    Object
+        .values(eKey)
         .map(code => [
-            code,
+            code as eKey,
             {
                 pressed: false,
                 down: false,
@@ -32,11 +19,21 @@ export const KEYS: {
                 locked: false
             }
         ])
-);
+) as {
+    [key in eKey]: {
+        pressed: boolean;
+        down: boolean;
+        downSingle: boolean;
+        downDouble: boolean;
+        downDoubleTimer: number;
+        up: boolean;
+        locked: boolean;
+    }
+};
 
 export function init() {
-    window.addEventListener('keydown', e => {        
-        const KEY = KEYS[e.code];
+    window.addEventListener('keydown', e => {
+        const KEY = e.code in eKey ? KEYS[eKey[e.code as keyof typeof eKey]] : null;
         if (KEY) {
             if (!e.repeat) {
                 KEY.pressed = true;
@@ -54,7 +51,7 @@ export function init() {
         }
     });
     window.addEventListener('keyup', e => {
-        const KEY = KEYS[e.code];
+        const KEY = e.code in eKey ? KEYS[eKey[e.code as keyof typeof eKey]] : null;
         if (KEY) {
             KEY.pressed = false;
             KEY.up = true;
@@ -86,7 +83,7 @@ export function step(dT: number) {
     });
 }
 
-export function toggleKeyLock(codes: string[], state: boolean) {
+export function toggleKeyLock(codes: eKey[], state: boolean) {
     codes
         .filter(c => KEYS[c])
         .forEach(code =>  KEYS[code].locked = state);
