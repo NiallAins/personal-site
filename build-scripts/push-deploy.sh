@@ -8,21 +8,21 @@ if [ "$1" == "prod" ]; then
         git commit -m "$2";
 
         # Confirm Deploy after commit outputs
-        node ./build-scripts/log.js "Complete deploy? (y) " 10  &&
+        node ./build-scripts/util.js "Complete deploy? (y) " 10  &&
         read resp;
         if [ "$resp" = "y" ]; then
-            node ./build-scripts/log.js "Pushing to main..." 11
+            node ./build-scripts/util.js "Pushing to main..." 11
             git push origin main &&
 
             # Copy to prod
-            node ./build-scripts/log.js "Resetting prod to main..." 21
+            node ./build-scripts/util.js "Resetting prod to main..." 21
             git checkout prod &&
             git reset origin/main --hard &&
 
             # Build in prod mode
             npm run build-prod  &&
 
-            node ./build-scripts/log.js "Restructuring for production, then pushing to prod..." 11
+            node ./build-scripts/util.js "Restructuring for production, then pushing to prod..." 11
 
             # Restructure with /dist at root
             git add *
@@ -46,16 +46,16 @@ if [ "$1" == "prod" ]; then
 
             # Return to main
             git checkout main
-            node ./build-scripts/log.js "Deploy successful" 12 g &&
+            node ./build-scripts/util.js "Deploy successful" 12 g &&
             exit 1;
         else
-            node ./build-scripts/log.js "Deploy failed: Cancelled" 12 r &&
+            node ./build-scripts/util.js "Deploy failed: Cancelled" 12 r &&
             exit 1;
         fi
 
-        node ./build-scripts/log.js "Deploy failed: Command failed" 12 r;
+        node ./build-scripts/util.js "Deploy failed: Command failed" 12 r;
     else
-        node ./build-scripts/log.js "Deploy failed: Missing commit message" 12 r;
+        node ./build-scripts/util.js "Deploy failed: Missing commit message" 12 r;
     fi
 
 # Push only
@@ -65,19 +65,19 @@ elif [ "$1" ]; then
     git commit -m "$1";
 
     # Confirm push after commit outputs
-    node ./build-scripts/log.js "Complete push? (y) " 10 &&
+    node ./build-scripts/util.js "Complete push? (y) " 10 &&
     read resp;
     if [ "$resp" = "y" ]; then
-        node ./build-scripts/log.js "Pushing to main..." 11
+        node ./build-scripts/util.js "Pushing to main..." 11
         git push origin main &&
-        node ./build-scripts/log.js "Push successful" 12 g &&
+        node ./build-scripts/util.js "Push successful" 12 g &&
         exit 1;
     else
-        node ./build-scripts/log.js "Push failed: Cancelled" 12 r &&
+        node ./build-scripts/util.js "Push failed: Cancelled" 12 r &&
         exit 1;
     fi
 
-     node ./build-scripts/log.js "Push failed: Command failed" 12 r;
+     node ./build-scripts/util.js "Push failed: Command failed" 12 r;
 else
-     node ./build-scripts/log.js "Push failed: Missing commit message" 12 r;
+     node ./build-scripts/util.js "Push failed: Missing commit message" 12 r;
 fi

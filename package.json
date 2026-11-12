@@ -2,6 +2,7 @@
     "name": "personalsite",
     "main": "main.js",
     "version": "1.1.0",
+    "type": "module",
     "scripts": {
         "dev": "bash ./build-scripts/build.sh && bash ./build-scripts/watch.sh",
         "build": "bash ./build-scripts/build.sh",

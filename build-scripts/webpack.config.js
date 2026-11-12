@@ -1,12 +1,16 @@
-const path = require('path');
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-module.exports = [
+const DIR = path.dirname(fileURLToPath(import.meta.url));
+
+export default [
+    // Main site
     {
         entry: {
             main: './scripts/main.ts',
         },
         output: {
-            path: path.resolve(__dirname, '../dist'),
+            path: path.resolve(DIR, '../dist'),
             filename: "script.js"
         },
         resolve: {
@@ -21,12 +25,14 @@ module.exports = [
         },
         stats: 'errors-only'
     },
+
+    // Project app pages
     {
         entry: {
             main: './scripts/app.ts',
         },
         output: {
-            path: path.resolve(__dirname, '../dist'),
+            path: path.resolve(DIR, '../dist'),
             filename: "app-script.js"
         },
         resolve: {

@@ -1,4 +1,5 @@
 @use "sass:list" as *;
+@use 'sass:color' as *;
 @use "mixins" as *;
 @use "util" as *;
 @use "vars" as *;
@@ -57,37 +58,72 @@
 
     &__tags {
         display: flex;
-        gap: 0.25rem;
+        margin: 2.25rem 0 -0.5rem 0.75rem;
         height: #{ $h-tag + (2 * $w-pad-tag) };
 
         &-tag {
+            position: relative;
             height: $h-tag;
             line-height: $h-tag;
             padding: $w-pad-tag 1rem $w-pad-tag;
             font-family: $f-fam-body;
+            transform: rotate3d(-2, 4, -1, 45deg);
+            min-width: 4rem;
+            text-align: center;
 
-            &:nth-child(2),
-            &--year {
-                border-top-left-radius: $br-tag;
-                border-bottom-left-radius: $br-tag;
+            $tag-depth: 1.375rem;
+            $tag-skew: 45deg;
+            $tag-move-0: -22px;
+            $tag-move-1: -11px;
+
+            &::before,
+            &::after {
+                content: '';
+                position: absolute;
             }
 
-            &:last-child,
-            &--year {
-                border-top-right-radius: $br-tag;
-                border-bottom-right-radius: $br-tag;
+            &::before {
+                inset: 0 auto 0 0;
+                width: $tag-depth;
+                transform: translate($tag-move-0, $tag-move-1) skewY($tag-skew);
             }
 
-             &--year {
-                background-color: $c-text-l;
-                border: 1px solid $c-text-l;
-                margin-right: 1rem;
+            &::after {
+                inset: 0 0 auto 0;
+                height: $tag-depth;
+                transform: translate($tag-move-1, $tag-move-0) skewX($tag-skew);
+            }
+
+            &--year {
+                min-width: unset;
+                margin-right: 0.25rem;
+                background-color: scale($c-text-l, $lightness: -10%);
+
+                &::before {
+                    background-color: scale($c-text-l, $lightness: -30%);
+                }
+
+                &::after {
+                    background-color: $c-text-l;
+                }
             }
 
             @for $i from 0 to length($c-tags) {
+                &:nth-child(#{ $i }) {
+                    z-index: $i * -1;
+                }
+
                 &--#{ $i },
                 &--#{ $i + length($c-tags) } {
-                    background-color: nth($c-tags, $i + 1);
+                    background-color: scale(nth($c-tags, $i + 1), $lightness: -10%);
+
+                    &::before {
+                        background-color: scale(nth($c-tags, $i + 1), $lightness: -30%);
+                    }
+
+                    &::after {
+                        background-color: nth($c-tags, $i + 1);
+                    }
                 }
             }
         }
@@ -156,29 +192,32 @@
             align-items: start;
         }
 
-        &__tags {
-            flex-wrap: wrap;
-            height: auto;
-            gap: 0.75rem;
-
-            &-tag {
-                border-radius: $br-tag;
-
-                &--year {
-                    margin-right: 0;
-                }
-            }
+        &__title {
+            order: -2;
+            align-self: center;
         }
 
         &__image {
             margin: 1rem 0 0;
             align-self: center;
             width: calc(#{ $w-img-pad } + #{ $w-img-md * 0.75 });
-            max-width: 80vw;
+            max-width: 75vw;
+            transform: unset;
+            order: -1;
+        }
+
+        &__tags {
+            margin: 3rem 0 -0.75rem;
+            align-self: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            row-gap: 1.25rem;
+            height: auto;
         }
 
         &__links {
-            display: contents;
+            flex-direction: column;
+            gap: 2rem;
         }   
 
         &__close {

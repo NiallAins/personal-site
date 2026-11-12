@@ -1,6 +1,5 @@
 import { TARGET_FPS } from "./consts";
 import { iWindow, tHTMLEvent, tHTMLTemplateResult, tHTMLTemplateVar } from "./types";
-import { toKebabCase as toKebabCaseJs } from './util-js';
 
 
 //
@@ -69,7 +68,7 @@ export class Rand {
 // HTML
 //
 
-export const toKebabCase = toKebabCaseJs as (str: string) => string
+export { toKebabCase } from './util-common';
 
 export function getEl<tEl extends HTMLElement = HTMLDivElement>(query: string): tEl {
     return document.querySelector(query) as tEl;

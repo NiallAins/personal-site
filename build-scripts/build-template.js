@@ -1,7 +1,6 @@
-const
-    FS = require('node:fs/promises'),
-    util = require('../scripts/util-js.js'),
-    { BASE_PROD, BASE_DEV } = require('./base-urls.js');
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { log, toKebabCase } from './util.js';
+import { BASE_PROD, BASE_DEV } from './base-urls.js';
 
 const
     IS_PROD         = process.argv[2] === 'prod',
@@ -13,15 +12,15 @@ const
     PATH_TO_INDEX   = PATH_DIST + '/index.html',
     PATH_TO_APP     = PATH_DIST + '/{{ title }}/index.html';
 
-util.log(`Generating ${ IS_PROD ? 'production ' : ''}templates`);
+log(`Generating ${ IS_PROD ? 'production ' : ''}templates`);
 
 async function buildTemplates() {
     // Get template files and project data
     let
-        headHtml  = await FS.readFile(PATH_FROM_HEAD,  'utf8', (_, data) => data),
-        appHtml   = await FS.readFile(PATH_FROM_APP,   'utf8', (_, data) => data),
-        indexHtml = await FS.readFile(PATH_FROM_INDEX, 'utf8', (_, data) => data);
-        projects  = await FS.readFile(PATH_FROM_PROJS, 'utf8', (_, data) => data);
+        headHtml  = await readFile(PATH_FROM_HEAD,  'utf8', (_, data) => data),
+        appHtml   = await readFile(PATH_FROM_APP,   'utf8', (_, data) => data),
+        indexHtml = await readFile(PATH_FROM_INDEX, 'utf8', (_, data) => data),
+        projects  = await readFile(PATH_FROM_PROJS, 'utf8', (_, data) => data);
 
     headHtml = headHtml
         .replace('{{ base }}', IS_PROD ? BASE_PROD : BASE_DEV);
@@ -39,7 +38,7 @@ async function buildTemplates() {
         .replace(/];/g, ']');
 
     // Create index.html
-    FS.writeFile(
+    writeFile(
         PATH_TO_INDEX,
         indexHtml,
         'utf8',
@@ -54,14 +53,13 @@ async function buildTemplates() {
         .filter(p => parseInt(p.year) > 0)
         .forEach(p => {
             const
-                TITLE_KEBAB = util.toKebabCase(p.title),
+                TITLE_KEBAB = toKebabCase(p.title),
                 PATH = PATH_TO_APP.replace('{{ title }}', TITLE_KEBAB);
-            FS
-                .mkdir(
+            mkdir(
                     PATH.replace(/\/[^\/]*$/, ''),
                     { recursive: true }
                 )
-                .then(() => FS.writeFile(
+                .then(() => writeFile(
                     PATH,
                     appHtml
                         .replace('{{ title }}', p.title + ' |')

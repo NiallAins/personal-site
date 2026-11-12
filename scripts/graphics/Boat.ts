@@ -321,6 +321,8 @@ export class Boat {
     ) {
         const C = can.CTX;
 
+        _DEBUG_log(horZ);
+
         // Rotate and render modal
         if (this.model) {
             this.model.rotation.x = Boat.MODEL_ROT_X;
@@ -334,7 +336,7 @@ export class Boat {
             } else {
                 this.model.rotateOnAxis(new Three.Vector3(0, 1, 0), this.a.z * -1);
                 this.model.rotateOnWorldAxis(new Three.Vector3(0, 0, 1), this.grad.x * -1);
-                this.model.rotateOnWorldAxis(new Three.Vector3(1, 0, 0), this.grad.y - Math.min(1.5, horZ / 200));
+                this.model.rotateOnWorldAxis(new Three.Vector3(1, 0, 0), this.grad.y - Math.min(1.5, horZ / 250));
             }
         }
         this._renderModel();
@@ -381,7 +383,7 @@ export class Boat {
         can.drawFromCanvas(
             this.CAN,
             sx - Boat.CAN_CENTER_X,
-            sy - Boat.CAN_CENTER_Y + ((1 - this.crashFade) * Boat.CAN_CENTER_Y * 1.5)
+            sy - Boat.CAN_CENTER_Y + ((1 - this.crashFade) * Boat.CAN_CENTER_Y * 1.5) - (horZ * 0.03)
         );
         can.CTX.globalAlpha = 1;
 

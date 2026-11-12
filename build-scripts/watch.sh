@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-node ./build-scripts/log.js "Watching for file changes..."
+node ./build-scripts/util.js "Watching for file changes..."
 
 concurrently --prefix none \
     "onchange \"./templates/**/*.html\"                              -- node ./build-scripts/build-template.js"\
