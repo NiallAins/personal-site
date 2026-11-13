@@ -193,3 +193,18 @@ export function _DEBUG_updateTerrainControls(peaks: tTerrain[]) {
         console.log('------');
     }
 }
+
+export class _DEBUG_mockBoat {
+    public x = 0;
+    public y = 0;
+    public z = 0;
+    public hasControl = false;
+
+    constructor(...args: any[]) {
+
+    }
+
+    public setPosition(...a: any[]) {}
+    public step(...a: any[]) {}
+    public render(...a: any[]) {}
+}

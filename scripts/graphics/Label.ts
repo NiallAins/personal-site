@@ -17,6 +17,7 @@ import { eEaseState, eEaseType } from "../types";
 import { Canvas } from "./Canvas";
 import { Ease } from "./Ease";
 import { isoScale as ISO_SCALE, labelIsoZ as LABEL_ISO_Z } from "./main";
+import { Splash } from "./Splash";
 
 export class Label {
     private EL: HTMLButtonElement;
@@ -25,7 +26,7 @@ export class Label {
     public readonly LETTERS: LabelLetter[];
     public readonly INDEX: number;
 
-    public pressAni: Ease = new Ease(100, eEaseType.Ease, true);
+    public pressAni: Ease = new Ease([100, 100], eEaseType.Ease, true);
     public hoverAni: Ease = new Ease(DURATION_SH, eEaseType.Ease, true);
 
     constructor(el: HTMLButtonElement, index: number) {
@@ -116,6 +117,14 @@ export class Label {
             l.x = SECTION_OFFSET_X + (Math.cos(ANG) * MAG);
             l.y = SECTION_OFFSET_Y + (Math.sin(ANG) * MAG);
         });
+
+        const
+            CENTER_X = (this.LETTERS[0].x + this.LETTERS[this.LETTERS.length - 1].x) * 0.5,
+            CENTER_Y = (this.LETTERS[0].y + this.LETTERS[this.LETTERS.length - 1].y) * 0.5;
+
+        this.pressAni.onForwardComplete = () => {
+            Splash.createSplash(CENTER_X, CENTER_Y - window.scrollY, 2);
+        }
     }
 
     public preRender(isSmallViewport: boolean) {

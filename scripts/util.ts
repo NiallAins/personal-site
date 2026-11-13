@@ -1,4 +1,4 @@
-import { TARGET_FPS } from "./consts";
+import { MAX_DT, TARGET_FPS } from "./consts";
 import { iWindow, tHTMLEvent, tHTMLTemplateResult, tHTMLTemplateVar } from "./types";
 
 
@@ -13,9 +13,9 @@ export function requestFrameScaled(
 ) {
     const
         T = +new Date(),
-        DT = Math.min(T - (window.prevFrameTime || T), 1000);
+        DT = T - (window.prevFrameTime || T);
     window.prevFrameTime = T;
-    window.requestAnimationFrame(() => cb(DT / fps));
+    window.requestAnimationFrame(() => cb(Math.min(DT / fps, MAX_DT)));
 };
 
 export function msToFrames(ms: number) {

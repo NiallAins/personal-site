@@ -1,4 +1,5 @@
 @use 'sass:map' as *;
+@use 'sass:string' as *;
 @use 'sass:color' as *;
 @use 'vars' as *;
 @use 'util' as *;
@@ -13,9 +14,12 @@ $breakpoints: (
     'sm': $bp-w-sm,
     'md': $bp-w-md,
     'lg': $bp-w-lg,
-    'height-sm': $bp-h-sm
+    'h-sm': $bp-h-sm,
+    'h-md': $bp-h-md
 );
 @mixin viewport($from, $to: null) {
+    $dir: iif(index(#{ $from }#{ $to }, 'h-'), 'height', 'width');
+    
     @if ($from == 'mobile') {
         $from: 0;
         $to: $bp-mobile;
@@ -26,7 +30,6 @@ $breakpoints: (
         $from: iif($from == 0, 0, get($breakpoints, $from));
         $to: get($breakpoints, $to);
     }
-    $dir: iif($from == 'height-sm' or $to == 'height-sm', 'height', 'width');
 
     @if ($to == null) {
         @media (min-#{ $dir }: $from) {

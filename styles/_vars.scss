@@ -95,6 +95,7 @@ $bp-w-md:               48rem; // 768px
 $bp-w-sm:               36rem; // 608px
 $bp-w-xs:               24rem; // 384px
 $bp-h-sm:               36rem; // 608px
+$bp-h-md:               52rem; // 832px
 $bp-mobile:             $bp-w-md;
 
 
@@ -102,7 +103,7 @@ $bp-mobile:             $bp-w-md;
 // Colors
 //
 
-$c-hsl-terrain-sea:     (174, 53, 40, 0.475);
+$c-hsl-terrain-sea:     (174, 53, 40, 0.625);
 $c-terrain-sea:         list-to-hsl($c-hsl-terrain-sea);
 $c-hsl-terrain-land-1:  ( 18, 70, 20, 1);
 $c-terrain-land-1:      list-to-hsl($c-hsl-terrain-land-1);

@@ -27,6 +27,7 @@ import {
     labelDepressZ as LABEL_DEPRESS_Z
 } from "./main";
 import { Boat } from "./Boat";
+// import { _DEBUG_mockBoat as Boat } from "../_debug";
 import { _DEBUG_renderBaseIso } from "../_debug";
 
 
@@ -48,7 +49,7 @@ const
     OVERSHOOT_MAX_SEA_ISO_VS = 9,
     OVERSHOOT_MAX_OBJ_ISO_VS = 9,
     LAND_PRE_RENDER_Q = 10,
-    LAND_PRE_RENDER_DEPTH_ISO = 4,
+    LAND_PRE_RENDER_DEPTH_ISO = 2,
     CAN_SEA_PRE_RENDER = new Canvas(),
     CAN_LAND_PRE_RENDER = new Canvas(),
     BOAT = new Boat(0, 0, true);
@@ -146,7 +147,7 @@ export function resize(width: number, height: number, viewportSm: boolean, rePre
         PAD_X = PAD / X_UNIT_SCALE,
         PAD_Y = PAD / Y_UNIT_SCALE,
         [X, Y] = ptFromScreen(
-            window.innerWidth * 0.175,
+            window.innerWidth * 0.2,
             window.innerHeight * 0.875
         ),
         [LEFT, TOP] = ptFromScreen(
@@ -224,10 +225,11 @@ export function render(can: Canvas, fades: number[], t: number, dT: number, isVi
                     LAND_Z = getLandZ(SCR_P[0], SCR_P[1] + window.scrollY)[0];
                 return SEA_Z > LAND_Z
                     ? [SEA_Z, false]
-                    : [LAND_Z, true]
+                    : [LAND_Z, true];
             }
         );
 
+        // Move viewport to match boat
         if (BOAT.hasControl) {
             const
                 SY = window.scrollY,
@@ -431,6 +433,7 @@ function renderLetter(
     letter: LabelLetter,
     fade: number
 ) {
+    fade = 0;
     const
         C = can.CTX,
         LABEL = letter.LABEL,
@@ -540,12 +543,15 @@ function renderCublet(
     fade: number
 ) {
     const C = can.CTX;
+
+    const DELAY = 0.125;
+    fade = Math.max(0, fade * DELAY) / DELAY;
     
     C.save();
         C.globalAlpha = Math.max(0, 1 - (fade + cube.hideFade));
         C.translate(
             x,
-            y -  (ISO_SCALE * (cube.inSea ? 0.875 : 1.75)) - (Z_UNIT * 40 * Math.max(0, fade - cube.RAND_X * 0.5))
+            y -  (ISO_SCALE * (cube.inSea ? 0.875 : 1.75)) - (Z_UNIT * 40 * Math.max(0, fade - cube.RAND_X * 0.25))
         );
         cube.draw(C);
     C.restore();

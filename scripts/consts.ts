@@ -63,7 +63,7 @@ export const
 export const
     CAN_QUALITY = window.devicePixelRatio,
     SKY_HEIGHT_RATIO: number = 0.75,
-    MAX_SEA_ISO_DEPTH: number = 2,
+    MAX_SEA_ISO_DEPTH: number = 1.5,
     MIN_LAND_ISO_Z: number = -3,
     ISO_SCALE_LG: number = 14,
     ISO_SCALE_SM: number = 10,
@@ -75,6 +75,7 @@ export const
     SPLASH_FADE_DIST: number = SPLASH_MAX_DIST / 6,
     SPLASH_FADE_TIME: number = 0.0002,
     TARGET_FPS: number = 33.33,
+    MAX_DT: number = 3,
     SECTION_HEIGHT: number = 0.5,
     SECTION_GAP: number = 0.25;
 

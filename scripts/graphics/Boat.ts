@@ -4,7 +4,7 @@ import { _DEBUG_log } from "../_debug";
 import { KEYS, toggleKeyLock } from "./Inputs";
 import { renderSingleIso, ptToScreen } from "./terrain";
 import { Splash } from './Splash';
-import { CAN_QUALITY, CLASS_BOAT_ACTIVE, COLOR_TEXT_L, COLOR_TEXT_SHADOW, DURATION_LG, EL_BOAT, INV_45, ISO_SCALE_LG, Z_UNIT_SCALE } from '../consts';
+import { CAN_QUALITY, CLASS_BOAT_ACTIVE, COLOR_TEXT_L, COLOR_TEXT_SHADOW, EL_BOAT, INV_45, ISO_SCALE_LG } from '../consts';
 import { Canvas } from './Canvas';
 import { zUnit as Z_UNIT } from './main';
 import { Cublet } from './Cublet';

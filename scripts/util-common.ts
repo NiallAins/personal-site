@@ -1,5 +1,5 @@
 //
-// Util scripts common to both runtime and build scripts
+// Util functions common to both runtime and build scripts
 //
 
 declare const process: undefined | { stdout: { write: (str: string) => void }, argv: string[] };

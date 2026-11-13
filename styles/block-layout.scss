@@ -112,6 +112,14 @@ $w-layout-pad-bottom: 4.5rem;
         }
     }
 
+    @include viewport(md) {
+        @include viewport(0, h-md) {
+            &__slot {
+                height: 13rem !important;
+            }
+        }
+    }
+
     &__slot:has(&__item:focus-visible) {
         z-index: $z-focus-visible;
     }

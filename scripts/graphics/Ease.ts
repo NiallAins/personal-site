@@ -4,7 +4,7 @@ import { msToFrames } from "../util";
 export class Ease {
     protected static readonly EASES: Ease[] = [];
     protected static EASE_FUNCS: { [key in eEaseType]: tEaseFunc } = {
-        /* Source https://easings.net */
+        // Source https://easings.net
         [eEaseType.Linear]:     (x: number) => x,
         [eEaseType.Ease]:       (x: number) => (Math.cos(Math.PI * x) - 1) * -0.5,
         [eEaseType.EaseIn]:     (x: number) => 1 - Math.cos((x * Math.PI) * 0.5),
@@ -18,26 +18,37 @@ export class Ease {
         [eEaseType.Elastic]: eEaseType._ElasticIn
     };
 
-    private _value: number = 0;
-    private _valueAbs: number = 0;
+    public static step(dT: number = 1) {
+        Ease.EASES.forEach(e => e.step(dT));
+    }
+
+    private _valueLinear: number = 0;
+    private _valueEase: number = 0;
+    private _valueDelay: number = 0;
+    private _delay: number = 0;
     private _state: eEaseState = eEaseState.Paused;
     private _prevState?: eEaseState;
     private readonly _FRAMES_FORWARD: number;
     private readonly _FRAMES_BACKWARD: number;
-    private readonly _FRAMES_DELAY: number;
+    private readonly _FRAMES_DELAY_FORWARD: number;
+    private readonly _FRAMES_DELAY_BACKWARD: number;
     private readonly _EASE_FUNC: [
         forward: tEaseFunc,
         forward: tEaseFunc
     ];
 
+    public onForwardComplete: () => void = () => {};
+    public onBackwardComplete: () => void = () => {};
+
     constructor(
-        duration: number | [number, number, number?] = 1000,
+        duration: number | [number, number, number?, number?] = 1000,
         easeType: eEaseType = eEaseType.Ease,
         reverseEase: boolean = false
     ) {
         this._FRAMES_FORWARD = msToFrames(typeof duration === 'number' ? duration : duration[0]);
         this._FRAMES_BACKWARD = msToFrames(typeof duration === 'number' ? duration : duration[1]);
-        this._FRAMES_DELAY = msToFrames(typeof duration === 'number' ? 0 : duration[2] || 0);
+        this._FRAMES_DELAY_FORWARD = msToFrames(typeof duration === 'number' ? 0 : duration[2] || 0);
+        this._FRAMES_DELAY_BACKWARD = msToFrames(typeof duration === 'number' ? 0 : duration[3] || duration[2] || 0);
 
         const
             EASE = Ease.EASE_FUNCS[easeType],
@@ -51,36 +62,46 @@ export class Ease {
     }
 
     get value(): number {
-        return this._value;
+        return this._valueEase;
     }
 
     set value(v: number) {
-        this._valueAbs = v;
+        this._valueLinear = v;
     }
 
     get state(): eEaseState {
         return this._state;
     }
 
-    public static step(dT: number = 1) {
-        Ease.EASES.forEach(e => e.step(dT));
-    }
-
     protected step(dT: number) {
-        if (this._state !== eEaseState.Paused) {
-             
+        if (this._delay) {
+            this._valueDelay += dT / this._delay;
+
+            if (this._valueDelay >= 1) {
+                this._valueLinear += this._valueDelay % 1;
+                this.play();
+            }
+        }
+        
+        if (this._state !== eEaseState.Paused) {             
             const IS_FORWARD = this._state > eEaseState.Paused;
-            this._valueAbs += dT / (IS_FORWARD ? this._FRAMES_FORWARD : this._FRAMES_BACKWARD * -1);
+            this._valueLinear += dT / (IS_FORWARD ? this._FRAMES_FORWARD : this._FRAMES_BACKWARD * -1);
             
             if (
-                (IS_FORWARD && this._valueAbs >= 1) ||
-                (!IS_FORWARD && this._valueAbs <= 0)
+                (IS_FORWARD && this._valueLinear >= 1) ||
+                (!IS_FORWARD && this._valueLinear <= 0)
             ) {
-                this._valueAbs =
-                    (IS_FORWARD && this._state !== eEaseState.ForwardLoop) ||
-                    this._state === eEaseState.BackwardLoop
-                        ? 1
-                        : 0;
+                // Mod, reverse, or min-max overflow
+                const STATE_ABS = Math.abs(this._state);
+                if (STATE_ABS >= eEaseState.ForwardReverse) {
+                    this._valueLinear = (IS_FORWARD ? 1 : 0) - this._valueLinear;
+                } else if (STATE_ABS === eEaseState.ForwardLoop) {
+                    this._valueLinear += IS_FORWARD ? 1 : -1;
+                } else {
+                    this._valueLinear = IS_FORWARD ? 1 : 0
+                }
+
+                // Set next state
                 this._state = {
                     [eEaseState.BackwardReverseLoop]: eEaseState.ForwardReverseLoop,
                     [eEaseState.BackwardReverse]: eEaseState.Forward,
@@ -92,33 +113,62 @@ export class Ease {
                     [eEaseState.ForwardReverseLoop]: eEaseState.BackwardReverseLoop
                 }[this._state]!;
 
-                if (
-                    // this._FRAMES_DELAY &&
-                    (this._state === eEaseState.Forward || this._state === eEaseState.Backward)
-                 ) {
+                if (this._state === eEaseState.Paused) {
                     this.pause();
-                    setTimeout(() => this.play(), 100);
+                } else {
+                    // Trigger inter-state delay
+                    if (IS_FORWARD && this._FRAMES_DELAY_FORWARD) {
+                        this._valueLinear = 1;
+                        this._delay = this._FRAMES_DELAY_FORWARD;
+                        this.pause();
+                    } else if (!IS_FORWARD && this._FRAMES_DELAY_BACKWARD) {
+                        this._valueLinear = 0;
+                        this._delay = this._FRAMES_DELAY_BACKWARD;
+                        this.pause();
+                    }
+                }
+
+                if (IS_FORWARD) {
+                    this.onForwardComplete();
+                } else {
+                    this.onBackwardComplete();
                 }
             }
-            this._value = this._EASE_FUNC[IS_FORWARD ? 0 : 1](this._valueAbs);
+
+            this._valueEase = this.easeValue(this._valueLinear, !IS_FORWARD);
         }
+    }
+
+    public easeValue(value: number, backward: boolean = false) {
+        return this._EASE_FUNC[backward ? 0 : 1](value);
+    }
+
+    public easeTime(time: number, backward: boolean = false) {
+        const VALUE = time / (backward ? this._FRAMES_BACKWARD : this._FRAMES_FORWARD);
+        return this.easeValue(VALUE);
     }
 
     public play(state?: eEaseState) {
         this._state = state !== undefined
             ? state
-            : this._prevState == undefined
+        : this._prevState == undefined
             ? eEaseState.Forward
-            : this._prevState === eEaseState.Forward && this._valueAbs === 1
+        : this._prevState === eEaseState.Forward && this._valueLinear === 1
             ? eEaseState.Backward
-            : this._prevState === eEaseState.Backward && this._valueAbs === 0
+        : this._prevState === eEaseState.Backward && this._valueLinear === 0
             ? eEaseState.Forward
-            : this._prevState;
+        : this._prevState;
 
-        this._prevState = this._state;
+        if (this._prevState === undefined) {
+            this._valueLinear = this._state > eEaseState.Paused ? 0 : 1;
+        }
+
+        this._delay = 0;
+        this._valueDelay = 0;
     }
 
     public pause() {
+        this._prevState = this.state;
         this._state = eEaseState.Paused;
     }
 
@@ -127,5 +177,10 @@ export class Ease {
         if (this._prevState) {
             this._prevState *= -1;
         }
+    }
+
+    public map(from: number, to: number = 0, float: boolean = false) {
+        const MAP = to + ((from - to) * this._valueEase);
+        return float ? MAP : Math.floor(MAP);
     }
 }

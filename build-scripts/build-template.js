@@ -50,7 +50,7 @@ async function buildTemplates() {
         .parse(projects)
         .map(topic => topic.projects)
         .flat()
-        .filter(p => parseInt(p.year) > 0)
+        .filter(p => parseInt(p.year) > 0 && !p.linkDirect)
         .forEach(p => {
             const
                 TITLE_KEBAB = toKebabCase(p.title),

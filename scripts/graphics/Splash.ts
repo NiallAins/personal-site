@@ -20,7 +20,7 @@ export class Splash {
 
     static createSplash(x: number, y: number, size: 0 | 1 | 2 = 0) {
         if (size || !Splash.splashes.find(s => Math.abs(y - s.y) + Math.abs(x - s.x) < ISO_SCALE * 2)) {
-            Splash.splashes.push(new Splash(x, y, [1, 5, 8][size]));
+            Splash.splashes.push(new Splash(x, y, [1, 5, 7][size]));
         }
     }
 
