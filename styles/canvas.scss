@@ -34,7 +34,9 @@
         height: 100px;
         z-index: $z-focus-visible;
         cursor: default;
+        border-radius: 100%;
 
+        .#{ $cl-page-inactive } &,
         &.#{ $cl-boat-active } {
             pointer-events: none;
         }

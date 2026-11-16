@@ -77,7 +77,8 @@ export const
     TARGET_FPS: number = 33.33,
     MAX_DT: number = 3,
     SECTION_HEIGHT: number = 0.5,
-    SECTION_GAP: number = 0.25;
+    SECTION_GAP: number = 0.25,
+    BOAT_SECTION_SV: number = 3;
 
 
 //

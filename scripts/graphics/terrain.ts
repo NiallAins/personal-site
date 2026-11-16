@@ -7,7 +7,9 @@ import {
     HEIGHT_MAIN_SECTION, HEIGHT_MAIN_SECTION_GAP_VS, HEIGHT_MAIN_SECTION_GAP_VL,
     TERRAIN_TYPES, TERRAIN_COLOR_LAND, TERRAIN_SEA_NOISE,
     WIDTH_PAGE_BG_MAX,
-    Y_UNIT_SCALE, X_UNIT_SCALE
+    Y_UNIT_SCALE, X_UNIT_SCALE,
+    HEIGHT_MAIN_SECTION_BOAT_VS,
+    BOAT_SECTION_SV
 } from "../consts";
 import { Canvas } from "./Canvas";
 import { LabelLetter } from "./Label";
@@ -25,8 +27,8 @@ import {
     labelIsoZ as LABEL_ISO_Z,
     labelDepressZ as LABEL_DEPRESS_Z
 } from "./main";
-// import { Boat } from "./Boat";
-import { _DEBUG_mockBoat as Boat } from "../_debug";
+import { Boat } from "./Boat";
+// import { _DEBUG_mockBoat as Boat } from "../_debug";
 import { _DEBUG_renderBaseIso } from "../_debug";
 
 
@@ -90,6 +92,7 @@ export function init() {
 }
 
 export function resize(width: number, height: number, viewportSm: boolean, rePreRender: boolean) {
+    // Set variables to mobile or desktop sizes
     showLetterBack = !viewportSm;
     overshootMinSea = (viewportSm ? OVERSHOOT_MIN_SEA_ISO_VS : OVERSHOOT_MIN_SEA_ISO_VL) * ISO_SCALE;
     overshootMaxSea = (viewportSm ? OVERSHOOT_MAX_SEA_ISO_VS : OVERSHOOT_MAX_SEA_ISO_VL) * ISO_SCALE;
@@ -102,6 +105,7 @@ export function resize(width: number, height: number, viewportSm: boolean, rePre
         preRenderTerrain();
     }
 
+    // Position terrain
     const
         TERRAIN_WIDTH = Math.min(width, WIDTH_PAGE_BG_MAX),
         SECTION_GAP = viewportSm ? HEIGHT_MAIN_SECTION_GAP_VS : HEIGHT_MAIN_SECTION_GAP_VL;
@@ -120,10 +124,12 @@ export function resize(width: number, height: number, viewportSm: boolean, rePre
         t.y =
             terrainLayout_offsetY +
             (ti * terrainLayout_sectionFullHeight) +
-            (HEIGHT_MAIN_SECTION * height * 0.5);
+            (HEIGHT_MAIN_SECTION * height * 0.5) +
+            (viewportSm && ti >= BOAT_SECTION_SV ? HEIGHT_MAIN_SECTION_BOAT_VS * height : 0);
         
         t.noise.width = t.noiseWidthBase * (TERRAIN_WIDTH / WIDTH_PAGE_BG_MAX) * (viewportSm ? 2 : 1);
 
+        // Positions cublets
         Cublet.CUBLETS
             .filter(c => c.sectionI === ti)
             .forEach(c => {
@@ -143,14 +149,22 @@ export function resize(width: number, height: number, viewportSm: boolean, rePre
             });
     });
 
+    // Position boat and calcuate level bounds
     const
         PAD = 8,
-        PAD_X = PAD / X_UNIT_SCALE,
-        PAD_Y = PAD / Y_UNIT_SCALE,
-        [X, Y] = ptFromScreen(
-            window.innerWidth * 0.2,
-            window.innerHeight * 0.875
-        ),
+        PAD_X = viewportSm ? 0 : PAD / X_UNIT_SCALE,
+        PAD_Y = viewportSm ? 0 : PAD / Y_UNIT_SCALE,
+        [X, Y] = viewportSm 
+            ? ptFromScreen(
+                width * 0.5,
+                terrainLayout_offsetY +
+                (terrainLayout_sectionFullHeight * BOAT_SECTION_SV) +
+                (HEIGHT_MAIN_SECTION_BOAT_VS * height * 0.5)
+            )
+            : ptFromScreen(
+                width * 0.2,
+                height * 0.875
+            ),
         [LEFT, TOP] = ptFromScreen(
             0,
             window.innerHeight * 0.75

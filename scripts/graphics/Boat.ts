@@ -73,7 +73,7 @@ export class Boat {
     //
 
     // Model
-    protected static readonly CAN_W = 128 * CAN_QUALITY;
+    protected static readonly CAN_W = 128;
     protected static readonly BUTTON_SCALE = 1.25;
     protected static readonly MODEL_SRC: string = './assets/boat.glb';
     protected static readonly MODEL_ROT_X: number = 35.264 * (Math.PI / 180);
@@ -108,6 +108,7 @@ export class Boat {
             [eRotation.Roll]: 0.03
         }
     };
+    protected static DDA_SV = 20;
     protected static DDA_MAX = {
         [eSurface.Sea]: 0.15,
         [eSurface.Land]: 0.075,
@@ -147,6 +148,7 @@ export class Boat {
     private wakeThrottle = 0;
     private allowControl = false;
     private crashFade = 0;
+    private touchClick = false;
     private winState = false;
     private readonly CAN: HTMLCanvasElement;
     private readonly GUI = {
@@ -188,12 +190,17 @@ export class Boat {
         if (allowControl) {
             EL_BOAT.style.width = (Boat.CAN_W * Boat.BUTTON_SCALE) + 'px';
             EL_BOAT.style.height = (Boat.CAN_W * Boat.BUTTON_SCALE) + 'px';
-            EL_BOAT.addEventListener('click', () => {
-                this.toggleControls(true);
-                if (!this.GUI.fade) {
-                    this.GUI.fade = 0.01;
+            EL_BOAT.addEventListener('click', e => {
+                if (e.pointerType === 'touch') {
+                    this.touchClick = true;
+                } else {
+                    this.toggleControls(true);
+                    if (!this.GUI.fade) {
+                        this.GUI.fade = 0.01;
+                    }
                 }
             });
+            window.addEventListener('click', this.toggleControls.bind(this, false));
             window.addEventListener('mousewheel', this.toggleControls.bind(this, false));
             window.addEventListener('keydown', e => e.code === 'Escape' ? this.toggleControls.bind(this, false) : null);
             window.addEventListener('keydown', e => e.code === 'Tab' ? this.toggleControls.bind(this, false) : null);
@@ -209,7 +216,7 @@ export class Boat {
                 1, 2000
             );
 
-        CTX.setSize(Boat.CAN_W, Boat.CAN_W);
+        CTX.setSize(Boat.CAN_W * CAN_QUALITY, Boat.CAN_W * CAN_QUALITY);
         CTX.setClearColor(0x00ff00, 0);
         this.CAN = CTX.domElement;
 
@@ -321,8 +328,6 @@ export class Boat {
     ) {
         const C = can.CTX;
 
-        _DEBUG_log(horZ);
-
         // Rotate and render modal
         if (this.model) {
             this.model.rotation.x = Boat.MODEL_ROT_X;
@@ -355,14 +360,14 @@ export class Boat {
         if (this.alti > 0) {
             const SIZE = Math.max(0, Math.min(1, this.alti / 7));
             C.save();
-            C.fillStyle = COLOR_TEXT_SHADOW;
-            C.beginPath();
-            C.translate(sx, sy + ((this.alti - 0.75) * Z_UNIT));
-            C.scale(1, 0.5);
-            C.filter = `blur(${2 + (18 * SIZE)}px)`;
-            C.globalAlpha = 1 - (0.4 * SIZE);
-            C.arc(0, 0, ISO_SCALE_LG * (1.5 + (2.5 * SIZE)), 0, Math.PI * 2);
-            C.fill();
+                C.fillStyle = COLOR_TEXT_SHADOW;
+                C.beginPath();
+                C.translate(sx, sy + ((this.alti - 0.75) * Z_UNIT));
+                C.scale(1, 0.5);
+                C.filter = `blur(${2 + (18 * SIZE)}px)`;
+                C.globalAlpha = 1 - (0.4 * SIZE);
+                C.arc(0, 0, ISO_SCALE_LG * (1.5 + (2.5 * SIZE)), 0, Math.PI * 2);
+                C.fill();
             C.restore();
         }
 
@@ -372,7 +377,7 @@ export class Boat {
             .forEach(c => {
                 const
                     DIST_X = sx - c.x,
-                    DIST_Y = sy - c.y;
+                    DIST_Y = (sy + Z_UNIT) - c.y;
 
                 c.x += DIST_X * c.hideFade;
                 c.y += DIST_Y * c.hideFade;
@@ -402,13 +407,13 @@ export class Boat {
                 C.strokeStyle = COLOR_TEXT_L;
                 C.lineWidth = KEY_W * 0.5;
                 C.beginPath();
-                C.arc(
-                    KEY_W, KEY_W * -3,
-                    KEY_W * 1.5,
-                    (Math.PI * -0.5) + (Math.PI * 2 * this.GUI.timer),
-                    Math.PI * -0.5,
-                    true
-                );
+                    C.arc(
+                        KEY_W, KEY_W * -3,
+                        KEY_W * 1.5,
+                        (Math.PI * -0.5) + (Math.PI * 2 * this.GUI.timer),
+                        Math.PI * -0.5,
+                        true
+                    );
                 C.stroke();
             } else {
                 C.fillStyle = COLOR_TEXT_L;
@@ -520,11 +525,9 @@ export class Boat {
 
     // Z position
     private _moveJump(dT: number) {
-        if (this.surface !== eSurface.Air) {
-            this.fP.z +=
-                (this.winState ? Boat.DP_JUMP_LG : Boat.DP_JUMP_SM) *
-                (this.surface === eSurface.Land ? 0.5 : 1) / dT;
-        }
+        this.fP.z +=
+            (this.winState || this.touchClick ? Boat.DP_JUMP_LG : Boat.DP_JUMP_SM) *
+            (this.surface === eSurface.Land ? 0.5 : 1) / dT;
     }
 
     // X, Y position
@@ -561,28 +564,32 @@ export class Boat {
 
     // X, Y rotate
     private _moveFlip(isRoll: boolean, anti: boolean) {
-        if (this.surface === eSurface.Air) {
-            if (isRoll) {
-                if (anti && this.dA.x > -Boat.DDA_MAX[eSurface.Air][eRotation.Roll]) {
-                    this.fA.x += Boat.DDA[eSurface.Air][eRotation.Roll];
-                    return;
-                }
-                if (!anti && this.dA.x < Boat.DDA_MAX[eSurface.Air][eRotation.Roll]) {
-                    this.fA.x -= Boat.DDA[eSurface.Air][eRotation.Roll];
-                }
-            } else {
-                if (anti && this.dA.y > -Boat.DDA_MAX[eSurface.Air][eRotation.Flip]) {
-                    this.fA.y -= Boat.DDA[eSurface.Air][eRotation.Flip];
-                    return;
-                }
-                if (!anti && this.dA.y < Boat.DDA_MAX[eSurface.Air][eRotation.Flip]) {
-                    this.fA.y += Boat.DDA[eSurface.Air][eRotation.Flip];
-                }
+        if (isRoll) {
+            if (anti && this.dA.x > -Boat.DDA_MAX[eSurface.Air][eRotation.Roll]) {
+                this.fA.x += Boat.DDA[eSurface.Air][eRotation.Roll] * (this.touchClick ? Boat.DDA_SV : 1);
+                return;
+            }
+            if (!anti && this.dA.x < Boat.DDA_MAX[eSurface.Air][eRotation.Roll]) {
+                this.fA.x -= Boat.DDA[eSurface.Air][eRotation.Roll] * (this.touchClick ? Boat.DDA_SV : 1);
+            }
+        } else {
+            if (anti && this.dA.y > -Boat.DDA_MAX[eSurface.Air][eRotation.Flip]) {
+                this.fA.y -= Boat.DDA[eSurface.Air][eRotation.Flip] * (this.touchClick ? Boat.DDA_SV : 1);
+                return;
+            }
+            if (!anti && this.dA.y < Boat.DDA_MAX[eSurface.Air][eRotation.Flip]) {
+                this.fA.y += Boat.DDA[eSurface.Air][eRotation.Flip] * (this.touchClick ? Boat.DDA_SV : 1);
             }
         }
     }
 
     private _setPositionalForces(dT: number) {
+        // Touch jump
+        if (this.touchClick && this.surface !== eSurface.Air) {
+            this._moveJump(dT);
+            this.touchClick = false;
+        }
+
         if (this.hasControl) {
             // Accelerate
             if (KEYS.up.pressed) {
@@ -592,7 +599,7 @@ export class Boat {
             }
 
             // Jump
-            if (KEYS.space.down) {
+            if (KEYS.space.down && this.surface !== eSurface.Air) {
                 this._moveJump(dT);
             }
         }
@@ -604,6 +611,12 @@ export class Boat {
     }
 
     private _setAngularForces() {
+        // Touch flip
+        if (this.touchClick && this.surface === eSurface.Air) {
+            this._moveFlip(Math.random() < 0.5, Math.random() < 0.5);
+            this.touchClick = false;
+        }
+
         if (this.hasControl) {
             // Z ground rotate
             if (this.surface !== eSurface.Air) {
@@ -629,6 +642,7 @@ export class Boat {
                         this._moveFlip(true, true);
                     }
                 }
+
                 // Turn
                 else {
                     if (KEYS.left.pressed) {

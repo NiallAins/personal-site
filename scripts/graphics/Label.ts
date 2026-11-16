@@ -14,7 +14,9 @@ import {
     DURATION_SH,
     DURATION_TOPIC_BUTTON_DOWN,
     DURATION_TOPIC_BUTTON_UP,
-    DURATION_TOPIC_BUTTON_DELAY
+    DURATION_TOPIC_BUTTON_DELAY,
+    HEIGHT_MAIN_SECTION_BOAT_VS,
+    BOAT_SECTION_SV
 } from "../consts";
 import { eEaseState } from "../types";
 import { Canvas } from "./Canvas";
@@ -134,7 +136,8 @@ export class Label {
                 (SECTION_HEIGHT * 0.5) +
                 (viewportSm ? pageHeight * 0.17 : 0) +
                 (LETTER_HEIGHT * 0.25) +
-                LABEL_ISO_Z;
+                LABEL_ISO_Z +
+                (viewportSm && this.INDEX >= BOAT_SECTION_SV ? HEIGHT_MAIN_SECTION_BOAT_VS * pageHeight : 0);
 
         this.LETTERS.forEach((l, li) => {
             const
