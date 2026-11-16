@@ -153,10 +153,10 @@ export class Label {
         const
             CENTER_X = (this.LETTERS[0].x + this.LETTERS[this.LETTERS.length - 1].x) * 0.5,
             CENTER_Y = (this.LETTERS[0].y + this.LETTERS[this.LETTERS.length - 1].y) * 0.5;
-
-        this.pressAni.onForwardComplete = () => {
-            Splash.createSplash(CENTER_X, CENTER_Y - window.scrollY, 2);
-        }
+        this.pressAni.addEventListener(
+            'forwardcomplete',
+            () => Splash.createSplash(CENTER_X, CENTER_Y - window.scrollY, 2)
+        );
     }
 
     public preRender(isSmallViewport: boolean) {

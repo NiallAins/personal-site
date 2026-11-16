@@ -2,7 +2,7 @@ import { CUBLET_SEEDS } from "../consts";
 import { tPoint2, tPoint3 } from "../types";
 import { Rand, toKebabCase } from "../util";
 import { DATA as CUBLET_PIXELS } from "../../data/images";
-import { isoScale as ISO_SCALE } from "./main";
+import { isoScale as ISO_SCALE, LABELS } from "./main";
 
 export class Cublet {
     public static readonly CUBLETS: Cublet[] = [];
@@ -76,9 +76,13 @@ export class Cublet {
     }
 
     public draw(c: CanvasRenderingContext2D) {
-        const PTS = this._PTS as any as tPoint2[];
+        const
+            PTS = this._PTS as any as tPoint2[],
+            SQUISH = LABELS[this.sectionI].pressAni.value * 0.25;
 
         c.save();
+            c.scale(1, 1 - SQUISH);
+            c.translate(0, SQUISH * ISO_SCALE * this._WIDTH);
             c.beginPath();
                 for (let i = 0; i < 4; i++) {
                     c.lineTo(...PTS[i]);

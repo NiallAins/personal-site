@@ -57,21 +57,23 @@ export let
     labelLetterSpaceIso: number = 1,
     labelLineHeighteIso: number = 1;
 
-
 export function toggleSectionOpen(open: boolean, sectionI: number = -1) {
     clearTimeout(sectionOpenTimeout);
 
     if (open) {
         if (sectionI !== -1) {
-            LABELS[sectionI].pressAni.onBackwardStart = () => {
-                fades[sectionI].play(eEaseState.Forward);
-                LABELS[sectionI].pressAni.onBackwardStart = null;
-
-                fades[sectionI].onForwardComplete = () => {
-                    paused = true;
-                    LABELS[sectionI].pressAni.onForwardComplete = null;
-                }
-            }
+            LABELS[sectionI].pressAni.addEventListener(
+                'backwardstart',
+                () => {
+                    fades[sectionI].addEventListener(
+                        'forwardcomplete',
+                        () => paused = true,
+                        true
+                    );
+                    fades[sectionI].play(eEaseState.Forward);
+                },
+                true
+            );
         }
     } else {
         sectionOpenTimeout = setTimeout(

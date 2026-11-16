@@ -29,6 +29,13 @@ export class Ease {
     private _state: eEaseState = eEaseState.Paused;
     private _stateQueue: eEaseState[] = [];
     private _restarting: boolean = true;
+    private _eventListeners: {
+        id: number,
+        isForward: boolean,
+        isStart: boolean,
+        once: boolean,
+        func: () => void
+    }[] = [];
     private readonly _FRAMES_FORWARD: number;
     private readonly _FRAMES_BACKWARD: number;
     private readonly _FRAMES_DELAY_BEFORE_BACKWARD: number;
@@ -38,11 +45,6 @@ export class Ease {
         forward: tEaseFunc,
         backwards: tEaseFunc
     ];
-
-    public onForwardStart: (() => void) | null = null;
-    public onForwardComplete: (() => void) | null = null;
-    public onBackwardStart: (() => void) | null = null;
-    public onBackwardComplete: (() => void) | null = null;
 
     constructor(
         duration: number | [number, number, number?, number?, boolean?] = 1000,
@@ -107,12 +109,14 @@ export class Ease {
                 this._valueLinear += dT / (IS_FORWARD ? this._FRAMES_FORWARD : this._FRAMES_BACKWARD * -1);
 
                 if (this._restarting) {
-                    // Trigger callback
-                    if (IS_FORWARD) {
-                        this.onForwardStart?.();
-                    } else {
-                        this.onBackwardStart?.();
-                    }
+                    // Trigger callback 
+                    this._eventListeners = this._eventListeners.filter(l => {
+                        if (l.isForward === IS_FORWARD && l.isStart) {
+                            l.func();
+                            return !l.once;
+                        }
+                        return true;
+                    });
                     this._restarting = false;
                 }
 
@@ -122,11 +126,13 @@ export class Ease {
                     (!IS_FORWARD && this._valueLinear <= 0)
                 ) {
                     // Trigger callback
-                    if (IS_FORWARD) {
-                        this.onForwardComplete?.();
-                    } else {
-                        this.onBackwardComplete?.();
-                    }
+                    this._eventListeners = this._eventListeners.filter(l => {
+                        if (l.isForward === IS_FORWARD && !l.isStart) {
+                            l.func();
+                            return !l.once;
+                        }
+                        return true;
+                    });
 
                     // Mod, reverse, or min-max overflow
                     const STATE_ABS = Math.abs(this._state);
@@ -207,7 +213,7 @@ export class Ease {
                 : this._FRAMES_DELAY_BEFORE_FORWARD;
 
         this._state = eEaseState.Paused;
-        this._stateQueue.push(NEXT_STATE);
+        this._stateQueue = [ NEXT_STATE ];
     }
 
     public queue(state: eEaseState) {
@@ -227,6 +233,29 @@ export class Ease {
         this._state *= -1;
         if (this._stateQueue) {
             this._stateQueue = this._stateQueue.map(s => s * -1);
+        }
+    }
+
+    public addEventListener(
+        type: 'forwardstart' | 'forwardcomplete' | 'backwardstart' | 'backwardcomplete',
+        func: () => void,
+        once: boolean = false
+    ): number {
+        const id = Math.max(...this._eventListeners.map(l => l.id)) + 1;
+        this._eventListeners.push({
+            id,
+            isForward: type === 'forwardstart' || type === 'forwardcomplete',
+            isStart: type === 'forwardstart' || type === 'backwardstart',
+            once,
+            func
+        });
+        return id;
+    }
+
+    public removeEventListener(id?: number) {
+        const L = this._eventListeners.findIndex(l => l.id === id);
+        if (L !== -1) {
+            this._eventListeners.splice(L, 1);
         }
     }
 

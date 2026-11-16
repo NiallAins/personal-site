@@ -46,23 +46,6 @@ function moreClick() {
     });
 }
 
-function scrollSnap() {
-    if (window.innerWidth < BREAKPOINT_MOBILE && isMainOpen()) {
-        const
-            SECTION_OFFSET = window.innerHeight,
-            SECTION_H = (HEIGHT_MAIN_SECTION + HEIGHT_MAIN_SECTION_GAP_VS) * window.innerHeight,
-            CURRENT_Y = Math.floor(window.scrollY),
-            TARGET_Y = Math.floor((Math.round((window.scrollY - SECTION_OFFSET) / SECTION_H) * SECTION_H) + SECTION_OFFSET);
-
-        if (CURRENT_Y !== TARGET_Y) {
-            window.scrollTo({
-                top: TARGET_Y,
-                behavior: 'smooth'
-            });
-        }
-    }
-}
-
 async function init() {
     window.onresize = () => onResize();
     EL_HEADER_NAV_MORE.onclick = () => moreClick();
@@ -77,20 +60,13 @@ async function init() {
     initInputs();
     resize(true);
 
-    window.onscrollend = scrollSnap;
-
     window.onhashchange = () => openPageFromUrl();
     openPageFromUrl();
     
     // Hide FOUC
-    window.addEventListener(
-        'load',
-        () => setTimeout(() => document.body.classList.add(CLASS_PAGE_POST_FOUC))
-    );
-    // Show page if onload not triggered with 2000ms
     setTimeout(
         () =>  document.body.classList.add(CLASS_PAGE_POST_FOUC),
-        2000
+        1000
     );
 }
 
