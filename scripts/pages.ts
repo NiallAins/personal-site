@@ -61,6 +61,7 @@ export function initPages() {
                     <#button
                         class="topics__section-button"
                         onclick="${ openPage.bind(null, ePages.Topic, ti, -1, false) }"
+                        ontouchend="${ openPage.bind(null, ePages.Topic, ti, -1, false) }"
                     >
                         ${ topic.title }
                     </button>

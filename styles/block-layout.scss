@@ -115,7 +115,11 @@ $w-layout-pad-bottom: 4.5rem;
     @include viewport(md) {
         @include viewport(0, h-md) {
             &__slot {
-                height: 13rem !important;
+                height: 18rem;
+            }
+
+            #{ greater-than-4-items() } &__slot {
+                height: 13rem;
             }
         }
     }

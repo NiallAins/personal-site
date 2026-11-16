@@ -27,28 +27,38 @@ export class Ease {
     private _valueDelay: number = 0;
     private _delay: number = 0;
     private _state: eEaseState = eEaseState.Paused;
-    private _prevState?: eEaseState;
+    private _nextState: eEaseState | null = null;
     private readonly _FRAMES_FORWARD: number;
     private readonly _FRAMES_BACKWARD: number;
     private readonly _FRAMES_DELAY_FORWARD: number;
     private readonly _FRAMES_DELAY_BACKWARD: number;
+    private readonly _DELAY_START: boolean;
     private readonly _EASE_FUNC: [
         forward: tEaseFunc,
-        forward: tEaseFunc
+        backwards: tEaseFunc
     ];
 
+    public onForwardStart: () => void = () => {};
     public onForwardComplete: () => void = () => {};
+    public onBackwardStart: () => void = () => {};
     public onBackwardComplete: () => void = () => {};
 
     constructor(
-        duration: number | [number, number, number?, number?] = 1000,
+        duration: number | [number, number, number?, number?, boolean?] = 1000,
         easeType: eEaseType = eEaseType.Ease,
         reverseEase: boolean = false
     ) {
-        this._FRAMES_FORWARD = msToFrames(typeof duration === 'number' ? duration : duration[0]);
-        this._FRAMES_BACKWARD = msToFrames(typeof duration === 'number' ? duration : duration[1]);
-        this._FRAMES_DELAY_FORWARD = msToFrames(typeof duration === 'number' ? 0 : duration[2] || 0);
-        this._FRAMES_DELAY_BACKWARD = msToFrames(typeof duration === 'number' ? 0 : duration[3] || duration[2] || 0);
+        if (typeof duration === 'number') {
+            this._FRAMES_BACKWARD = this._FRAMES_FORWARD = msToFrames(duration);
+            this._FRAMES_DELAY_FORWARD = this._FRAMES_DELAY_BACKWARD = 0;
+            this._DELAY_START = false;
+        } else {
+            this._FRAMES_FORWARD = msToFrames(duration[0]);
+            this._FRAMES_BACKWARD = msToFrames(duration[1]);
+            this._FRAMES_DELAY_FORWARD = msToFrames(duration[2] || 0);
+            this._FRAMES_DELAY_BACKWARD = msToFrames(duration[3] || duration[2] || 0);
+            this._DELAY_START = !!duration[4];
+        }
 
         const
             EASE = Ease.EASE_FUNCS[easeType],
@@ -76,66 +86,83 @@ export class Ease {
     protected step(dT: number) {
         if (this._delay) {
             this._valueDelay += dT / this._delay;
-
+            
             if (this._valueDelay >= 1) {
-                this._valueLinear += this._valueDelay % 1;
-                this.play();
+                if (this._state !== eEaseState.Paused) {
+                    this._valueLinear += this._valueDelay % 1;
+
+                    if (this._state > eEaseState.Paused) {
+                        this.onForwardStart();
+                    } else {
+                        this.onBackwardStart();
+                    }
+                }
+                this._valueDelay = 0;
+                this._delay = 0;
             }
         }
-        
-        if (this._state !== eEaseState.Paused) {             
-            const IS_FORWARD = this._state > eEaseState.Paused;
-            this._valueLinear += dT / (IS_FORWARD ? this._FRAMES_FORWARD : this._FRAMES_BACKWARD * -1);
+
+        if (!this._delay) {
+            if (this._state === eEaseState.Paused && this._nextState) {
+                this.play();
+            }
             
-            if (
-                (IS_FORWARD && this._valueLinear >= 1) ||
-                (!IS_FORWARD && this._valueLinear <= 0)
-            ) {
-                // Mod, reverse, or min-max overflow
-                const STATE_ABS = Math.abs(this._state);
-                if (STATE_ABS >= eEaseState.ForwardReverse) {
-                    this._valueLinear = (IS_FORWARD ? 1 : 0) - this._valueLinear;
-                } else if (STATE_ABS === eEaseState.ForwardLoop) {
-                    this._valueLinear += IS_FORWARD ? 1 : -1;
-                } else {
-                    this._valueLinear = IS_FORWARD ? 1 : 0
-                }
+            if (this._state !== eEaseState.Paused) {
+                const IS_FORWARD = this._state > eEaseState.Paused;
+                this._valueLinear += dT / (IS_FORWARD ? this._FRAMES_FORWARD : this._FRAMES_BACKWARD * -1);
+                
+                // End current state
+                if (
+                    (IS_FORWARD && this._valueLinear >= 1) ||
+                    (!IS_FORWARD && this._valueLinear <= 0)
+                ) {
+                    // Mod, reverse, or min-max overflow
+                    const STATE_ABS = Math.abs(this._state);
+                    if (STATE_ABS >= eEaseState.ForwardReverse) {
+                        this._valueLinear = (IS_FORWARD ? 1 : 0) - this._valueLinear;
+                    } else if (STATE_ABS === eEaseState.ForwardLoop) {
+                        this._valueLinear += IS_FORWARD ? 1 : -1;
+                    } else {
+                        this._valueLinear = IS_FORWARD ? 1 : 0
+                    }
 
-                // Set next state
-                this._state = {
-                    [eEaseState.BackwardReverseLoop]: eEaseState.ForwardReverseLoop,
-                    [eEaseState.BackwardReverse]: eEaseState.Forward,
-                    [eEaseState.BackwardLoop]: eEaseState.BackwardLoop,
-                    [eEaseState.Backward]: eEaseState.Paused,
-                    [eEaseState.Forward]: eEaseState.Paused,
-                    [eEaseState.ForwardLoop]: eEaseState.ForwardLoop,
-                    [eEaseState.ForwardReverse]: eEaseState.Backward,
-                    [eEaseState.ForwardReverseLoop]: eEaseState.BackwardReverseLoop
-                }[this._state]!;
+                    // Set next state
+                    this._state = {
+                        [eEaseState.BackwardReverseLoop]: eEaseState.ForwardReverseLoop,
+                        [eEaseState.BackwardReverse]: eEaseState.Forward,
+                        [eEaseState.BackwardLoop]: eEaseState.BackwardLoop,
+                        [eEaseState.Backward]: eEaseState.Paused,
+                        [eEaseState.Forward]: eEaseState.Paused,
+                        [eEaseState.ForwardLoop]: eEaseState.ForwardLoop,
+                        [eEaseState.ForwardReverse]: eEaseState.Backward,
+                        [eEaseState.ForwardReverseLoop]: eEaseState.BackwardReverseLoop
+                    }[this._state]!;
 
-                if (this._state === eEaseState.Paused) {
-                    this.pause();
-                } else {
+                    // Trigger callback
+                    if (IS_FORWARD) {
+                        this.onForwardComplete();
+                    } else {
+                        this.onBackwardComplete();
+                    }
+
                     // Trigger inter-state delay
                     if (IS_FORWARD && this._FRAMES_DELAY_FORWARD) {
                         this._valueLinear = 1;
                         this._delay = this._FRAMES_DELAY_FORWARD;
-                        this.pause();
                     } else if (!IS_FORWARD && this._FRAMES_DELAY_BACKWARD) {
                         this._valueLinear = 0;
                         this._delay = this._FRAMES_DELAY_BACKWARD;
-                        this.pause();
+                    } else if (this._state !== eEaseState.Paused) {
+                        if (IS_FORWARD) {
+                            this.onBackwardStart();
+                        } else {
+                            this.onForwardStart();
+                        }
                     }
                 }
 
-                if (IS_FORWARD) {
-                    this.onForwardComplete();
-                } else {
-                    this.onBackwardComplete();
-                }
+                this._valueEase = this.easeValue(this._valueLinear, !IS_FORWARD);
             }
-
-            this._valueEase = this.easeValue(this._valueLinear, !IS_FORWARD);
         }
     }
 
@@ -148,34 +175,58 @@ export class Ease {
         return this.easeValue(VALUE);
     }
 
-    public play(state?: eEaseState) {
+    public play(state?: eEaseState, fromStart: boolean = false) {
         this._state = state !== undefined
             ? state
-        : this._prevState == undefined
-            ? eEaseState.Forward
-        : this._prevState === eEaseState.Forward && this._valueLinear === 1
+            : this._nextState !== null
+            ? this._nextState
+            : this._state === eEaseState.Paused && this._valueLinear === 1
             ? eEaseState.Backward
-        : this._prevState === eEaseState.Backward && this._valueLinear === 0
-            ? eEaseState.Forward
-        : this._prevState;
-
-        if (this._prevState === undefined) {
-            this._valueLinear = this._state > eEaseState.Paused ? 0 : 1;
+            : eEaseState.Forward;
+        
+        if (fromStart) {
+            this._valueLinear = this._state < eEaseState.Paused ? 1 : 0;
         }
 
-        this._delay = 0;
-        this._valueDelay = 0;
+        if (
+            this._DELAY_START && (
+                (this._state > 0 && this._valueLinear === 0) ||
+                (this._state < 0 && this._valueLinear === 1)
+            )
+        ) {
+            this._delay = this._state > 0 ? this._FRAMES_FORWARD : this._FRAMES_DELAY_BACKWARD;
+        } else {
+            if (this._state > eEaseState.Paused && this._valueLinear === 0) {
+                this.onForwardStart();
+            } else if (this._state < eEaseState.Paused && this._valueLinear === 1) {
+                this.onBackwardStart();
+            }
+
+            this._nextState = null;
+            
+            // Stop delay if present
+            this._delay = 0;
+            this._valueDelay = 0;
+        }
+    }
+
+    public queue(state: eEaseState) {
+        if (this._state === eEaseState.Paused && !this._delay) {
+            this.play(state);
+        } else {
+            this._nextState = state;
+        }
     }
 
     public pause() {
-        this._prevState = this.state;
+        this._nextState = this._state;
         this._state = eEaseState.Paused;
     }
 
     public reverse() {
         this._state *= -1;
-        if (this._prevState) {
-            this._prevState *= -1;
+        if (this._nextState) {
+            this._nextState *= -1;
         }
     }
 

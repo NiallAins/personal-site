@@ -89,7 +89,6 @@ export function html(
         EL_TEMP = document.createElement('div');
 
     // Flatten array vars
-    // debugger;
     vars = vars.flatMap((v, vi) => {
         if (typeof v === 'object' && !v[0].hasOwnProperty('tagName')) {
             STRS.splice(vi + 1, 0, ...new Array(v.length - 1).fill(''));
@@ -115,7 +114,7 @@ export function html(
                             eventName.replace(/^on/, ''),
                             vars[si] as tHTMLEvent
                         ]);
-                        return `_event=${ quote }${ EVENTS.length - 1}`;
+                        return `_event-${ EVENTS.length - 1 }=${ quote }`;
                     }
                 );
             }
@@ -133,9 +132,11 @@ export function html(
 
     // Apply event listeners
     EVENTS.forEach((e, i) => {
-        const EL = EL_TEMP.querySelector(`[_event="${ i }"]`)!;
+        const
+            ATTR = '_event-' + i,
+            EL = EL_TEMP.querySelector(`[${ ATTR }]`)!;
         EL.addEventListener(...e);
-        EL.removeAttribute('_event');
+        EL.removeAttribute(ATTR);
     });
 
     // Capture elements

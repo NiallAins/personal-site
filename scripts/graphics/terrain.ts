@@ -26,8 +26,8 @@ import {
     labelIsoZ as LABEL_ISO_Z,
     labelDepressZ as LABEL_DEPRESS_Z
 } from "./main";
-import { Boat } from "./Boat";
-// import { _DEBUG_mockBoat as Boat } from "../_debug";
+// import { Boat } from "./Boat";
+import { _DEBUG_mockBoat as Boat } from "../_debug";
 import { _DEBUG_renderBaseIso } from "../_debug";
 
 
@@ -543,15 +543,12 @@ function renderCublet(
     fade: number
 ) {
     const C = can.CTX;
-
-    const DELAY = 0.125;
-    fade = Math.max(0, fade * DELAY) / DELAY;
     
     C.save();
         C.globalAlpha = Math.max(0, 1 - (fade + cube.hideFade));
         C.translate(
             x,
-            y -  (ISO_SCALE * (cube.inSea ? 0.875 : 1.75)) - (Z_UNIT * 40 * Math.max(0, fade - cube.RAND_X * 0.25))
+            y -  (ISO_SCALE * (cube.inSea ? 0.875 : 1.75)) - (Z_UNIT * (window.innerHeight * 0.03) * fade)
         );
         cube.draw(C);
     C.restore();

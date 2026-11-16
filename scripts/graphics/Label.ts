@@ -11,7 +11,10 @@ import {
     WIDTH_STROKE_OUTLINE,
     FONT_FAM_TITLE_PRIMARY,
     FONT_FAM_TITLE_FALLBACK,
-    DURATION_SH
+    DURATION_SH,
+    DURATION_TOPIC_BUTTON_DOWN,
+    DURATION_TOPIC_BUTTON_UP,
+    DURATION_TOPIC_BUTTON_DELAY
 } from "../consts";
 import { eEaseState, eEaseType } from "../types";
 import { Canvas } from "./Canvas";
@@ -26,24 +29,30 @@ export class Label {
     public readonly LETTERS: LabelLetter[];
     public readonly INDEX: number;
 
-    public pressAni: Ease = new Ease([100, 100], eEaseType.Ease, true);
+    public pressAni: Ease = new Ease(
+        [
+            DURATION_TOPIC_BUTTON_DOWN, DURATION_TOPIC_BUTTON_UP,
+            DURATION_TOPIC_BUTTON_DELAY, 0
+        ],
+        eEaseType.Ease, true
+    );
     public hoverAni: Ease = new Ease(DURATION_SH, eEaseType.Ease, true);
 
     constructor(el: HTMLButtonElement, index: number) {
         this.EL = el;
         this.INDEX = index;
 
-        // Touch down animate down
-        // Touch move animate up
-        // Touch click animate up
+        // Keyboard click
+        this.EL.onclick = e => { e.pointerType ? null : this.pressAni.play(eEaseState.ForwardReverse) };
+        
+        // Mouse / touch click
+        this.EL.onmousedown  = this.EL.ontouchstart = () => this.pressAni.play(eEaseState.Forward);
+        this.EL.onmouseup = this.EL.ontouchmove = this.EL.ontouchend = () => setTimeout(() => this.pressAni.queue(eEaseState.Backward));
 
-        this.EL.onclick      = () => this.pressAni.play(eEaseState.ForwardReverse);
-        this.EL.onmousedown  = () => this.pressAni.play(eEaseState.Forward);
+        // Mouse hover
         this.EL.onmouseenter = () => this.hoverAni.play(eEaseState.Forward);
-        this.EL.ontouchstart = () => this.pressAni.play(eEaseState.Forward);
-        this.EL.ontouchmove  = () => this.pressAni.play(eEaseState.Backward);
         this.EL.onmouseleave = () => {
-            this.pressAni.play(eEaseState.Backward);
+            this.pressAni.queue(eEaseState.Backward);
             this.hoverAni.play(eEaseState.Backward);
         };
 

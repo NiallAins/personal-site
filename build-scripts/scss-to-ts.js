@@ -4,16 +4,15 @@
 //   w-page: 80rem -> WIDTH_PAGE: number = 1280
 //
 
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs';
 import { log } from './util.js';
 import { compileString as compileSass } from 'sass';
 
 const
-    PATH_FROM   = 'styles/_vars.scss',
-    PATH_TO_TS  = 'scripts/consts.scss.ts';
+    PATH_FROM  = 'styles/_vars.scss',
+    PATH_TO_TS = 'scripts/consts.scss.ts';
 
 log('Generating consts.scss.ts from vars.scss');
-
 readFile(
     PATH_FROM, 'utf8',
     (_, data) => {
