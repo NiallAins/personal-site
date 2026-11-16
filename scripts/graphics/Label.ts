@@ -62,7 +62,7 @@ export class Label {
         };
         this.EL.ontouchmove = e => {
             if (this.EL.dataset.touchstart) {
-                this.pressAni.queue(eEaseState.Backward);
+                this.pressAni.play(eEaseState.Backward);
                 e.preventDefault();
             }
             delete this.EL.dataset.touchstart;
@@ -72,7 +72,7 @@ export class Label {
         this.EL.onpointerenter = e => e.pointerType === 'touch' ? null : this.hoverAni.play(eEaseState.Forward);
         this.EL.onpointerleave = e => {
             if (e.pointerType !== 'touch') {
-                this.pressAni.queue(eEaseState.Backward);
+                this.pressAni.play(eEaseState.Backward);
                 this.hoverAni.play(eEaseState.Backward);
             }
         };
