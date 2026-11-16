@@ -142,16 +142,15 @@ $c-bg-select:           change($c-text-select, $alpha: 50%);
 // Animation durations
 //
 
-$dur-sh:                  500ms;
+$dur-sh:                   500ms;
 $dur-lg:                  1000ms;
-$dur-page-open:           800ms;
-$dur-topic-button-down:   200ms;
-$dur-topic-button-delay:  400ms;
-$dur-topic-button-up:     75ms;
-$dur-topic-cublet-up:     300ms;
+$dur-page-open:            800ms;
+$dur-topic-button-down:    200ms;
+$dur-topic-button-delay:   300ms;
+$dur-topic-button-up:      100ms;
+$dur-topic-cublet-up:      800ms;
+$dur-topic-cublet-down:   1000ms;
 $dur-main-close-delay: (
-    $dur-topic-button-down +
-    $dur-topic-button-delay +
     $dur-topic-button-up +
     $dur-topic-cublet-up
 );

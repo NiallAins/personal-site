@@ -7,8 +7,7 @@ import {
     HEIGHT_MAIN_SECTION, HEIGHT_MAIN_SECTION_GAP_VS, HEIGHT_MAIN_SECTION_GAP_VL,
     TERRAIN_TYPES, TERRAIN_COLOR_LAND, TERRAIN_SEA_NOISE,
     WIDTH_PAGE_BG_MAX,
-    Y_UNIT_SCALE,
-    X_UNIT_SCALE
+    Y_UNIT_SCALE, X_UNIT_SCALE
 } from "../consts";
 import { Canvas } from "./Canvas";
 import { LabelLetter } from "./Label";
@@ -62,7 +61,8 @@ let
     overshootMaxObj: number,
     landPreRenderDepth: number,
     terrainLayout_sectionFullHeight: number,
-    terrainLayout_offsetY: number;
+    terrainLayout_offsetY: number,
+    showLetterBack: boolean;
 
 
 //
@@ -90,6 +90,7 @@ export function init() {
 }
 
 export function resize(width: number, height: number, viewportSm: boolean, rePreRender: boolean) {
+    showLetterBack = !viewportSm;
     overshootMinSea = (viewportSm ? OVERSHOOT_MIN_SEA_ISO_VS : OVERSHOOT_MIN_SEA_ISO_VL) * ISO_SCALE;
     overshootMaxSea = (viewportSm ? OVERSHOOT_MAX_SEA_ISO_VS : OVERSHOOT_MAX_SEA_ISO_VL) * ISO_SCALE;
     overshootMinObj = (viewportSm ? OVERSHOOT_MIN_OBJ_ISO_VS : OVERSHOOT_MIN_OBJ_ISO_VL) * ISO_SCALE;
@@ -333,7 +334,7 @@ export function render(can: Canvas, fades: number[], t: number, dT: number, isVi
             LETTERS
                 .filter(l => !l.drawen && l.y <= y)
                 .forEach(l => {
-                    renderLetter(can, t, l, fades[l.LABEL.INDEX]);
+                    renderLetter(can, t, l);
                     l.drawen = true;
                 });
         }
@@ -431,15 +432,11 @@ function renderLetter(
     can: Canvas,
     t: number,
     letter: LabelLetter,
-    fade: number
 ) {
-    fade = 0;
     const
         C = can.CTX,
         LABEL = letter.LABEL,
-        LABEL_DEPRESS =
-            (LABEL.pressAni.value * LABEL_DEPRESS_Z) +
-            fade * Z_UNIT * -40,
+        LABEL_DEPRESS = LABEL.pressAni.value * LABEL_DEPRESS_Z,
         HORIZON_Z = getHorizonIsoZ(letter.y),
         HORIZON_Z_LETTER = HORIZON_Z * Z_UNIT * 1.25,
         TERRAIN_Z = getTerrainIsoZ(
@@ -450,8 +447,6 @@ function renderLetter(
         )[2] * Z_UNIT;
     
     C.save();
-        C.globalAlpha = Math.max(0, 1 - fade);
-
         C.translate(
             LABEL_LETTER_WIDTH * -0.5,
             LABEL_LETTER_HEIGHT * -1.5
@@ -482,7 +477,7 @@ function renderLetter(
                 letter.x,
                 letter.y + HORIZON_Z_LETTER - LABEL_ISO_Z + LABEL_DEPRESS
             );
-            let scale = Math.max(-1, 1 - (HORIZON_Z / 6));
+            let scale = Math.max(showLetterBack ? -1 : 0, 1 - (HORIZON_Z / 6));
             C.scale(1, scale);
             can.drawFromCanvas(
                 letter.CAN_FG.CAN,
@@ -543,12 +538,17 @@ function renderCublet(
     fade: number
 ) {
     const C = can.CTX;
+
+    // Add variations to cube launch times and speeds
+    if (fade) {
+        fade = Math.max(0, fade - (cube.RAND_X * 0.125)) * (0.875 + (cube.RAND_Y * 0.25));
+    }
     
     C.save();
-        C.globalAlpha = Math.max(0, 1 - (fade + cube.hideFade));
+        C.globalAlpha = fade ? Math.max(0, 1 - ((fade * 1.1) + cube.hideFade)) : 1;
         C.translate(
             x,
-            y -  (ISO_SCALE * (cube.inSea ? 0.875 : 1.75)) - (Z_UNIT * (window.innerHeight * 0.03) * fade)
+            y - (ISO_SCALE * (cube.inSea ? 0.875 : 1.75)) - (fade * Z_UNIT * 30)
         );
         cube.draw(C);
     C.restore();

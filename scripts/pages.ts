@@ -50,6 +50,10 @@ let
     // When user is linked direct to project page, back button should open main page
     initialLoadOnProject: boolean = false;
 
+export function isMainOpen() {
+    return currentOpenPage === ePages.Main;
+}
+
 export function initPages() {
 
     // Topic pages
@@ -61,7 +65,7 @@ export function initPages() {
                     <#button
                         class="topics__section-button"
                         onclick="${ openPage.bind(null, ePages.Topic, ti, -1, false) }"
-                        ontouchend="${ openPage.bind(null, ePages.Topic, ti, -1, false) }"
+                        ontouchend="${ e => { (e.target as HTMLElement).dataset.touchstart ? openPage(ePages.Topic, ti, -1, false) : null } }"
                     >
                         ${ topic.title }
                     </button>
@@ -213,7 +217,7 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
 
                 toggleGraphicsSectionOpen(true, topicIndex);
                 setLabelSizes(topicIndex);
-                transitionPage(page, currentOpenPage === ePages.Main ? DURATION_MAIN_CLOSE_DELAY : 0);
+                transitionPage(page, currentOpenPage === ePages.Main && !isInitial ? DURATION_MAIN_CLOSE_DELAY : 0);
                 setUrl(PROJECT_DATA[topicIndex].title, isInitial);
             }
         break;

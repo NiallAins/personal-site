@@ -5,12 +5,14 @@ import {
     FONT_FAM_TITLE_PRIMARY, FONT_FAM_TITLE_SRC,
     WIDTH_CANVAS_MAX, HEIGHT_CANVAS_MAX,
     VAR_PAGE_HEIGHT,
-    WINDOW_RESIZE_DEBOUNCE
+    WINDOW_RESIZE_DEBOUNCE,
+    HEIGHT_MAIN_SECTION,
+    HEIGHT_MAIN_SECTION_GAP_VS,
 } from './consts';
 import { loadFont } from './util';
-import { init as initGraphics, setCanvasSize } from './graphics/main';
+import { init as initGraphics, LABELS, setCanvasSize } from './graphics/main';
 import { init as initInputs } from './graphics/Inputs';
-import { initPages, resize as pageResize, openPageFromUrl } from './pages';
+import { initPages, resize as pageResize, openPageFromUrl, isMainOpen } from './pages';
 
 let
     resizeDebounce: number = 0,
@@ -44,6 +46,23 @@ function moreClick() {
     });
 }
 
+function scrollSnap() {
+    if (window.innerWidth < BREAKPOINT_MOBILE && isMainOpen()) {
+        const
+            SECTION_OFFSET = window.innerHeight,
+            SECTION_H = (HEIGHT_MAIN_SECTION + HEIGHT_MAIN_SECTION_GAP_VS) * window.innerHeight,
+            CURRENT_Y = Math.floor(window.scrollY),
+            TARGET_Y = Math.floor((Math.round((window.scrollY - SECTION_OFFSET) / SECTION_H) * SECTION_H) + SECTION_OFFSET);
+
+        if (CURRENT_Y !== TARGET_Y) {
+            window.scrollTo({
+                top: TARGET_Y,
+                behavior: 'smooth'
+            });
+        }
+    }
+}
+
 async function init() {
     window.onresize = () => onResize();
     EL_HEADER_NAV_MORE.onclick = () => moreClick();
@@ -58,10 +77,10 @@ async function init() {
     initInputs();
     resize(true);
 
+    window.onscrollend = scrollSnap;
+
     window.onhashchange = () => openPageFromUrl();
     openPageFromUrl();
-
-
     
     // Hide FOUC
     window.addEventListener(

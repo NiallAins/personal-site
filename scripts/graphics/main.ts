@@ -4,9 +4,8 @@ import {
     ISO_SCALE_LG, ISO_SCALE_SM,
     X_UNIT_SCALE, Y_UNIT_SCALE, Z_UNIT_SCALE, ROW_HEIGHT_SCALE,
     LABEL_DEPRESS_Z_SCALE, LABEL_LETTER_HEIGHT, LABEL_LINE_HEIGHT, LABEL_Z_SCALE,
-    DURATION_TOPIC_BUTTON_DOWN,
-    DURATION_TOPIC_BUTTON_DELAY,
     DURATION_TOPIC_CUBLET_UP,
+    DURATION_TOPIC_CUBLET_DOWN,
 } from "../consts";
 import { Canvas } from "./Canvas";
 import { Splash } from "./Splash";
@@ -66,13 +65,14 @@ export function toggleSectionOpen(open: boolean, sectionI: number = -1) {
         if (sectionI !== -1) {
             LABELS[sectionI].pressAni.onBackwardStart = () => {
                 fades[sectionI].play(eEaseState.Forward);
-                LABELS[sectionI].pressAni.onBackwardStart = () => {};
+                LABELS[sectionI].pressAni.onBackwardStart = null;
+
+                fades[sectionI].onForwardComplete = () => {
+                    paused = true;
+                    LABELS[sectionI].pressAni.onForwardComplete = null;
+                }
             }
         }
-        sectionOpenTimeout = setTimeout(
-            () => paused = true,
-            DURATION_MAIN_CLOSE_DELAY
-        );
     } else {
         sectionOpenTimeout = setTimeout(
             () => { 
@@ -96,7 +96,7 @@ export function init() {
     CAN_SEA.CAN.onclick = e => Splash.createSplash(e.clientX, e.clientY, 2);
     EL_TOPIC_BUTTONS.forEach((el, i) => {
         LABELS.push(new Label(el, i));
-        fades.push(new Ease( DURATION_TOPIC_CUBLET_UP, eEaseType.EaseOut, true));
+        fades.push(new Ease([DURATION_TOPIC_CUBLET_UP, DURATION_TOPIC_CUBLET_DOWN], eEaseType.EaseIn));
     });
     initTerrain();
 

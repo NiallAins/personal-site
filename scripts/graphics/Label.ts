@@ -16,7 +16,7 @@ import {
     DURATION_TOPIC_BUTTON_UP,
     DURATION_TOPIC_BUTTON_DELAY
 } from "../consts";
-import { eEaseState, eEaseType } from "../types";
+import { eEaseState } from "../types";
 import { Canvas } from "./Canvas";
 import { Ease } from "./Ease";
 import { isoScale as ISO_SCALE, labelIsoZ as LABEL_ISO_Z } from "./main";
@@ -32,11 +32,10 @@ export class Label {
     public pressAni: Ease = new Ease(
         [
             DURATION_TOPIC_BUTTON_DOWN, DURATION_TOPIC_BUTTON_UP,
-            DURATION_TOPIC_BUTTON_DELAY, 0
-        ],
-        eEaseType.Ease, true
+            0, DURATION_TOPIC_BUTTON_DELAY
+        ]
     );
-    public hoverAni: Ease = new Ease(DURATION_SH, eEaseType.Ease, true);
+    public hoverAni: Ease = new Ease(DURATION_SH);
 
     constructor(el: HTMLButtonElement, index: number) {
         this.EL = el;
@@ -45,16 +44,40 @@ export class Label {
         // Keyboard click
         this.EL.onclick = e => { e.pointerType ? null : this.pressAni.play(eEaseState.ForwardReverse) };
         
-        // Mouse / touch click
-        this.EL.onmousedown  = this.EL.ontouchstart = () => this.pressAni.play(eEaseState.Forward);
-        this.EL.onmouseup = this.EL.ontouchmove = this.EL.ontouchend = () => setTimeout(() => this.pressAni.queue(eEaseState.Backward));
+        // Mouse click
+        this.EL.onmousedown = () => this.pressAni.play(eEaseState.Forward);
+        this.EL.onmouseup = () => setTimeout(() => this.pressAni.queue(eEaseState.Backward));
+
+        // Touch click
+        this.EL.ontouchstart = () => {
+            this.pressAni.play(eEaseState.Forward);
+            this.EL.dataset.touchstart = 'true';
+        }
+        this.EL.ontouchend = e => {
+            if (this.EL.dataset.touchstart) {
+                setTimeout(() => this.pressAni.queue(eEaseState.Backward));
+                delete this.EL.dataset.touchstart;
+                e.preventDefault();
+            }
+        };
+        this.EL.ontouchmove = e => {
+            if (this.EL.dataset.touchstart) {
+                this.pressAni.queue(eEaseState.Backward);
+                e.preventDefault();
+            }
+            delete this.EL.dataset.touchstart;
+        }
 
         // Mouse hover
-        this.EL.onmouseenter = () => this.hoverAni.play(eEaseState.Forward);
-        this.EL.onmouseleave = () => {
-            this.pressAni.queue(eEaseState.Backward);
-            this.hoverAni.play(eEaseState.Backward);
+        this.EL.onpointerenter = e => e.pointerType === 'touch' ? null : this.hoverAni.play(eEaseState.Forward);
+        this.EL.onpointerleave = e => {
+            if (e.pointerType !== 'touch') {
+                this.pressAni.queue(eEaseState.Backward);
+                this.hoverAni.play(eEaseState.Backward);
+            }
         };
+
+        this.EL.oncontextmenu = e => e.pointerType === 'touch' ? e.preventDefault() : null;
 
         this.EL.setAttribute('aria-label', this.EL.innerText);
         this.EL.innerText = this.EL.innerText.replace(/ /g, '');
