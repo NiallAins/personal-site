@@ -41,6 +41,7 @@ export const
     HEIGHT_MAIN_SECTION_BOAT_VS: number = 0.4,
     HEIGHT_MIN_SEA: number = 0.14,
     HEIGHT_MAIN_ITEM_OFFSET_VS: number = 0.165,
+    BOAT_SECTION_SV: number = 2,
     WIDTH_BLOCK_LABEL_PAD: number = 6,
     WIDTH_STROKE_UNDERLINE: number = 6,
     WIDTH_STROKE_OUTLINE: number = 2,

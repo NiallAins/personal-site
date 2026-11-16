@@ -2,17 +2,17 @@
 @use 'util' as *;
 @use 'mixins' as *;
 
-@mixin set-main-height($gap) {
-    height: to-vh(1 + $gap + (6 * ($h-main-section + $gap)) - 0.125);
+@mixin set-main-height($gap, $h-boat-section) {
+    height: to-vh(1 + $gap + $h-boat-section + (6 * ($h-main-section + $gap)) - 0.125);
 }
 
 .page {
     &--main {
-        @include set-main-height($h-main-section-gap-vl);
+        @include set-main-height($h-main-section-gap-vl, 0);
         overflow: hidden;
         
         @include viewport(mobile) {
-            @include set-main-height($h-main-section-gap-vs);
+            @include set-main-height($h-main-section-gap-vs, $h-main-section-boat-vs);
         }
 
         html:has(&.#{ $cl-page-closing }) {
