@@ -38,7 +38,7 @@ export const
     HEIGHT_MAIN_SECTION: number = 0.4,
     HEIGHT_MAIN_SECTION_GAP_VL: number = 0.3,
     HEIGHT_MAIN_SECTION_GAP_VS: number = 0.35,
-    HEIGHT_MAIN_SECTION_BOAT_VS: number = 0.4,
+    HEIGHT_MAIN_SECTION_BOAT_VS: number = 0.2,
     HEIGHT_MIN_SEA: number = 0.14,
     HEIGHT_MAIN_ITEM_OFFSET_VS: number = 0.165,
     BOAT_SECTION_SV: number = 2,

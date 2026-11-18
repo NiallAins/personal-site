@@ -19,9 +19,11 @@ export enum ePageTag {
     Canvas,
     NodeJS,
     Bash,
-    Stripe,
+    StripeAPI,
     PHP,
-    WebAudio
+    WebAudio,
+    StravaAPI,
+    CameraAPI
 };
 
 export enum eEaseType {

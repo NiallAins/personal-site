@@ -9,6 +9,7 @@ import { Canvas } from './Canvas';
 import { zUnit as Z_UNIT } from './main';
 import { Cublet } from './Cublet';
 import { eKey } from '../types';
+import { arrayFromHex, arrayToColor, easeArray } from '../util';
 
 enum eSurface {
     Sea,
@@ -81,6 +82,10 @@ export class Boat {
     protected static readonly COLLECT_DIST2: number = 5 ** 2;
     public static readonly CAN_CENTER_X = Boat.CAN_W * 0.5;
     public static readonly CAN_CENTER_Y = Boat.CAN_CENTER_X + (Boat.CAN_W * 0.125);
+    protected static readonly GUI_COLOR = COLOR_TEXT_L;
+    protected static readonly GUI_COLOR_ARR = arrayFromHex(Boat.GUI_COLOR);
+    protected static readonly GUI_COLOR_ARR_SUCCESS = [133, 194,  23];
+    protected static readonly GUI_COLOR_ARR_WARNING = [243,  88,  78];
 
     // Planar movement
     protected static DDP = 0.035;
@@ -154,6 +159,7 @@ export class Boat {
     private readonly GUI = {
         fade: 0,
         timer: 1,
+        successFade: 0,
         controlsComplete: false,
         controls: {
             [eKey.ArrowLeft]: 1,
@@ -200,7 +206,7 @@ export class Boat {
                     }
                 }
             });
-            window.addEventListener('click', this.toggleControls.bind(this, false));
+            window.addEventListener('click', e => e.target !== EL_BOAT ? this.toggleControls.bind(this, false) : null);
             window.addEventListener('mousewheel', this.toggleControls.bind(this, false));
             window.addEventListener('keydown', e => e.code === 'Escape' ? this.toggleControls.bind(this, false) : null);
             window.addEventListener('keydown', e => e.code === 'Tab' ? this.toggleControls.bind(this, false) : null);
@@ -268,6 +274,9 @@ export class Boat {
         } else if (this.GUI.fade < 0 && this.GUI.fade > -1) {
             this.GUI.fade -= FADE;
         }
+        if (this.GUI.successFade > 0) {
+            this.GUI.successFade -= FADE * 0.3;
+        }
         if (this.GUI.fade && !this.winState) {
             if (this.GUI.controlsComplete) {
                 this.GUI.timer -= 0.001 * dT;
@@ -300,7 +309,7 @@ export class Boat {
         }
 
         // Dragging cublets
-        if (!this.winState && this.alti < 2) {
+        if (this.GUI.controlsComplete && this.alti < 2 && !this.winState) {
             Cublet.CUBLETS
                 .filter(c => !c.caught)
                 .forEach(c => {
@@ -377,7 +386,7 @@ export class Boat {
             .forEach(c => {
                 const
                     DIST_X = sx - c.x,
-                    DIST_Y = (sy + Z_UNIT) - c.y;
+                    DIST_Y = (sy - (Z_UNIT * 0.5)) - c.y;
 
                 c.x += DIST_X * c.hideFade;
                 c.y += DIST_Y * c.hideFade;
@@ -404,8 +413,13 @@ export class Boat {
 
             if (this.GUI.controlsComplete) {
                 C.globalAlpha = FADE;
-                C.strokeStyle = COLOR_TEXT_L;
                 C.lineWidth = KEY_W * 0.5;
+                C.strokeStyle = arrayToColor(
+                    easeArray(
+                        easeArray(Boat.GUI_COLOR_ARR, Boat.GUI_COLOR_ARR_WARNING, 1 - ((this.GUI.timer - 0.25) / 0.25)),
+                        Boat.GUI_COLOR_ARR_SUCCESS, this.GUI.successFade
+                    )
+                );
                 C.beginPath();
                     C.arc(
                         KEY_W, KEY_W * -3,
@@ -416,7 +430,7 @@ export class Boat {
                     );
                 C.stroke();
             } else {
-                C.fillStyle = COLOR_TEXT_L;
+                C.fillStyle = Boat.GUI_COLOR;
 
                 if (this.GUI.controls.space > 0) {
                     C.globalAlpha = FADE * this.GUI.controls.space;
@@ -820,13 +834,17 @@ export class Boat {
         ) {
             this.hasControl = false;
             this.crashFade -= 0.01;
-            this.GUI.fade = -0.01;
+            if (this.GUI.fade !== 0) {
+                this.GUI.fade = -0.01;
+            }
         } else {
             if (FLIP >= 1 - Boat.CRASH_TOLERANCE) {
                 this.GUI.timer += 0.1;
+                this.GUI.successFade = 1;
             }
             if (ROLL >= 1 - Boat.CRASH_TOLERANCE) {
                 this.GUI.timer += 0.2;
+                this.GUI.successFade = 1;
             }
 
             // Convert y axis half flips to z axis rotation

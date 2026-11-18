@@ -65,6 +65,45 @@ export class Rand {
 
 
 //
+// Array functions
+//
+
+export function easeArray(base: number[], target: number[], amount: number): number[] {
+    amount = Math.max(0, Math.min(1, amount));
+    const
+        L = Math.max(base.length, target.length),
+        C = new Array(L);
+    for (let i = 0; i < L; i++) {
+        const
+            B = base[i] ?? target[i],
+            T = target[i] ?? base[i];
+        C[i] = B - ((B - T) * amount);
+    }
+    return C;
+}
+
+export function arrayFromHex(hex: string): number[] {
+    hex = hex.replace('#', '');
+    const L = hex.length < 5 ? 1 : 2;
+    let arr = [];
+    for (let i = 0; i < hex.length; i += L) {
+        arr.push(parseInt(hex.substring(i, i + L), 16));
+    }
+    return arr;
+}
+
+export function arrayToColor(arr: number[], type = 'rgb'): string {
+    return `${ type }(${
+        arr
+            .map((c, ci) => ci === 3 ? '/ ' + c : c)
+            .join(' ')
+    })`;
+}
+
+
+
+
+//
 // HTML
 //
 

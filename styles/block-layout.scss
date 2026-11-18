@@ -18,12 +18,12 @@ $w-layout-pad-bottom: 4.5rem;
     height: calc(Min(14rem, 56vw));
 }
 
-@mixin layout-2-col {
+@mixin layout-2x2 {
     display: grid;
     grid-template-columns: repeat($w-layout-grid-size-sm, 1fr);
     max-width: $w-layout-sm;
 }
-@mixin slot-2-col {
+@mixin slot-2x2 {
     width: calc(Min(100vw, #{ $w-layout-sm }) / #{ $w-layout-grid-size-sm });
     height: calc(
         ((100svh - #{ $w-layout-pad-top + $w-layout-pad-bottom }) / #{ $w-layout-grid-size-sm }) -
@@ -31,12 +31,25 @@ $w-layout-pad-bottom: 4.5rem;
     );
 }
 
-@mixin layout-3-col {
+@mixin layout-3x2 {
     display: grid;
     grid-template-columns: repeat($w-layout-grid-size-lg, 1fr);
     max-width: $w-layout-lg;
 }
-@mixin slot-3-col {
+@mixin slot-3x2 {
+    width: calc(Min(100vw, #{ $w-layout-lg }) / #{ $w-layout-grid-size-lg });
+    height: calc(
+        ((100svh - #{ $w-layout-pad-top + $w-layout-pad-bottom }) / #{ $w-layout-grid-size-sm }) -
+        (Min(100vw, #{ $w-layout-sm }) / #{ $w-layout-grid-size-sm * 8 })
+    );
+}
+
+@mixin layout-3x3 {
+    display: grid;
+    grid-template-columns: repeat($w-layout-grid-size-lg, 1fr);
+    max-width: $w-layout-lg;
+}
+@mixin slot-3x3 {
     width: calc(Min(100vw, #{ $w-layout-lg }) / #{ $w-layout-grid-size-lg });
     height: calc(
         ((100svh - #{ $w-layout-pad-top + $w-layout-pad-bottom }) / #{ $w-layout-grid-size-lg }) -
@@ -44,8 +57,8 @@ $w-layout-pad-bottom: 4.5rem;
     );
 }
 
-@function greater-than-4-items() {
-    @return '&:has(:nth-child(5))';
+@function more-items-than($i) {
+    @return '&:has(:nth-child(#{ $i + 1}))';
 }
 
 .block-layout {
@@ -81,34 +94,42 @@ $w-layout-pad-bottom: 4.5rem;
     }
 
     @include viewport(md, lg) {
-        @include layout-2-col;
+        @include layout-2x2;
         
         &__slot {
-            @include slot-2-col;
+            @include slot-2x2;
         }
         
-        #{ greater-than-4-items() } {
+        #{ more-items-than(4) } {
             @include layout-flex;
         }
         
-        #{ greater-than-4-items() } &__slot {
+        #{ more-items-than(4) } &__slot {
             @include slot-flex;
         }
     }
 
     @include viewport(lg) {
-        @include layout-2-col;
+        @include layout-2x2;
 
         &__slot {
-            @include slot-2-col;
+            @include slot-2x2;
         }
     
-        #{ greater-than-4-items() } {
-            @include layout-3-col;
+        #{ more-items-than(4) } {
+            @include layout-3x2;
         }
 
-        #{ greater-than-4-items() } &__slot {
-            @include slot-3-col;
+        #{ more-items-than(4) } &__slot {
+            @include slot-3x2;
+        }
+
+        #{ more-items-than(6) } {
+            @include layout-3x3;
+        }
+
+        #{ more-items-than(6) } &__slot {
+            @include slot-3x3;
         }
     }
 
@@ -118,7 +139,7 @@ $w-layout-pad-bottom: 4.5rem;
                 height: 18rem;
             }
 
-            #{ greater-than-4-items() } &__slot {
+            #{ more-items-than(4) } &__slot {
                 height: 13rem;
             }
         }

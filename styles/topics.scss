@@ -20,7 +20,7 @@
         @include viewport(mobile) {
             margin-top: to-vh($h-main-section-gap-vs * 1.025);
 
-            &:nth-child(#{ $boat-section-sv }) {
+            &:nth-child(#{ $boat-section-sv + 1 }) {
                 margin-top: to-vh(($h-main-section-gap-vs * 1.025) + $h-main-section-boat-vs);
             }
         }
