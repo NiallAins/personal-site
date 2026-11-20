@@ -74,7 +74,7 @@ export const
     COLOR_TERRAIN_LAND_3: string = 'hsl(62, 82%, 35%)',
     COLOR_HSL_TERRAIN_LAND_4: [number, number, number, number] = [106, 80, 15, 1],
     COLOR_TERRAIN_LAND_4: string = 'hsl(106, 80%, 15%)',
-    COLOR_TAGS: string = 'hsl(0, 53%, 50%), hsl(180, 53%, 50%), hsl(90, 53%, 50%), hsl(270, 53%, 50%), hsl(45, 53%, 50%), hsl(225, 53%, 50%), hsl(135, 53%, 50%), hsl(315, 53%, 50%)',
+    COLOR_TAGS: string = 'hsl(225, 53%, 50%), hsl(135, 53%, 50%), hsl(315, 53%, 50%), hsl(0, 53%, 50%), hsl(180, 53%, 50%), hsl(90, 53%, 50%), hsl(270, 53%, 50%), hsl(45, 53%, 50%)',
     COLOR_BG_D: string = '#111111',
     COLOR_BG_L: string = '#111128',
     COLOR_TEXT_L: string = '#ffffff',

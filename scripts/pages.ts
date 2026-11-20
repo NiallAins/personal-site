@@ -235,9 +235,29 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
             EL_PROJECT_IMAGE.style.setProperty('--bg-color', DATA_BG[TITLE_KEBAB]);
             currentOpenTopic = topicIndex;
 
+            let
+                iconColor0: number | undefined,
+                iconColor1: number | undefined;
+
+            EL_PROJECT_TAGS.innerHTML = `<span class="project__tags-tag project__tags-tag--year">${ PROJECT.year }</span>`; 
+            EL_PROJECT_TAGS.innerHTML += (PROJECT.tags || [])
+                .map((t, ti) => {
+                    ti === 0
+                        ? iconColor0 = t
+                        : ti === 1
+                        ? iconColor1 = t
+                        : null;
+                    return `<span class="project__tags-tag project__tags-tag--${ t }">${ ePageTag[t] }</span>`
+                })
+                .join('');
+            
+            iconColor0 = iconColor0 ?? 0;
+            iconColor1 = iconColor1 ?? (iconColor0 + 1);
+
             if (PROJECT.linkLive) {
                 EL_PROJECT_LINK_LIVE.href = './' + TITLE_KEBAB;
                 EL_PROJECT_LINK_LIVE.classList.remove(CLASS_PROJECT_LINK_MISSING);
+                EL_PROJECT_LINK_LIVE.dataset['color'] = String(iconColor0);
             } else {
                 EL_PROJECT_LINK_LIVE.classList.add(CLASS_PROJECT_LINK_MISSING);
             }
@@ -245,14 +265,10 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
             if (PROJECT.linkCode) {
                 EL_PROJECT_LINK_CODE.href = PROJECT.linkCode || '#';
                 EL_PROJECT_LINK_CODE.classList.remove(CLASS_PROJECT_LINK_MISSING);
+                EL_PROJECT_LINK_CODE.dataset['color'] = PROJECT.linkLive ? String(iconColor1) : String(iconColor0);
             } else {
                 EL_PROJECT_LINK_CODE.classList.add(CLASS_PROJECT_LINK_MISSING);
             }
-
-            EL_PROJECT_TAGS.innerHTML = `<span class="project__tags-tag project__tags-tag--year">${ PROJECT.year }</span>`; 
-            EL_PROJECT_TAGS.innerHTML += (PROJECT.tags || [])
-                .map(t => `<span class="project__tags-tag project__tags-tag--${ t }">${ ePageTag[t] }</span>`)
-                .join('');
 
             toggleGraphicsSectionOpen(true, topicIndex);
             transitionPage(page, 0, currentOpenPage == ePages.Topic ? DURATION_PROJECT_OPEN_DELAY : 0);

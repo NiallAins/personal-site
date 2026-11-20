@@ -13,16 +13,16 @@ export enum ePages {
 };
 
 export enum ePageTag {
-    VueJS,
-    Javascipt,
     Typescript,
     Canvas,
-    NodeJS,
     Bash,
-    StripeAPI,
+    VueJS,
+    Javascipt,
+    NodeJS,
     PHP,
     WebAudio,
     StravaAPI,
+    StripeAPI,
     CameraAPI
 };
 
