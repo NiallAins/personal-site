@@ -4,13 +4,15 @@ import { BASE_PROD, BASE_DEV } from './base-urls.js';
 
 const
     IS_PROD         = process.argv[2] === 'prod',
+    BASE_URL        = IS_PROD ? BASE_PROD : BASE_DEV,
     PATH_DIST       = 'dist',
     PATH_FROM_HEAD  = 'templates/_head.html',
     PATH_FROM_INDEX = 'templates/index.html',
     PATH_FROM_APP   = 'templates/app.html',
     PATH_FROM_PROJS = 'data/projects.ts',
     PATH_TO_INDEX   = PATH_DIST + '/index.html',
-    PATH_TO_APP     = PATH_DIST + '/{{ title }}/index.html';
+    PATH_TO_APP     = PATH_DIST + '/{{ title }}/index.html',
+    PATH_TO_SITEMAP = PATH_DIST + '/sitemap.txt';
 
 log(`Generating ${ IS_PROD ? 'production ' : ''}templates`);
 
@@ -23,7 +25,7 @@ async function buildTemplates() {
         projects  = await readFile(PATH_FROM_PROJS, 'utf8', (_, data) => data);
 
     headHtml = headHtml
-        .replace('{{ base }}', IS_PROD ? BASE_PROD : BASE_DEV);
+        .replace('{{ base }}', BASE_URL);
     appHtml = appHtml
         .replace(/ *{{ head }}/, headHtml);
     indexHtml = indexHtml
@@ -45,16 +47,28 @@ async function buildTemplates() {
         () => {}
     );
 
+    const SITEMAP = [
+        '',
+        '#experience',
+        '#contact'
+    ];
+
     // Parse project data, then create project iframe files
     JSON
         .parse(projects)
-        .map(topic => topic.projects)
+        .map(topic => {
+            SITEMAP.push('#' + toKebabCase(topic.title));
+            return topic.projects;
+        })
         .flat()
         .filter(p => parseInt(p.year) > 0 && !p.linkDirect)
         .forEach(p => {
             const
                 TITLE_KEBAB = toKebabCase(p.title),
                 PATH = PATH_TO_APP.replace('{{ title }}', TITLE_KEBAB);
+
+            SITEMAP.push(TITLE_KEBAB);
+
             mkdir(
                     PATH.replace(/\/[^\/]*$/, ''),
                     { recursive: true }
@@ -69,6 +83,16 @@ async function buildTemplates() {
                     () => {}
                 ));
         });
+
+    // Generate sitemap
+    writeFile(
+        PATH_TO_SITEMAP,
+        SITEMAP
+            .map(p => BASE_URL + p)
+            .join('\n'),
+        'utf8',
+        () => {}
+    );
 }
 
 buildTemplates();

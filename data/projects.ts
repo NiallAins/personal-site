@@ -279,7 +279,7 @@ export const PROJECT_DATA: tTopicData[] = [
                     "Mage Hand is a Dungeons & Dragons character app that can track your equipment, stats, and characer details. The app uses the DnD5e API to pull data for every weapon and object in the game, as well as supporting custom objects",
                     "The app is built with VueJS and is designed to be downloaded as a local webapp. It supports localstorage and data caching to allow offline usage."
                 ],
-                "linkLive": "https://niallains.github.io/MageHand/dist",
+                "linkLive": "https://magehand.nialldesign.dev",
                 "linkCode": "https://github.com/NiallAins/MageHand",
                 "linkDirect": true,
                 "tags": [
