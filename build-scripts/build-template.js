@@ -25,7 +25,8 @@ async function buildTemplates() {
         projects  = await readFile(PATH_FROM_PROJS, 'utf8', (_, data) => data);
 
     headHtml = headHtml
-        .replace('{{ base }}', BASE_URL);
+        .replace('{{ base }}', BASE_URL)
+        .replace('{{ environment }}', IS_PROD ? 'production' : 'development');
     appHtml = appHtml
         .replace(/ *{{ head }}/, headHtml);
     indexHtml = indexHtml
@@ -61,7 +62,7 @@ async function buildTemplates() {
             return topic.projects;
         })
         .flat()
-        .filter(p => parseInt(p.year) > 0 && !p.linkDirect)
+        .filter(p => parseInt(p.year) > 0 && !p.externalLink)
         .forEach(p => {
             const
                 TITLE_KEBAB = toKebabCase(p.title),

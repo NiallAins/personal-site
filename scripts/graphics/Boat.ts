@@ -1,15 +1,16 @@
 import * as Three from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { _DEBUG_log } from "../_debug";
-import { KEYS, toggleKeyLock } from "./Inputs";
+import { isTouchEvent, KEYS, toggleKeyLock } from "./Inputs";
 import { renderSingleIso, ptToScreen } from "./terrain";
 import { Splash } from './Splash';
-import { CAN_QUALITY, CLASS_BOAT_ACTIVE, COLOR_TEXT_L, COLOR_TEXT_SHADOW, EL_BOAT, INV_45, ISO_SCALE_LG } from '../consts';
+import { BREAKPOINT_MOBILE, CAN_QUALITY, CLASS_BOAT_ACTIVE, COLOR_TEXT_L, COLOR_TEXT_SHADOW, EL_BOAT, INV_45, ISO_SCALE_LG } from '../consts';
 import { Canvas } from './Canvas';
 import { zUnit as Z_UNIT } from './main';
 import { Cublet } from './Cublet';
-import { eKey } from '../types';
+import { eBoatEnd, eKey } from '../types';
 import { arrayFromHex, arrayToColor, easeArray } from '../util';
+import { trackBoatCublet, trackBoatEnd, trackBoatFlip, trackBoatStarted } from '../analytics';
 
 enum eSurface {
     Sea,
@@ -154,6 +155,7 @@ export class Boat {
     private allowControl = false;
     private crashFade = 0;
     private touchClick = false;
+    private wasTouchClick = false;
     private winState = false;
     private readonly CAN: HTMLCanvasElement;
     private readonly GUI = {
@@ -197,8 +199,9 @@ export class Boat {
             EL_BOAT.style.width = (Boat.CAN_W * Boat.BUTTON_SCALE) + 'px';
             EL_BOAT.style.height = (Boat.CAN_W * Boat.BUTTON_SCALE) + 'px';
             EL_BOAT.addEventListener('click', e => {
-                if (e.pointerType === 'touch') {
+                if (isTouchEvent(e)) {
                     this.touchClick = true;
+                    this.wasTouchClick = true;
                 } else {
                     this.toggleControls(true);
                     if (!this.GUI.fade) {
@@ -245,7 +248,7 @@ export class Boat {
         this.initP.y = y;
         this.bounds = bounds;
 
-        this.reset();
+        this._reset();
     }
 
     public step(
@@ -281,6 +284,9 @@ export class Boat {
             if (this.GUI.controlsComplete) {
                 this.GUI.timer -= 0.001 * dT;
                 if (this.GUI.timer <= 0) {
+                    if (this.crashFade === 1) {
+                        trackBoatEnd(this.hasControl ? eBoatEnd.Timeout : eBoatEnd.BlurTimeout);
+                    }
                     this.crashFade -= 0.01;
                     this.hasControl = false;
                     this.GUI.timer = 0;
@@ -293,6 +299,7 @@ export class Boat {
                 }
 
                 if (Object.entries(this.GUI.controls).every(([c, v]) => v <= 0 || c === eKey.ArrowDown)) {
+                    trackBoatStarted();
                     this.GUI.controlsComplete = true;
                     this.GUI.fade = 0.01;
                     this.GUI.timer = 1;
@@ -304,7 +311,7 @@ export class Boat {
         if (this.crashFade < 1) {
             this.crashFade -= FADE * (this.winState ? 0.25 : 0.1);
             if (this.crashFade <= 0) {
-                this.reset(this.winState);
+                this._reset(this.winState);
             }
         }
 
@@ -314,10 +321,12 @@ export class Boat {
                 .filter(c => !c.caught)
                 .forEach(c => {
                     if (((this.p.x - c.isoX) ** 2) + ((this.p.y - c.isoY) ** 2) < Boat.COLLECT_DIST2) {
+                        trackBoatCublet();
                         c.caught = true;
                     }
                 });
             if (Cublet.CUBLETS.every(c => c.caught)) {
+                trackBoatEnd(eBoatEnd.Win);
                 this.winState = true;
                 this.GUI.fade = -0.01;
                 this.dP.z = Boat.DP_JUMP_LG;
@@ -477,6 +486,13 @@ export class Boat {
 
     public toggleControls(state: boolean) {
         this.hasControl = state;
+        if (!this.GUI.controlsComplete) {
+            if (!state && this.GUI.fade > 0) {
+                this.GUI.fade = -0.01;
+            } else if (state && this.GUI.fade < 0) {
+                this.GUI.fade = 0.01;
+            }
+        }
         toggleKeyLock(
             [
                 eKey.ArrowUp,
@@ -515,7 +531,7 @@ export class Boat {
 
     private _renderModel = () => { }
 
-    private reset(isQuick: boolean = false) {
+    private _reset(isQuick: boolean = false) {
         this.a = new Vec(0, 0, 0);
 
         if (isQuick) {
@@ -832,6 +848,8 @@ export class Boat {
                 ROLL_MOD > 0.5 - Boat.CRASH_TOLERANCE && ROLL_MOD < 0.5 + Boat.CRASH_TOLERANCE
             )
         ) {
+            trackBoatEnd(this.wasTouchClick ? eBoatEnd.TouchCrash : eBoatEnd.Crash);
+            this.wasTouchClick = false;
             this.hasControl = false;
             this.crashFade -= 0.01;
             if (this.GUI.fade !== 0) {
@@ -839,12 +857,18 @@ export class Boat {
             }
         } else {
             if (FLIP >= 1 - Boat.CRASH_TOLERANCE) {
+                trackBoatFlip(false);
                 this.GUI.timer += 0.1;
                 this.GUI.successFade = 1;
             }
             if (ROLL >= 1 - Boat.CRASH_TOLERANCE) {
+                trackBoatFlip(true);
                 this.GUI.timer += 0.2;
                 this.GUI.successFade = 1;
+            }
+            if (this.wasTouchClick) {
+                trackBoatEnd(eBoatEnd.TouchLand);
+                this.wasTouchClick = false
             }
 
             // Convert y axis half flips to z axis rotation

@@ -23,6 +23,7 @@ import { renderFrame, toggleSectionOpen as toggleGraphicsSectionOpen } from "./g
 import { html, toKebabCase } from "./util";
 import { DATA_BG } from "../data/images";
 import { ePageTag, ePages } from "./types";
+import { trackProjectCodePage, trackProjectExternalPage } from "./analytics";
 
 const
     PAGE_ELS: { [key in ePages]: HTMLElement } = {
@@ -255,9 +256,14 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
             iconColor1 = iconColor1 ?? (iconColor0 + 1);
 
             if (PROJECT.linkLive) {
-                EL_PROJECT_LINK_LIVE.href = './' + TITLE_KEBAB;
                 EL_PROJECT_LINK_LIVE.classList.remove(CLASS_PROJECT_LINK_MISSING);
                 EL_PROJECT_LINK_LIVE.dataset['color'] = String(iconColor0);
+                if (PROJECT.externalLink) {
+                    EL_PROJECT_LINK_LIVE.href = PROJECT.linkLive;
+                    EL_PROJECT_LINK_LIVE.onclick = trackProjectExternalPage.bind(null, PROJECT.title);
+                } else {
+                    EL_PROJECT_LINK_LIVE.href = './' + TITLE_KEBAB;
+                }
             } else {
                 EL_PROJECT_LINK_LIVE.classList.add(CLASS_PROJECT_LINK_MISSING);
             }
@@ -266,6 +272,7 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
                 EL_PROJECT_LINK_CODE.href = PROJECT.linkCode || '#';
                 EL_PROJECT_LINK_CODE.classList.remove(CLASS_PROJECT_LINK_MISSING);
                 EL_PROJECT_LINK_CODE.dataset['color'] = PROJECT.linkLive ? String(iconColor1) : String(iconColor0);
+                EL_PROJECT_LINK_CODE.onclick = trackProjectCodePage.bind(null, PROJECT.title);
             } else {
                 EL_PROJECT_LINK_CODE.classList.add(CLASS_PROJECT_LINK_MISSING);
             }

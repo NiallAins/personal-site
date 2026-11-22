@@ -24,7 +24,7 @@ export const ROUTES: { [key in ePages]?: string } = {
 
 
 //
-// Page dimensions
+// Page
 //
 
 export const

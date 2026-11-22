@@ -1,3 +1,4 @@
+import { BREAKPOINT_MOBILE } from "../consts.scss";
 import { eKey } from "../types";
 
 const
@@ -104,4 +105,9 @@ export function toggleInputListeners(
             delete LISTENERS[NAME];
         }
     });
+}
+export function isTouchEvent(e: PointerEvent): boolean {
+    return e.pointerType
+        ? e.pointerType !== 'mouse'
+        : window.innerWidth < BREAKPOINT_MOBILE;
 }

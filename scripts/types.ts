@@ -1,5 +1,6 @@
 import { Noise } from "./graphics/Noise";
 
+
 //
 // Enums
 //
@@ -55,6 +56,19 @@ export enum eKey {
     Space = 'space'
 };
 
+export enum eAnalyticsEvent {
+    BoatAttempt = 'boat-attempt'
+};
+
+export enum eBoatEnd {
+    Crash = 'crash',
+    Timeout = 'timeout',
+    BlurTimeout = 'blur-timeout',
+    TouchCrash = 'mobile-crash',
+    TouchLand = 'mobile-land',
+    Win = 'win'
+};
+
 
 //
 // Interfaces
@@ -80,7 +94,7 @@ export type tProjectData = {
     desc: string[],
     linkLive?: string,
     linkCode?: string,
-    linkDirect?: boolean,
+    externalLink?: boolean,
     tags?: ePageTag[]
 };
 
@@ -102,7 +116,6 @@ export type tPoint3 = [
 
 export type tEaseFunc = (x: number) => number;
 
-export type tSplash = {};
 export type tColor = [number, number, number, number];
 export type tColorLayers = [number, tColor][];
 export type tTerrainParams = [
@@ -122,4 +135,13 @@ export type tTerrain = {
     color: tColorLayers,
     noiseWidthBase: number,
     noise: Noise
+};
+
+export type tBoatAttempt = {
+    attempt: number,
+    started: boolean,
+    cublets: number,
+    rolls: number,
+    flips: number,
+    end: eBoatEnd
 };

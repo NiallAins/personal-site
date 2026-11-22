@@ -281,7 +281,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 ],
                 "linkLive": "https://magehand.nialldesign.dev",
                 "linkCode": "https://github.com/NiallAins/MageHand",
-                "linkDirect": true,
+                "externalLink": true,
                 "tags": [
                     ePageTag.VueJS
                 ]
@@ -364,7 +364,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 ],
                 "linkLive": "https://pacer.nialldesign.dev/",
                 "linkCode": "https://github.com/NiallAins/running-pace-calculator",
-                "linkDirect": true,
+                "externalLink": true,
                 "tags": [
                     ePageTag.Typescript
                 ]
