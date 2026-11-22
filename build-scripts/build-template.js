@@ -26,7 +26,7 @@ async function buildTemplates() {
 
     headHtml = headHtml
         .replace('{{ base }}', BASE_URL)
-        .replace('{{ environment }}', IS_PROD ? 'production' : 'development');
+        .replace('{{ analyticsTag }}', IS_PROD ? 'env-prod' : 'env-dev');
     appHtml = appHtml
         .replace(/ *{{ head }}/, headHtml);
     indexHtml = indexHtml
