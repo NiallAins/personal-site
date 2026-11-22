@@ -62,6 +62,21 @@ export const PROJECT_DATA: tTopicData[] = [
                 ]
             },
             {
+                "title": "Camera Colour Picker",
+                "year": 2021,
+                "desc": [
+                    "Find the colour name for whatever object your camera ia pointing, or get the colour palette the whole scene.",
+                    "Based on a database of 1,500 specific colour names that I compile from scraping the internet.",
+                ],
+                "linkLive": "https://niallains.github.io/camera-color-picker",
+                "linkCode": "https://github.com/NiallAins/camera-color-picker",
+                "tags": [
+                    ePageTag.Javascipt,
+                    ePageTag.Canvas,
+                    ePageTag.CameraAPI
+                ]
+            },
+            {
                 "title": "NiallDesign.Dev",
                 "year": 2026,
                 "desc": [
@@ -74,7 +89,8 @@ export const PROJECT_DATA: tTopicData[] = [
                     ePageTag.Typescript,
                     ePageTag.Canvas,
                     ePageTag.NodeJS,
-                    ePageTag.Bash
+                    ePageTag.Bash,
+                    ePageTag.UmamiAnalytics
                 ]
             }
         ]
@@ -485,21 +501,6 @@ export const PROJECT_DATA: tTopicData[] = [
                 "tags": [
                     ePageTag.Javascipt,
                     ePageTag.Canvas
-                ]
-            },
-            {
-                "title": "Camera Colour Picker",
-                "year": 2021,
-                "desc": [
-                    "Find the colour name for whatever object your camera ia pointing, or get the colour palette the whole scene.",
-                    "Based on a database of 1,500 specific colour names that I compile from scraping the internet.",
-                ],
-                "linkLive": "https://niallains.github.io/camera-color-picker",
-                "linkCode": "https://github.com/NiallAins/camera-color-picker",
-                "tags": [
-                    ePageTag.Javascipt,
-                    ePageTag.Canvas,
-                    ePageTag.CameraAPI
                 ]
             },
             {

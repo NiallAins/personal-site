@@ -24,6 +24,7 @@ export enum ePageTag {
     WebAudio,
     StravaAPI,
     StripeAPI,
+    UmamiAnalytics,
     CameraAPI
 };
 

@@ -4,6 +4,7 @@
 </head>
 
 <body>
+
     <!--
     ---- Main page
     --->
@@ -12,6 +13,7 @@
         id="page_main"
         class="page--main"
     >
+
         <!--
         ---- Sky canvas
         --->
@@ -120,13 +122,13 @@
                     </a>
                     <a
                         class="cv__header-links-link"
-                        href="mailto:niallainsworth@gmail.com"
+                        href="mailto:{{ email }}"
                     >
                         <span class="
                             cv__header-links-link-icon
                             fa fa-envelope-o
                         "></span>
-                        niallainsworth@gmail.com
+                        {{ email }}
                     </a>
                     <a
                         class="cv__header-links-link"
@@ -403,7 +405,7 @@
             <div class="block-layout__slot">
                 <a
                     class="block-layout__item"
-                    href="mailto:niallainsworth@gmail.com"
+                    href="mailto:{{ email }}"
                 >
                     <div></div>
                     <div
@@ -411,7 +413,7 @@
                         style="--bg-url: url('assets/email-logo.svg')"
                     ></div>
                     <div class="block-layout__item-label block-layout__item-label--sm">
-                        niall&ZeroWidthSpace;ainsworth&ZeroWidthSpace;@gmail.com
+                        {{ emailDisplay }}
                     </div>
                 </a>
             </div>

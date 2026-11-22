@@ -1,6 +1,6 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { log, toKebabCase } from './util.js';
-import { BASE_PROD, BASE_DEV } from './base-urls.js';
+import { BASE_PROD, BASE_DEV, BASE_MAIL } from './base-urls.js';
 
 const
     IS_PROD         = process.argv[2] === 'prod',
@@ -26,12 +26,20 @@ async function buildTemplates() {
 
     headHtml = headHtml
         .replace('{{ base }}', BASE_URL)
-        .replace('{{ analyticsTag }}', IS_PROD ? 'env-prod' : 'env-dev');
+        .replace('{{ analyticsTag }}', IS_PROD ? 'env-prod' : 'env-dev')
+        .replaceAll('{{ email }}', BASE_MAIL),
     appHtml = appHtml
         .replace(/ *{{ head }}/, headHtml);
     indexHtml = indexHtml
         .replace(/ *{{ head }}/, headHtml)
-        .replace('{{ title }}', '');
+        .replace('{{ title }}', '')
+        .replaceAll('{{ email }}', BASE_MAIL)
+        .replaceAll(
+            '{{ emailDisplay }}',
+            BASE_MAIL
+                .replace('niall', 'niall&ZeroWidthSpace;')
+                .replace('@', '&ZeroWidthSpace;@')
+        ),
     projects = projects
         .replace(/\n\s*\/\/.*/g, '')
         .replace(/import .*/, '')
