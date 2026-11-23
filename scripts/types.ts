@@ -22,10 +22,10 @@ export enum ePageTag {
     NodeJS,
     PHP,
     WebAudio,
-    StravaAPI,
+    CameraAPI,
     StripeAPI,
-    UmamiAnalytics,
-    CameraAPI
+    StravaAPI,
+    UmamiAPI
 };
 
 export enum eEaseType {

@@ -90,7 +90,7 @@ export const PROJECT_DATA: tTopicData[] = [
                     ePageTag.Canvas,
                     ePageTag.NodeJS,
                     ePageTag.Bash,
-                    ePageTag.UmamiAnalytics
+                    ePageTag.UmamiAPI
                 ]
             }
         ]

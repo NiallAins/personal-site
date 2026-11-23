@@ -7,6 +7,7 @@ const
     BASE_URL        = IS_PROD ? BASE_PROD : BASE_DEV,
     PATH_DIST       = 'dist',
     PATH_FROM_HEAD  = 'templates/_head.html',
+    PATH_FROM_CV    = 'templates/_cv.html',
     PATH_FROM_INDEX = 'templates/index.html',
     PATH_FROM_APP   = 'templates/app.html',
     PATH_FROM_PROJS = 'data/projects.ts',
@@ -17,30 +18,37 @@ const
 log(`Generating ${ IS_PROD ? 'production ' : ''}templates`);
 
 async function buildTemplates() {
-    // Get template files and project data
+    // Get template files
     let
         headHtml  = await readFile(PATH_FROM_HEAD,  'utf8', (_, data) => data),
         appHtml   = await readFile(PATH_FROM_APP,   'utf8', (_, data) => data),
-        indexHtml = await readFile(PATH_FROM_INDEX, 'utf8', (_, data) => data),
-        projects  = await readFile(PATH_FROM_PROJS, 'utf8', (_, data) => data);
+        cvHtml    = await readFile(PATH_FROM_CV,    'utf8', (_, data) => data),
+        indexHtml = await readFile(PATH_FROM_INDEX, 'utf8', (_, data) => data);
 
     headHtml = headHtml
         .replace('{{ base }}', BASE_URL)
         .replace('{{ analyticsTag }}', IS_PROD ? 'env-prod' : 'env-dev')
-        .replaceAll('{{ email }}', BASE_MAIL),
+        .replaceAll('{{ email }}', BASE_MAIL);
+
     appHtml = appHtml
         .replace(/ *{{ head }}/, headHtml);
+
     indexHtml = indexHtml
         .replace(/ *{{ head }}/, headHtml)
         .replace('{{ title }}', '')
+        .replace('{{ cv }}', cvHtml)
         .replaceAll('{{ email }}', BASE_MAIL)
         .replaceAll(
             '{{ emailDisplay }}',
             BASE_MAIL
                 .replace('niall', 'niall&ZeroWidthSpace;')
                 .replace('@', '&ZeroWidthSpace;@')
-        ),
-    projects = projects
+        );
+
+    // Get project details
+    let projectsJson = await readFile(PATH_FROM_PROJS, 'utf8', (_, data) => data);
+
+    projectsJson = projectsJson
         .replace(/\n\s*\/\/.*/g, '')
         .replace(/import .*/, '')
         .replace(/export .* =/, '')
@@ -64,7 +72,7 @@ async function buildTemplates() {
 
     // Parse project data, then create project iframe files
     JSON
-        .parse(projects)
+        .parse(projectsJson)
         .map(topic => {
             SITEMAP.push('#' + toKebabCase(topic.title));
             return topic.projects;

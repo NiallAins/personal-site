@@ -232,7 +232,7 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
             EL_PROJECT_DESC.innerHTML = PROJECT.desc
                 .map(d => `<p class="project__desc-item">${ d }</p>`)
                 .join('\n');
-            EL_PROJECT_IMAGE.style.setProperty('--bg-url', `url(thumbnails/${TITLE_KEBAB}.png)`);
+            EL_PROJECT_IMAGE.style.setProperty('--bg-url', `url(thumbnails/${ TITLE_KEBAB }.png)`);
             EL_PROJECT_IMAGE.style.setProperty('--bg-color', DATA_BG[TITLE_KEBAB]);
             currentOpenTopic = topicIndex;
 
@@ -259,10 +259,11 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
                 EL_PROJECT_LINK_LIVE.classList.remove(CLASS_PROJECT_LINK_MISSING);
                 EL_PROJECT_LINK_LIVE.dataset['color'] = String(iconColor0);
                 if (PROJECT.externalLink) {
-                    EL_PROJECT_LINK_LIVE.href = PROJECT.linkLive;
+                    EL_PROJECT_LINK_LIVE.href = EL_PROJECT_IMAGE.href = PROJECT.linkLive;
                     EL_PROJECT_LINK_LIVE.onclick = trackProjectExternalPage.bind(null, PROJECT.title);
                 } else {
-                    EL_PROJECT_LINK_LIVE.href = './' + TITLE_KEBAB;
+                    EL_PROJECT_LINK_LIVE.href = EL_PROJECT_IMAGE.href = './' + TITLE_KEBAB;
+                    EL_PROJECT_IMAGE.href = PROJECT.linkLive;
                 }
             } else {
                 EL_PROJECT_LINK_LIVE.classList.add(CLASS_PROJECT_LINK_MISSING);

@@ -52,3 +52,14 @@ Commit and push all changes to non-production branch in GitHub:
   npm run push-deploy "Commit message"
 ```
 This will push all changes to non-production branch, then copy branch `main` to `prod`, build scripts and templates in production mode, then push to Git where changes will be reflected on GitHub Pages site.
+
+
+## Accounts
+
+### SEO
+
+search.google.com
+
+### Analytics
+
+umami.is
