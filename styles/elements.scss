@@ -9,6 +9,7 @@ html {
     font-size: $f-size-base;
     overflow-x: hidden;
     min-height: 100vh;
+    overscroll-behavior: none;
 }
 
 body {

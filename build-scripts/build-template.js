@@ -35,6 +35,7 @@ async function buildTemplates() {
 
     indexHtml = indexHtml
         .replace(/ *{{ head }}/, headHtml)
+        .replace(/{{ description = (.*?) }}/, '$1')
         .replace('{{ title }}', '')
         .replace('{{ cv }}', cvHtml)
         .replaceAll('{{ email }}', BASE_MAIL)
@@ -95,6 +96,7 @@ async function buildTemplates() {
                     appHtml
                         .replace('{{ title }}', p.title + ' |')
                         .replace('{{ title-kebab }}', TITLE_KEBAB)
+                        .replace(/{{ description .*? }}/, p.desc[0])
                         .replace('{{ url }}', p.linkLive),
                     'utf8',
                     () => {}
