@@ -26,7 +26,7 @@ $f-size-h3-vs:           1.875rem;
 $f-size-h4:              1.75rem;
 $f-size-h4-sm:           1.625rem;
 $f-size-bm:              1.125rem;
-$f-size-bs:              0.875rem;
+$f-size-bs:              1rem;
 $f-size-section:         2.75rem;
 $f-size-section-sm:      2rem;
 
@@ -129,14 +129,15 @@ $c-tags: (
     list-to-hsl(( 45, $-c-tag-s, $-c-tag-l))
 );
 
-$c-bg-d:                 #111111;
-$c-bg-l:                 #111128;
-$c-text-l:               #ffffff;
-$c-text-d:               $c-bg-l;
+$c-bg-d:               #111111;
+$c-bg-dl:              #111128;
+$c-bg-l:                 invert($c-bg-d);
+$c-text-l:             #ffffff;
+$c-text-d:               $c-bg-dl;
 $c-text-l-outline-l:     scale($c-terrain-sea, $lightness: -60%, $alpha: 100%);
-$c-text-l-outline-d:     $c-bg-l;
-$c-text-shadow:          #11111188;
-$c-text-select:          #4848c8;
+$c-text-l-outline-d:     $c-bg-dl;
+$c-text-shadow:        #11111188;
+$c-text-select:        #4848c8;
 $c-bg-select:            change($c-text-select, $alpha: 50%);
 
 

@@ -44,7 +44,7 @@ $cv-max: 65rem;
         left: calc(50% - #{ $w-caret });  
         padding: $w-caret;
         border-radius: 100%;
-        background: $c-bg-l;
+        background: $c-bg-dl;
         transition: bottom $dur-lg;
     }
 

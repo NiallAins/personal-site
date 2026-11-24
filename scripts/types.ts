@@ -96,8 +96,12 @@ export type tProjectData = {
     linkLive?: string,
     linkCode?: string,
     externalLink?: boolean,
-    barColor?: string,
-    tags?: ePageTag[]
+    tags?: ePageTag[],
+    appbar?: {
+        light?: boolean,
+        color?: string,
+        minimal?: boolean
+    }
 };
 
 export type tTopicData = {

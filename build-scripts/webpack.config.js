@@ -29,11 +29,11 @@ export default [
     // Project app pages
     {
         entry: {
-            main: './scripts/app.ts',
+            main: './scripts/appbar.ts',
         },
         output: {
             path: path.resolve(DIR, '../dist'),
-            filename: "app-script.js"
+            filename: "appbar-script.js"
         },
         resolve: {
             extensions: ['.js', '.ts']

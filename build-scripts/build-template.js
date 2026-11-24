@@ -9,7 +9,7 @@ const
     PATH_FROM_HEAD  = 'templates/_head.html',
     PATH_FROM_CV    = 'templates/_cv.html',
     PATH_FROM_INDEX = 'templates/index.html',
-    PATH_FROM_APP   = 'templates/app.html',
+    PATH_FROM_APP   = 'templates/appbar.html',
     PATH_FROM_PROJS = 'data/projects.ts',
     PATH_TO_INDEX   = PATH_DIST + '/index.html',
     PATH_TO_APP     = PATH_DIST + '/{{ title }}/index.html',
@@ -35,7 +35,7 @@ async function buildTemplates() {
 
     indexHtml = indexHtml
         .replace(/ *{{ head }}/, headHtml)
-        .replace(/{{ description = (.*?) }}/, '$1')
+        .replace(/{{ desc = (.*?) }}/, '$1')
         .replace('{{ title }}', '')
         .replace('{{ cv }}', cvHtml)
         .replaceAll('{{ email }}', BASE_MAIL)
@@ -97,10 +97,25 @@ async function buildTemplates() {
                         .replace('{{ title }}', p.title + ' |')
                         .replace('{{ title-kebab }}', TITLE_KEBAB)
                         .replace(
-                            /{{ description .*? }}/,
+                            /{{ desc = (.*?) }}/,
                             p.desc[0]
                                 .replace(/<.*?>/g, '')
                                 .replace(/&#x2014;/g, '-')
+                        )
+                        .replace(/{{ barClassLight \? (.*?) }}/, p.appbar?.light ? '$1' : '')
+                        .replace(/{{ barClassMinimal \? (.*?) }}/, p.appbar?.minimal ? '$1' : '')
+                        .replace(
+                            /{{ barColor \? (.*?) }}/,
+                            (_, g0) => p.appbar?.color
+                                ? g0.replace('barColor', p.appbar.color)
+                                : ''
+                        )
+                        .replace('{{ aboutTitle }}', p.title)
+                        .replace(
+                            '{{ aboutDesc }}',
+                            p.desc
+                                .map(d => `<p> ${ d } </p>`)
+                                .join('\n')
                         )
                         .replace('{{ url }}', p.linkLive),
                     'utf8',

@@ -1,7 +1,7 @@
 import {
     CLASS_PAGE_INACTIVE, CLASS_PAGE_CLOSING, CLASS_PAGE_SUB_OPENING,
     DURATION_PAGE_OPEN, DURATION_PROJECT_OPEN_DELAY,
-    COLOR_BG_L,
+    COLOR_BG_DL,
     EL_PAGE_MAIN, EL_HEADER_NAV_LINKS_CONTACT, EL_HEADER_NAV_LINKS_EXPERIENCE, EL_TOPICS,
     EL_PAGE_CLOSES,
     EL_PAGE_CONTACT, EL_PAGE_EXPERIENCE, EL_PAGE_PROJECT, EL_PROJECT_CLOSE, EL_PROJECT_DESC,
@@ -85,7 +85,7 @@ export function initPages() {
                             <div></div>
                             <#div
                                 class="block-layout__item-image"
-                                style="--bg-color: ${ DATA_BG[toKebabCase(project.title)] || COLOR_BG_L }"
+                                style="--bg-color: ${ DATA_BG[toKebabCase(project.title)] || COLOR_BG_DL }"
                             ></div>
                             <h3 class="block-layout__item-label">
                                 <#span class="block-layout__item-label-content">

@@ -131,7 +131,10 @@ $breakpoints: (
 @mixin button-no-underline {
     @include focus-outline;
     
-    padding-bottom: 0.625rem;
+    padding: 0 0 0.625rem;
+    border: none;
+    background: none;
+    cursor: pointer;
     transition:
         box-shadow $dur-sh,
         translate $dur-sh;
@@ -231,7 +234,7 @@ $breakpoints: (
         left: calc(50% - #{ $w-bg });
         padding: $w-bg;
         border-radius: 100%;
-        background-color: $c-bg-l;
+        background-color: $c-bg-dl;
         transition: translate $dur-lg;
         translate: 0 0;
     }
@@ -276,10 +279,10 @@ $breakpoints: (
 @mixin page-background {
     background: linear-gradient(
             $c-bg-d 0,
-            $c-bg-l 75svh,
-            $c-bg-l
+            $c-bg-dl 75svh,
+            $c-bg-dl
         ),
-        $c-bg-l;
+        $c-bg-dl;
 }
 
 @mixin scrollbar {
@@ -289,7 +292,7 @@ $breakpoints: (
         }
         
         &::-webkit-scrollbar-track {
-            background: $c-bg-l;
+            background: $c-bg-dl;
         }
         
         &::-webkit-scrollbar-thumb {
@@ -337,7 +340,7 @@ $breakpoints: (
             z-index: 1;
             background: 
                 var(--bg-url) center / calc(100% - 3rem) no-repeat,
-                var(--bg-color, $c-bg-l);
+                var(--bg-color, $c-bg-dl);
         }
     }
 

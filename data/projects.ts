@@ -16,7 +16,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "linkCode": "https://github.com/NiallAins/Johnny-Cigarette",
                 "tags": [
                     ePageTag.VueJS
-                ]
+                ],
+                "appbar": {
+                    "light": true
+                }
             },
             {
                 "title": "Tiny Painter",
@@ -31,7 +34,11 @@ export const PROJECT_DATA: tTopicData[] = [
                 "tags": [
                     ePageTag.Javascipt,
                     ePageTag.Canvas
-                ]
+                ],
+                "appbar": {
+                    "color": "#c2e0dc",
+                    "light": true
+                }
             },
             {
                 "title": "Tartan Generator",
@@ -59,7 +66,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "tags": [
                     ePageTag.Javascipt,
                     ePageTag.Canvas
-                ]
+                ],
+                "appbar": {
+                    "light": true
+                }
             },
             {
                 "title": "Camera Colour Picker",
@@ -110,7 +120,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "linkCode": "https://github.com/NiallAins/carnegie-hall-chart",
                 "tags": [
                     ePageTag.Javascipt
-                ]
+                ],
+                "appbar": {
+                    "light": true
+                }
             },
             {
                 "title": "Voting Charts",
@@ -124,7 +137,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "tags": [
                     ePageTag.Canvas,
                     ePageTag.Javascipt
-                ]
+                ],
+                "appbar": {
+                    "color": "#000000"
+                }
             },
             {
                 "title": "Every World Cup Performance",
@@ -138,7 +154,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "linkCode": "https://github.com/NiallAins/every-world-cup",
                 "tags": [
                     ePageTag.Javascipt
-                ]
+                ],
+                "appbar": {
+                    "color": "#111111"
+                }
             },
             {
                 "title": "Chart your Strava",
@@ -154,7 +173,10 @@ export const PROJECT_DATA: tTopicData[] = [
                     ePageTag.Typescript,
                     ePageTag.Canvas,
                     ePageTag.StravaAPI
-                ]
+                ],
+                "appbar": {
+                    "color": "#000000"
+                }
             },
             {
                 "title": "English Football Chart",
@@ -169,7 +191,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "tags": [
                     ePageTag.Javascipt,
                     ePageTag.Canvas
-                ]
+                ],
+                "appbar": {
+                    "color": "#222222"
+                }
             }
         ]
     },
@@ -190,7 +215,11 @@ export const PROJECT_DATA: tTopicData[] = [
                     ePageTag.Javascipt,
                     ePageTag.Canvas,
                     ePageTag.WebAudio
-                ]
+                ],
+                "appbar": {
+                    "minimal": true,
+                    "color": "#24242e"
+                }
             },
             {
                 "title": "Clever Keys",
@@ -206,7 +235,10 @@ export const PROJECT_DATA: tTopicData[] = [
                     ePageTag.VueJS,
                     ePageTag.StripeAPI,
                     ePageTag.PHP
-                ]
+                ],
+                "appbar": {
+                    "color": "#222222"
+                }
             },
             {
                 "title": "Every Chord",
@@ -221,7 +253,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "tags": [
                     ePageTag.Javascipt,
                     ePageTag.WebAudio
-                ]
+                ],
+                "appbar": {
+                    "light": true
+                }
             },
             {
                 "title": "TinWhistler",
@@ -235,7 +270,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "linkCode": "https://github.com/NiallAins/tin-whistler",
                 "tags": [
                     ePageTag.Javascipt
-                ]   
+                ],
+                "appbar": {
+                    "light": true
+                }
             },
             {
                 "title": "Musical scale generator",
@@ -250,7 +288,10 @@ export const PROJECT_DATA: tTopicData[] = [
                     ePageTag.Javascipt,
                     ePageTag.Canvas,
                     ePageTag.WebAudio
-                ]
+                ],
+                "appbar": {
+                    "light": true
+                }
             },
             {
                 "title": "The Gibberish Poet",
@@ -265,7 +306,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "linkCode": "https://github.com/NiallAins/gibberish-poet",
                 "tags": [
                     ePageTag.Javascipt
-                ]
+                ],
+                "appbar": {
+                    "light": true
+                }
             }
         ]
     },
@@ -286,7 +330,10 @@ export const PROJECT_DATA: tTopicData[] = [
                     ePageTag.Javascipt,
                     ePageTag.Canvas,
                     ePageTag.WebAudio
-                ]
+                ],
+                "appbar": {
+                    "color": "#111111"
+                }
             },
             {
                 "title": "Mage Hand",
@@ -314,7 +361,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "linkCode": "https://github.com/NiallAins/CrossCreator",
                 "tags": [
                     ePageTag.Javascipt
-                ]
+                ],
+                "appbar": {
+                    "light": true
+                }
             },
             {
                 "title": "Snooker Score UI",
@@ -328,7 +378,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "linkCode": "https://github.com/NiallAins/snooker-score-ui",
                 "tags": [
                     ePageTag.Javascipt
-                ]
+                ],
+                "appbar": {
+                    "light": true
+                }
             }
             // {
             //     "title": "Agent RegX",
@@ -368,7 +421,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "tags": [
                     ePageTag.VueJS,
                     ePageTag.Canvas
-                ]
+                ],
+                "appbar": {
+                    "light": true
+                }
             },
             {
                 "title": "Running Pace Calculator",
@@ -380,10 +436,13 @@ export const PROJECT_DATA: tTopicData[] = [
                 ],
                 "linkLive": "https://pacer.nialldesign.dev/",
                 "linkCode": "https://github.com/NiallAins/running-pace-calculator",
-                // "externalLink": true,
+                "externalLink": true,
                 "tags": [
                     ePageTag.Typescript
-                ]
+                ],
+                "appbar": {
+                    "color": "#e6752e"
+                }
             },
             {
                 "title": "One Googol Animated",
@@ -398,7 +457,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "tags": [
                     ePageTag.Javascipt,
                     ePageTag.Canvas
-                ]
+                ],
+                "appbar": {
+                    "light": true
+                }
             },
             {
                 "title": "Daylight Cycles Animated",
@@ -411,7 +473,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "tags": [
                     ePageTag.Canvas,
                     ePageTag.Javascipt
-                ]
+                ],
+                "appbar": {
+                    "color": "#111111" 
+                }
             },
             {
                 "title": "How Tides Work",
@@ -425,7 +490,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "tags": [
                     ePageTag.Canvas,
                     ePageTag.Javascipt
-                ]
+                ],
+                "appbar": {
+                    "color": "#333333" 
+                }
             },
             {
                 "title": "The Universal Unit Converter",
@@ -451,7 +519,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "linkCode": "https://github.com/NiallAins/big-number-namer",
                 "tags": [
                     ePageTag.Javascipt
-                ]
+                ],
+                "appbar": {
+                    "light": true
+                }
             }
             // {
             //     "title": "Every Body in the Solar System",
@@ -501,7 +572,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "tags": [
                     ePageTag.Javascipt,
                     ePageTag.Canvas
-                ]
+                ],
+                "appbar": {
+                    "color": "#111"
+                }
             },
             {
                 "title": "Region Caching Visualised",
@@ -516,7 +590,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "tags": [
                     ePageTag.Javascipt,
                     ePageTag.Canvas
-                ]
+                ],
+                "appbar": {
+                    "color": "#111"
+                }
             },
             {
                 "title": "Angle Calcs Visualised",
@@ -530,7 +607,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "tags": [
                     ePageTag.Canvas,
                     ePageTag.Javascipt
-                ]
+                ],
+                "appbar": {
+                    "light": true
+                }
             },
             {
                 "title": "Colour Space Compare",
@@ -545,7 +625,10 @@ export const PROJECT_DATA: tTopicData[] = [
                 "tags": [
                     ePageTag.Canvas,
                     ePageTag.Javascipt
-                ]
+                ],
+                "appbar": {
+                    "light": true
+                }
             },
             {
                 "title": "Text Wrap sandbox",
