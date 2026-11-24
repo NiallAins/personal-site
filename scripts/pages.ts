@@ -263,7 +263,6 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
                     EL_PROJECT_LINK_LIVE.onclick = trackProjectExternalPage.bind(null, PROJECT.title);
                 } else {
                     EL_PROJECT_LINK_LIVE.href = EL_PROJECT_IMAGE.href = './' + TITLE_KEBAB;
-                    EL_PROJECT_IMAGE.href = PROJECT.linkLive;
                 }
             } else {
                 EL_PROJECT_LINK_LIVE.classList.add(CLASS_PROJECT_LINK_MISSING);

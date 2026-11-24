@@ -106,9 +106,11 @@ body {
         &-about {
             opacity: 0;
             transition: opacity $dur-sh;
+            pointer-events: none;
 
             &.#{ $cl-page-sub-opening } {
                 opacity: 1;
+                pointer-events: all;
             }
 
             &-scrim {
