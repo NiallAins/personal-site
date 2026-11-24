@@ -96,7 +96,12 @@ async function buildTemplates() {
                     appHtml
                         .replace('{{ title }}', p.title + ' |')
                         .replace('{{ title-kebab }}', TITLE_KEBAB)
-                        .replace(/{{ description .*? }}/, p.desc[0])
+                        .replace(
+                            /{{ description .*? }}/,
+                            p.desc[0]
+                                .replace(/<.*?>/g, '')
+                                .replace(/&#x2014;/g, '-')
+                        )
                         .replace('{{ url }}', p.linkLive),
                     'utf8',
                     () => {}

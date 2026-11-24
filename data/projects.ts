@@ -380,7 +380,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 ],
                 "linkLive": "https://pacer.nialldesign.dev/",
                 "linkCode": "https://github.com/NiallAins/running-pace-calculator",
-                "externalLink": true,
+                // "externalLink": true,
                 "tags": [
                     ePageTag.Typescript
                 ]

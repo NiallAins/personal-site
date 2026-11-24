@@ -96,6 +96,7 @@ export type tProjectData = {
     linkLive?: string,
     linkCode?: string,
     externalLink?: boolean,
+    barColor?: string,
     tags?: ePageTag[]
 };
 
