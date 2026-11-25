@@ -37,7 +37,8 @@ async function buildTemplates() {
         .replaceAll('{{ email }}', BASE_MAIL);
 
     appbarHtml = appbarHtml
-        .replace(/ *{{ head }}/, headHtml);
+        .replace(/ *{{ head }}/, headHtml)
+        .replace('{{ base }}', BASE_URL);
 
     indexHtml = indexHtml
         .replace(/ *{{ head }}/, headHtml)

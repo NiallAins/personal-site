@@ -441,7 +441,9 @@ export const PROJECT_DATA: tTopicData[] = [
                     ePageTag.Typescript
                 ],
                 "appbar": {
-                    "color": "#e6752e"
+                    "color": "#e6752e",
+                    "minimal": true,
+                    "light": true
                 }
             },
             {

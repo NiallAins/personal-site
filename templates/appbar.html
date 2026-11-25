@@ -15,7 +15,7 @@
                 aria-label="nialldesign.dev"
             >
                 <img
-                    src="assets\favicon-sm.svg"
+                    src="{{ base }}assets/favicon-sm.svg"
                     class="appbar__header-icon"
                     alt="niall-design-dev icon"
                     width="32"
@@ -31,7 +31,8 @@
             <a
                 id="appbar_headerLink"
                 class="appbar__header-link"
-                href="./#{{ title-kebab }}"
+                data-base="{{ base }}"
+                href="{{ base }}#{{ title-kebab }}"
             ></a>
         </div>
         <div
