@@ -74,16 +74,16 @@ async function buildTemplates() {
     );
 
     const SITEMAP = [
-        '',
-        '#experience',
-        '#contact'
+        BASE_URL,
+        BASE_URL + '#experience',
+        BASE_URL + '#contact'
     ];
 
     // Parse project data, then create project iframe files,
     // or appbar import script for external apps
     PROJECTS_JSON
         .map(topic => {
-            SITEMAP.push('#' + toKebabCase(topic.title));
+            SITEMAP.push(BASE_URL + '#' + toKebabCase(topic.title));
             return topic.projects;
         })
         .flat()
