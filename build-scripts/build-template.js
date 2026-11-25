@@ -161,12 +161,12 @@ function generateAppBarStandalone(html, css, js, p, title) {
         .match(/<header[\s\S]*<\/header>/m)[0];
     
     return `
-        const STYLE = document.createElement('style');
-        STYLE.innerHTML = \`${ css }\`;
+        const APPBAR_STYLE = document.createElement('style');
+        APPBAR_STYLE.innerHTML = \`${ css }\`;
         document.head.appendChild(STYLE);
 
-        const TEMPLATE = document.createElement('div');
-        TEMPLATE.innerHTML = \`${ html }\`;
+        const APPBAR_TEMPLATE = document.createElement('div');
+        APPBAR_TEMPLATE.innerHTML = \`${ html }\`;
         document.body.prepend(TEMPLATE);
 
         ${ js }
