@@ -163,11 +163,11 @@ function generateAppBarStandalone(html, css, js, p, title) {
     return `
         const APPBAR_STYLE = document.createElement('style');
         APPBAR_STYLE.innerHTML = \`${ css }\`;
-        document.head.appendChild(STYLE);
+        document.head.appendChild(APPBAR_STYLE);
 
         const APPBAR_TEMPLATE = document.createElement('div');
         APPBAR_TEMPLATE.innerHTML = \`${ html }\`;
-        document.body.prepend(TEMPLATE);
+        document.body.prepend(APPBAR_TEMPLATE);
 
         ${ js }
     `
