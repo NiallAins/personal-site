@@ -349,7 +349,11 @@ export const PROJECT_DATA: tTopicData[] = [
                 "externalLink": true,
                 "tags": [
                     ePageTag.VueJS
-                ]
+                ],
+                "appbar": {
+                    "color": "#111111",
+                    "minimal": true
+                }
             },
             {
                 "title": "CrossCreator",
