@@ -10,7 +10,7 @@ import {
 //
 
 const
-    EL_LINK = document.getElementById('app_headerLink') as HTMLAnchorElement,
+    EL_LINK = document.getElementById('appbar_headerLink') as HTMLAnchorElement,
     HAS_BACK = window.sessionStorage.getItem(TOKEN_PREVIOUS_VISIT) === TOKEN_PREVIOUS_VISIT_SET;
 
 EL_LINK.innerText = HAS_BACK ? 'Back to projects' : 'More projects';
@@ -25,9 +25,9 @@ if (HAS_BACK) {
 
 let timeoutAbout = -1;
 const
-    EL_ABOUT_BUTTON = document.getElementById('app_headerAboutButton') as HTMLButtonElement,
-    EL_ABOUT_SCRIM = document.getElementById('app_headerAboutScrim') as HTMLDivElement,
-    EL_ABOUT = document.getElementById('app_headerAbout') as HTMLElement;
+    EL_ABOUT_BUTTON = document.getElementById('appbar_headerAboutButton') as HTMLButtonElement,
+    EL_ABOUT_SCRIM = document.getElementById('appbar_headerAboutScrim') as HTMLDivElement,
+    EL_ABOUT = document.getElementById('appbar_headerAbout') as HTMLElement;
 
 function toggleAbout(close = false) {
     clearTimeout(timeoutAbout);
@@ -57,8 +57,8 @@ EL_ABOUT_SCRIM.onclick = () => toggleAbout(true);
 
 let timeoutClose = -1;
 const 
-    EL_APP = document.getElementById('app') as HTMLDivElement,
-    EL_CLOSE = document.getElementById('app_headerClose') as HTMLButtonElement;
+    EL_APP = document.getElementById('appbar') as HTMLDivElement,
+    EL_CLOSE = document.getElementById('appbar_headerClose') as HTMLButtonElement;
 
 function toggleClose() {
     toggleAbout(true);

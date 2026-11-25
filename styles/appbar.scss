@@ -10,21 +10,19 @@ $z-appbar-about:  next-z();
 $z-appbar:        next-z();
 $z-appbar-close:  next-z();
 
-html,
-body {
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
-    overflow: hidden;
-}
-
-.app {
+.appbar {
     --c-bg: #{ $c-bg-dl };
     --c-fg: #{ $c-text-l };
 
     &--light {
         --c-bg: #{ $c-bg-l };
         --c-fg: #{ $c-text-d };
+    }
+
+    &__body {
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
     }
 
     &__header {

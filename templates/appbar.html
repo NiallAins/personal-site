@@ -3,55 +3,55 @@
     <link rel="stylesheet" href="appbar-style.css" />
 </head>
 
-<body>
+<body class="appbar__body">
     <header
-        id="app"
-        class="app{{ barClassLight ?  app--light }}{{ barClassMinimal ?  app--minimal }}"
+        id="appbar"
+        class="appbar{{ barClassLight ?  appbar--light }}{{ barClassMinimal ?  appbar--minimal }}"
         {{ barColor ?  style="--c-bg: barColor" }}
     >
-        <div class="app__header">
+        <div class="appbar__header">
             <a
                 href="."
                 aria-label="nialldesign.dev"
             >
                 <img
                     src="assets\favicon-sm.svg"
-                    class="app__header-icon"
+                    class="appbar__header-icon"
                     alt="niall-design-dev icon"
                     width="32"
                     height="32"
                 />
             </a>
             <button
-                id="app_headerAboutButton"
-                class="app__header-link app__header-link--about"
+                id="appbar_headerAboutButton"
+                class="appbar__header-link appbar__header-link--about"
             >
                 About
             </button>
             <a
-                id="app_headerLink"
-                class="app__header-link"
+                id="appbar_headerLink"
+                class="appbar__header-link"
                 href="./#{{ title-kebab }}"
             ></a>
         </div>
         <div
-            id="app_headerAbout"
-            class="app__header-about"
+            id="appbar_headerAbout"
+            class="appbar__header-about"
         >
-            <div class="app__header-about-content">
-                <h1 class="app__header-about-content-title">
+            <div class="appbar__header-about-content">
+                <h1 class="appbar__header-about-content-title">
                     {{ aboutTitle }}
                 </h1>
                 {{ aboutDesc }}
             </div>
             <div
-                id="app_headerAboutScrim"
-                class="app__header-about-scrim"
+                id="appbar_headerAboutScrim"
+                class="appbar__header-about-scrim"
             ></div>
         </div>
         <button
-            id="app_headerClose"
-            class="app__header-close"
+            id="appbar_headerClose"
+            class="appbar__header-close"
             aria-label="toggle more projects bar"
         ></button>
     </header>
@@ -59,7 +59,7 @@
     <script src="appbar-script.js"></script>
 
     <iframe
-        class="app__frame"
+        class="appbar__frame"
         src="{{ url }}"
         allow="fullscreen"
         allowfullscreen
