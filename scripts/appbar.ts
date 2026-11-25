@@ -15,7 +15,7 @@ const
 
 EL_LINK.innerText = HAS_BACK ? 'Back to projects' : 'More projects';
 if (HAS_BACK) {
-    EL_LINK.href = EL_LINK.dataset['base']!;
+    EL_LINK.href = EL_LINK.href.replace(/#.*/, '');
 }
 
 

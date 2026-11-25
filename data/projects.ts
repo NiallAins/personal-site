@@ -430,7 +430,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "title": "Running Pace Calculator",
                 "year": 2020,
                 "desc": [
-                    "An app for calculating running distances, times, and paces - in both metres and miles.",
+                    "An app for calculating running distances, times, and paces &#x2014; in both metres and miles.",
                     "I built this for my own use, as every other pace calculator on the internet is shite.",
                     "The app is designed to have maximum funtionality, with minimum elements."
                 ],
@@ -441,7 +441,7 @@ export const PROJECT_DATA: tTopicData[] = [
                     ePageTag.Typescript
                 ],
                 "appbar": {
-                    "color": "#e6752e",
+                    "color": "#ea762d",
                     "minimal": true,
                     "light": true
                 }

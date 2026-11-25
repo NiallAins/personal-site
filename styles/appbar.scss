@@ -10,6 +10,10 @@ $z-appbar-about:  next-z();
 $z-appbar:        next-z();
 $z-appbar-close:  next-z();
 
+body {
+    margin: 0;
+}
+
 .appbar {
     --c-bg: #{ $c-bg-dl };
     --c-fg: #{ $c-text-l };
@@ -20,8 +24,6 @@ $z-appbar-close:  next-z();
     }
 
     &__body {
-        padding: 0;
-        margin: 0;
         overflow: hidden;
     }
 
@@ -32,7 +34,7 @@ $z-appbar-close:  next-z();
         display: flex;
         align-items: start;
         justify-content: start;
-        gap: 1rem;
+        gap: 1.5rem;
         padding: $w-header-pad 1rem;
         background-color: var(--c-bg);
         transition: margin-top $dur-sh;
@@ -41,6 +43,7 @@ $z-appbar-close:  next-z();
             width: $h-header-inner;
             height: $h-header-inner;
             opacity: 0.625;
+            color: var(--c-fg);
         }
 
         &-link {
@@ -215,7 +218,7 @@ $z-appbar-close:  next-z();
         transition: height $dur-sh;
     }
 
-    &.#{ $cl-page-closing } &__frame {
+    &.#{ $cl-page-closing } + &__frame {
         height: 100svh;
     }
 }

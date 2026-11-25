@@ -15,7 +15,7 @@
                 aria-label="nialldesign.dev"
             >
                 <img
-                    src="{{ base }}assets/favicon-sm.svg"
+                    src="{{ base }}icons/favicon-{{ barClassMinimal ? mono-{{ barClassLight ? dark : light }} : sm }}.svg"
                     class="appbar__header-icon"
                     alt="niall-design-dev icon"
                     width="32"
@@ -31,7 +31,6 @@
             <a
                 id="appbar_headerLink"
                 class="appbar__header-link"
-                data-base="{{ base }}"
                 href="{{ base }}#{{ title-kebab }}"
             ></a>
         </div>
@@ -57,8 +56,6 @@
         ></button>
     </header>
 
-    <script src="appbar-script.js"></script>
-
     <iframe
         class="appbar__frame"
         src="{{ url }}"
@@ -66,6 +63,8 @@
         allowfullscreen
         credentialless
     ></iframe>
+
+    <script src="appbar-script.js"></script>
 </body>
 
 </html>

@@ -97,6 +97,7 @@ async function buildTemplates() {
 
             if (!p.externalLink) {
                 SITEMAP.push(BASE_URL + TITLE_KEBAB);
+                SITEMAP.push(BASE_URL + '#' + TITLE_KEBAB);
             } else if (p.linkLive.includes(BASE_DOMAIN)) {
                 SITEMAP.push(p.linkLive);
             }
@@ -134,8 +135,10 @@ function generateAppBarPage(html, p, title) {
                 .replace(/<.*?>/g, '')
                 .replace(/&#x2014;/g, '-')
         )
-        .replace(/{{ barClassLight \? (.*?) }}/, p.appbar?.light ? '$1' : '')
-        .replace(/{{ barClassMinimal \? (.*?) }}/, p.appbar?.minimal ? '$1' : '')
+        .replace(/{{ barClassLight \? ([^:]*?) }}/, p.appbar?.light ? '$1' : '')
+        .replace(/{{ barClassLight \? (.*?) : (.*?) }}/, p.appbar?.light ? '$1' : '$2')
+        .replace(/{{ barClassMinimal \? ([^:]*?) }}/, p.appbar?.minimal ? '$1' : '')
+        .replace(/{{ barClassMinimal \? (.*?) : (.*?) }}/, p.appbar?.minimal ? '$1' : '$2')
         .replace(
             /{{ barColor \? (.*?) }}/,
             (_, g0) => p.appbar?.color
@@ -149,6 +152,7 @@ function generateAppBarPage(html, p, title) {
                 .map(d => `<p> ${ d } </p>`)
                 .join('\n')
         )
+        .replace('{{ base }}', BASE_URL)
         .replace('{{ url }}', p.linkLive);
 }
 
@@ -166,7 +170,8 @@ function generateAppBarStandalone(html, css, js, p, title) {
         document.body.prepend(TEMPLATE);
 
         ${ js }
-    `;
+    `
+        .replace(/\n\s*/g, '');
 }
 
 buildTemplates();
