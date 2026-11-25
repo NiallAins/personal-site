@@ -9,51 +9,53 @@
         class="appbar{{ barClassLight ?  appbar--light }}{{ barClassMinimal ?  appbar--minimal }}"
         {{ barColor ?  style="--c-bg: barColor" }}
     >
-        <div class="appbar__header">
-            <a
-                href="."
-                aria-label="nialldesign.dev"
-            >
-                <img
-                    src="{{ base }}icons/favicon-{{ barClassMinimal ? mono-{{ barClassLight ? dark : light }} : sm }}.svg"
-                    class="appbar__header-icon"
-                    alt="niall-design-dev icon"
-                    width="32"
-                    height="32"
-                />
-            </a>
-            <button
-                id="appbar_headerAboutButton"
-                class="appbar__header-link appbar__header-link--about"
-            >
-                About
-            </button>
-            <a
-                id="appbar_headerLink"
-                class="appbar__header-link"
-                href="{{ base }}#{{ title-kebab }}"
-            ></a>
-        </div>
-        <div
-            id="appbar_headerAbout"
-            class="appbar__header-about"
-        >
-            <div class="appbar__header-about-content">
-                <h1 class="appbar__header-about-content-title">
-                    {{ aboutTitle }}
-                </h1>
-                {{ aboutDesc }}
+        <div class="appbar__container">
+            <div class="appbar__header">
+                <a
+                    href="."
+                    aria-label="nialldesign.dev"
+                >
+                    <img
+                        src="{{ base }}icons/favicon-{{ barClassMinimal ? mono-{{ barClassLight ? dark : light }} : sm }}.svg"
+                        class="appbar__header-icon"
+                        alt="niall-design-dev icon"
+                        width="32"
+                        height="32"
+                    />
+                </a>
+                <button
+                    id="appbar_headerAboutButton"
+                    class="appbar__header-link appbar__header-link--about"
+                >
+                    About
+                </button>
+                <a
+                    id="appbar_headerLink"
+                    class="appbar__header-link"
+                    href="{{ base }}#{{ title-kebab }}"
+                ></a>
             </div>
             <div
-                id="appbar_headerAboutScrim"
-                class="appbar__header-about-scrim"
-            ></div>
+                id="appbar_headerAbout"
+                class="appbar__header-about"
+            >
+                <div class="appbar__header-about-content">
+                    <h1 class="appbar__header-about-content-title">
+                        {{ aboutTitle }}
+                    </h1>
+                    {{ aboutDesc }}
+                </div>
+                <div
+                    id="appbar_headerAboutScrim"
+                    class="appbar__header-about-scrim"
+                ></div>
+            </div>
+            <button
+                id="appbar_headerClose"
+                class="appbar__header-close"
+                aria-label="toggle more projects bar"
+            ></button>
         </div>
-        <button
-            id="appbar_headerClose"
-            class="appbar__header-close"
-            aria-label="toggle more projects bar"
-        ></button>
     </header>
 
     <iframe

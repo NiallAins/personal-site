@@ -97,7 +97,9 @@ async function buildTemplates() {
 
             SITEMAP.push(BASE_URL + '#' + TITLE_KEBAB);
             if (!p.externalLink) {
-                SITEMAP.push(BASE_URL + TITLE_KEBAB);
+                if (p.linkLive) {
+                    SITEMAP.push(BASE_URL + TITLE_KEBAB);
+                }
             } else if (p.linkLive.includes(BASE_DOMAIN)) {
                 SITEMAP.push(p.linkLive);
             }

@@ -11,12 +11,19 @@ $z-appbar:        next-z();
 $z-appbar-close:  next-z();
 
 body {
-    margin: 0;
+    margin: 0 auto;
 }
 
 .appbar {
     --c-bg: #{ $c-bg-dl };
     --c-fg: #{ $c-text-l };
+
+    height: $h-header-outer;
+    transition: height $dur-sh;
+
+    &.#{ $cl-page-closing } {
+        height: 0;
+    }
 
     &--light {
         --c-bg: #{ $c-bg-l };
@@ -25,6 +32,11 @@ body {
 
     &__body {
         overflow: hidden;
+    }
+
+    &__container {
+        position: fixed;
+        inset: 0 0 auto 0;
     }
 
     &__header {
