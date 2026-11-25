@@ -3,55 +3,58 @@
     <link rel="stylesheet" href="appbar-style.css" />
 </head>
 
-<body
-    class="app{{ barClassLight ?  app--light }}{{ barClassMinimal ?  app--minimal }}"
-    {{ barColor ? style="--c-bg: barColor" }}
->
-    <header class="app__header">
-        <a
-            href="."
-            aria-label="nialldesign.dev"
-        >
-            <img
-                src="assets\favicon-sm.svg"
-                class="app__header-icon"
-                alt="niall-design-dev icon"
-                width="32"
-                height="32"
-            />
-        </a>
-        <button
-            id="app_headerAboutButton"
-            class="app__header-link app__header-link--about"
-        >
-            About
-        </button>
-        <a
-            id="app_headerLink"
-            class="app__header-link"
-            href="./#{{ title-kebab }}"
-        ></a>
-    </header>
-    <div
-        id="app_headerAbout"
-        class="app__header-about"
+<body>
+    <header
+        id="app"
+        class="app{{ barClassLight ?  app--light }}{{ barClassMinimal ?  app--minimal }}"
+        {{ barColor ?  style="--c-bg: barColor" }}
     >
-        <div class="app__header-about-content">
-            <h1 class="app__header-about-content-title">
-                {{ aboutTitle }}
-            </h1>
-            {{ aboutDesc }}
+        <div class="app__header">
+            <a
+                href="."
+                aria-label="nialldesign.dev"
+            >
+                <img
+                    src="assets\favicon-sm.svg"
+                    class="app__header-icon"
+                    alt="niall-design-dev icon"
+                    width="32"
+                    height="32"
+                />
+            </a>
+            <button
+                id="app_headerAboutButton"
+                class="app__header-link app__header-link--about"
+            >
+                About
+            </button>
+            <a
+                id="app_headerLink"
+                class="app__header-link"
+                href="./#{{ title-kebab }}"
+            ></a>
         </div>
         <div
-            id="app_headerAboutScrim"
-            class="app__header-about-scrim"
-        ></div>
-    </div>
-    <button
-        id="app_headerClose"
-        class="app__header-close"
-        aria-label="toggle more projects bar"
-    ></button>
+            id="app_headerAbout"
+            class="app__header-about"
+        >
+            <div class="app__header-about-content">
+                <h1 class="app__header-about-content-title">
+                    {{ aboutTitle }}
+                </h1>
+                {{ aboutDesc }}
+            </div>
+            <div
+                id="app_headerAboutScrim"
+                class="app__header-about-scrim"
+            ></div>
+        </div>
+        <button
+            id="app_headerClose"
+            class="app__header-close"
+            aria-label="toggle more projects bar"
+        ></button>
+    </header>
 
     <script src="appbar-script.js"></script>
 

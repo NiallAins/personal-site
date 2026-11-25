@@ -57,19 +57,19 @@ EL_ABOUT_SCRIM.onclick = () => toggleAbout(true);
 
 let timeoutClose = -1;
 const 
-    EL_BODY = document.body,
+    EL_APP = document.getElementById('app') as HTMLDivElement,
     EL_CLOSE = document.getElementById('app_headerClose') as HTMLButtonElement;
 
 function toggleClose() {
     toggleAbout(true);
     clearTimeout(timeoutClose);
-    if (EL_BODY.classList.contains(CLASS_PAGE_CLOSING)) {
-        EL_BODY.classList.remove(CLASS_PAGE_INACTIVE)
-        timeoutClose = setTimeout(() => EL_BODY.classList.remove(CLASS_PAGE_CLOSING));
+    if (EL_APP.classList.contains(CLASS_PAGE_CLOSING)) {
+        EL_APP.classList.remove(CLASS_PAGE_INACTIVE)
+        timeoutClose = setTimeout(() => EL_APP.classList.remove(CLASS_PAGE_CLOSING));
     } else {
-        EL_BODY.classList.add(CLASS_PAGE_CLOSING);
+        EL_APP.classList.add(CLASS_PAGE_CLOSING);
         timeoutClose = setTimeout(
-            () => EL_BODY.classList.add(CLASS_PAGE_INACTIVE),
+            () => EL_APP.classList.add(CLASS_PAGE_INACTIVE),
             DURATION_SH
         );
     }
