@@ -110,11 +110,11 @@ export const PROJECT_DATA: tTopicData[] = [
         "title": "Charts",
         "projects": [
             {
-                "title": "Carnegie Hall chart",
+                "title": "Carnegie Hall Chart",
                 "year": 2026,
                 "desc": [
                     "The Carnegie Hall chart was created in 1941 by E.J. Quimby. As the original only exists online in very low quality, difficult to read images &#x2014; I decided to recreate it in vector form.",
-                    "I kept the orignal layout of the chart, while adding some additional information and redesigning elements to improve readability. As it is built as a HTML page, one functional improvement is the ability to copy values directly form the chart",
+                    "I kept the orignal layout of the chart, while adding some additional information and redesigning elements to improve readability. As it is built with HTML, values can be copied directly form the chart",
                     "The chart is designed to be printed out as an A2 wall chart, but can also be viewed online as a vector graphic, or downloaded as a PNG"
                 ],
                 "linkLive": "https://niallains.github.io/carnegie-hall-chart",
@@ -206,8 +206,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "title": "TinyTone",
                 "year": 2025,
                 "desc": [
-                    "TinyTone is a web app and small library built on JavaScript's Web Audio API. The app allows you to create audio tones by combining audio textures, envelopes, and effects, then export them to use in",
-                    "your projects along with a library to control them.",
+                    "TinyTone is a web app and small library built on JavaScript's Web Audio API. The app allows you to create audio tones by combining audio textures, envelopes, and effects, then export them to use in your projects along with a library to control them.",
                     "I created TinyTone so I could have a dynamic audio library to create effects for other projects &#x2014; as well as an excuse to dive into modular synths and audio production.",
                     "The app has a complex node-and-plug interface implemented in HTML Canvas, as well as several custom range input component to allow user input across multiple effects modules."
                 ],
@@ -639,7 +638,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 }
             },
             {
-                "title": "Text Wrap sandbox",
+                "title": "Text Wrap Sandbox",
                 "year": 2020,
                 "desc": [
                     "There are many, many properites in CSS that can be used to control how text flows, wraps, and overflows.",

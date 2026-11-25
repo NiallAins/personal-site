@@ -14,7 +14,7 @@ const
     HAS_BACK = window.sessionStorage.getItem(TOKEN_PREVIOUS_VISIT) === TOKEN_PREVIOUS_VISIT_SET;
 
 EL_LINK.innerText = HAS_BACK ? 'Back to projects' : 'More projects';
-if (HAS_BACK) {
+if (!HAS_BACK) {
     EL_LINK.href = EL_LINK.href.replace(/#.*/, '');
 }
 
