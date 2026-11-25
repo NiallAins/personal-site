@@ -31,15 +31,13 @@ async function buildTemplates() {
         appbarCss  = await readFile(PATH_FROM_APPBAR_CSS,  'utf8', (_, data) => data),
         appbarJs   = await readFile(PATH_FROM_APPBAR_JS,   'utf8', (_, data) => data);
 
+    // Page headers
     headHtml = headHtml
         .replace('{{ base }}', BASE_URL)
         .replace('{{ analyticsTag }}', IS_PROD ? 'env-prod' : 'env-dev')
         .replaceAll('{{ email }}', BASE_MAIL);
 
-    appbarHtml = appbarHtml
-        .replace(/ *{{ head }}/, headHtml)
-        .replace('{{ base }}', BASE_URL);
-
+    // Index page
     indexHtml = indexHtml
         .replace(/ *{{ head }}/, headHtml)
         .replace(/{{ desc = (.*?) }}/, '$1')
@@ -53,9 +51,19 @@ async function buildTemplates() {
                 .replace('@', '&ZeroWidthSpace;@')
         );
 
+    writeFile(
+        PATH_TO_INDEX,
+        indexHtml,
+        'utf8',
+        () => {}
+    );
+      
+    // Project app pages
+    appbarHtml = appbarHtml
+        .replace(/ *{{ head }}/, headHtml);
+
     // Get project details
     let projects = await readFile(PATH_FROM_PROJS, 'utf8', (_, data) => data);
-
     projects = projects
         .replace(/\n\s*\/\/.*/g, '')
         .replace(/import .*/, '')
@@ -65,14 +73,6 @@ async function buildTemplates() {
         .replace(/];/g, ']');
 
     const PROJECTS_JSON = JSON.parse(projects);
-
-    // Create index.html
-    writeFile(
-        PATH_TO_INDEX,
-        indexHtml,
-        'utf8',
-        () => {}
-    );
 
     const SITEMAP = [
         BASE_URL,
@@ -95,9 +95,9 @@ async function buildTemplates() {
                 PATH = (p.externalLink ? PATH_TO_APPBAR_SCRIPT : PATH_TO_APPBAR_PAGE)
                     .replace('{{ title }}', TITLE_KEBAB);
 
+            SITEMAP.push(BASE_URL + '#' + TITLE_KEBAB);
             if (!p.externalLink) {
                 SITEMAP.push(BASE_URL + TITLE_KEBAB);
-                SITEMAP.push(BASE_URL + '#' + TITLE_KEBAB);
             } else if (p.linkLive.includes(BASE_DOMAIN)) {
                 SITEMAP.push(p.linkLive);
             }
@@ -152,7 +152,7 @@ function generateAppBarPage(html, p, title) {
                 .map(d => `<p> ${ d } </p>`)
                 .join('\n')
         )
-        .replace('{{ base }}', BASE_URL)
+        .replace(/{{ base }}/g, BASE_URL)
         .replace('{{ url }}', p.linkLive);
 }
 
@@ -162,7 +162,7 @@ function generateAppBarStandalone(html, css, js, p, title) {
     
     return `
         const STYLE = document.createElement('style');
-        STYLE.innerHTML = \`${ css }\`
+        STYLE.innerHTML = \`${ css }\`;
         document.head.appendChild(STYLE);
 
         const TEMPLATE = document.createElement('div');
