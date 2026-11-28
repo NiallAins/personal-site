@@ -57,11 +57,12 @@ $cv-max: 65rem;
 }
 
 .cv {
-    $cv-page-pad: 3rem;
+    $cv-page-pad-v: 3.5rem;
+    $cv-page-pad-h: 3rem;
 
-    width: calc(100% - #{ ($w-page-pad + $cv-page-pad) * 2 });
+    width: calc(100% - #{ $cv-page-pad-h * 4 });
     max-width: $cv-max - 6rem;
-    padding: $cv-page-pad $cv-page-pad #{ $cv-page-pad + 1 };
+    padding: $cv-page-pad-v $cv-page-pad-h;
     margin: 3rem auto 1rem;
     font-family: $cv-f-primary;
     font-size: $cv-f-body;
@@ -72,11 +73,29 @@ $cv-max: 65rem;
         text-decoration: underline;
     }
 
+    &__top-column-layout {
+        display: grid;
+        grid-template-columns: 10fr 4fr;
+        align-items: start;
+
+        &-profile {
+            position: relative;
+            top: -0.5rem;
+            right: -0.5rem;
+            aspect-ratio: 1;
+            border-radius: 10%;
+            border-bottom-right-radius: 50%;
+            background: url(assets/profile.jpg);
+            background-size: 131%;
+            background-position: 55% 58%;
+            filter: contrast(0.95) brightness(1.125);
+            scale: -1 1;
+        }
+    }
+
     &__header {
-        text-align: center;
-        
         &-title {
-            margin-bottom: 0.25rem;
+            margin: 0.5rem 0 0;
             font-size: $cv-f-title;
             font-weight: 400;
             line-height: 0.875;
@@ -92,18 +111,18 @@ $cv-max: 65rem;
             font-weight: 600;
             font-family: $cv-f-secondary;
             line-height: 1.5;
+            margin: 0.75rem 0;
         }
 
         &-links {
             display: flex;
             flex-wrap: wrap;
             gap: 0.875rem;
-            justify-content: center;
-            margin-top: 0.25rem;
+            margin-bottom: 2.5rem;
 
             &-link {
                 position: relative;
-                padding-left: 1.125rem;
+                padding-left: 1rem;
 
                 font-weight: 300;
 
@@ -158,6 +177,7 @@ $cv-max: 65rem;
             &-location {
                 display: block;
                 color: $cv-c-primary;
+                margin-bottom: 0.125rem;
             }
             
             &-date {
@@ -242,7 +262,7 @@ $cv-max: 65rem;
     .cv {
         $cv-page-pad: 1.5rem;
     
-        width: calc(100% - #{ ($w-page-pad + $cv-page-pad) * 2 });
+        width: calc(100% - #{ $w-page-pad * 4 });
         max-width: $cv-max - 6rem;
         padding: 3rem $cv-page-pad;
 
@@ -269,14 +289,17 @@ $cv-max: 65rem;
 
 @media print {
     @page {
+        size: A4;
         margin: 0cm !important;
     }
 
     html:has(.experience:not(.#{ $cl-page-inactive })) {
         width: 100%;
+        height: 100%;
         background: $cv-c-bg;
+        print-color-adjust: exact !important;
 
-        body {
+        #page_main {
             height: auto;
         }
 
@@ -287,6 +310,7 @@ $cv-max: 65rem;
         .page,
         .canvas__sky,
         .canvas__sea,
+        .page__close,
         #DEBUG {
             display: none;
         }
@@ -296,6 +320,11 @@ $cv-max: 65rem;
             max-width: unset;
             padding: 0;
             margin: 0;
+        }
+
+        .cv {
+            zoom: 1.125;
+            margin: 0 auto;
         }
 
         .experience {

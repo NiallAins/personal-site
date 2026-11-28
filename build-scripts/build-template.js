@@ -16,8 +16,8 @@ const
     PATH_FROM_APPBAR_HTML = 'templates/appbar.html',
     PATH_FROM_APPBAR_CSS  = 'dist/appbar-style.css',
     PATH_FROM_APPBAR_JS   = 'dist/appbar-script.js',
-    PATH_TO_APPBAR_PAGE   = PATH_DIST + '/{{ title }}/index.html',
-    PATH_TO_APPBAR_SCRIPT = PATH_DIST + '/{{ title }}/script.js';
+    PATH_TO_APPBAR_PAGE   = PATH_DIST + '/{{ titleKebab }}/index.html',
+    PATH_TO_APPBAR_SCRIPT = PATH_DIST + '/{{ titleKebab }}/script.js';
 
 log(`Generating ${ IS_PROD ? 'production ' : ''}templates`);
 
@@ -31,91 +31,117 @@ async function buildTemplates() {
         appbarCss  = await readFile(PATH_FROM_APPBAR_CSS,  'utf8', (_, data) => data),
         appbarJs   = await readFile(PATH_FROM_APPBAR_JS,   'utf8', (_, data) => data);
 
-    // Page headers
-    headHtml = headHtml
-        .replace('{{ base }}', BASE_URL)
-        .replace('{{ analyticsTag }}', IS_PROD ? 'env-prod' : 'env-dev')
-        .replaceAll('{{ email }}', BASE_MAIL);
+    // Assemble html partials
+    indexHtml = interpolate(indexHtml, { headHtml, cvHtml });
+    appbarHtml = interpolate(appbarHtml, { headHtml });
+
+    // Define template variables
+    const TEMPLATE_VARS = {
+        title: '',
+        desc: '',
+        base: BASE_URL,
+        isProd: IS_PROD,
+        email: BASE_MAIL,
+        emailDisplay:  BASE_MAIL
+            .replace('niall', 'niall&ZeroWidthSpace;')
+            .replace('@', '&ZeroWidthSpace;@')
+    };
 
     // Index page
-    indexHtml = indexHtml
-        .replace(/ *{{ head }}/, headHtml)
-        .replace(/{{ desc = (.*?) }}/, '$1')
-        .replace('{{ title }}', '')
-        .replace('{{ cv }}', cvHtml)
-        .replaceAll('{{ email }}', BASE_MAIL)
-        .replaceAll(
-            '{{ emailDisplay }}',
-            BASE_MAIL
-                .replace('niall', 'niall&ZeroWidthSpace;')
-                .replace('@', '&ZeroWidthSpace;@')
-        );
-
     writeFile(
         PATH_TO_INDEX,
-        indexHtml,
+        interpolate(indexHtml, TEMPLATE_VARS),
         'utf8',
         () => {}
     );
-      
-    // Project app pages
-    appbarHtml = appbarHtml
-        .replace(/ *{{ head }}/, headHtml);
 
-    // Get project details
-    let projects = await readFile(PATH_FROM_PROJS, 'utf8', (_, data) => data);
-    projects = projects
-        .replace(/\n\s*\/\/.*/g, '')
-        .replace(/import .*/, '')
-        .replace(/export .* =/, '')
-        .replace(/ePageTag.*/g, '')
-        .replace(/,[\s\n]*\]/g, ']')
-        .replace(/];/g, ']');
+    // Extract project data JSON from ts file
+    const
+        PROJECTS_TS = await readFile(PATH_FROM_PROJS, 'utf8', (_, data) => data),
+        PROJECTS_JSON = JSON.parse(
+            PROJECTS_TS
+                .replace(/\n\s*\/\/.*/g, '')
+                .replace(/import .*/, '')
+                .replace(/export .* =/, '')
+                .replace(/ePageTag.*/g, '')
+                .replace(/,[\s\n]*\]/g, ']')
+                .replace(/];/g, ']')
+        );
 
-    const PROJECTS_JSON = JSON.parse(projects);
-
+    // Add index/# pages to sitemap
     const SITEMAP = [
         BASE_URL,
         BASE_URL + '#experience',
-        BASE_URL + '#contact'
+        BASE_URL + '#contact',
+        ...PROJECTS_JSON.map(topic => BASE_URL + '#' + toKebabCase(topic.title))
     ];
 
-    // Parse project data, then create project iframe files,
-    // or appbar import script for external apps
+    // Create project pages - or standalone appbar import script for non-iframe hosted projects
+    const APPBAR_STANDALONE_JS = `
+        const APPBAR_STYLE = document.createElement('style');
+        APPBAR_STYLE.innerHTML = \`${ appbarCss }\`;
+        document.head.appendChild(APPBAR_STYLE);
+
+        const APPBAR_TEMPLATE = document.createElement('div');
+        APPBAR_TEMPLATE.innerHTML = \`{{ appbarHtml }}\`;
+        document.body.prepend(APPBAR_TEMPLATE);
+
+        ${ appbarJs }
+    `;
     PROJECTS_JSON
-        .map(topic => {
-            SITEMAP.push(BASE_URL + '#' + toKebabCase(topic.title));
-            return topic.projects;
-        })
+        .map(topic => topic.projects)
         .flat()
-        .filter(p => parseInt(p.year) > 0)
         .forEach(p => {
             const
                 TITLE_KEBAB = toKebabCase(p.title),
-                PATH = (p.externalLink ? PATH_TO_APPBAR_SCRIPT : PATH_TO_APPBAR_PAGE)
-                    .replace('{{ title }}', TITLE_KEBAB);
+                PATH = interpolate(
+                    p.externalLink ? PATH_TO_APPBAR_SCRIPT : PATH_TO_APPBAR_PAGE,
+                    { titleKebab: TITLE_KEBAB }
+                );
 
+            // Add page to sitemap
             SITEMAP.push(BASE_URL + '#' + TITLE_KEBAB);
-            if (!p.externalLink) {
-                if (p.linkLive) {
+            if (p.linkLive) {
+                if (!p.externalLink) {
                     SITEMAP.push(BASE_URL + TITLE_KEBAB);
+                } else if (p.linkLive.includes(BASE_DOMAIN)) {
+                    SITEMAP.push(p.linkLive);
                 }
-            } else if (p.linkLive.includes(BASE_DOMAIN)) {
-                SITEMAP.push(p.linkLive);
             }
 
             mkdir(
                     PATH.replace(/\/[^\/]*$/, ''),
                     { recursive: true }
                 )
-                .then(() => writeFile(
-                    PATH,
-                    p.externalLink
-                        ? generateAppBarStandalone(appbarHtml, appbarCss, appbarJs, p, TITLE_KEBAB)
-                        : generateAppBarPage(appbarHtml, p, TITLE_KEBAB),
-                    'utf8',
-                    () => {}
-                ));
+                .then(() => {
+                    const APPBAR_HTML = interpolate(
+                        appbarHtml,
+                        {
+                            ...TEMPLATE_VARS,
+                            title: p.title,
+                            titleKebab: TITLE_KEBAB,
+                            desc: p.desc[0]
+                                .replace(/<.*?>/g, '')
+                                .replace(/&#x2014;/g, '-'),
+                            barClassLight: p.appbar?.light,
+                            barClassMinimal: p.appbar?.minimal,
+                            barColor: p.appbar?.color,
+                            descArr: p.desc,
+                            url: p.linkLive
+                        }
+                    );
+                    return writeFile(
+                        PATH,
+                        p.externalLink
+                            ? interpolate(
+                                APPBAR_STANDALONE_JS,
+                                { appbarHtml: APPBAR_HTML.match(/<header[\s\S]*<\/header>/m)[0] }
+                            )
+                            : APPBAR_HTML,
+                        'utf8',
+                        () => {}
+                    )
+                });
         });
 
     // Generate sitemap
@@ -127,53 +153,21 @@ async function buildTemplates() {
     );
 }
 
-function generateAppBarPage(html, p, title) {
-    return html
-        .replace('{{ title }}', p.title + ' |')
-        .replace('{{ title-kebab }}', title)
-        .replace(
-            /{{ desc = (.*?) }}/,
-            p.desc[0]
-                .replace(/<.*?>/g, '')
-                .replace(/&#x2014;/g, '-')
-        )
-        .replace(/{{ barClassLight \? ([^:]*?) }}/, p.appbar?.light ? '$1' : '')
-        .replace(/{{ barClassLight \? (.*?) : (.*?) }}/, p.appbar?.light ? '$1' : '$2')
-        .replace(/{{ barClassMinimal \? ([^:]*?) }}/, p.appbar?.minimal ? '$1' : '')
-        .replace(/{{ barClassMinimal \? (.*?) : (.*?) }}/, p.appbar?.minimal ? '$1' : '$2')
-        .replace(
-            /{{ barColor \? (.*?) }}/,
-            (_, g0) => p.appbar?.color
-                ? g0.replace('barColor', p.appbar.color)
-                : ''
-        )
-        .replace('{{ aboutTitle }}', p.title)
-        .replace(
-            '{{ aboutDesc }}',
-            p.desc
-                .map(d => `<p> ${ d } </p>`)
-                .join('\n')
-        )
-        .replace(/{{ base }}/g, BASE_URL)
-        .replace('{{ url }}', p.linkLive);
-}
-
-function generateAppBarStandalone(html, css, js, p, title) {
-    html = generateAppBarPage(html, p, title)
-        .match(/<header[\s\S]*<\/header>/m)[0];
-    
-    return `
-        const APPBAR_STYLE = document.createElement('style');
-        APPBAR_STYLE.innerHTML = \`${ css }\`;
-        document.head.appendChild(APPBAR_STYLE);
-
-        const APPBAR_TEMPLATE = document.createElement('div');
-        APPBAR_TEMPLATE.innerHTML = \`${ html }\`;
-        document.body.prepend(APPBAR_TEMPLATE);
-
-        ${ js }
-    `
-        .replace(/\n\s*/g, '');
+function interpolate(html, vars) {
+    const DECLARATIONS = Object
+        .entries(vars)
+        .map(([ key, value ]) => `let ${ key }=${ JSON.stringify(value) };`)
+        .join('');
+    return html.replace(
+        /{{(.*?)}}/g,
+        (m, g1) => {
+            try {
+                return eval(DECLARATIONS + g1);
+            } catch (e) {
+                return m;
+            }
+        }
+    );
 }
 
 buildTemplates();

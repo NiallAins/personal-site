@@ -3,7 +3,7 @@
 
 <head>
     <title>
-        {{ title }} Niall Design/Dev
+        {{ title ? title + ' |' : '' }} Niall Design/Dev
     </title>
 
     <!-- Functional meta -->
@@ -14,7 +14,7 @@
     <!-- Search engine meta -->
     <meta
         name="description"
-        content="{{ desc = Who is Niall? What kind of wonderful projects is he building? And why can't the people stop talking about this hip, new, Irish designer? }}"
+        content="{{ desc || 'Who is Niall? What kind of wonderful projects is he building? And why can\'t the people stop talking about this hip, new, Irish designer?' }}"
     />
     <meta name="language" content="EN" />
     <meta name="keywords" content="niall, design, frontend, software, development, portfolio, irish, animation, data visualisation" />
@@ -26,7 +26,7 @@
         defer
         src="https://cloud.umami.is/script.js"
         data-website-id="8f2f3cc5-be02-4eff-a13a-dcb89cdce7e3"
-        data-tag="{{ analyticsTag }}"
+        data-tag="{{ isProd ? 'env-prod' : 'env-dev' }}"
     ></script>
 
     <!-- Web app -->

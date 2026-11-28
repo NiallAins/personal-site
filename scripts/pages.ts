@@ -216,7 +216,9 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
                 // Lazy load images
                 TOPIC_PAGES_IMAGES[topicIndex].forEach(img => img.el.style.setProperty('--bg-url', img.url));
 
-                toggleGraphicsSectionOpen(true, topicIndex);
+                if (!isInitial) {
+                    toggleGraphicsSectionOpen(true, topicIndex);
+                }
                 setLabelSizes(topicIndex);
                 transitionPage(page, currentOpenPage === ePages.Main && !isInitial ? DURATION_MAIN_CLOSE_DELAY : 0);
                 setUrl(PROJECT_DATA[topicIndex].title, isInitial);
@@ -277,7 +279,9 @@ function openPage(page: ePages, topicIndex: number = -1, projectIndex: number = 
                 EL_PROJECT_LINK_CODE.classList.add(CLASS_PROJECT_LINK_MISSING);
             }
 
-            toggleGraphicsSectionOpen(true, topicIndex);
+            if (!isInitial) {
+                toggleGraphicsSectionOpen(true, topicIndex);
+            }
             transitionPage(page, 0, currentOpenPage == ePages.Topic ? DURATION_PROJECT_OPEN_DELAY : 0);
             setUrl(PROJECT.title, isInitial);
         break;

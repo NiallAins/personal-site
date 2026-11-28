@@ -1,4 +1,4 @@
-import { tTopicData, ePageTag } from "../scripts/types";
+import {tTopicData, ePageTag } from "../scripts/types";
 
 export const PROJECT_DATA: tTopicData[] = [
     {
@@ -8,14 +8,14 @@ export const PROJECT_DATA: tTopicData[] = [
                 "title": "Johnny Cigarette",
                 "year": 2022,
                 "desc": [
-                    "JohnnyCigarette. ie is a portfolio website made for the Irish animator known as Johnny Cigerette.",
+                    "JohnnyCigarette.ie is a portfolio website made for the Irish animator known as Johnny Cigarette.",
                     "I used a minimalistic design for this project, keeping the focus on the work being showcased.",
-                    "The project is built using VueJS with content pulled from a JSON file updated by the artist. I created a video component which can generate YouTube or Vimeo players when urls are detected in the JSON."
+                    "The project is built using VueJs with content pulled from a JSON file updated by the artist. I created a video component which can generate YouTube or Vimeo players when URLs are detected in the JSON."
                 ],
                 "linkLive": "https://johnnycigarette.ie",
                 "linkCode": "https://github.com/NiallAins/Johnny-Cigarette",
                 "tags": [
-                    ePageTag.VueJS
+                    ePageTag.VueJs
                 ],
                 "appbar": {
                     "light": true
@@ -26,7 +26,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "year": 2019,
                 "desc": [
                     "Tiny Painter is a tiny app for tiny paintings.",
-                    "I created this project as part of a coding challenge to &quot; Create an app no larger than 100px &times; 50px quot;",
+                    "I created this project as part of a coding challenge to &quot;Create an app no larger than 100px &times; 50px&quot;",
                     "You can change colours and brush sizes, and save, copy, and download your masterpieces."
                 ],
                 "linkLive": "https://niallains.github.io/tiny-painter",
@@ -92,7 +92,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "desc": [
                     "This website - right here!",
                     "As a showcase for my digital projects, I based the design on an idea of a small world built of large pixels. I contrasted these bulky pixels with fluid animations giving some life to the otherwise inanimate blocks.",
-                    "The visuals are built using HTML Canvas, running a repurposed isometic engine I had created for a previous project. Further animations are acheived using a mixture of JavaScript and SCSS",
+                    "The visuals are built using HTML Canvas, running a repurposed isometric engine I had created for a previous project. Further animations are achieved using a mixture of JavaScript and SCSS",
                     "transitions. Bash scripts are used to keep design variables in-sync across Canvas, Typescript, and SCSS files &#x2014; as well as to simplify development and deployment."
                 ],
                 "linkCode": "https://github.com/NiallAins/personal-site",
@@ -114,7 +114,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "year": 2026,
                 "desc": [
                     "The Carnegie Hall chart was created in 1941 by E.J. Quimby. As the original only exists online in very low quality, difficult to read images &#x2014; I decided to recreate it in vector form.",
-                    "I kept the orignal layout of the chart, while adding some additional information and redesigning elements to improve readability. As it is built with HTML, values can be copied directly form the chart",
+                    "I kept the original layout of the chart, while adding some additional information and redesigning elements to improve readability. As it is built with HTML, values can be copied directly from the chart",
                     "The chart is designed to be printed out as an A2 wall chart, but can also be viewed online as a vector graphic, or downloaded as a PNG"
                 ],
                 "linkLive": "https://niallains.github.io/carnegie-hall-chart",
@@ -131,7 +131,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "year": 2024,
                 "desc": [
                     "I created these charts during the 2024 Irish MEP elections, with the goal of visualising how the Single Transferable Voting system in Ireland works.",
-                    "The charts display each candidates, along with their approximate political alignment - then shows how the votes of each eliminated candiate are distributed."
+                    "The charts display each candidate, along with their approximate political alignment - then shows how the votes of each eliminated candidate are distributed."
                 ],
                 "linkLive": "https://niallains.github.io/mep-election-charts",
                 "linkCode": "https://github.com/NiallAins/mep-election-charts",
@@ -164,7 +164,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "title": "Chart your Strava",
                 "year": 2023,
                 "desc": [
-                    "A collections of some data visualisation experiments based on data from the Strava API.",
+                    "A collection of some data visualisation experiments based on data from the Strava API.",
                     "I've logging about 1000 runs, swims, and cycles on Strava and after all that effort I wanted to create some kind of visualisation that could sum of the years of training.",
                     "My best attempts are presented here - with the option to load data in from your own Strava profile"
                 ],
@@ -185,7 +185,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "desc": [
                     "This chart shows the movement of all 172 clubs who have taken part in the 5 national English football leagues, since the establishment of the Premier League in 1992",
                     "Clubs are coloured according to their ranking at the end of that first season, to show how this ranking has shuffled throughout the years. Any club can be highlighted to show its paths more clearly",
-                    "This chart is one in a series I have created that attempt to display very large amounts of dense information is an consumable and interesting way. This entry is definitly on the more ... maximalist side of data vis."
+                    "This chart is one in a series I have created that attempt to display very large amounts of dense information is an consumable and interesting way. This entry is definitely on the more ... maximalist side of data vis."
                 ],
                 "linkLive": "https://niallains.github.io/english-club-football-chart",
                 "linkCode": "https://github.com/NiallAins/english-club-football-chart",
@@ -226,14 +226,14 @@ export const PROJECT_DATA: tTopicData[] = [
                 "title": "Clever Keys",
                 "year": 2021,
                 "desc": [
-                    "Clever Keys is an interactive education website, created to accompany the Clever Keys childrens' music books",
-                    "I deisgned this site to align with the colours and style of the books' covers &#x2014; as designed by their author Kayleigh Hennessy.",
-                    "The site is made using VueJS, with PHP in the backend. The site contains an integrated Stripe storefront, animated sections based on pages from the book, and an interactive piano to play along with lessons."
+                    "Clever Keys is an interactive education website, created to accompany the Clever Keys childrens music books",
+                    "I designed this site to align with the colours and style of the books' covers &#x2014; as designed by their author Kayleigh Hennessy.",
+                    "The site is made using VueJs, with PHP in the backend. The site contains an integrated Stripe storefront, animated sections based on pages from the book, and an interactive piano to play along with lessons."
                 ],
                 "linkLive": "https://niallains.github.io/cleverkeys-demo/dist",
                 "linkCode": "https://github.com/NiallAins/cleverkeys-demo",
                 "tags": [
-                    ePageTag.VueJS,
+                    ePageTag.VueJs,
                     ePageTag.StripeAPI,
                     ePageTag.PHP
                 ],
@@ -245,9 +245,9 @@ export const PROJECT_DATA: tTopicData[] = [
                 "title": "Every Chord",
                 "year": 2023,
                 "desc": [
-                    "Every Chord is an app for exploring musical chords and chord voicings for string instruments. Chords can either be generated from a scale, or input as text &#x2014; a heuristics algothim will then find the best fingerings available based on the specific instrument and tuning system provided.",
+                    "Every Chord is an app for exploring musical chords and chord voicings for string instruments. Chords can either be generated from a scale, or input as text &#x2014; a heuristics algorithm will then find the best fingerings available based on the specific instrument and tuning system provided.",
                     "Chord sheets can also be generated, saved, and printed off.",
-                    "This project slowly evolved from several other algorthims and visualisations I had created while studing chords and music theory in genreal. I was also able to use my other project <b><i>TinyTone</i></b> to create WebAudio tones for playing each chord in the app. The codebase remains a frankenstein mash up of these pieces, but stumbles along for now."
+                    "This project slowly evolved from several other algorithms and visualisations I had created while studying chords and music theory in general. I was also able to use my other project <b><i>TinyTone</i></b> to create WebAudio tones for playing each chord in the app. The codebase remains a Frankenstein mash up of these pieces, but stumbles along for now."
                 ],
                 "linkLive": "https://niallains.github.io/every-chord",
                 "linkCode": "https://github.com/NiallAins/every-chord",
@@ -280,7 +280,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "title": "Musical scale generator",
                 "year": 2025,
                 "desc": [
-                    "I created this Musical Scale Generator to visually explain how musical scales are derived. The app allows you to change the inital parameters of the standard western scale to show how this creates new scales.",
+                    "I created this Musical Scale Generator to visually explain how musical scales are derived. The app allows you to change the initial parameters of the standard western scale to show how this creates new scales.",
                     "This app also contains a playable piano which changes layout to match the scales you create."
                 ],
                 "linkLive": "https://niallains.github.io/generate-scales",
@@ -299,7 +299,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "year": 2025,
                 "desc": [
                     "A Gibberish poet writes poems in Gibberish ... or are they?",
-                    "I created this as an experiment with randomness and Zipfian distribution. The app generates random words - but in a cadence and distribution that matches natural language. This gives the illusion that the poems are undstandable if you were to just study them for long enough.",
+                    "I created this as an experiment with randomness and Zipfian distribution. The app generates random words - but in a cadence and distribution that matches natural language. This gives the illusion that the poems are understandable if you were to just study them for long enough.",
                     "The words of each poem are all pronounceable, allowing you to read each poem aloud, feeling rhythim and punctuation devoid of any literal meaning.",
                     "Each poem is generated with a seed that can be used to recreate or share."
                 ],
@@ -321,7 +321,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "title": "Buck N Sons",
                 "year": 2016,
                 "desc": [
-                    "Buck N Sons is a retro-style aracade game created for the band Buck N Sons to be released alongside their first album.",
+                    "Buck N Sons is a retro-style arcade game created for the band Buck N Sons to be released alongside their first album.",
                     "The visual style of the game is based on the music video for their track Pancake Paradise, which also supplies the soundtrack.",
                     "This was my first project after graduating - I created the game engine from scratch, as well as drawing all the pixel art assets. I worked with the band to record voices and sound effects, and was",
                     "finally able to showcase the game for the first time at the album launch party in Dublin."
@@ -341,14 +341,14 @@ export const PROJECT_DATA: tTopicData[] = [
                 "title": "Mage Hand",
                 "year": 2019,
                 "desc": [
-                    "Mage Hand is a Dungeons & Dragons character app that can track your equipment, stats, and characer details. The app uses the DnD5e API to pull data for every weapon and object in the game, as well as supporting custom objects.",
-                    "The app is built with VueJS and is designed to be downloaded as a local webapp. It supports localstorage and data caching to allow offline usage."
+                    "Mage Hand is a Dungeons & Dragons character app that can track your equipment, stats, and character details. The app uses the DnD5e API to pull data for every weapon and object in the game, as well as supporting custom objects.",
+                    "The app is built with VueJs and is designed to be downloaded as a local webapp. It supports local storage and data caching to allow offline usage."
                 ],
                 "linkLive": "https://magehand.nialldesign.dev",
                 "linkCode": "https://github.com/NiallAins/MageHand",
                 "externalLink": true,
                 "tags": [
-                    ePageTag.VueJS
+                    ePageTag.VueJs
                 ],
                 "appbar": {
                     "color": "#111111",
@@ -362,7 +362,7 @@ export const PROJECT_DATA: tTopicData[] = [
                     "An app to create and share crosswords.",
                     "Includes integration with external tools that help with writing clues, and finding words to fill out your grid.",
                     "Full crossword can be encoded in a URL, so that puzzles can be shared, or printed out",
-                    "My dream job would be to create television score tracking UIs for various sports boradcasts."
+                    "My dream job would be to create television score tracking UIs for various sports broadcasts."
                 ],
                 "linkLive": "https://niallains.github.io/CrossCreator",
                 "linkCode": "https://github.com/NiallAins/CrossCreator",
@@ -420,12 +420,12 @@ export const PROJECT_DATA: tTopicData[] = [
                 "desc": [
                     "PaperWon was a proof of concept site create to explore educational resources and tools to help Irish Leaving Cert maths students.",
                     "I created this project at the height of the pandemic, when schools were turning to online learning. I wanted to create learning tools targeted at visual and tactile learners, which could communicate abstract ideas though animation and interactive geometry components.",
-                    "The site and its component are built with VueJS, and pull data and questions from real state examination paper and curricula"
+                    "The site and its component are built with VueJs, and pull data and questions from real state examination paper and curricula"
                 ],
                 "linkLive": "https://niallains.github.io/PaperWon/dist",
                 "linkCode": "https://github.com/niallAins/PaperWon/tree/master",
                 "tags": [
-                    ePageTag.VueJS,
+                    ePageTag.VueJs,
                     ePageTag.Canvas
                 ],
                 "appbar": {
@@ -438,7 +438,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "desc": [
                     "An app for calculating running distances, times, and paces - in both metres and miles.",
                     "I built this for my own use, as every other pace calculator on the internet is shite.",
-                    "The app is designed to have maximum funtionality, with minimum elements."
+                    "The app is designed to have maximum functionality, with minimum elements."
                 ],
                 "linkLive": "https://pacer.nialldesign.dev/",
                 "linkCode": "https://github.com/NiallAins/running-pace-calculator",
@@ -522,7 +522,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "year": 2025,
                 "desc": [
                     "Have a big number? Need to name it? Oh boy are you in luck.",
-                    "This app will generate the correct mathamatical name for every number from 0&nbsp; (<em>Zero !< /em>) to 12,345&times; 10<sup>67,890</sup>&nbsp; (<em>one sepnonagintiquinticenti-duovigintimilillion, two hundred and thirty four sexnonagintiquinticenti-duovigintimilillion, five hundred",
+                    "This app will generate the correct mathematical name for every number from 0&nbsp; (<em>Zero !< /em>) to 12,345&times; 10<sup>67,890</sup>&nbsp; (<em>one sepnonagintiquinticenti-duovigintimilillion, two hundred and thirty four sexnonagintiquinticenti-duovigintimilillion, five hundred",
                     "quinnonagintiquinticenti-duovigintimilillion googol !< /em>) ... and beyond."
                 ],
                 "linkLive": "https://niallains.github.io/big-number-namer",
@@ -573,8 +573,8 @@ export const PROJECT_DATA: tTopicData[] = [
                 "title": "Z-Buffer Visualised",
                 "year": 2025,
                 "desc": [
-                    "An interacitve visualisation of how a z-buffering algorithim works in 3d graphics.",
-                    "When a triangle is rendered in 3d space, the z-position of eeach pixel needs to be calculated.",
+                    "An interactive visualisation of how a z-buffering algorithm works in 3d graphics.",
+                    "When a triangle is rendered in 3d space, the z-position of each pixel needs to be calculated.",
                     "I created this visualisation when learning about 3d graphics and building a basic 3d engine from first principles."
                 ],
                 "linkLive": "https://niallains.github.io/z-buffer-visualised",
@@ -591,9 +591,9 @@ export const PROJECT_DATA: tTopicData[] = [
                 "title": "Region Caching Visualised",
                 "year": 2025,
                 "desc": [
-                    "An interactive visualisation of how a view region caching algorithim works.",
-                    "Region caching can pre-load background images, or game levels, based on the current view position.",
-                    "I created this visualisation when trying to implement my own algorithim for another project."
+                    "An interactive visualisation of how a view region caching algorithm works.",
+                    "Region caching can preload background images, or game levels, based on the current view position.",
+                    "I created this visualisation when trying to implement my own algorithm for another project."
                 ],
                 "linkLive": "https://niallains.github.io/view-region-caching",
                 "linkCode": "https://github.com/NiallAins/view-region-caching",
@@ -609,8 +609,8 @@ export const PROJECT_DATA: tTopicData[] = [
                 "title": "Angle Calcs Visualised",
                 "year": 2024,
                 "desc": [
-                    "An small visualisation of how angles are measured.",
-                    "I have been stuck on so many projects when it comes to measuring relative angles beween lines. So I create a function which calculates every",
+                    "A small visualisation of how angles are measured.",
+                    "I have been stuck on so many projects when it comes to measuring relative angles between lines. So I create a function which calculates every",
                     "available angle between two given lines - and this visualisation tool to help you understand what angle you are actually looking for."
                 ],
                 "linkLive": "https://niallains.github.io/angle-functions-visualised",
@@ -627,9 +627,9 @@ export const PROJECT_DATA: tTopicData[] = [
                 "title": "Colour Space Compare",
                 "year": 2024,
                 "desc": [
-                    "Every colour exisits in a 3D space, and so many gamuts to choose from!",
+                    "Every colour exists in a 3D space, and so many gamuts to choose from!",
                     "I decided to make this small app after the introduction of the CSS color() function, and updated support for HD, printing, and non-sRGB spaces.",
-                    "The app allows you to select four spaces, visualsied as 3D cubes, and allows you to move around to see the relative movements across spaces."
+                    "The app allows you to select four spaces, visualised as 3D cubes, and allows you to move around to see the relative movements across spaces."
                 ],
                 "linkLive": "https://niallains.github.io/color-space-compare",
                 "linkCode": "https://github.com/NiallAins/color-space-compare",
@@ -645,7 +645,7 @@ export const PROJECT_DATA: tTopicData[] = [
                 "title": "Text Wrap Sandbox",
                 "year": 2020,
                 "desc": [
-                    "There are many, many properites in CSS that can be used to control how text flows, wraps, and overflows.",
+                    "There are many, many properties in CSS that can be used to control how text flows, wraps, and overflows.",
                     "I made this small app as a sandbox to help solve particularly annoying use cases"
                 ],
                 "linkLive": "https://niallains.github.io/text-wrap-sandbox",

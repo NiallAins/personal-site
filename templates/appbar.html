@@ -1,4 +1,4 @@
-    {{ head }}
+    {{ headHtml }}
 
     <link rel="stylesheet" href="appbar-style.css" />
 </head>
@@ -6,8 +6,8 @@
 <body class="appbar__body">
     <header
         id="appbar"
-        class="appbar{{ barClassLight ?  appbar--light }}{{ barClassMinimal ?  appbar--minimal }}"
-        {{ barColor ?  style="--c-bg: barColor" }}
+        class="appbar{{ barClassLight ? ' appbar--light' : '' }}{{ barClassMinimal ? ' appbar--minimal' : '' }}"
+        {{ barColor ?  'style="--c-bg:' + barColor + '"' : '' }}
     >
         <div class="appbar__container">
             <div class="appbar__header">
@@ -16,7 +16,7 @@
                     aria-label="nialldesign.dev"
                 >
                     <img
-                        src="{{ base }}icons/favicon-{{ barClassMinimal ? mono-{{ barClassLight ? dark : light }} : sm }}.svg"
+                        src="{{ base }}icons/favicon-{{ barClassMinimal ? 'mono-' + (barClassLight ? 'dark' : 'light') : 'sm' }}.svg"
                         class="appbar__header-icon"
                         alt="niall-design-dev icon"
                         width="32"
@@ -32,7 +32,7 @@
                 <a
                     id="appbar_headerLink"
                     class="appbar__header-link"
-                    href="{{ base }}#{{ title-kebab }}"
+                    href="{{ base }}#{{ titleKebab }}"
                 ></a>
             </div>
             <div
@@ -41,9 +41,9 @@
             >
                 <div class="appbar__header-about-content">
                     <h1 class="appbar__header-about-content-title">
-                        {{ aboutTitle }}
+                        {{ title }}
                     </h1>
-                    {{ aboutDesc }}
+                    {{ descArr.map(d => `<p> ${ d } </p>`).join('\n') }}
                 </div>
                 <div
                     id="appbar_headerAboutScrim"

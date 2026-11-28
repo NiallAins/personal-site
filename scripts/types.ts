@@ -17,7 +17,7 @@ export enum ePageTag {
     Typescript,
     Canvas,
     Bash,
-    VueJS,
+    VueJs,
     Javascipt,
     NodeJS,
     PHP,
