@@ -27,8 +27,8 @@ import {
     labelIsoZ as LABEL_ISO_Z,
     labelDepressZ as LABEL_DEPRESS_Z
 } from "./main";
-// import { Boat } from "./Boat";
-import { _DEBUG_mockBoat as Boat } from "../_debug";
+import { Boat } from "./Boat";
+// import { _DEBUG_mockBoat as Boat } from "../_debug";
 import { _DEBUG_renderBaseIso } from "../_debug";
 
 
