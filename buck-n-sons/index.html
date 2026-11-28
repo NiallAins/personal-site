@@ -1,0 +1,123 @@
+    <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        Buck N Sons | Niall Design/Dev
+    </title>
+
+    <!-- Functional meta -->
+    <base href="https://nialldesign.dev/" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimal-ui" />
+
+    <!-- Search engine meta -->
+    <meta
+        name="description"
+        content="Buck N Sons is a retro-style arcade game created for the band Buck N Sons to be released alongside their first album."
+    />
+    <meta name="language" content="EN" />
+    <meta name="keywords" content="niall, design, frontend, software, development, portfolio, irish, animation, data visualisation" />
+    <meta name="author"   content="Niall Ainsworth, niallainsworth@gmail.com" />
+    <meta name="reply-to" content="niallainsworth@gmail.com" />
+
+    <!-- Analytics -->
+    <script
+        defer
+        src="https://cloud.umami.is/script.js"
+        data-website-id="8f2f3cc5-be02-4eff-a13a-dcb89cdce7e3"
+        data-tag="env-prod"
+    ></script>
+
+    <!-- Web app -->
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#111128">
+    <meta name="msapplication-TileColor" content="#111128">
+
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="icons/favicon-lg.svg">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/android-chrome-512x512.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/android-chrome-192x192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="icons/apple-touch-icon-167x167.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+    <link rel="icon" sizes="any" href="favicon.ico">
+    <meta name="msapplication-TileImage" content="icons/mstile-144x144.png">
+    
+
+    <link rel="stylesheet" href="appbar-style.css" />
+</head>
+
+<body class="appbar__body">
+    <header
+        id="appbar"
+        class="appbar"
+        style="--c-bg:#111111"
+    >
+        <div class="appbar__container">
+            <div class="appbar__header">
+                <a
+                    href="."
+                    aria-label="nialldesign.dev"
+                >
+                    <img
+                        src="https://nialldesign.dev/icons/favicon-sm.svg"
+                        class="appbar__header-icon"
+                        alt="niall-design-dev icon"
+                        width="32"
+                        height="32"
+                    />
+                </a>
+                <button
+                    id="appbar_headerAboutButton"
+                    class="appbar__header-link appbar__header-link--about"
+                >
+                    About
+                </button>
+                <a
+                    id="appbar_headerLink"
+                    class="appbar__header-link"
+                    href="https://nialldesign.dev/#buck-n-sons"
+                ></a>
+            </div>
+            <div
+                id="appbar_headerAbout"
+                class="appbar__header-about"
+            >
+                <div class="appbar__header-about-content">
+                    <h1 class="appbar__header-about-content-title">
+                        Buck N Sons
+                    </h1>
+                    <p> Buck N Sons is a retro-style arcade game created for the band Buck N Sons to be released alongside their first album. </p>
+<p> The visual style of the game is based on the music video for their track Pancake Paradise, which also supplies the soundtrack. </p>
+<p> This was my first project after graduating - I created the game engine from scratch, as well as drawing all the pixel art assets. I worked with the band to record voices and sound effects, and was </p>
+<p> finally able to showcase the game for the first time at the album launch party in Dublin. </p>
+                </div>
+                <div
+                    id="appbar_headerAboutScrim"
+                    class="appbar__header-about-scrim"
+                ></div>
+            </div>
+            <button
+                id="appbar_headerClose"
+                class="appbar__header-close"
+                aria-label="toggle more projects bar"
+            ></button>
+        </div>
+    </header>
+
+    <iframe
+        class="appbar__frame"
+        src="https://niallains.github.io/BuckNSons"
+        allow="fullscreen"
+        allowfullscreen
+        credentialless
+    ></iframe>
+
+    <script src="appbar-script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,212 @@
+@import url("https://fonts.googleapis.com/css2?family=Neuton:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+body {
+  margin: 0 auto;
+}
+
+.appbar {
+  --c-bg: #111128;
+  --c-fg: #ffffff;
+  height: 3.5rem;
+  transition: height 500ms;
+}
+.appbar.page--closing {
+  height: 0;
+}
+.appbar--light {
+  --c-bg: #eeeeee;
+  --c-fg: #111128;
+}
+.appbar__body {
+  overflow: hidden;
+}
+.appbar__container {
+  position: fixed;
+  inset: 0 0 auto 0;
+}
+.appbar__header {
+  position: relative;
+  z-index: 100;
+  height: 2rem;
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  gap: 1.5rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--c-bg);
+  transition: margin-top 500ms;
+}
+.appbar__header-icon {
+  width: 2rem;
+  height: 2rem;
+  opacity: 0.625;
+  color: var(--c-fg);
+}
+.appbar__header-link:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 0.5rem;
+}
+.appbar__header-link {
+  padding: 0 0 0.625rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: box-shadow 500ms, translate 500ms;
+}
+.appbar__header-link:active {
+  translate: 0 0.5rem;
+}
+.appbar__header-link {
+  box-shadow: inset 0 0 0 0 currentColor;
+}
+.appbar__header-link:hover, .appbar__header-link:focus-visible, a:hover > .appbar__header-link, a:focus-visible > .appbar__header-link, button:hover > .appbar__header-link, button:focus-visible > .appbar__header-link {
+  box-shadow: inset 0 -0.25rem 0 0 currentColor;
+}
+.appbar__header-link:active {
+  translate: 0 0.25rem;
+}
+.appbar__header-link {
+  font-size: 1.125rem;
+  font-family: Neuton, Georgia, serif;
+  color: var(--c-fg);
+  text-decoration: none;
+  translate: 0 0.25rem;
+}
+.appbar__header-link:hover:not(:active) {
+  translate: 0 0;
+}
+.appbar__header-link:focus-visible {
+  outline-offset: 0.25rem;
+}
+.appbar__header-close:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 0.5rem;
+}
+.appbar__header-close {
+  position: absolute;
+  z-index: 110;
+  right: 1rem;
+  top: 0.75rem;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: none;
+  border-radius: 100%;
+  margin-left: auto;
+  margin-right: 0.75rem;
+  background-color: var(--c-bg);
+  cursor: pointer;
+  transition: opacity 500ms, rotate 500ms;
+}
+.appbar__header-close:focus-visible {
+  outline-offset: 0.25rem;
+}
+.appbar__header-close:hover {
+  opacity: 1;
+}
+.appbar__header-close::after {
+  content: "";
+  position: absolute;
+  inset: 0.625rem;
+  display: inline-block;
+  border: solid var(--c-fg);
+  rotate: 45deg;
+  translate: 0 0.125rem;
+  border-width: 2px 0 0 2px;
+}
+.appbar__header-about {
+  opacity: 0;
+  transition: opacity 500ms;
+  pointer-events: none;
+}
+.appbar__header-about.page--sub-opening {
+  opacity: 1;
+  pointer-events: all;
+}
+.appbar__header-about-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+}
+.appbar__header-about-scrim::after {
+  content: "";
+  position: fixed;
+  inset: 3.5rem 0 0 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.appbar__header-about-content {
+  font-size: 1.125rem;
+  font-weight: 400;
+  font-family: Roboto, Helvetica, san-serif;
+  color: #ffffff;
+  line-height: 1.5;
+  font-size: 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 30rem;
+  padding: 1.5rem;
+  padding-top: 3.5rem;
+  border-bottom-right-radius: 0.25rem;
+  color: var(--c-fg);
+  background-color: var(--c-bg);
+  translate: 0 -100%;
+  transition: translate 500ms;
+}
+.appbar__header-about-content > * {
+  margin: 0;
+}
+.appbar__header-about-content-title {
+  font-size: 1.75rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  font-family: Neuton, Georgia, serif;
+  color: #ffffff;
+  color: var(--c-fg);
+}
+.appbar__header-about.page--inactive .appbar__header-about-content {
+  display: none;
+}
+.appbar__header-about.page--sub-opening .appbar__header-about-content {
+  translate: 0 0;
+}
+.appbar--minimal .appbar__header-about, .appbar--minimal .appbar__header-link--about, .appbar--minimal .appbar__header-close {
+  display: none;
+}
+.appbar--light .appbar__header-icon {
+  opacity: 1;
+}
+.appbar--light .appbar__header-link:focus-visible, .appbar--light .appbar__header-close:focus-visible {
+  outline-color: #111128;
+}
+.appbar.page--closing .appbar__header {
+  margin-top: -3.5rem;
+  pointer-events: none;
+}
+.appbar.page--inactive .appbar__header {
+  display: none;
+}
+.appbar.page--closing .appbar__header-close {
+  rotate: -180deg;
+}
+.appbar.page--closing .appbar__header-close:not(:hover) {
+  opacity: 0.25;
+}
+.appbar.page--closing .appbar__header-close:focus-visible {
+  opacity: 1;
+  outline-color: #111128;
+}
+.appbar__frame {
+  width: 100vw;
+  height: calc(100svh - 3.5rem);
+  padding: 0;
+  border: none;
+  margin: 0;
+  transition: height 500ms;
+}
+.appbar.page--closing + .appbar__frame {
+  height: 100svh;
+}

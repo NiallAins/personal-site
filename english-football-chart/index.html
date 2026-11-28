@@ -1,0 +1,122 @@
+    <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        English Football Chart | Niall Design/Dev
+    </title>
+
+    <!-- Functional meta -->
+    <base href="https://nialldesign.dev/" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimal-ui" />
+
+    <!-- Search engine meta -->
+    <meta
+        name="description"
+        content="This chart shows the movement of all 172 clubs who have taken part in the 5 national English football leagues, since the establishment of the Premier League in 1992"
+    />
+    <meta name="language" content="EN" />
+    <meta name="keywords" content="niall, design, frontend, software, development, portfolio, irish, animation, data visualisation" />
+    <meta name="author"   content="Niall Ainsworth, niallainsworth@gmail.com" />
+    <meta name="reply-to" content="niallainsworth@gmail.com" />
+
+    <!-- Analytics -->
+    <script
+        defer
+        src="https://cloud.umami.is/script.js"
+        data-website-id="8f2f3cc5-be02-4eff-a13a-dcb89cdce7e3"
+        data-tag="env-prod"
+    ></script>
+
+    <!-- Web app -->
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#111128">
+    <meta name="msapplication-TileColor" content="#111128">
+
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="icons/favicon-lg.svg">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/android-chrome-512x512.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/android-chrome-192x192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="icons/apple-touch-icon-167x167.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+    <link rel="icon" sizes="any" href="favicon.ico">
+    <meta name="msapplication-TileImage" content="icons/mstile-144x144.png">
+    
+
+    <link rel="stylesheet" href="appbar-style.css" />
+</head>
+
+<body class="appbar__body">
+    <header
+        id="appbar"
+        class="appbar"
+        style="--c-bg:#222222"
+    >
+        <div class="appbar__container">
+            <div class="appbar__header">
+                <a
+                    href="."
+                    aria-label="nialldesign.dev"
+                >
+                    <img
+                        src="https://nialldesign.dev/icons/favicon-sm.svg"
+                        class="appbar__header-icon"
+                        alt="niall-design-dev icon"
+                        width="32"
+                        height="32"
+                    />
+                </a>
+                <button
+                    id="appbar_headerAboutButton"
+                    class="appbar__header-link appbar__header-link--about"
+                >
+                    About
+                </button>
+                <a
+                    id="appbar_headerLink"
+                    class="appbar__header-link"
+                    href="https://nialldesign.dev/#english-football-chart"
+                ></a>
+            </div>
+            <div
+                id="appbar_headerAbout"
+                class="appbar__header-about"
+            >
+                <div class="appbar__header-about-content">
+                    <h1 class="appbar__header-about-content-title">
+                        English Football Chart
+                    </h1>
+                    <p> This chart shows the movement of all 172 clubs who have taken part in the 5 national English football leagues, since the establishment of the Premier League in 1992 </p>
+<p> Clubs are coloured according to their ranking at the end of that first season, to show how this ranking has shuffled throughout the years. Any club can be highlighted to show its paths more clearly </p>
+<p> This chart is one in a series I have created that attempt to display very large amounts of dense information is an consumable and interesting way. This entry is definitely on the more ... maximalist side of data vis. </p>
+                </div>
+                <div
+                    id="appbar_headerAboutScrim"
+                    class="appbar__header-about-scrim"
+                ></div>
+            </div>
+            <button
+                id="appbar_headerClose"
+                class="appbar__header-close"
+                aria-label="toggle more projects bar"
+            ></button>
+        </div>
+    </header>
+
+    <iframe
+        class="appbar__frame"
+        src="https://niallains.github.io/english-club-football-chart"
+        allow="fullscreen"
+        allowfullscreen
+        credentialless
+    ></iframe>
+
+    <script src="appbar-script.js"></script>
+</body>
+
+</html>
